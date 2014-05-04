@@ -54,14 +54,28 @@ struct colorVarianceTemplate
 	char whiteRange;
 };//size 8 bytes
 
-//constructed template of rules for directing entity creation
-struct creationProtocolTemplate
+//constructed template of rules for directing tool creation
+struct toolPackTemplate
 {
 	unsigned char id;
-	bool hostile;
+	unsigned int maxUses;
+	unsigned char usageProtocol; //ie: what it works on, the input to give that subject
+};
+
+//constructed template of rules for directing seed creation
+struct seedPackTemplate
+{
+	unsigned char id;
+	unsigned char plantSummon;
+	unsigned char usageProtocol; //ie: allowed terrain
+};
+
+//constructed template of rules for generating vegetation
+struct vegetationPackTemplate
+{
 
 };
-//compiled container of terrain pools in a template format
+//compiled container of terrain pools in a template format, used in map generation
 struct terrainPoolTemplate
 {
 	std::vector<unsigned char> landTilesList;
