@@ -2,7 +2,7 @@
 main.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-April 15, 2014
+May 4, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 personal notes:
@@ -22,17 +22,17 @@ X	-tiles
 		char name[16]
 		unsigned char spriteIndex
 		unsigned char variance
-	-terrain pools
+X	-terrain pools
 		vector<char> land
 		vector<char> worn
 		vector<char> accent
 		vector<char> deco
 		vector<char> shapes
-	-eco pools
-		vector<char> growth
+X	-eco pools
+		vector<char> vegetation
 		vector<char> seed
-		vector<char> faces
-	-biomes
+		vector<char> creatures
+X	-biomes
 		unsigned char terrainPool
 		unsigned char ecoPool
 		unsigned char temperature
@@ -45,7 +45,7 @@ X	-entities
 		unsigned char iconCount
 		unsigned char type
 		unsigned char protocol
-	-items
+X	-items
 	-actions
 	-gui buttons
 	-gui forms
@@ -67,7 +67,7 @@ include
 .	-seed.h
 	-ingredient.h
 .	-creature.h
-	-summon.h
+.	-summon.h
 .	-decoration.h
 .	-vegetation.h
 .	-tool.h

@@ -116,11 +116,46 @@ struct summonPackTemplate
 //compiled container of terrain pools in a template format, used in map generation
 struct terrainPoolTemplate
 {
+	unsigned char id;
+	char name[16];
 	std::vector<unsigned char> landTilesList;
 	std::vector<unsigned char> wornTilesList;
 	std::vector<unsigned char> accentTilesList;
 	std::vector<unsigned char> decoEntitiesList;
 	std::vector<unsigned char> shapesList;
 };//size 60 bytes(?)
+
+//compiled template of eco pools in the biome/map generation
+struct ecoPoolTemplate
+{
+	unsigned char id;
+	char name[16];
+	std::vector<unsigned char> vegetationList;
+	std::vector<unsigned char> seedList;
+	std::vector<unsigned char> creatureList;
+};
+
+//compiled template of biome information used in map generation
+struct biomeInformationTemplate
+{
+	unsigned char id;
+	char name[32];
+	unsigned char terrainIndex;
+	unsigned char ecoIndex;
+	unsigned char temperature;
+	unsigned char elevation;
+	unsigned char atmosphere;
+};
+
+//item template
+struct itemTemplate
+{
+	unsigned int registeredEntityIndex;	//0 if empty, must hold the game-registered id
+											//meaning create the entity first then the item
+											//or create it empty
+	bool bStackable;	//stack quantity is 999
+	bool bStorable;
+	bool bRituals;
+};
 
 #endif//TEMPLATES_H
