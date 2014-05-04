@@ -64,13 +64,13 @@ include
 	
 	-tm_entity.h
 	-entity.h
-	-seed.h
+.	-seed.h
 	-ingredient.h
-	-creature.h
+.	-creature.h
 	-summon.h
-	-decoration.h
-	-vegetation.h
-	-tool.h
+.	-decoration.h
+.	-vegetation.h
+.	-tool.h
 
 	-tm_tile.h
 	-tm_biome.h
@@ -121,6 +121,6 @@ int main()
 {
 	//the main entry
 	//goes inside here
-
+	
 	return sizeof(terrainPoolTemplate);
 }

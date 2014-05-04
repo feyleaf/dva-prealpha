@@ -73,8 +73,46 @@ struct seedPackTemplate
 //constructed template of rules for generating vegetation
 struct vegetationPackTemplate
 {
-
+	unsigned char id;
+	float growthTime;
+	unsigned char maxGrowthStages;
+	unsigned char mapBonus;
+	std::vector<unsigned char> lootList;
 };
+
+//constructed template of rules for generating creatures
+struct creaturePackTemplate
+{
+	unsigned char id;
+	unsigned int maxHP;
+	unsigned char attack;
+	unsigned char defense;
+	unsigned char agility;
+	unsigned char moveSpeed;
+	std::vector<unsigned char> actionList;
+};
+
+//constructed template of rules for decoration generation
+struct decoPackTemplate
+{
+	unsigned char id;
+	unsigned int maxHP;
+	unsigned char mapBonus;
+	unsigned char defense;
+	unsigned char element;
+	std::vector<unsigned char> lootList;
+};
+
+//constructed template of rules for summon charm generation
+struct summonPackTemplate
+{
+	unsigned char id;
+	unsigned int registeredCreatureSummon;	//0 if empty, must hold the game-registered id
+											//meaning create the creature first then the summon
+											//or create it empty
+	unsigned char usageProtocol;
+};
+
 //compiled container of terrain pools in a template format, used in map generation
 struct terrainPoolTemplate
 {
