@@ -2,7 +2,7 @@
 templates.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 3, 2014
+May 5, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -156,6 +156,26 @@ struct itemTemplate
 	bool bStackable;	//stack quantity is 999
 	bool bStorable;
 	bool bRituals;
+};
+
+struct actionTemplate
+{
+	unsigned int protocol;
+	float coolDown;
+	unsigned char priority;
+	unsigned char restrictions;
+};
+
+struct guiButtonTemplate
+{
+	unsigned int actionID;
+	char state;
+	sf::IntRect placement;
+};
+
+struct guiFormsTemplate
+{
+	std::vector<guiButtonTemplate> buttonList;
 };
 
 #endif//TEMPLATES_H

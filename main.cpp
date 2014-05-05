@@ -2,7 +2,7 @@
 main.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 4, 2014
+May 5, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 personal notes:
@@ -15,7 +15,13 @@ saveFile(char*), mainFontFile(char*), auxFontFile(char*)
 tileSheetFile(char*), entitySheetFile(char*), guiSheetFile(char*)
 
 ==ID 0 will always be the dummy/undefined for any templates==
-
+*/
+struct coord
+{
+	int x;
+	int y;
+};
+/*
 template headers:
 X	-tiles
 		unsigned char id
