@@ -2,7 +2,7 @@
 templates.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 5, 2014
+May 6, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -21,6 +21,13 @@ struct tileTemplate
 	unsigned char sheetOrigin;
 	unsigned char iconRange;
 	unsigned char variance;
+	tileTemplate(unsigned int _id,
+					const char* _name,
+					unsigned char _sheet,
+					unsigned char _sheetOrigin,
+					unsigned char _iconRange,
+					unsigned char _variance)
+	{id=_id; strncpy_s(name, 16, _name, 16); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; variance=_variance;}
 };//size 24 bytes
 
 //constructed template rules for entity creation
@@ -38,6 +45,14 @@ struct entityTemplate
 	unsigned char sheetOrigin;
 	unsigned char iconRange;
 	unsigned char creationProtocol;
+	entityTemplate(unsigned int _id,
+					unsigned char _type,
+					const char* _name,
+					unsigned char _sheet,
+					unsigned char _sheetOrigin,
+					unsigned char _iconRange,
+					unsigned char _creationProtocol)
+	{id=_id; type=_type; strncpy_s(name, 40, _name, 40); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; creationProtocol=_creationProtocol;}
 };//size 52 bytes
 
 //constructed template rules for varying colors on map tiles
@@ -52,6 +67,18 @@ struct colorVarianceTemplate
 	char blueRange;
 	char whiteBase;
 	char whiteRange;
+	colorVarianceTemplate(char _redBase,
+							char _redRange,
+							char _greenBase,
+							char _greenRange,
+							char _blueBase,
+							char _blueRange,
+							char _whiteBase,
+							char _whiteRange)
+	{redBase=_redBase; redRange=_redRange;
+	greenBase=_greenBase; greenRange=_greenRange;
+	blueBase=_blueBase; blueRange=_blueRange;
+	whiteBase=_whiteBase; whiteRange=_whiteRange;}
 };//size 8 bytes
 
 //constructed template of rules for directing tool creation
@@ -60,6 +87,10 @@ struct toolPackTemplate
 	unsigned char id;
 	unsigned int maxUses;
 	unsigned char usageProtocol; //ie: what it works on, the input to give that subject
+	toolPackTemplate(unsigned char _id,
+					unsigned int _maxUses,
+					unsigned char _usageProtocol)
+	{id=_id; maxUses=_maxUses; usageProtocol=_usageProtocol;}
 };
 
 //constructed template of rules for directing seed creation
@@ -67,7 +98,11 @@ struct seedPackTemplate
 {
 	unsigned char id;
 	unsigned char plantSummon;
-	unsigned char usageProtocol; //ie: allowed terrain
+	unsigned char usageProtocol;	//ie: allowed terrain
+	seedPackTemplate(unsigned char _id,
+						unsigned char _plantSummon,
+						unsigned char _usageProtocol)
+	{id=_id; plantSummon=_plantSummon; usageProtocol=_usageProtocol;}
 };
 
 //constructed template of rules for generating vegetation
@@ -78,6 +113,11 @@ struct vegetationPackTemplate
 	unsigned char maxGrowthStages;
 	unsigned char mapBonus;
 	std::vector<unsigned char> lootList;
+	vegetationPackTemplate(unsigned char _id,
+							float _growthTime,
+							unsigned char _maxGrowthStages,
+							unsigned char _mapBonus)
+	{id=_id; growthTime=_growthTime; maxGrowthStages=_maxGrowthStages; mapBonus=_mapBonus;}
 };
 
 //constructed template of rules for generating creatures
@@ -90,6 +130,13 @@ struct creaturePackTemplate
 	unsigned char agility;
 	unsigned char moveSpeed;
 	std::vector<unsigned char> actionList;
+	creaturePackTemplate(unsigned char _id,
+						unsigned int _maxHP,
+						unsigned char _attack,
+						unsigned char _defense,
+						unsigned char _agility,
+						unsigned char _moveSpeed)
+	{id=_id; maxHP=_maxHP; attack=_attack; defense=_defense; agility=_agility; moveSpeed=_moveSpeed;}
 };
 
 //constructed template of rules for decoration generation
@@ -101,6 +148,12 @@ struct decoPackTemplate
 	unsigned char defense;
 	unsigned char element;
 	std::vector<unsigned char> lootList;
+	decoPackTemplate(unsigned char _id,
+					unsigned int _maxHP,
+					unsigned char _mapBonus,
+					unsigned char _defense,
+					unsigned char _element)
+	{id=_id; maxHP=_maxHP; mapBonus=_mapBonus; defense=_defense; element=_element;}
 };
 
 //constructed template of rules for summon charm generation
@@ -111,6 +164,10 @@ struct summonPackTemplate
 											//meaning create the creature first then the summon
 											//or create it empty
 	unsigned char usageProtocol;
+	summonPackTemplate(unsigned char _id,
+						unsigned int _registeredCreatureSummon,
+						unsigned char _usageProtocol)
+	{id=_id; registeredCreatureSummon=_registeredCreatureSummon; usageProtocol=_usageProtocol;}
 };
 
 //compiled container of terrain pools in a template format, used in map generation
@@ -158,23 +215,47 @@ struct itemTemplate
 	bool bRituals;
 };
 
+//constructed template of update processes
 struct actionTemplate
 {
 	unsigned int protocol;
+	unsigned char category;
 	float coolDown;
 	unsigned char priority;
 	unsigned char restrictions;
+	actionTemplate(unsigned int _protocol,
+				unsigned char _category,
+				float _coolDown,
+				unsigned char _priority,
+				unsigned char _restrictions)
+	{protocol=_protocol; category=_category; coolDown=_coolDown; priority=_priority; restrictions=_restrictions;}
 };
 
+//constructed template of buttons
 struct guiButtonTemplate
 {
 	unsigned int actionID;
-	char state;
+	char name[32];				//button will need a name
+	unsigned char sheet;
+	unsigned char sheetOrigin;
+	unsigned char iconRange;	//animating and state
+	unsigned char state;
 	sf::IntRect placement;
+	guiButtonTemplate(unsigned int _actionID,
+						const char* _name,
+						unsigned char _sheet,
+						unsigned char _sheetOrigin,
+						unsigned char _iconRange,
+						unsigned char _state,
+						sf::IntRect _placement)
+	{actionID=_actionID; strncpy_s(name, 32, _name, 32); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; state=_state; placement=_placement;}
 };
 
+//template of forms using multiple gui buttons
 struct guiFormsTemplate
 {
+	unsigned char id;
+	char name[16];
 	std::vector<guiButtonTemplate> buttonList;
 };
 

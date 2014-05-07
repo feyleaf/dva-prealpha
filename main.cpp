@@ -2,7 +2,7 @@
 main.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 5, 2014
+May 6, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 personal notes:
@@ -15,46 +15,24 @@ saveFile(char*), mainFontFile(char*), auxFontFile(char*)
 tileSheetFile(char*), entitySheetFile(char*), guiSheetFile(char*)
 
 ==ID 0 will always be the dummy/undefined for any templates==
-*/
-struct coord
-{
-	int x;
-	int y;
-};
-/*
-template headers:
-X	-tiles
-		unsigned char id
-		char name[16]
-		unsigned char spriteIndex
-		unsigned char variance
-X	-terrain pools
-		vector<char> land
-		vector<char> worn
-		vector<char> accent
-		vector<char> deco
-		vector<char> shapes
-X	-eco pools
-		vector<char> vegetation
-		vector<char> seed
-		vector<char> creatures
-X	-biomes
-		unsigned char terrainPool
-		unsigned char ecoPool
-		unsigned char temperature
-		unsigned char elevation
-		unsigned char atmosphere
-X	-entities
-		unsigned char id
-		char name[16]
-		unsigned char spriteIndex
-		unsigned char iconCount
-		unsigned char type
-		unsigned char protocol
-X	-items
-	-actions
-	-gui buttons
-	-gui forms
+
+	Template Structure Sizes: (imported from 'sizes.txt' May 6, 2014)
+tileTemplate: 24 bytes
+entityTemplate: 52 bytes
+colorVarianceTemplate: 8 bytes
+toolPackTemplate: 12 bytes
+seedPackTemplate: 3 bytes
+vegetationPackTemplate: 24 bytes
+creaturePackTemplate: 24 bytes
+decoPackTemplate: 24 bytes
+summonPackTemplate: 12 bytes
+terrainPoolTemplate: 80 bytes
+ecoPoolTemplate: 56 bytes
+biomeInformationTemplate: 38 bytes
+itemTemplate: 8 bytes
+actionTemplate: 16 bytes
+guiButtonTemplate: 56 bytes
+guiFormsTemplate: 32 bytes
 
 these are loaded from a text file
 each in its own container with a pass-by-reference output(get)
@@ -115,18 +93,12 @@ include
 	-renderer.h
 	-game.h
 */
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <stdlib.h>
-#include "templates.h"
-
+#include "globals.h"
 int main()
 {
 	//the main entry
 	//goes inside here
-	
-	return sizeof(terrainPoolTemplate);
+	saveSizesTextfile("sizes.txt");
+	return EXIT_SUCCESS;
 }
+
