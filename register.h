@@ -2,7 +2,7 @@
 register.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 7, 2014
+May 8, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
