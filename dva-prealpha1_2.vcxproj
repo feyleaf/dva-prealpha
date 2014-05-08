@@ -70,9 +70,11 @@
   <ItemGroup>
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tempRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
+    <ClInclude Include="tempRegistry.h" />
     <ClInclude Include="register.h" />
     <ClInclude Include="templates.h" />
   </ItemGroup>
