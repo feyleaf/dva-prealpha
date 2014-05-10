@@ -20,6 +20,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "templates.h"
 #include "register.h"
 #include "tempRegistry.h"
+#include "game.h"
 
 
 void saveSizesTextfile(const char*);

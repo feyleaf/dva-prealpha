@@ -2,7 +2,7 @@
 main.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 7, 2014
+May 9, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 personal notes:
@@ -98,7 +98,8 @@ int main()
 {
 	//the main entry
 	//goes inside here
-	saveSizesTextfile("sizes.txt");
+	GameClass game;
+	game.loadSettings();
 	return EXIT_SUCCESS;
 }
 
