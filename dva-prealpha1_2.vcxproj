@@ -70,12 +70,15 @@
   <ItemGroup>
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="ic_math.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="ic_math.h" />
     <ClInclude Include="tempRegistry.h" />
     <ClInclude Include="register.h" />
     <ClInclude Include="templates.h" />

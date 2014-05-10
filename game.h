@@ -23,14 +23,44 @@ struct settingStruct
 	char guiSheetFile[40];
 };
 
+struct gameHeader
+{
+	unsigned int randSeed;
+	unsigned int mapIndex;
+};
+
 class GameClass
 {
-
+protected:
+	gameHeader header;
 	settingStruct settings;
+	bool newGame;
+	bool quitGame;
+	int gamemode;
+	std::ofstream debugFile;
+	ValueRegistryClass templateRegistry;
+	GameObjectClass registry;
+	sf::Clock frameClock;
+	sf::Image entitySheet;
+	sf::Image tileSheet;
+	sf::Image guiSheet;
+	sf::Image screenshot;
+	sf::RenderWindow app;
+	sf::Event gameEvent;
+	coord mouse;
+
+
+
 public:
 	bool loadSettings();
-	GameClass(){}
-	~GameClass(){}
+	GameClass();
+	~GameClass();
+	void initialize();
+	bool gameLoop();
+	void inputHandler();
+	void gameUpdater(float actSeconds);
+	void gameRenderer();
+	coord getMouseGrid();
 
 };
 

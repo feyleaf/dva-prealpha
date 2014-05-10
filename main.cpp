@@ -99,7 +99,9 @@ int main()
 	//the main entry
 	//goes inside here
 	GameClass game;
-	game.loadSettings();
+	while(!game.gameLoop())
+	{
+	}
 	return EXIT_SUCCESS;
 }
 

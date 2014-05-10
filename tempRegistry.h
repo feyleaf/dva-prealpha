@@ -3,9 +3,10 @@
 
 class ValueRegistryClass
 {
+public:
 	ValueRegistryClass();
 	ValueRegistryClass(ValueRegistryClass& src);
-	~ValueRegistryClass();
+	~ValueRegistryClass(){}
 
 	std::vector<tileTemplate*> allTiles;
 	std::vector<entityTemplate*> allEntities;
