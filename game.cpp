@@ -12,6 +12,54 @@ GameClass::GameClass()
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 }
 
+//returns the index from the template registry matching the search ID of the tile
+tileTemplate* GameClass::cloneTile(const unsigned int tileID)
+{
+	for(int i=0; i<int(templateRegistry.allTiles.size()); i++)
+	{
+		if(templateRegistry.allTiles[i] != NULL)
+		{
+			if(templateRegistry.allTiles[i]->id == tileID) //denotes a match from the queried tile
+			{
+				//we clone the selected tile with index i
+				return new tileTemplate(*templateRegistry.allTiles[i]);
+			}
+		}
+	}
+	return NULL;
+}
+
+//places a tiles map of the selected tile index from the template registry
+void GameClass::fillMap(int tileID)
+{
+	tileTemplate* clone = cloneTile(tileID);
+	if(clone==NULL)
+	{
+		//if there's nothing matching to clone, we must skip this step and inform the debug log
+		debugFile << "FillMap failed. clone was undefined.\n";
+		return;
+	}
+	sf::Sprite spr;
+	sf::Texture tex;
+	int spriteIndex=clone->sheetOrigin;
+	int sx=spriteIndex%8;
+	int sy=int(spriteIndex/8);
+	sf::IntRect area = tileSize;
+	area.left = sx*settings.tileHig;
+	area.top = sy*settings.tileWid;
+	tex.loadFromFile(settings.tileSheetFile, area);
+	spr.setTexture(tex);
+	spr.setScale(2,2);
+	for(int y=0; y<settings.tileRows; y++)
+	{
+		for(int x=0; x<settings.tileCols; x++)
+		{
+			spr.setPosition(x*settings.tileWid*2, y*settings.tileHig*2);
+			app.draw(spr);
+		}
+	}
+
+}
 
 GameClass::~GameClass()
 {
@@ -49,6 +97,7 @@ bool GameClass::gameLoop()
 		if(frameClock.getElapsedTime().asSeconds()>0.125f)
 		{
 			gameUpdater(frameClock.getElapsedTime().asSeconds());
+			frameClock.restart();
 			gameRenderer();
 		}
 	}
@@ -80,7 +129,8 @@ void GameClass::gameUpdater(float actSeconds)
 
 void GameClass::gameRenderer()
 {
-	app.clear();
+	app.clear(sf::Color::White);
+	fillMap(ID_SNOW);
 	app.display();
 }
 
@@ -90,6 +140,7 @@ void GameClass::initialize()
 	debugFile.open("processes.txt");
 	loadSettings();
 	srand(header.randSeed);
+	tileSize = sf::IntRect(0, 0, settings.tileWid, settings.tileHig);
 }
 
 bool GameClass::loadSettings()

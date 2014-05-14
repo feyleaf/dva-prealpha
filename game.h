@@ -62,6 +62,10 @@ public:
 	void gameRenderer();
 	coord getMouseGrid();
 
+	tileTemplate* cloneTile(const unsigned int tileID);
+	void fillMap(int tileID);
+	sf::IntRect tileSize;
+
 };
 
 #endif//GAME_H

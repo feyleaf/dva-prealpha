@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="ic_math.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tempRegistry.cpp" />

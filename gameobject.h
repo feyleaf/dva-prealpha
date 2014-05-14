@@ -4,7 +4,7 @@
 class GameObjectClass
 {
 public:
-	GameObjectClass(){}
+	GameObjectClass();
 	~GameObjectClass(){}
 
 };
