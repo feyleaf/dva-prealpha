@@ -38,7 +38,6 @@ protected:
 	bool quitGame;
 	int gamemode;
 	std::ofstream debugFile;
-	ValueRegistryClass templateRegistry;
 	GameObjectClass registry;
 	sf::Clock frameClock;
 	sf::Image entitySheet;
@@ -62,9 +61,9 @@ public:
 	void gameRenderer();
 	coord getMouseGrid();
 
-	tileTemplate* cloneTile(const unsigned int tileID);
-	void fillMap(int tileID);
+	void fillTile(int tileID, coord _pos);
 	sf::IntRect tileSize;
+	int numberOfTiles();
 
 };
 

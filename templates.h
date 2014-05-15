@@ -28,6 +28,8 @@ struct tileTemplate
 					unsigned char _iconRange,
 					unsigned char _variance)
 	{id=_id; strncpy_s(name, 16, _name, 16); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; variance=_variance;}
+	tileTemplate()
+	{id=0; strcpy_s(name, "Undef"); sheet=0; sheetOrigin=0; iconRange=0; variance=0;}
 };//size 24 bytes
 
 //constructed template rules for entity creation

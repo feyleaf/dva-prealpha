@@ -1,11 +1,42 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+struct tileObjectStruct
+{
+	tileTemplate tmp;
+	coord grid;
+	sf::Color curColor;
+	tileObjectStruct() {
+		tmp.id=0; tmp.iconRange=0; strcpy_s(tmp.name, "Undef"); tmp.sheet=SHEET_TILES; tmp.sheetOrigin=0; tmp.variance=VARIANCE_NONE;
+		grid=coord(0,0);
+		curColor = sf::Color::White;
+	}
+	tileObjectStruct(tileTemplate& tmpsrc) {
+		tmp = tileTemplate(tmpsrc);
+		grid=coord(0,0);
+		curColor = sf::Color::White;
+
+	}
+	tileObjectStruct(tileObjectStruct& objsrc) {
+		tmp = tileTemplate(objsrc.tmp);
+		grid=coord(0,0);
+		curColor = sf::Color::White;
+
+	}
+};
+
 class GameObjectClass
 {
 public:
 	GameObjectClass();
 	~GameObjectClass(){}
+
+	ValueRegistryClass templateRegistry;
+	std::vector<tileObjectStruct*> regTiles;
+
+	int cloneTile(const unsigned int tileID, coord _grid);
+	tileObjectStruct newTile(tileTemplate _t, coord _grid);
+	void registerTile(tileObjectStruct _tile);
 
 };
 

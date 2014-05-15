@@ -12,28 +12,11 @@ GameClass::GameClass()
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 }
 
-//returns the index from the template registry matching the search ID of the tile
-tileTemplate* GameClass::cloneTile(const unsigned int tileID)
-{
-	for(int i=0; i<int(templateRegistry.allTiles.size()); i++)
-	{
-		if(templateRegistry.allTiles[i] != NULL)
-		{
-			if(templateRegistry.allTiles[i]->id == tileID) //denotes a match from the queried tile
-			{
-				//we clone the selected tile with index i
-				return new tileTemplate(*templateRegistry.allTiles[i]);
-			}
-		}
-	}
-	return NULL;
-}
-
 //places a tiles map of the selected tile index from the template registry
-void GameClass::fillMap(int tileID)
+void GameClass::fillTile(int tileID, coord _pos)
 {
-	tileTemplate* clone = cloneTile(tileID);
-	if(clone==NULL)
+	int index = registry.cloneTile(tileID, _pos);
+	if(index==0 || registry.regTiles[index]==NULL)
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillMap failed. clone was undefined.\n";
@@ -41,23 +24,18 @@ void GameClass::fillMap(int tileID)
 	}
 	sf::Sprite spr;
 	sf::Texture tex;
-	int spriteIndex=clone->sheetOrigin;
+	int spriteIndex=registry.regTiles[index]->tmp.sheetOrigin;
 	int sx=spriteIndex%8;
 	int sy=int(spriteIndex/8);
 	sf::IntRect area = tileSize;
 	area.left = sx*settings.tileHig;
 	area.top = sy*settings.tileWid;
 	tex.loadFromFile(settings.tileSheetFile, area);
+	//rendering
 	spr.setTexture(tex);
 	spr.setScale(2,2);
-	for(int y=0; y<settings.tileRows; y++)
-	{
-		for(int x=0; x<settings.tileCols; x++)
-		{
-			spr.setPosition(x*settings.tileWid*2, y*settings.tileHig*2);
-			app.draw(spr);
-		}
-	}
+	spr.setPosition(_pos.x*settings.tileWid*2, _pos.y*settings.tileHig*2);
+	app.draw(spr);
 
 }
 
@@ -65,6 +43,11 @@ GameClass::~GameClass()
 {
 	debugFile.close();
 	app.close();
+}
+
+int GameClass::numberOfTiles()
+{
+	return int(registry.regTiles.size()-1);
 }
 
 coord GameClass::getMouseGrid()
@@ -130,7 +113,13 @@ void GameClass::gameUpdater(float actSeconds)
 void GameClass::gameRenderer()
 {
 	app.clear(sf::Color::White);
-	fillMap(ID_SNOW);
+	for(int y=0; y<settings.tileRows; y++)
+	{
+		for(int x=0; x<settings.tileCols; x++)
+		{
+			fillTile(ID_SNOW, coord(x,y));
+		}
+	}
 	app.display();
 }
 

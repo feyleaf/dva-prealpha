@@ -102,6 +102,6 @@ int main()
 	while(!game.gameLoop())
 	{
 	}
-	return EXIT_SUCCESS;
+	return int(game.numberOfTiles());
 }
 
