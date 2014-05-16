@@ -22,21 +22,6 @@ void GameClass::fillTile(int tileID, coord _pos)
 		debugFile << "FillMap failed. clone was undefined.\n";
 		return;
 	}
-	sf::Sprite spr;
-	sf::Texture tex;
-	int spriteIndex=registry.regTiles[index]->tmp.sheetOrigin;
-	int sx=spriteIndex%8;
-	int sy=int(spriteIndex/8);
-	sf::IntRect area = tileSize;
-	area.left = sx*settings.tileHig;
-	area.top = sy*settings.tileWid;
-	tex.loadFromFile(settings.tileSheetFile, area);
-	//rendering
-	spr.setTexture(tex);
-	spr.setScale(2,2);
-	spr.setPosition(_pos.x*settings.tileWid*2, _pos.y*settings.tileHig*2);
-	app.draw(spr);
-
 }
 
 GameClass::~GameClass()
@@ -108,17 +93,24 @@ void GameClass::inputHandler()
 
 void GameClass::gameUpdater(float actSeconds)
 {
-}
-
-void GameClass::gameRenderer()
-{
-	app.clear(sf::Color::White);
 	for(int y=0; y<settings.tileRows; y++)
 	{
 		for(int x=0; x<settings.tileCols; x++)
 		{
 			fillTile(ID_SNOW, coord(x,y));
 		}
+	}
+}
+
+void GameClass::gameRenderer()
+{
+	app.clear(sf::Color::White);
+
+	//draw the tiles that are registered TODO: make it map-specific
+	for(int i=0; i<int(registry.regTiles.size()); i++)
+	{
+		if(registry.regTiles[i] != NULL)
+			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->grid);
 	}
 	app.display();
 }
@@ -130,6 +122,7 @@ void GameClass::initialize()
 	loadSettings();
 	srand(header.randSeed);
 	tileSize = sf::IntRect(0, 0, settings.tileWid, settings.tileHig);
+	render.loadGraphicsFiles(settings);
 }
 
 bool GameClass::loadSettings()

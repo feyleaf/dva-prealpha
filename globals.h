@@ -22,6 +22,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "register.h"
 #include "tempRegistry.h"
 #include "gameobject.h"
+#include "render.h"
 #include "game.h"
 
 

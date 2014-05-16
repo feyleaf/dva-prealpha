@@ -73,6 +73,7 @@
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="ic_math.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="render.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +81,7 @@
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="ic_math.h" />
+    <ClInclude Include="render.h" />
     <ClInclude Include="tempRegistry.h" />
     <ClInclude Include="register.h" />
     <ClInclude Include="templates.h" />
