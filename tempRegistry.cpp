@@ -3,22 +3,22 @@
 ValueRegistryClass::ValueRegistryClass()
 {
 	allTiles.clear();
-	allTiles.push_back(new tileTemplate(ID_GREENGRASS, "Green Grass", SHEET_TILES, 1, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_EMERALDGRASS, "Emerald Grass", SHEET_TILES, 2, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_SAND, "Sand", SHEET_TILES, 3, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_DIRT, "Dirt", SHEET_TILES, 4, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_MARSHGRASS, "Marsh Grass", SHEET_TILES, 5, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_WATER, "Water", SHEET_TILES, 6, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_REDBRICKS, "Red Brick", SHEET_TILES, 7, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_MARBLE, "Marble", SHEET_TILES, 8, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_BLUEBRICKS, "Blue Brick", SHEET_TILES, 9, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_GREYBRICKS, "Castle Brick", SHEET_TILES, 10, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_PLANKS, "Wood Planks", SHEET_TILES, 11, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_CLAY, "Clay", SHEET_TILES, 12, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_STONEWALL, "Stone Wall", SHEET_TILES, 13, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_SNOW, "Snow", SHEET_TILES, 14, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_OBSIDIAN, "Obsidian", SHEET_TILES, 15, 1, VARIANCE_NONE));
-	allTiles.push_back(new tileTemplate(ID_ICE, "Ice", SHEET_TILES, 16, 1, VARIANCE_NONE));
+	allTiles.push_back(new tileTemplate(ID_GREENGRASS, "Green Grass", SHEET_TILES, 1, 1, VARIANCE_GREENGRASS));
+	allTiles.push_back(new tileTemplate(ID_EMERALDGRASS, "Emerald Grass", SHEET_TILES, 2, 1, VARIANCE_EMERALDGRASS));
+	allTiles.push_back(new tileTemplate(ID_SAND, "Sand", SHEET_TILES, 3, 1, VARIANCE_SAND));
+	allTiles.push_back(new tileTemplate(ID_DIRT, "Dirt", SHEET_TILES, 4, 1, VARIANCE_DIRT));
+	allTiles.push_back(new tileTemplate(ID_MARSHGRASS, "Marsh Grass", SHEET_TILES, 5, 1, VARIANCE_MARSHGRASS));
+	allTiles.push_back(new tileTemplate(ID_WATER, "Water", SHEET_TILES, 6, 1, VARIANCE_WATER));
+	allTiles.push_back(new tileTemplate(ID_REDBRICKS, "Red Brick", SHEET_TILES, 7, 1, VARIANCE_REDBRICKS));
+	allTiles.push_back(new tileTemplate(ID_MARBLE, "Marble", SHEET_TILES, 8, 1, VARIANCE_MARBLE));
+	allTiles.push_back(new tileTemplate(ID_BLUEBRICKS, "Blue Brick", SHEET_TILES, 9, 1, VARIANCE_BLUEBRICKS));
+	allTiles.push_back(new tileTemplate(ID_GREYBRICKS, "Castle Brick", SHEET_TILES, 10, 1, VARIANCE_GREYBRICKS));
+	allTiles.push_back(new tileTemplate(ID_PLANKS, "Wood Planks", SHEET_TILES, 11, 1, VARIANCE_PLANKS));
+	allTiles.push_back(new tileTemplate(ID_CLAY, "Clay", SHEET_TILES, 12, 1, VARIANCE_CLAY));
+	allTiles.push_back(new tileTemplate(ID_STONEWALL, "Stone Wall", SHEET_TILES, 13, 1, VARIANCE_STONEWALL));
+	allTiles.push_back(new tileTemplate(ID_SNOW, "Snow", SHEET_TILES, 14, 1, VARIANCE_SNOW));
+	allTiles.push_back(new tileTemplate(ID_OBSIDIAN, "Obsidian", SHEET_TILES, 15, 1, VARIANCE_OBSIDIAN));
+	allTiles.push_back(new tileTemplate(ID_ICE, "Ice", SHEET_TILES, 16, 1, VARIANCE_ICE));
 
 	allEntities.clear();
 	allEntities.push_back(new entityTemplate(ID_MARLBOROBUSH, ET_DECO, "Marlboro Bush", SHEET_ENTITY, 1, 0, CPROTO_NONE));

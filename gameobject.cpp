@@ -2,6 +2,10 @@
 
 GameObjectClass::GameObjectClass()
 {
+	varianceList.clear();
+	varianceList.push_back(NULL);
+	initializeColorVariance();
+	regTiles.clear();
 	regTiles.push_back(NULL);
 }
 
@@ -43,14 +47,121 @@ tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid)
 	ret.tmp.iconRange = _t.iconRange;
 	ret.tmp.variance = _t.variance;
 	ret.grid = _grid;
-	ret.curColor = sf::Color(noiseyPixel(_grid.x, _grid.y, 5, 5), noiseyPixel(_grid.x, _grid.y, 90, 9), noiseyPixel(_grid.x, _grid.y, 100, 100));
-	switch(ret.tmp.variance)
+	ret.curColor = sf::Color::White;
+	if(varianceList[ret.tmp.variance] != NULL)
 	{
-	case VARIANCE_NONE: //basic variance in testing
-	default:
-		ret.curColor.r = noiseyPixel(_grid.x, _grid.y, 6, 6);
-		break;
+		ret.curColor=getTileDistortion(varianceList[ret.tmp.variance], ret.grid, 100);
 	}
 	return ret;
 }
 
+void GameObjectClass::initializeColorVariance()
+{
+/*
+#define VARIANCE_NONE	0
+#define VARIANCE_GREENGRASS	1
+#define VARIANCE_EMERALDGRASS	2
+#define VARIANCE_SAND	3
+#define VARIANCE_DIRT	4
+#define VARIANCE_MARSHGRASS	5
+#define VARIANCE_WATER	6
+#define VARIANCE_REDBRICKS	7
+#define VARIANCE_MARBLE	8
+#define VARIANCE_BLUEBRICKS	9
+#define VARIANCE_GREYBRICKS	10
+#define VARIANCE_PLANKS	11
+#define VARIANCE_CLAY	12
+#define VARIANCE_STONEWALL	13
+#define VARIANCE_SNOW	14
+#define VARIANCE_OBSIDIAN	15
+#define VARIANCE_ICE	16
+*/
+	//green grass
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//emerald grass
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//sand
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//dirt
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//marsh grass
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//water
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//red brick
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//marble
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//blue brick
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//grey brick
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//planks
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//clay
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//stone wall
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//snow
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::White, sf::Color(240,240,255), char(144), char(255))));
+	//obsidian
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	//ice
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+
+}
+
+colorVarianceTemplate GameObjectClass::setRange(sf::Color low, sf::Color high, char dark, char light)
+{
+	colorVarianceTemplate ret(255,255,255,255,255,255,255,255);
+	if(low.r<high.r)
+	{
+		ret.redBase=char(low.r);
+		ret.redRange=char(high.r-low.r);
+	}
+	else
+	{
+		ret.redBase=char(high.r);
+		ret.redRange=char(low.r-high.r);
+	}
+	if(low.g<high.g)
+	{
+		ret.greenBase=char(low.g);
+		ret.greenRange=char(high.g-low.g);
+	}
+	else
+	{
+		ret.greenBase=char(high.g);
+		ret.greenRange=char(low.g-high.g);
+	}
+	if(low.b<high.b)
+	{
+		ret.blueBase=char(low.b);
+		ret.blueRange=char(high.b-low.b);
+	}
+	else
+	{
+		ret.blueBase=char(high.b);
+		ret.blueRange=char(low.b-high.b);
+	}
+	if(dark<light)
+	{
+		ret.whiteBase=char(dark);
+		ret.whiteRange=char(light-dark);
+	}
+	else
+	{
+		ret.whiteBase=light;
+		ret.whiteRange=char(dark-light);
+	}
+	return ret;
+}
+
+sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, coord _pos, long seed)
+{
+	sf::Color ret(noiseyPixel(_pos, _var->redBase, _var->redRange, 60, seed),
+	noiseyPixel(_pos, _var->greenBase, _var->greenRange, 60, seed),
+	noiseyPixel(_pos, _var->blueBase, _var->blueRange, 60, seed),
+	255);
+	return ret;
+}

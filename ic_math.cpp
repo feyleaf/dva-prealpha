@@ -131,14 +131,14 @@ unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long 
 }
 
 //returns a specific format output for inserting into a sf::Color [either red, green, blue, or alpha]
-unsigned char noiseyPixel(int x, int y, int con, long seed)
+unsigned char noiseyPixel(coord pos, unsigned char low, unsigned char range, int con, long seed)
 {
 	unsigned char pixel=0;
-	int value=int((float((distortedCosine((float((sin(float(x))+cos(float(y)))*PI))/(con+1), seed))+2)/4.0f)*255);
+	int value=int((float((distortedCosine((float((sin(float(pos.x))+cos(float(pos.y)))*PI))/(con+1), seed))+2)/4.0f)*255);
 	if(value>=0 && value<=255)
-		pixel=value;
+		pixel=unsigned char((value*range)/255)+low;
 	else
-		pixel=0;
+		pixel=low;
 	return pixel;
 	//return newRandom(128, 196, (float((sin(float(x))+cos(float(y)))*PI))/(con+1), seed);
 }

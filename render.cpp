@@ -22,10 +22,7 @@ sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _
 void RenderManager::DrawTile(sf::RenderWindow& win, const tileObjectStruct* obj, coord place, sf::Color tint, int con, long sd)
 {
 	currentSprite.setTexture(tileSheet);
-	sf::Uint8 r=noiseyPixel(place.x, place.y, con, sd);
-	sf::Uint8 g=noiseyPixel(place.x, place.y, con, sd);
-	sf::Uint8 b=noiseyPixel(place.x, place.y, con, sd);
-	currentSprite.setColor(sf::Color(r,g,b,255));
+	currentSprite.setColor(obj->curColor);
 
 	currentSprite.setTextureRect(rectFromOrigin(obj->tmp.sheetOrigin, 32, 32)); //TODO: fix this with settings
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));

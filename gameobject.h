@@ -32,11 +32,15 @@ public:
 	~GameObjectClass(){}
 
 	ValueRegistryClass templateRegistry;
+	std::vector<colorVarianceTemplate*> varianceList;
 	std::vector<tileObjectStruct*> regTiles;
 
 	int cloneTile(const unsigned int tileID, coord _grid);
 	tileObjectStruct newTile(tileTemplate _t, coord _grid);
 	void registerTile(tileObjectStruct _tile);
+	void initializeColorVariance();
+	colorVarianceTemplate setRange(sf::Color low, sf::Color high, char dark, char light);
+	sf::Color getTileDistortion(const colorVarianceTemplate* _var, coord _pos, long seed);
 
 };
 

@@ -2,7 +2,7 @@
 templates.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 7, 2014
+May 16, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -83,22 +83,22 @@ struct entityTemplate
 struct colorVarianceTemplate
 // selection of color variance values for use in the ic_randomTile distortion algorithm
 {
-	char redBase;
-	char redRange;
-	char greenBase;
-	char greenRange;
-	char blueBase;
-	char blueRange;
-	char whiteBase;
-	char whiteRange;
-	colorVarianceTemplate(char _redBase,
-							char _redRange,
-							char _greenBase,
-							char _greenRange,
-							char _blueBase,
-							char _blueRange,
-							char _whiteBase,
-							char _whiteRange)
+	unsigned char redBase;
+	unsigned char redRange;
+	unsigned char greenBase;
+	unsigned char greenRange;
+	unsigned char blueBase;
+	unsigned char blueRange;
+	unsigned char whiteBase;
+	unsigned char whiteRange;
+	colorVarianceTemplate(unsigned char _redBase,
+							unsigned char _redRange,
+							unsigned char _greenBase,
+							unsigned char _greenRange,
+							unsigned char _blueBase,
+							unsigned char _blueRange,
+							unsigned char _whiteBase,
+							unsigned char _whiteRange)
 	{redBase=_redBase; redRange=_redRange;
 	greenBase=_greenBase; greenRange=_greenRange;
 	blueBase=_blueBase; blueRange=_blueRange;
