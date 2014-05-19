@@ -2,17 +2,10 @@
 main.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 9, 2014
+May 19, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 personal notes:
-store the following in a cfg
-load them in the game headers
-
-tileWid, tileHig, tileRows, tileCols, winWid, winHig
-hotbarSize, invWid, invHig, verTitle(char*), verTx(char*)
-saveFile(char*), mainFontFile(char*), auxFontFile(char*)
-tileSheetFile(char*), entitySheetFile(char*), guiSheetFile(char*)
 
 ==ID 0 will always be the dummy/undefined for any templates==
 
@@ -48,13 +41,13 @@ include
 	
 	-tm_entity.h
 	-entity.h
-.	-seed.h
+	-seed.h
 	-ingredient.h
-.	-creature.h
-.	-summon.h
-.	-decoration.h
-.	-vegetation.h
-.	-tool.h
+	-creature.h
+	-summon.h
+	-decoration.h
+	-vegetation.h
+	-tool.h
 
 	-tm_tile.h
 	-tm_biome.h
@@ -92,6 +85,21 @@ include
 	-window.h
 	-renderer.h
 	-game.h
+
+	parsing notes for registry (future update)
+	-load the file holding the template data
+	-read each line, determining the following
+		=what type of template am i registering?
+		=use the type to parse the rest of this data:
+		=TILE:
+			-=the index number will be its place in the list
+			-=then parse the name of the tile
+			-=then parse the codename of the tile
+			-=read the width and height of the sprite
+			-=read and load the image file, use the sprite width/image width to determine how many frames exist
+			-=read and register the color variance (rgb base, rgb range, value base, value range)
+			-=register this data in the tileTemplateRegistry and the colorVarianceRegistry
+
 */
 #include "globals.h"
 int main()

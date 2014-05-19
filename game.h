@@ -1,3 +1,12 @@
+/*
+game.h
+============================================
+Druid vs. Alchemist: Pre-Alpha v0.1.2
+May 19, 2014
+Author: Benjamin C. Watt (@feyleafgames)
+============================================
+*/
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -45,7 +54,6 @@ public:
 
 	void fillTile(int tileID, coord _pos);
 	void fillShape(int shapeID, int mainTileID, int accentTileID, coord _tl, coord _br);
-	sf::IntRect tileSize;
 	int numberOfTiles();
 
 };

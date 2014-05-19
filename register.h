@@ -86,7 +86,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define SHAPE_NULL			0
 #define SHAPE_PARABOLIC		1
 #define SHAPE_CONIC			2
-#define SHAPE_SPHERE		3
+#define SHAPE_CIRCLE		3
 #define SHAPE_TRIANGLE		4
 #define SHAPE_BOX			5
 

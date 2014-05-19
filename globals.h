@@ -2,7 +2,7 @@
 globals.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 7, 2014
+May 19, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -25,7 +25,5 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "render.h"
 #include "game.h"
 
-
-void saveSizesTextfile(const char*);
 
 #endif//GLOBALS_H
