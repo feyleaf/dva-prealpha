@@ -10,7 +10,7 @@ GameObjectClass::GameObjectClass()
 }
 
 //returns the index from the template registry matching the search ID of the tile
-int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid)
+int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid, int con)
 {
 	for(int i=0; i<int(regTiles.size()); i++)
 	{
@@ -28,7 +28,7 @@ int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid)
 			if(templateRegistry.allTiles[i]->id == tileID) //denotes a match from the queried tile
 			{
 				//we clone the selected tile with index i
-				regTiles.push_back(new tileObjectStruct(newTile(*templateRegistry.allTiles[i], _grid)));
+				regTiles.push_back(new tileObjectStruct(newTile(*templateRegistry.allTiles[i], _grid, con)));
 				return int(regTiles.size()-1);
 			}
 		}
@@ -36,7 +36,7 @@ int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid)
 	return 0;
 }
 
-tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid)
+tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid, int con)
 {
 	tileObjectStruct ret;
 	ret.tmp = tileTemplate(_t);
@@ -50,7 +50,7 @@ tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid)
 	ret.curColor = sf::Color::White;
 	if(varianceList[ret.tmp.variance] != NULL)
 	{
-		ret.curColor=getTileDistortion(varianceList[ret.tmp.variance], ret.grid, 100);
+		ret.curColor=getTileDistortion(varianceList[ret.tmp.variance], ret.grid, con, 100);
 	}
 	return ret;
 }
@@ -77,13 +77,13 @@ void GameObjectClass::initializeColorVariance()
 #define VARIANCE_ICE	16
 */
 	//green grass
-	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color(25,109,0), sf::Color(182, 255, 182), char(140), char(190))));
 	//emerald grass
-	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color(0,120,19), sf::Color::Green, char(200), char(255))));
 	//sand
-	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color(255,255,90), sf::Color(196,197,17), char(240), char(255))));
 	//dirt
-	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color(81,68,45), sf::Color(40,40,40), char(144), char(255))));
 	//marsh grass
 	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
 	//water
@@ -103,7 +103,7 @@ void GameObjectClass::initializeColorVariance()
 	//stone wall
 	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
 	//snow
-	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::White, sf::Color(240,240,255), char(144), char(255))));
+	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::White, sf::Color(243,240,255), char(240), char(255))));
 	//obsidian
 	varianceList.push_back(new colorVarianceTemplate(setRange(sf::Color::Green, sf::Color::Cyan, char(144), char(255))));
 	//ice
@@ -157,11 +157,31 @@ colorVarianceTemplate GameObjectClass::setRange(sf::Color low, sf::Color high, c
 	return ret;
 }
 
-sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, coord _pos, long seed)
+sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed)
 {
-	sf::Color ret(noiseyPixel(_pos, _var->redBase, _var->redRange, 60, seed),
-	noiseyPixel(_pos, _var->greenBase, _var->greenRange, 60, seed),
-	noiseyPixel(_pos, _var->blueBase, _var->blueRange, 60, seed),
-	255);
+	sf::Color ret;
+	unsigned char value=0;
+	unsigned char white = noiseyPixel(_pos, _var->whiteBase, _var->whiteRange, con, seed);
+	ret.r=(noiseyPixel(_pos, _var->redBase, _var->redRange, con, seed));
+	ret.g=(noiseyPixel(_pos, _var->greenBase, _var->greenRange, con, seed));
+	ret.b=(noiseyPixel(_pos, _var->blueBase, _var->blueRange, con, seed));
+	value=unsigned char(max3(int(ret.r), int(ret.g), int(ret.b)));
+	if(white>value)
+	{
+		for(int s=0; s<int(white-value); s++)
+		{
+			ret.r++; ret.g++; ret.b++;
+		}
+	}
+	else if(value>white)
+	{
+		for(int s=0; s<int(value-white); s++)
+		{
+			if(ret.r>0) ret.r--;
+			if(ret.g>0) ret.g--;
+			if(ret.b>0) ret.b--;
+		}
+	}
+
 	return ret;
 }

@@ -35,12 +35,12 @@ public:
 	std::vector<colorVarianceTemplate*> varianceList;
 	std::vector<tileObjectStruct*> regTiles;
 
-	int cloneTile(const unsigned int tileID, coord _grid);
-	tileObjectStruct newTile(tileTemplate _t, coord _grid);
+	int cloneTile(const unsigned int tileID, coord _grid, int con = 0);
+	tileObjectStruct newTile(tileTemplate _t, coord _grid, int con = 0);
 	void registerTile(tileObjectStruct _tile);
 	void initializeColorVariance();
 	colorVarianceTemplate setRange(sf::Color low, sf::Color high, char dark, char light);
-	sf::Color getTileDistortion(const colorVarianceTemplate* _var, coord _pos, long seed);
+	sf::Color getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed);
 
 };
 

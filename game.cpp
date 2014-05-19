@@ -5,17 +5,66 @@ GameClass::GameClass()
 	quitGame=false;
 	header.mapIndex=0;
 	gamemode=0;
+	gameClock.restart();
 	frameClock.restart();
 	initialize();
 	header.randSeed=(unsigned int)time(NULL);
+	gameConstant=0;
 
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
+}
+
+void GameClass::fillShape(int shapeID, int mainTileID, int accentTileID, coord _tl, coord _br)
+{
+	//_tl is top left of region
+	//_br is bottom right of region
+	//mainTileID is the id of the tile surrounding the shape and filling the region
+	//accentTileID is the id of the tile inside of the shape
+	//TODO: set up a registry for shapes. for now we'll handle the formation inside this function
+	int rangeX=_br.x-_tl.x;
+	int rangeY=_br.y-_tl.y;
+	int axisX=rangeX/2;
+	float ratio=float(rangeX)/float(rangeY);
+	int adjY=0;
+	for(int y=0; y<rangeY; y++)
+	{
+		for(int x=0; x<rangeX; x++)
+		{
+			adjY=int(float(y)*ratio);
+			switch(shapeID)
+			{
+				case SHAPE_BOX: //a rectangle, easy -- fills the entire region with accentTileID tiles
+					fillTile(accentTileID, _tl+coord(x,y));
+					break;
+				case SHAPE_CONIC:
+					if(adjY>=abs(x-axisX))
+						fillTile(accentTileID, _tl+coord(x,y));
+					else
+						fillTile(mainTileID, _tl+coord(x,y));
+					break;
+				case SHAPE_PARABOLIC:
+					if(adjY>=pow(((axisX-x)/2),2))
+						fillTile(accentTileID, _tl+coord(x,y));
+					else
+						fillTile(mainTileID, _tl+coord(x,y));
+					break;
+
+				case SHAPE_TRIANGLE:
+				default:
+					if(adjY>=x)
+						fillTile(accentTileID, _tl+coord(x,y));
+					else
+						fillTile(mainTileID, _tl+coord(x,y));
+					break;
+			}
+		}
+	}
 }
 
 //places a tiles map of the selected tile index from the template registry
 void GameClass::fillTile(int tileID, coord _pos)
 {
-	int index = registry.cloneTile(tileID, _pos);
+	int index = registry.cloneTile(tileID, _pos, gameConstant);
 	if(index==0 || registry.regTiles[index]==NULL)
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
@@ -64,7 +113,7 @@ bool GameClass::gameLoop()
 
 		if(frameClock.getElapsedTime().asSeconds()>0.125f)
 		{
-			gameUpdater(frameClock.getElapsedTime().asSeconds());
+			gameUpdater(gameClock.getElapsedTime().asSeconds());
 			frameClock.restart();
 			gameRenderer();
 		}
@@ -85,6 +134,12 @@ void GameClass::inputHandler()
 		}
 	}
 
+	if(keys.isKeyPressed(sf::Keyboard::Down))
+	{
+		registry.regTiles.clear();
+		gameConstant=(gameConstant+1)%40;
+	}
+
 	//mouse handling routine
 	getMouseGrid();
 	//using this toggle to keep from processing mouse button holding as multiple clicks.
@@ -97,14 +152,15 @@ void GameClass::gameUpdater(float actSeconds)
 	{
 		for(int x=0; x<settings.tileCols; x++)
 		{
-			fillTile(ID_SNOW, coord(x,y));
+			fillTile(ID_EMERALDGRASS, coord(x,y));
 		}
 	}
+	fillShape(SHAPE_PARABOLIC, ID_GREENGRASS, ID_SNOW, coord(0,0), coord(settings.tileCols,settings.tileRows));
 }
 
 void GameClass::gameRenderer()
 {
-	app.clear(sf::Color::White);
+	app.clear();
 
 	//draw the tiles that are registered TODO: make it map-specific
 	for(int i=0; i<int(registry.regTiles.size()); i++)

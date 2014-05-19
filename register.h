@@ -83,6 +83,13 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 #define CPROTO_NONE		0
 
+#define SHAPE_NULL			0
+#define SHAPE_PARABOLIC		1
+#define SHAPE_CONIC			2
+#define SHAPE_SPHERE		3
+#define SHAPE_TRIANGLE		4
+#define SHAPE_BOX			5
+
 void registerValues();
 
 #endif//REGISTER_H

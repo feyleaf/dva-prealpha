@@ -10,6 +10,7 @@ struct gameHeader
 class GameClass
 {
 protected:
+	int gameConstant;
 	gameHeader header;
 	settingStruct settings;
 	bool newGame;
@@ -18,12 +19,14 @@ protected:
 	std::ofstream debugFile;
 	GameObjectClass registry;
 	sf::Clock frameClock;
+	sf::Clock gameClock;
 	sf::Image entitySheet;
 	sf::Image tileSheet;
 	sf::Image guiSheet;
 	sf::Image screenshot;
 	sf::RenderWindow app;
 	sf::Event gameEvent;
+	sf::Keyboard keys;
 	coord mouse;
 
 
@@ -41,6 +44,7 @@ public:
 	coord getMouseGrid();
 
 	void fillTile(int tileID, coord _pos);
+	void fillShape(int shapeID, int mainTileID, int accentTileID, coord _tl, coord _br);
 	sf::IntRect tileSize;
 	int numberOfTiles();
 

@@ -120,9 +120,9 @@ void initRandom(unsigned long _seed)
 
 float distortedCosine(float _theta, long seed)
 {
+	//output is 0<output<2
 	srand(unsigned long(777*(seed+tan(_theta*(1+seed)))));
 	return ((float(rand()%100)/100)+((1-cos(_theta))/2));
-	srand((unsigned)time(NULL));
 }
 
 unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long seed)
@@ -134,9 +134,15 @@ unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long 
 unsigned char noiseyPixel(coord pos, unsigned char low, unsigned char range, int con, long seed)
 {
 	unsigned char pixel=0;
-	int value=int((float((distortedCosine((float((sin(float(pos.x))+cos(float(pos.y)))*PI))/(con+1), seed))+2)/4.0f)*255);
+	unsigned char value=0;
+	float theta = float((sin(float(pos.x))+cos(float(pos.y)))*PI);
+	if(con>0)
+		value=newRandom(low, range, theta/(con+1), seed);
+	else
+		value=newRandom(low, range, theta, seed);
+
 	if(value>=0 && value<=255)
-		pixel=unsigned char((value*range)/255)+low;
+		pixel=value;
 	else
 		pixel=low;
 	return pixel;
@@ -163,4 +169,12 @@ coord operator+(const coord& a, const coord& b)
 coord operator-(const coord& a, const coord& b)
 {
 	return coord(a.x-b.x, a.y-b.y);
+}
+
+int max3(int a, int b, int c)
+{
+	int ret=0;
+	if(a>b) ret=a; else ret=b;
+	if(ret>c) return ret; else return c;
+	return ret;
 }

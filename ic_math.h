@@ -32,4 +32,5 @@ bool operator==(const coord& a, const coord& b);
 bool operator!=(const coord& a, const coord& b);
 coord operator+(const coord& a, const coord& b);
 coord operator-(const coord& a, const coord& b);
+int max3(int a, int b, int c);
 #endif //IC_MATH_H ends
