@@ -28,10 +28,22 @@ sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _
 	return sf::IntRect(subt.x*_wid, subt.y*_hig, _wid, _hig);
 
 }
+
 void RenderManager::DrawTile(sf::RenderWindow& win, const tileObjectStruct* obj, coord place, sf::Color tint, int con, long sd)
 {
 	currentSprite.setTexture(tileSheet);
 	currentSprite.setColor(obj->curColor);
+
+	currentSprite.setTextureRect(rectFromOrigin(obj->tmp.sheetOrigin, 32, 32)); //TODO: fix this with settings
+	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
+	
+	win.draw(currentSprite);
+}
+
+void RenderManager::DrawEntity(sf::RenderWindow& win, const entityObjectStruct* obj, coord place)
+{
+	currentSprite.setTexture(entitySheet);
+	currentSprite.setColor(sf::Color::White);
 
 	currentSprite.setTextureRect(rectFromOrigin(obj->tmp.sheetOrigin, 32, 32)); //TODO: fix this with settings
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));

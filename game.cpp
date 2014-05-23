@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+May 21, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -38,15 +38,34 @@ GameClass::GameClass()
 //performs update tasks each frame
 void GameClass::gameUpdater(float actSeconds)
 {
-	fillShape(SHAPE_BOX, ID_WATER, ID_WATER, coord(0,0), coord(settings.tileCols,settings.tileRows));
-	fillShape(SHAPE_CIRCLE, ID_NONE, ID_SAND, coord(10,5), coord(20,15));
-	fillShape(SHAPE_CIRCLE, ID_NONE, ID_SAND, coord(5,4), coord(16,15));
-	fillShape(SHAPE_CIRCLE, ID_NONE, ID_GREENGRASS, coord(8,7), coord(17,12));
-	fillShape(SHAPE_PARABOLIC, ID_NONE, ID_CLAY, coord(23, 0), coord(35, 18));
-	fillShape(SHAPE_BOX, ID_NONE, ID_PLANKS, coord(19, 11), coord(25, 12));
-
+	if(gameConstant==60)
+	{
+		experimentalMapGen();
+		gameConstant=623;
+	}
 }
 
+void GameClass::experimentalMapGen()
+{
+	//we'll experiment with TERRAIN_BEACH
+	int terr_id=TERRAIN_BEACH;
+	int regCursor=registry.templateRegistry.matchTerrain(terr_id);
+	terrainPoolTemplate* t=registry.templateRegistry.allTerrain[regCursor];
+	
+	//make a base layout from one of the main tile types
+	int backgroundTiles=rand()%(unsigned char(t->landTilesList.size()));
+	int tileID=t->landTilesList[backgroundTiles];
+	fillShape(SHAPE_BOX, tileID, tileID, coord(0,0), coord(settings.tileCols, settings.tileRows));
+
+	//now we test a shape and an accent tile
+	int accentTiles=rand()%(unsigned char(t->accentTilesList.size()));
+	int shapeIndex=rand()%(unsigned char(t->shapesList.size()));
+	int accentID=t->accentTilesList[accentTiles];
+	int shapeID=t->shapesList[shapeIndex];
+	coord a(rand()%5, rand()%5);
+	coord b(rand()%5+15, rand()%5+10);
+	fillShape(shapeID, ID_NONE, accentID, a, b);
+}
 //_tl is top left of region
 //_br is bottom right of region
 //mainTileID is the id of the tile surrounding the shape and filling the region
@@ -98,6 +117,19 @@ void GameClass::fillShape(int shapeID, int mainTileID, int accentTileID, coord _
 	}
 }
 
+void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)
+{
+	for(int y=_tl.y; y<=_br.y; y++)
+	{
+		for(int x=_tl.x; x<=_br.x; x++)
+		{
+			if(noiseyPixel(coord(x,y), 0, 255, 15, header.randSeed) > 128)
+				fillEntity(entityID, coord(x,y));
+		}
+	}
+}
+
+
 //places a tiles map of the selected tile index from the template registry
 void GameClass::fillTile(int tileID, coord _pos)
 {
@@ -110,10 +142,23 @@ void GameClass::fillTile(int tileID, coord _pos)
 	}
 }
 
+void GameClass::fillEntity(int entityID, coord _pos)
+{
+	int index = registry.cloneEntity(entityID, _pos);
+	if(index==0 || registry.regEntities[index]==NULL)
+	{
+		//if there's nothing matching to clone, we must skip this step and inform the debug log
+		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
+		return;
+	}
+}
+
 GameClass::~GameClass()
 {
 	for(int i=int(registry.regTiles.size())-1; i>=0; i--)
 		delete registry.regTiles[i];
+	for(int i=int(registry.regEntities.size())-1; i>=0; i--)
+		delete registry.regEntities[i];
 	debugFile.close();
 	app.close();
 }
@@ -171,6 +216,11 @@ void GameClass::inputHandler()
 		}
 	}
 
+	if(keys.isKeyPressed(sf::Keyboard::R))
+	{
+		gameConstant=60;
+	}
+
 	//mouse handling routine
 	getMouseGrid();
 }
@@ -186,6 +236,11 @@ void GameClass::gameRenderer()
 	{
 		if(registry.regTiles[i] != NULL)
 			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->grid);
+	}
+	for(int i=0; i<int(registry.regEntities.size()); i++)
+	{
+		if(registry.regEntities[i] != NULL)
+			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->grid);
 	}
 	app.display();
 }

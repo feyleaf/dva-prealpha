@@ -2,7 +2,7 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+May 22, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -52,8 +52,11 @@ public:
 	void gameRenderer();
 	coord getMouseGrid();
 
+	void experimentalMapGen();
 	void fillTile(int tileID, coord _pos);
+	void fillEntity(int tileID, coord _pos);
 	void fillShape(int shapeID, int mainTileID, int accentTileID, coord _tl, coord _br);
+	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
 	int numberOfTiles();
 
 };

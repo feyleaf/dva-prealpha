@@ -1,4 +1,4 @@
-﻿Build started 5/19/2014 12:50:26 PM.
+﻿Build started 5/22/2014 10:17:16 PM.
      1>Project "C:\Users\Benjamin\Documents\GitHub\distorted-cosine\distorted-cosine\dva-prealpha\dva-prealpha1_2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D SFML_STATIC /D _MBCS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt game.cpp
@@ -18,4 +18,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.38
+Time Elapsed 00:00:05.63

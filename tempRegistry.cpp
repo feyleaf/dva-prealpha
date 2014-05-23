@@ -59,4 +59,22 @@ ValueRegistryClass::ValueRegistryClass()
 	allEntities.push_back(new entityTemplate(ID_SCISSOR, ET_CREATURE, "Scissors", SHEET_ENTITY, 31, 0, CPROTO_NONE));
 	allEntities.push_back(new entityTemplate(ID_WOLF, ET_CREATURE, "Wolf", SHEET_ENTITY, 49, 1, CPROTO_NONE));
 	allEntities.push_back(new entityTemplate(ID_DRYAD, ET_CREATURE, "Dryad", SHEET_ENTITY, 50, 1, CPROTO_NONE));
+
+	registerTerrain(TERRAIN_BEACH, "Beach");
+	registerTerrain(TERRAIN_CONIFEROUS, "Coniferous");
+	registerTerrain(TERRAIN_GLACIER, "Glacier");
+	registerTerrain(TERRAIN_ICY, "Icy");
+	registerTerrain(TERRAIN_JUNGLE, "Jungle");
+	registerTerrain(TERRAIN_MEADOW, "Meadow");
+	registerTerrain(TERRAIN_SNOWY, "Snowy");
+	registerTerrain(TERRAIN_STREAM, "Stream");
+
+	addTerrainLandTile(TERRAIN_BEACH, ID_WATER);
+	addTerrainAccentTile(TERRAIN_BEACH, ID_OBSIDIAN);
+	addTerrainAccentTile(TERRAIN_BEACH, ID_SAND);
+	addTerrainAccentTile(TERRAIN_BEACH, ID_CLAY);
+	addTerrainWornTile(TERRAIN_BEACH, ID_WATER);
+	addTerrainDeco(TERRAIN_BEACH, ID_MAHOGANYLOG);
+	addTerrainShape(TERRAIN_BEACH, SHAPE_CIRCLE);
+
 }

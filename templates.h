@@ -77,6 +77,8 @@ struct entityTemplate
 					unsigned char _iconRange,
 					unsigned char _creationProtocol)
 	{id=_id; type=_type; strncpy_s(name, 40, _name, 40); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; creationProtocol=_creationProtocol;}
+	entityTemplate()
+	{id=0; type=0; strncpy_s(name, 40, "Undef", 40); sheet=0; sheetOrigin=0; iconRange=0; creationProtocol=0;}
 };//size 52 bytes
 
 //constructed template rules for varying colors on map tiles
@@ -205,6 +207,16 @@ struct terrainPoolTemplate
 	std::vector<unsigned char> accentTilesList;
 	std::vector<unsigned char> decoEntitiesList;
 	std::vector<unsigned char> shapesList;
+	terrainPoolTemplate(unsigned char _id, const char* _name)
+	{
+		id=_id;
+		strncpy_s(name, _name, 16);
+		landTilesList.clear();
+		wornTilesList.clear();
+		accentTilesList.clear();
+		decoEntitiesList.clear();
+		shapesList.clear();
+	}
 };//size 60 bytes(?)
 
 //compiled template of eco pools in the biome/map generation

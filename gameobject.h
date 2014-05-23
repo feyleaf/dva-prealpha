@@ -40,6 +40,26 @@ struct tileObjectStruct
 
 	}
 };
+struct entityObjectStruct
+	//tmp is the template information, the base data for the object
+	//grid is the location of the map
+	//curColor is the calculated random distortion color to paint the texture with
+{
+	entityTemplate tmp;
+	coord grid;
+	entityObjectStruct() {
+		tmp.id=0; tmp.type=ET_NONE; tmp.iconRange=0; strcpy_s(tmp.name, "Undef"); tmp.sheet=SHEET_TILES; tmp.sheetOrigin=0; tmp.creationProtocol=CPROTO_NONE;
+		grid=coord(0,0);
+	}
+	entityObjectStruct(entityTemplate& tmpsrc, coord _grid = coord(0,0)) {
+		tmp = entityTemplate(tmpsrc);
+		grid=_grid;
+	}
+	entityObjectStruct(entityObjectStruct& objsrc) {
+		tmp = entityTemplate(objsrc.tmp);
+		grid=objsrc.grid;
+	}
+};
 
 class GameObjectClass
 {
@@ -50,9 +70,12 @@ public:
 	ValueRegistryClass templateRegistry;
 	std::vector<colorVarianceTemplate*> varianceList;
 	std::vector<tileObjectStruct*> regTiles;
+	std::vector<entityObjectStruct*> regEntities;
 
 	int cloneTile(const unsigned int tileID, coord _grid, int con = 0);
+	int cloneEntity(const unsigned int entityID, coord _grid);
 	tileObjectStruct newTile(tileTemplate _t, coord _grid, int con = 0);
+	entityObjectStruct newEntity(entityTemplate _t, coord _grid);
 	sf::Color getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed);
 
 };

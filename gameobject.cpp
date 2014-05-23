@@ -15,6 +15,8 @@ GameObjectClass::GameObjectClass()
 	varianceList.push_back(NULL);
 	regTiles.clear();
 	regTiles.push_back(NULL);
+	regEntities.clear();
+	regEntities.push_back(NULL);
 }
 
 //returns the index from the template registry matching the search ID of the tile
@@ -44,6 +46,32 @@ int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid, int con)
 	return 0;
 }
 
+int GameObjectClass::cloneEntity(const unsigned int entityID, coord _grid)
+{
+	for(int i=0; i<int(regEntities.size()); i++)
+	{
+		if(regEntities[i] != NULL)
+		{
+			if(regEntities[i]->tmp.id == entityID && regEntities[i]->grid == _grid) //if there is already a match in the registry, we'll return that one
+				return i;
+		}
+	}
+	//if we found no match, then we create a new registered tile
+	for(int i=0; i<int(templateRegistry.allEntities.size()); i++)
+	{
+		if(templateRegistry.allEntities[i] != NULL)
+		{
+			if(templateRegistry.allEntities[i]->id == entityID) //denotes a match from the queried tile
+			{
+				//we clone the selected tile with index i
+				regEntities.push_back(new entityObjectStruct(newEntity(*templateRegistry.allEntities[i], _grid)));
+				return int(regEntities.size()-1);
+			}
+		}
+	}
+	return 0;
+}
+
 tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid, int con)
 {
 	tileObjectStruct ret;
@@ -66,6 +94,21 @@ tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid, int con)
 			}
 		}
 	}
+	return ret;
+}
+
+entityObjectStruct GameObjectClass::newEntity(entityTemplate _t, coord _grid)
+{
+	entityObjectStruct ret;
+	ret.tmp = entityTemplate(_t);
+	ret.tmp.id = _t.id;
+	ret.tmp.type = _t.type;
+	strncpy_s(ret.tmp.name, 16, _t.name, 16);
+	ret.tmp.sheet = _t.sheet;
+	ret.tmp.sheetOrigin = _t.sheetOrigin;
+	ret.tmp.iconRange = _t.iconRange;
+	ret.tmp.creationProtocol = _t.creationProtocol;
+	ret.grid = _grid;
 	return ret;
 }
 
