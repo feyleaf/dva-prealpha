@@ -70,11 +70,17 @@ ValueRegistryClass::ValueRegistryClass()
 	registerTerrain(TERRAIN_STREAM, "Stream");
 
 	addTerrainLandTile(TERRAIN_BEACH, ID_WATER);
+	addTerrainLandTile(TERRAIN_BEACH, ID_GREENGRASS);
+	addTerrainLandTile(TERRAIN_BEACH, ID_EMERALDGRASS);
+	addTerrainLandTile(TERRAIN_BEACH, ID_MARBLE);
 	addTerrainAccentTile(TERRAIN_BEACH, ID_OBSIDIAN);
 	addTerrainAccentTile(TERRAIN_BEACH, ID_SAND);
 	addTerrainAccentTile(TERRAIN_BEACH, ID_CLAY);
 	addTerrainWornTile(TERRAIN_BEACH, ID_WATER);
 	addTerrainDeco(TERRAIN_BEACH, ID_MAHOGANYLOG);
 	addTerrainShape(TERRAIN_BEACH, SHAPE_CIRCLE);
+	addTerrainShape(TERRAIN_BEACH, SHAPE_BOX);
+	addTerrainShape(TERRAIN_BEACH, SHAPE_PARABOLIC);
+	addTerrainShape(TERRAIN_BEACH, SHAPE_CONIC);
 
 }

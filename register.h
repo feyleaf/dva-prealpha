@@ -184,6 +184,4 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define SHAPE_TRIANGLE		4
 #define SHAPE_BOX			5
 
-void registerValues();
-
 #endif//REGISTER_H

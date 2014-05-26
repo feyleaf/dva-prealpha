@@ -17,6 +17,9 @@ void GameClass::initialize()
 	gameClock.restart();
 	frameClock.restart();
 	gameConstant=60;
+	gamemode=0;
+	header.randSeed=(unsigned int)time(NULL);
+	srand(header.randSeed);
 }
 
 //contructor, sets default values to member variables, opens debug log file
@@ -27,9 +30,6 @@ GameClass::GameClass()
 	newGame=true;
 	quitGame=false;
 	header.mapIndex=0;
-	gamemode=0;
-	header.randSeed=(unsigned int)time(NULL);
-	srand(header.randSeed);
 	initialize();
 
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
@@ -51,12 +51,14 @@ void GameClass::experimentalMapGen()
 	int terr_id=TERRAIN_BEACH;
 	int regCursor=registry.templateRegistry.matchTerrain(terr_id);
 	terrainPoolTemplate* t=registry.templateRegistry.allTerrain[regCursor];
+
 	
 	//make a base layout from one of the main tile types
 	int backgroundTiles=rand()%(unsigned char(t->landTilesList.size()));
 	int tileID=t->landTilesList[backgroundTiles];
 	fillShape(SHAPE_BOX, tileID, tileID, coord(0,0), coord(settings.tileCols, settings.tileRows));
 
+	srand(header.randSeed);
 	//now we test a shape and an accent tile
 	int accentTiles=rand()%(unsigned char(t->accentTilesList.size()));
 	int shapeIndex=rand()%(unsigned char(t->shapesList.size()));
@@ -65,6 +67,7 @@ void GameClass::experimentalMapGen()
 	coord a(rand()%5, rand()%5);
 	coord b(rand()%5+15, rand()%5+10);
 	fillShape(shapeID, ID_NONE, accentID, a, b);
+	scatterDeco(ID_SQUIRREL, 15, 60, coord(0,0), coord(settings.tileCols, settings.tileRows));
 }
 //_tl is top left of region
 //_br is bottom right of region
@@ -119,11 +122,12 @@ void GameClass::fillShape(int shapeID, int mainTileID, int accentTileID, coord _
 
 void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)
 {
+	initRandom(header.randSeed);
 	for(int y=_tl.y; y<=_br.y; y++)
 	{
 		for(int x=_tl.x; x<=_br.x; x++)
 		{
-			if(noiseyPixel(coord(x,y), 0, 255, 15, header.randSeed) > 128)
+			if(abs(noiseyPixel(coord(x,y), 0, 255, con, header.randSeed)/density) ==(con/2))
 				fillEntity(entityID, coord(x,y));
 		}
 	}
@@ -169,6 +173,25 @@ int GameClass::numberOfTiles()
 	return int(registry.regTiles.size()-1);
 }
 
+int GameClass::numberOfEntities()
+{
+	return int(registry.regEntities.size()-1);
+}
+
+void GameClass::wipeMap()
+{
+	//still produces an artifact some % of the time...
+	while(numberOfTiles()>0)
+	{
+		delete registry.regTiles[0];
+		registry.regTiles.erase(registry.regTiles.begin());
+	}
+	while(numberOfEntities()>0)
+	{
+		delete registry.regEntities[0];
+		registry.regEntities.erase(registry.regEntities.begin());
+	}
+}
 //returns the grid coordinates of the mouse pointer
 coord GameClass::getMouseGrid()
 {
@@ -218,6 +241,9 @@ void GameClass::inputHandler()
 
 	if(keys.isKeyPressed(sf::Keyboard::R))
 	{
+		header.randSeed=unsigned int(time(NULL));
+		wipeMap();
+		initialize();
 		gameConstant=60;
 	}
 
