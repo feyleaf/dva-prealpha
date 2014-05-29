@@ -37,21 +37,21 @@ struct tileTemplate
 // selection of non-unique tile templates used in map creation and rendering
 // registered as the basis of unique tiles in the map generation and storage
 {
-	unsigned int id;
+	char cname[16];
 	char name[16];
-	unsigned char sheet;
-	unsigned char sheetOrigin;
+	coord dimensions;
+	char spritefile[40];
 	unsigned char iconRange;
 	unsigned char variance;
-	tileTemplate(unsigned int _id,
+	tileTemplate(const char* _cname,
 					const char* _name,
-					unsigned char _sheet,
-					unsigned char _sheetOrigin,
+					coord _dimensions,
+					const char* _spritefile,
 					unsigned char _iconRange,
 					unsigned char _variance)
-	{id=_id; strncpy_s(name, 16, _name, 16); sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; variance=_variance;}
+	{strncpy_s(cname, 16, _cname, 16);  strncpy_s(name, 16, _name, 16); dimensions=_dimensions; strncpy_s(spritefile, 40, _spritefile, 40); iconRange=_iconRange; variance=_variance;}
 	tileTemplate()
-	{id=0; strcpy_s(name, "Undef"); sheet=0; sheetOrigin=0; iconRange=0; variance=0;}
+	{strncpy_s(cname, 16, "none", 16);  strcpy_s(name, "Undef"); dimensions=coord(0,0); strncpy_s(spritefile, 40, "tiles-1_2.png", 40); iconRange=0; variance=0;}
 };//size 24 bytes
 
 //constructed template rules for entity creation
@@ -85,7 +85,7 @@ struct entityTemplate
 struct colorVarianceTemplate
 // selection of color variance values for use in the ic_randomTile distortion algorithm
 {
-	unsigned char id;
+	char cname[32];
 	unsigned char redBase;
 	unsigned char redRange;
 	unsigned char greenBase;
@@ -94,7 +94,7 @@ struct colorVarianceTemplate
 	unsigned char blueRange;
 	unsigned char whiteBase;
 	unsigned char whiteRange;
-	colorVarianceTemplate(unsigned char _id, unsigned char _redBase,
+	colorVarianceTemplate(const char* _name, unsigned char _redBase,
 							unsigned char _redRange,
 							unsigned char _greenBase,
 							unsigned char _greenRange,
@@ -102,10 +102,15 @@ struct colorVarianceTemplate
 							unsigned char _blueRange,
 							unsigned char _whiteBase,
 							unsigned char _whiteRange)
-	{id=_id; redBase=_redBase; redRange=_redRange;
+	{strcpy_s(cname, _name); redBase=_redBase; redRange=_redRange;
 	greenBase=_greenBase; greenRange=_greenRange;
 	blueBase=_blueBase; blueRange=_blueRange;
 	whiteBase=_whiteBase; whiteRange=_whiteRange;}
+	colorVarianceTemplate()
+	{strcpy_s(cname, "Undef"); redBase=0; redRange=0;
+	greenBase=0; greenRange=0;
+	blueBase=0; blueRange=0;
+	whiteBase=0; whiteRange=0;}
 };//size 8 bytes
 
 //constructed template of rules for directing tool creation

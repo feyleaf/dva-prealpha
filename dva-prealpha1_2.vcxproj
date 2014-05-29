@@ -72,6 +72,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="ic_math.cpp" />
+    <ClCompile Include="interpret.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="interpret.h" />
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="tempRegistry.h" />
@@ -88,6 +90,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="allreg-testing.txt" />
+    <Text Include="processes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

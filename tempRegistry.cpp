@@ -21,7 +21,7 @@ ValueRegistryClass::ValueRegistryClass()
 	registerColorVariance(VARIANCE_ICE, 150, 10, 199, 10, 215, 40, 200, 42);
 
 	allTiles.clear();
-	registerTile(ID_GREENGRASS, "Green Grass", SHEET_TILES, 1, 1, VARIANCE_GREENGRASS);
+/*	registerTile(ID_GREENGRASS, "Green Grass", SHEET_TILES, 1, 1, VARIANCE_GREENGRASS);
 	registerTile(ID_EMERALDGRASS, "Emerald Grass", SHEET_TILES, 2, 1, VARIANCE_EMERALDGRASS);
 	registerTile(ID_SAND, "Sand", SHEET_TILES, 3, 1, VARIANCE_SAND);
 	registerTile(ID_DIRT, "Dirt", SHEET_TILES, 4, 1, VARIANCE_DIRT);
@@ -37,7 +37,7 @@ ValueRegistryClass::ValueRegistryClass()
 	registerTile(ID_SNOW, "Snow", SHEET_TILES, 14, 1, VARIANCE_SNOW);
 	registerTile(ID_OBSIDIAN, "Obsidian", SHEET_TILES, 15, 1, VARIANCE_OBSIDIAN);
 	registerTile(ID_ICE, "Ice", SHEET_TILES, 16, 1, VARIANCE_ICE);
-
+*/
 	allEntities.clear();
 	allEntities.push_back(new entityTemplate(ID_MARLBOROBUSH, ET_DECO, "Marlboro Bush", SHEET_ENTITY, 1, 0, CPROTO_NONE));
 	allEntities.push_back(new entityTemplate(ID_BOULDER, ET_DECO, "Boulder", SHEET_ENTITY, 2, 0, CPROTO_NONE));

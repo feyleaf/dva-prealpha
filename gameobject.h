@@ -23,7 +23,7 @@ struct tileObjectStruct
 	coord grid;
 	sf::Color curColor;
 	tileObjectStruct() {
-		tmp.id=0; tmp.iconRange=0; strcpy_s(tmp.name, "Undef"); tmp.sheet=SHEET_TILES; tmp.sheetOrigin=0; tmp.variance=VARIANCE_NONE;
+		strncpy_s(tmp.cname, 16, "none", 16);  strcpy_s(tmp.name, "Undef"); tmp.dimensions=coord(0,0); strncpy_s(tmp.spritefile, 40, "tiles-1_2.png", 40); tmp.iconRange=0; tmp.variance=0;
 		grid=coord(0,0);
 		curColor = sf::Color::White;
 	}
@@ -72,7 +72,8 @@ public:
 	std::vector<tileObjectStruct*> regTiles;
 	std::vector<entityObjectStruct*> regEntities;
 
-	int cloneTile(const unsigned int tileID, coord _grid, int con = 0);
+	void initializeFromParser(ParserClass& parser);
+	int cloneTile(const char* codename, coord _grid, int con = 0);
 	int cloneEntity(const unsigned int entityID, coord _grid);
 	tileObjectStruct newTile(tileTemplate _t, coord _grid, int con = 0);
 	entityObjectStruct newEntity(entityTemplate _t, coord _grid);

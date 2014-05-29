@@ -21,6 +21,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "templates.h"
 #include "register.h"
 #include "tempRegistry.h"
+#include "interpret.h"
 #include "gameobject.h"
 #include "render.h"
 #include "game.h"

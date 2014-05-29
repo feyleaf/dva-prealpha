@@ -34,7 +34,7 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const tileObjectStruct* obj,
 	currentSprite.setTexture(tileSheet);
 	currentSprite.setColor(obj->curColor);
 
-	currentSprite.setTextureRect(rectFromOrigin(obj->tmp.sheetOrigin, 32, 32)); //TODO: fix this with settings
+	currentSprite.setTextureRect(sf::IntRect(0,0,obj->tmp.dimensions.x, obj->tmp.dimensions.y)); //TODO: fix this with settings
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	
 	win.draw(currentSprite);

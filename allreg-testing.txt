@@ -1,37 +1,37 @@
-VARIANCE: greengrass, 25, 109, 142, 100, 100, 100, 140, 50
-VARIANCE: emeraldgrass, 0, 120, 19, 4, 100, 5, 170, 50
-VARIANCE: sand, 240, 240, 90, 12, 12, 0, 200, 30
-VARIANCE: dirt, 81, 68, 45, 20, 20, 20, 190, 50
-VARIANCE: marshgrass, 0, 200, 0, 40, 50, 0, 160, 60
-VARIANCE: water, 0, 19, 200, 50, 50, 50, 180, 70
-VARIANCE: redbricks, 40, 0, 0, 60, 30, 20, 200, 50
-VARIANCE: marble, 128, 128, 166, 40, 40, 40, 190, 20
-VARIANCE: bluebricks, 128, 128, 200, 0, 0, 30, 210, 45
-VARIANCE: greybricks, 99, 99, 99, 40, 40, 40, 190, 45
-VARIANCE: planks, 96, 69, 28, 10, 10, 0, 240, 10
-VARIANCE: clay, 160, 140, 110, 60, 15, 25, 168, 75
-VARIANCE: stonewall, 128, 128, 128, 0, 0, 0, 190, 50
-VARIANCE: snow, 220, 210, 210, 15, 0, 45, 240, 15
-VARIANCE: obsidian, 60, 0, 40, 50, 12, 50, 60, 30
-VARIANCE: ice, 150, 199, 215, 10, 10, 40, 200, 42
-TILE: greengrass, Green Grass, 32, 32, greengrass.png, 1, greengrass
-TILE: emeraldgrass, Emerald Grass, emeraldgrass.png, 1, emeraldgrass
-TILE: sand, Sand, sand.png, 1, sand
-TILE: dirt, Dirt, dirt.png, 1, dirt
-TILE: marshgrass, Marsh Grass, marshgrass.png, 1, marshgrass
-TILE: water, Water, water.png, 1, water
-TILE: redbrick, Red Brick, redbrick.png, 1, redbricks
-TILE: marble, Marble, marble.png, 1, marble
-TILE: bluebrick, Blue Brick, bluebrick.png, 1, bluebricks
-TILE: castlebrick, Castle Brick, castlebrick.png, 1, greybricks
-TILE: woodplank, Wood Planks, woodplank.png, 1, planks
-TILE: clay, Clay, clay.png, 1, clay
-TILE: stonewall, Stone Wall, stonewall.png, 1, stonewall
-TILE: snow, Snow, snow.png, 1, snow
-TILE: obsidian, Obsidian, obsidian.png, 1, obsidian
-TILE: ice, Ice, ice.png, 1, ice
-PROTOCOL: none, Undefined, 0
-DECORATION: marlborobush, Marlboro Bush, marlborobush.png, 1, none
-DECORATION: boulder, Boulder, boulder.png, 1, none
-DECORATION: mahoganylog, Mahogany Log, mahoganylog.png, 1, none
-TERRAIN: beachterrain, Beach, (water, greengrass, emeraldgrass, marble), (obsidian, sand, clay), mahoganylog, (circle, box, parabola, conic)
+VARIANCE:greengrass,25,109,142,100,100,100,140,50
+VARIANCE:emeraldgrass,0,120,19,4,100,5,170,50
+VARIANCE:sand,240,240,90,12,12,0,200,30
+VARIANCE:dirt,81,68,45,20,20,20,190,50
+VARIANCE:marshgrass,0,200,0,40,50,0,160,60
+VARIANCE:water,0,19,200,50,50,50,180,70
+VARIANCE:redbricks,40,0,0,60,30,20,200,50
+VARIANCE:marble,128,128,166,40,40,40,190,20
+VARIANCE:bluebricks,128,128,200,0,0,30,210,45
+VARIANCE:greybricks,99,99,99,40,40,40,190,45
+VARIANCE:planks,96,69,28,10,10,0,240,10
+VARIANCE:clay,160,140,110,60,15,25,168,75
+VARIANCE:stonewall,128,128,128,0,0,0,190,50
+VARIANCE:snow,220,210,210,15,0,45,240,15
+VARIANCE:obsidian,60,0,40,50,12,50,60,30
+VARIANCE:ice,150,199,215,10,10,40,200,42
+TILE:greengrass,Green Grass,32,32,greengrass.png,1,greengrass
+TILE:emeraldgrass,Emerald Grass,32,32,emeraldgrass.png,1,emeraldgrass
+TILE:sand,Sand,32,32,sand.png,1,sand
+TILE:dirt,Dirt,32,32,dirt.png,1,dirt
+TILE:marshgrass,Marsh Grass,32,32,marshgrass.png,1,marshgrass
+TILE:water,Water,32,32,water.png,1,water
+TILE:redbrick,Red Brick,32,32,redbrick.png,1,redbricks
+TILE:marble,Marble,32,32,marble.png,1,marble
+TILE:bluebrick,Blue Brick,32,32,bluebrick.png,1,bluebricks
+TILE:castlebrick,Castle Brick,32,32,castlebrick.png,1,greybricks
+TILE:woodplank,Wood Planks,32,32,woodplank.png,1,planks
+TILE:clay,Clay,32,32,clay.png,1,clay
+TILE:stonewall,Stone Wall,32,32,stonewall.png,1,stonewall
+TILE:snow,Snow,32,32,snow.png,1,snow
+TILE:obsidian,Obsidian,32,32,obsidian.png,1,obsidian
+TILE:ice,Ice,32,32,ice.png,1,ice
+PROTOCOL: none,Undefined,0
+DECORATION: marlborobush,Marlboro Bush,32,32,marlborobush.png,1,none
+DECORATION: boulder,Boulder,32,32,boulder.png,1,none
+DECORATION: mahoganylog,Mahogany Log,32,32,mahoganylog.png,1,none
+TERRAIN: beachterrain,Beach,(water,greengrass,emeraldgrass,marble),(obsidian,sand,clay),mahoganylog,(circle,box,parabola,conic)

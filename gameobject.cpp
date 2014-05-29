@@ -19,14 +19,30 @@ GameObjectClass::GameObjectClass()
 	regEntities.push_back(NULL);
 }
 
+void GameObjectClass::initializeFromParser(ParserClass& parser)
+{
+	while(parser.getCategory() != ICAT_NONE)
+	{		
+	}
+	for(int i=0; i<int(parser.val.allColorVariances.size()-1); i++)
+	{
+		templateRegistry.allColorVariances.push_back(parser.val.allColorVariances[i]);
+	}
+	for(int i=0; i<int(parser.val.allTiles.size()-1); i++)
+	{
+		templateRegistry.allTiles.push_back(parser.val.allTiles[i]);
+	}
+
+}
+
 //returns the index from the template registry matching the search ID of the tile
-int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid, int con)
+int GameObjectClass::cloneTile(const char* codename, coord _grid, int con)
 {
 	for(int i=0; i<int(regTiles.size()); i++)
 	{
 		if(regTiles[i] != NULL)
 		{
-			if(regTiles[i]->tmp.id == tileID && regTiles[i]->grid == _grid) //if there is already a match in the registry, we'll return that one
+			if(strcmp(regTiles[i]->tmp.cname, codename)==0 && regTiles[i]->grid == _grid) //if there is already a match in the registry, we'll return that one
 				return i;
 		}
 	}
@@ -35,7 +51,7 @@ int GameObjectClass::cloneTile(const unsigned int tileID, coord _grid, int con)
 	{
 		if(templateRegistry.allTiles[i] != NULL)
 		{
-			if(templateRegistry.allTiles[i]->id == tileID) //denotes a match from the queried tile
+			if(strcmp(templateRegistry.allTiles[i]->cname, codename)==0) //denotes a match from the queried tile
 			{
 				//we clone the selected tile with index i
 				regTiles.push_back(new tileObjectStruct(newTile(*templateRegistry.allTiles[i], _grid, con)));
@@ -76,23 +92,17 @@ tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid, int con)
 {
 	tileObjectStruct ret;
 	ret.tmp = tileTemplate(_t);
-	ret.tmp.id = _t.id;
+	strncpy_s(ret.tmp.cname, 16, _t.cname, 16);
 	strncpy_s(ret.tmp.name, 16, _t.name, 16);
-	ret.tmp.sheet = _t.sheet;
-	ret.tmp.sheetOrigin = _t.sheetOrigin;
+	ret.tmp.dimensions=_t.dimensions;
+	strncpy_s(ret.tmp.spritefile, 16, _t.spritefile, 16);
 	ret.tmp.iconRange = _t.iconRange;
 	ret.tmp.variance = _t.variance;
 	ret.grid = _grid;
 	ret.curColor = sf::Color::White;
-	for(int i=0; i<int(templateRegistry.allColorVariances.size()); i++)
+	if(varianceList[ret.tmp.variance] != NULL)
 	{
-		if(templateRegistry.allColorVariances[i] != NULL)
-		{
-			if(templateRegistry.allColorVariances[i]->id == ret.tmp.variance) //denotes a match from the queried tile
-			{
-				ret.curColor=getTileDistortion(templateRegistry.allColorVariances[i], ret.grid, con, 100);
-			}
-		}
+		ret.curColor=getTileDistortion(varianceList[ret.tmp.variance], ret.grid, con, 100);
 	}
 	return ret;
 }

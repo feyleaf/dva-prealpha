@@ -36,6 +36,9 @@
     <ClCompile Include="render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="interpret.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="templates.h">
@@ -62,10 +65,21 @@
     <ClInclude Include="render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="interpret.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="allreg-testing.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="processes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

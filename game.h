@@ -42,6 +42,7 @@ protected:
 
 
 public:
+	ParserClass parse;
 	GameClass();
 	~GameClass();
 	void initialize();
@@ -55,9 +56,9 @@ public:
 	bool loadSettings();
 	void experimentalMapGen();
 
-	void fillTile(int tileID, coord _pos);
+	void fillTile(const char* codename, coord _pos);
 	void fillEntity(int tileID, coord _pos);
-	void fillShape(int shapeID, int mainTileID, int accentTileID, coord _tl, coord _br);
+	void fillShape(int shapeID, const char* codename_main, const char* codename_accent, coord _tl, coord _br);
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
 
 	int getTileIndexAt(coord _pt);

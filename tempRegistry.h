@@ -25,15 +25,15 @@ public:
 		//TODO: error handling
 		allEntities.push_back(new entityTemplate(_id, _type, _name, _sheet, _sheetOrigin, _iconRange, _creationProtocol));
 	}
-	void registerTile(unsigned int _id,
+	void registerTile(const char* _cname,
 					const char* _name,
-					unsigned char _sheet,
-					unsigned char _sheetOrigin,
+					coord _dimensions,
+					const char* _spritefile,
 					unsigned char _iconRange,
 					unsigned char _variance)
 	{
 		//TODO: come back in here with error handling
-		allTiles.push_back(new tileTemplate(_id, _name, _sheet, _sheetOrigin, _iconRange, _variance));
+		allTiles.push_back(new tileTemplate(_cname, _name, _dimensions, _spritefile, _iconRange, _variance));
 	}
 
 	void registerColorVariance(unsigned int _id, unsigned char _rbas, unsigned char _rrang,
@@ -42,7 +42,7 @@ public:
 		unsigned char _wbas, unsigned char _wrang)
 	{
 		//TODO: come back in here with error handling
-		allColorVariances.push_back(new colorVarianceTemplate(_id, _rbas, _rrang, _gbas, _grang, _bbas, _brang, _wbas, _wrang));
+		allColorVariances.push_back(new colorVarianceTemplate("undef", _rbas, _rrang, _gbas, _grang, _bbas, _brang, _wbas, _wrang));
 	}
 
 	/*
