@@ -30,8 +30,8 @@ TILE:stonewall,Stone Wall,32,32,stonewall.png,1,stonewall
 TILE:snow,Snow,32,32,snow.png,1,snow
 TILE:obsidian,Obsidian,32,32,obsidian.png,1,obsidian
 TILE:ice,Ice,32,32,ice.png,1,ice
-PROTOCOL: none,Undefined,0
-DECORATION: marlborobush,Marlboro Bush,32,32,marlborobush.png,1,none
-DECORATION: boulder,Boulder,32,32,boulder.png,1,none
-DECORATION: mahoganylog,Mahogany Log,32,32,mahoganylog.png,1,none
-TERRAIN: beachterrain,Beach,(water,greengrass,emeraldgrass,marble),(obsidian,sand,clay),mahoganylog,(circle,box,parabola,conic)
+PROTOCOL:solidblock,0,0,1,0
+DECORATION:marlborobush,Marlboro Bush,32,32,marlborobush.png,1,solidblock,1,0,1,1,none
+DECORATION:boulder,Boulder,32,32,boulder.png,1,solidblock,1,0,1,1,none
+DECORATION:mahoganylog,Mahogany Log,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
+TERRAIN:beachterrain,Beach,(water,greengrass,emeraldgrass,marble),(obsidian,sand,clay),mahoganylog,(circle,box,parabola,conic)

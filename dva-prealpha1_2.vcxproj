@@ -85,7 +85,6 @@
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="tempRegistry.h" />
-    <ClInclude Include="register.h" />
     <ClInclude Include="templates.h" />
   </ItemGroup>
   <ItemGroup>

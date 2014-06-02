@@ -47,9 +47,6 @@
     <ClInclude Include="globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="register.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tempRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>

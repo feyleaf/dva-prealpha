@@ -2,7 +2,7 @@
 gameobject.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+May 31, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 This class header defines the routines and members to contain pointers to objects that exist in the world
@@ -14,51 +14,24 @@ search algorithm or tree structure to optimize the searching of values (yet).
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-struct tileObjectStruct
-	//tmp is the template information, the base data for the object
-	//grid is the location of the map
-	//curColor is the calculated random distortion color to paint the texture with
+struct registeredTile
 {
-	tileTemplate tmp;
-	coord grid;
-	sf::Color curColor;
-	tileObjectStruct() {
-		strncpy_s(tmp.cname, 16, "none", 16);  strcpy_s(tmp.name, "Undef"); tmp.dimensions=coord(0,0); strncpy_s(tmp.spritefile, 40, "tiles-1_2.png", 40); tmp.iconRange=0; tmp.variance=0;
-		grid=coord(0,0);
-		curColor = sf::Color::White;
-	}
-	tileObjectStruct(tileTemplate& tmpsrc, coord _grid = coord(0,0)) {
-		tmp = tileTemplate(tmpsrc);
-		grid=_grid;
-		curColor = sf::Color::White;
-
-	}
-	tileObjectStruct(tileObjectStruct& objsrc) {
-		tmp = tileTemplate(objsrc.tmp);
-		grid=objsrc.grid;
-		curColor = objsrc.curColor;
-
-	}
+	int tileTemplateIndex;
+	coord pos;
+	sf::Color distortionColor;
+	sf::Texture tx;
+	registeredTile(int _index, coord _pos, sf::Texture& _tex) {tileTemplateIndex=_index; pos=_pos; distortionColor=sf::Color::White; tx=_tex;}
 };
-struct entityObjectStruct
-	//tmp is the template information, the base data for the object
-	//grid is the location of the map
-	//curColor is the calculated random distortion color to paint the texture with
+
+struct registeredEntity
 {
-	entityTemplate tmp;
-	coord grid;
-	entityObjectStruct() {
-		tmp.id=0; tmp.type=ET_NONE; tmp.iconRange=0; strcpy_s(tmp.name, "Undef"); tmp.sheet=SHEET_TILES; tmp.sheetOrigin=0; tmp.creationProtocol=CPROTO_NONE;
-		grid=coord(0,0);
-	}
-	entityObjectStruct(entityTemplate& tmpsrc, coord _grid = coord(0,0)) {
-		tmp = entityTemplate(tmpsrc);
-		grid=_grid;
-	}
-	entityObjectStruct(entityObjectStruct& objsrc) {
-		tmp = entityTemplate(objsrc.tmp);
-		grid=objsrc.grid;
-	}
+	unsigned char type;
+	int entityTemplateIndex;
+	int packTemplateIndex;
+	coord pos;
+	sf::Texture tx;
+	registeredEntity(int _index, unsigned char _type, int _pack, coord _pos, sf::Texture& _tex)
+	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; pos=_pos; tx=_tex;}
 };
 
 class GameObjectClass
@@ -67,18 +40,11 @@ public:
 	GameObjectClass();
 	~GameObjectClass(){}
 
-	ValueRegistryClass templateRegistry;
-	std::vector<colorVarianceTemplate*> varianceList;
-	std::vector<tileObjectStruct*> regTiles;
-	std::vector<entityObjectStruct*> regEntities;
+	std::vector<registeredTile*> regTiles;
+	std::vector<registeredEntity*> regEntities;
 
-	void initializeFromParser(ParserClass& parser);
-	int cloneTile(const char* codename, coord _grid, int con = 0);
-	int cloneEntity(const unsigned int entityID, coord _grid);
-	tileObjectStruct newTile(tileTemplate _t, coord _grid, int con = 0);
-	entityObjectStruct newEntity(entityTemplate _t, coord _grid);
-	sf::Color getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed);
-
+	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
+	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, unsigned char _type, coord _pos);
 };
 
 #endif

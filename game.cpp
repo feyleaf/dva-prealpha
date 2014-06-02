@@ -20,6 +20,8 @@ void GameClass::initialize()
 	gamemode=0;
 	header.randSeed=(unsigned int)time(NULL);
 	srand(header.randSeed);
+	tmp.parseFile("allreg-testing.txt");
+	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
 }
 
 //contructor, sets default values to member variables, opens debug log file
@@ -31,12 +33,6 @@ GameClass::GameClass()
 	quitGame=false;
 	header.mapIndex=0;
 	initialize();
-	registry.initializeFromParser(parse);
-	for(int i=0; i<int(registry.templateRegistry.allColorVariances.size()-1); i++)
-	{
-		debugFile << registry.templateRegistry.allColorVariances[i]->cname << std::endl;
-	}
-
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 }
 
@@ -56,7 +52,10 @@ void GameClass::experimentalMapGen()
 	{
 		for(int x=0; x<settings.tileCols; x++)
 		{
-			fillTile("greengrass", coord(x,y));
+			if(rand()%4==2)
+				fillTile("clay", coord(x,y));
+			else
+				fillTile("greengrass", coord(x,y));
 		}
 	}
 
@@ -91,7 +90,7 @@ void GameClass::experimentalMapGen()
 //TODO: set up a registry for shapes. for now we'll handle the formation inside this function
 void GameClass::fillShape(int shapeID, const char* codename_main, const char* codename_accent, coord _tl, coord _br)
 {
-	int rangeX=_br.x-_tl.x;
+/*	int rangeX=_br.x-_tl.x;
 	int rangeY=_br.y-_tl.y;
 	int axisX=rangeX/2;
 	float ratio=float(rangeX)/float(rangeY);
@@ -132,7 +131,7 @@ void GameClass::fillShape(int shapeID, const char* codename_main, const char* co
 					break;
 			}
 		}
-	}
+	}*/
 }
 
 void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)
@@ -152,7 +151,7 @@ void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord 
 //places a tiles map of the selected tile index from the template registry
 void GameClass::fillTile(const char* codename, coord _pos)
 {
-	int index = registry.cloneTile(codename, _pos, gameConstant);
+	int index = registry.createTile(tmp, codename, _pos);
 	if(index==0 || registry.regTiles[index]==NULL)
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
@@ -163,21 +162,17 @@ void GameClass::fillTile(const char* codename, coord _pos)
 
 void GameClass::fillEntity(int entityID, coord _pos)
 {
-	int index = registry.cloneEntity(entityID, _pos);
+/*	int index = registry.cloneEntity(entityID, _pos);
 	if(index==0 || registry.regEntities[index]==NULL)
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
 		return;
-	}
+	}*/
 }
 
 GameClass::~GameClass()
 {
-	for(int i=int(registry.regTiles.size())-1; i>=0; i--)
-		delete registry.regTiles[i];
-	for(int i=int(registry.regEntities.size())-1; i>=0; i--)
-		delete registry.regEntities[i];
 	debugFile.close();
 	app.close();
 }
@@ -185,28 +180,16 @@ GameClass::~GameClass()
 //returns the size of the regTiles list
 int GameClass::numberOfTiles()
 {
-	return int(registry.regTiles.size()-1);
+	return 0;
+//	return int(registry.regTiles.size()-1);
 }
 
 int GameClass::numberOfEntities()
 {
-	return int(registry.regEntities.size()-1);
+	return 0;
+//	return int(registry.regEntities.size()-1);
 }
 
-void GameClass::wipeMap()
-{
-	//still produces an artifact some % of the time...
-	while(numberOfTiles()>0)
-	{
-		delete registry.regTiles[0];
-		registry.regTiles.erase(registry.regTiles.begin());
-	}
-	while(numberOfEntities()>0)
-	{
-		delete registry.regEntities[0];
-		registry.regEntities.erase(registry.regEntities.begin());
-	}
-}
 //returns the grid coordinates of the mouse pointer
 coord GameClass::getMouseGrid()
 {
@@ -254,14 +237,6 @@ void GameClass::inputHandler()
 		}
 	}
 
-	if(keys.isKeyPressed(sf::Keyboard::R))
-	{
-		header.randSeed=unsigned int(time(NULL));
-		wipeMap();
-		initialize();
-		gameConstant=60;
-	}
-
 	//mouse handling routine
 	getMouseGrid();
 }
@@ -276,12 +251,12 @@ void GameClass::gameRenderer()
 	for(int i=0; i<int(registry.regTiles.size()); i++)
 	{
 		if(registry.regTiles[i] != NULL)
-			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->grid);
+			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos);
 	}
 	for(int i=0; i<int(registry.regEntities.size()); i++)
 	{
 		if(registry.regEntities[i] != NULL)
-			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->grid);
+			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->pos);
 	}
 	app.display();
 }

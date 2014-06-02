@@ -11,117 +11,131 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 GameObjectClass::GameObjectClass()
 {
-	varianceList.clear();
-	varianceList.push_back(NULL);
 	regTiles.clear();
-	regTiles.push_back(NULL);
 	regEntities.clear();
+	regTiles.push_back(NULL);
 	regEntities.push_back(NULL);
 }
 
-void GameObjectClass::initializeFromParser(ParserClass& parser)
+bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
 {
-	while(parser.getCategory() != ICAT_NONE)
-	{		
-	}
-	for(int i=0; i<int(parser.val.allColorVariances.size()-1); i++)
+	bool ret=false;
+	sf::Texture _tex;
+	//first search the template registry
+	for(int i=0; i<int(tmp.container.tileList.size()); i++)
 	{
-		templateRegistry.allColorVariances.push_back(parser.val.allColorVariances[i]);
-	}
-	for(int i=0; i<int(parser.val.allTiles.size()-1); i++)
-	{
-		templateRegistry.allTiles.push_back(parser.val.allTiles[i]);
-	}
-
-}
-
-//returns the index from the template registry matching the search ID of the tile
-int GameObjectClass::cloneTile(const char* codename, coord _grid, int con)
-{
-	for(int i=0; i<int(regTiles.size()); i++)
-	{
-		if(regTiles[i] != NULL)
+		if(strcmp(tmp.container.tileList[i].cname, _name)==0)
 		{
-			if(strcmp(regTiles[i]->tmp.cname, codename)==0 && regTiles[i]->grid == _grid) //if there is already a match in the registry, we'll return that one
-				return i;
+			_tex.loadFromFile("images/" + std::string(tmp.container.tileList[i].spritefile),
+				sf::IntRect(0,0,tmp.container.tileList[i].dimensions.x, tmp.container.tileList[i].dimensions.y));
+			regTiles.push_back(new registeredTile(i, _pos, _tex));
+			return true;
 		}
 	}
-	//if we found no match, then we create a new registered tile
-	for(int i=0; i<int(templateRegistry.allTiles.size()); i++)
+
+	//TODO: color varaince!! :)
+	return ret;
+}
+
+bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, unsigned char _type, coord _pos)
+{
+	bool ret=false;
+	sf::Texture _tex;
+	int p=0;
+	//first search the entity template registry
+	for(int i=0; i<int(tmp.container.entityList.size()); i++)
 	{
-		if(templateRegistry.allTiles[i] != NULL)
+		if(strcmp(tmp.container.entityList[i].cname, _name)==0)
 		{
-			if(strcmp(templateRegistry.allTiles[i]->cname, codename)==0) //denotes a match from the queried tile
+			_tex.loadFromFile("images/" + std::string(tmp.container.entityList[i].spritefile),
+				sf::IntRect(0,0,tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
+			p=i; break;
+		}
+	}
+	if(p==0) return false;
+
+	switch(_type)
+	{
+		case ICAT_CREATURE:
+			for(int i=0; i<int(tmp.container.creaturePackList.size()); i++)
 			{
-				//we clone the selected tile with index i
-				regTiles.push_back(new tileObjectStruct(newTile(*templateRegistry.allTiles[i], _grid, con)));
-				return int(regTiles.size()-1);
+				if(tmp.container.creaturePackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
 			}
-		}
-	}
-	return 0;
-}
-
-int GameObjectClass::cloneEntity(const unsigned int entityID, coord _grid)
-{
-	for(int i=0; i<int(regEntities.size()); i++)
-	{
-		if(regEntities[i] != NULL)
-		{
-			if(regEntities[i]->tmp.id == entityID && regEntities[i]->grid == _grid) //if there is already a match in the registry, we'll return that one
-				return i;
-		}
-	}
-	//if we found no match, then we create a new registered tile
-	for(int i=0; i<int(templateRegistry.allEntities.size()); i++)
-	{
-		if(templateRegistry.allEntities[i] != NULL)
-		{
-			if(templateRegistry.allEntities[i]->id == entityID) //denotes a match from the queried tile
+			break;
+		case ICAT_DECORATION:
+			for(int i=0; i<int(tmp.container.decoPackList.size()); i++)
 			{
-				//we clone the selected tile with index i
-				regEntities.push_back(new entityObjectStruct(newEntity(*templateRegistry.allEntities[i], _grid)));
-				return int(regEntities.size()-1);
+				if(tmp.container.decoPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
 			}
-		}
-	}
-	return 0;
-}
-
-tileObjectStruct GameObjectClass::newTile(tileTemplate _t, coord _grid, int con)
-{
-	tileObjectStruct ret;
-	ret.tmp = tileTemplate(_t);
-	strncpy_s(ret.tmp.cname, 16, _t.cname, 16);
-	strncpy_s(ret.tmp.name, 16, _t.name, 16);
-	ret.tmp.dimensions=_t.dimensions;
-	strncpy_s(ret.tmp.spritefile, 16, _t.spritefile, 16);
-	ret.tmp.iconRange = _t.iconRange;
-	ret.tmp.variance = _t.variance;
-	ret.grid = _grid;
-	ret.curColor = sf::Color::White;
-	if(varianceList[ret.tmp.variance] != NULL)
-	{
-		ret.curColor=getTileDistortion(varianceList[ret.tmp.variance], ret.grid, con, 100);
+			break;
+		case ICAT_INGREDIENT:
+			for(int i=0; i<int(tmp.container.ingredientPackList.size()); i++)
+			{
+				if(tmp.container.ingredientPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
+			}
+			break;
+		case ICAT_SEED:
+			for(int i=0; i<int(tmp.container.seedPackList.size()); i++)
+			{
+				if(tmp.container.seedPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
+			}
+			break;
+		case ICAT_SUMMON:
+			for(int i=0; i<int(tmp.container.summonPackList.size()); i++)
+			{
+				if(tmp.container.summonPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
+			}
+			break;
+		case ICAT_TOOL:
+			for(int i=0; i<int(tmp.container.toolPackList.size()); i++)
+			{
+				if(tmp.container.toolPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
+			}
+			break;
+		case ICAT_VEGETATION:
+			for(int i=0; i<int(tmp.container.vegPackList.size()); i++)
+			{
+				if(tmp.container.vegPackList[i].entityID==p)
+				{
+					regEntities.push_back(new registeredEntity(p,_type,i,_pos, _tex));
+					return true;
+				}
+			}
+			break;
+		default:
+			return false;
+			break;
 	}
 	return ret;
 }
 
-entityObjectStruct GameObjectClass::newEntity(entityTemplate _t, coord _grid)
-{
-	entityObjectStruct ret;
-	ret.tmp = entityTemplate(_t);
-	ret.tmp.id = _t.id;
-	ret.tmp.type = _t.type;
-	strncpy_s(ret.tmp.name, 16, _t.name, 16);
-	ret.tmp.sheet = _t.sheet;
-	ret.tmp.sheetOrigin = _t.sheetOrigin;
-	ret.tmp.iconRange = _t.iconRange;
-	ret.tmp.creationProtocol = _t.creationProtocol;
-	ret.grid = _grid;
-	return ret;
-}
 
+/*
+i like the algorithm in this. pretty simple but i would rather not delete it because i shall use if again
 sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed)
 {
 	sf::Color ret;
@@ -149,4 +163,4 @@ sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, 
 	}
 
 	return ret;
-}
+}*/

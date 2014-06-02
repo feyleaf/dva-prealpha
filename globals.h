@@ -19,9 +19,8 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include <fstream>
 #include "ic_math.h"
 #include "templates.h"
-#include "register.h"
-#include "tempRegistry.h"
 #include "interpret.h"
+#include "tempRegistry.h"
 #include "gameobject.h"
 #include "render.h"
 #include "game.h"

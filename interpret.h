@@ -2,7 +2,7 @@
 interpret.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 26, 2014
+May 31, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 This class will run routines for parsing and interpreting text file information
@@ -29,42 +29,38 @@ the registered object save/load
 #define ICAT_ECOLOGY 12
 #define ICAT_REGION 13
 #define ICAT_BIOME 14
+#define ICAT_PROTOCOL 15
+#define ICAT_ACTION 16
+#define ICAT_BUTTON 17
+#define ICAT_FORM 18
 
-class ParserClass
+class TemplateReaderClass
 {
 protected:
 	std::ifstream pFile;
+	int lineNumber;
 
 public:
-	ParserClass();
-	~ParserClass();
+	TemplateReaderClass() {lineNumber=0;}
+	~TemplateReaderClass() {pFile.close();}
 
-	char line[255];
-	ValueRegistryClass val;
-
-	void openForReading(const char* filename);
-	void closeFile();
-
-	bool readLine();
-	int getCategory();
-	void getTokens(int category);
-
-	void parseColorVariance(const char* line);
-	void parseBiome(const char* line);
-	void parseCreature(const char* line);
-	void parseDecoration(const char* line);
-	void parseEntity(const char* line);
-	void parseTile(const char* line);
-	void parseTerrain(const char* line);
-	void parseRegion(const char* line);
-	void parseTool(const char* line);
-	void parseIngredient(const char* line);
-	void parseSummon(const char* line);
-	void parseSeed(const char* line);
-	void parseEcology(const char* line);
-	void parseVegetation(const char* line);
-
-
+	bool openFile(const char* filename) {pFile.close(); pFile.open(filename, std::ifstream::in); return pFile.is_open();}
+	int selectCategory();
+	int getLineNumber() {return lineNumber;}
+	tileTemplate parseTile();
+	bool testLinkToColor(const char* codename, colorVarianceTemplate cvt);
+	colorVarianceTemplate parseColor();
+	entityTemplate parseEntity(unsigned char category);
+	decoPackTemplate parseDecoration(int entityIndex);
+	seedPackTemplate parseSeed(int entityIndex);
+	creaturePackTemplate parseCreature(int entityIndex);
+	vegetationPackTemplate parseVegetation(int entityIndex);
+	summonPackTemplate parseSummon(int entityIndex);
+	toolPackTemplate parseTool(int entityIndex);
+	ingredientPackTemplate parseIngredient(int entityIndex);
+	actionTemplate parseAction();
+	terrainPoolTemplate parseTerrain();
+	biomeInformationTemplate parseBiome();
 };
 
 

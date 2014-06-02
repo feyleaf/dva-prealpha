@@ -26,6 +26,7 @@ protected:
 	bool quitGame;
 	int gamemode;
 	std::ofstream debugFile;
+	TemplateRegistryClass tmp;
 	GameObjectClass registry;
 	sf::Clock frameClock;
 	sf::Clock gameClock;
@@ -42,7 +43,6 @@ protected:
 
 
 public:
-	ParserClass parse;
 	GameClass();
 	~GameClass();
 	void initialize();
@@ -62,9 +62,7 @@ public:
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
 
 	int getTileIndexAt(coord _pt);
-	tileObjectStruct* getTileAt(coord _pt);
 	bool eraseTileAt(coord _pt);
-	void wipeMap(); //experimental!!
 
 	int numberOfTiles();
 	int numberOfEntities();

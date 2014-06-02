@@ -29,23 +29,21 @@ sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _
 
 }
 
-void RenderManager::DrawTile(sf::RenderWindow& win, const tileObjectStruct* obj, coord place, sf::Color tint, int con, long sd)
+void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, coord place, sf::Color tint, int con, long sd)
 {
-	currentSprite.setTexture(tileSheet);
-	currentSprite.setColor(obj->curColor);
+	currentSprite.setTexture(obj->tx);
+	currentSprite.setColor(sf::Color::White);//obj->curColor);
 
-	currentSprite.setTextureRect(sf::IntRect(0,0,obj->tmp.dimensions.x, obj->tmp.dimensions.y)); //TODO: fix this with settings
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	
 	win.draw(currentSprite);
 }
 
-void RenderManager::DrawEntity(sf::RenderWindow& win, const entityObjectStruct* obj, coord place)
+void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place)
 {
-	currentSprite.setTexture(entitySheet);
+	currentSprite.setTexture(obj->tx);
 	currentSprite.setColor(sf::Color::White);
 
-	currentSprite.setTextureRect(rectFromOrigin(obj->tmp.sheetOrigin, 32, 32)); //TODO: fix this with settings
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	
 	win.draw(currentSprite);
