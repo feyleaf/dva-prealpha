@@ -13,7 +13,6 @@ Author: Benjamin C. Watt (@feyleafgames)
 void GameClass::initialize()
 {
 	loadSettings();
-	render.loadGraphicsFiles(settings);
 	gameClock.restart();
 	frameClock.restart();
 	gameConstant=60;
@@ -21,6 +20,8 @@ void GameClass::initialize()
 	header.randSeed=(unsigned int)time(NULL);
 	srand(header.randSeed);
 	tmp.parseFile("allreg-testing.txt");
+	render.createTileSheet(tmp);
+	render.loadGraphicsFiles(settings);
 	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
 }
 
@@ -251,7 +252,9 @@ void GameClass::gameRenderer()
 	for(int i=0; i<int(registry.regTiles.size()); i++)
 	{
 		if(registry.regTiles[i] != NULL)
+		{
 			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos);
+		}
 	}
 	for(int i=0; i<int(registry.regEntities.size()); i++)
 	{

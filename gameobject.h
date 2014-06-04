@@ -19,8 +19,8 @@ struct registeredTile
 	int tileTemplateIndex;
 	coord pos;
 	sf::Color distortionColor;
-	sf::Texture tx;
-	registeredTile(int _index, coord _pos, sf::Texture& _tex) {tileTemplateIndex=_index; pos=_pos; distortionColor=sf::Color::White; tx=_tex;}
+	sf::IntRect txRect;
+	registeredTile(int _index, coord _pos, sf::IntRect _txRect) {tileTemplateIndex=_index; pos=_pos; distortionColor=sf::Color::White; txRect=_txRect;}
 };
 
 struct registeredEntity
@@ -29,9 +29,8 @@ struct registeredEntity
 	int entityTemplateIndex;
 	int packTemplateIndex;
 	coord pos;
-	sf::Texture tx;
-	registeredEntity(int _index, unsigned char _type, int _pack, coord _pos, sf::Texture& _tex)
-	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; pos=_pos; tx=_tex;}
+	registeredEntity(int _index, unsigned char _type, int _pack, coord _pos)
+	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; pos=_pos;}
 };
 
 class GameObjectClass

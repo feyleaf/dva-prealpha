@@ -22,6 +22,8 @@ class RenderManager
 		RenderManager() {}
 		~RenderManager() {}
 
+		void createTileSheet(const TemplateRegistryClass& tmp);
+
 		void loadGraphicsFiles(settingStruct set);
 		sf::IntRect rectFromOrigin(unsigned char _origin, int _wid, int _hig);
 		void write(sf::RenderWindow& win, coord pos, unsigned int size, const char* message, sf::Color _color = sf::Color::White);
