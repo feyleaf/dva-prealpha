@@ -152,8 +152,7 @@ void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord 
 //places a tiles map of the selected tile index from the template registry
 void GameClass::fillTile(const char* codename, coord _pos)
 {
-	int index = registry.createTile(tmp, codename, _pos);
-	if(index==0 || registry.regTiles[index]==NULL)
+	if(!registry.createTile(tmp, codename, _pos))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";

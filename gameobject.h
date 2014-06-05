@@ -17,10 +17,12 @@ search algorithm or tree structure to optimize the searching of values (yet).
 struct registeredTile
 {
 	int tileTemplateIndex;
+	coord origin;
+	coord dimensions;
+	int frame;
 	coord pos;
 	sf::Color distortionColor;
-	sf::IntRect txRect;
-	registeredTile(int _index, coord _pos, sf::IntRect _txRect) {tileTemplateIndex=_index; pos=_pos; distortionColor=sf::Color::White; txRect=_txRect;}
+	registeredTile(int _index, coord _orig, coord _dim, coord _pos) {tileTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; pos=_pos; distortionColor=sf::Color::White;}
 };
 
 struct registeredEntity
@@ -44,6 +46,7 @@ public:
 
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, unsigned char _type, coord _pos);
+	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
 };
 
 #endif

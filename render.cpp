@@ -11,14 +11,17 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
 {
-	int totalSprites=0;
+	int iconTotalWidth=0;
+	int rowTotalHeight=0;
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
-		totalSprites+=tmp.container.tileList[i].iconRange;
+		rowTotalHeight+=tmp.container.tileList[i].dimensions.y;
+		if(iconTotalWidth<(tmp.container.tileList[i].iconRange*tmp.container.tileList[i].dimensions.x))
+			iconTotalWidth=tmp.container.tileList[i].iconRange*tmp.container.tileList[i].dimensions.x;
 	}
 
-	int width=32*8;
-	int height=32*int((totalSprites/8)+1);
+	int width=iconTotalWidth;
+	int height=rowTotalHeight;
 	sf::RenderTexture spriteSheet;
 	sf::Texture tempTexture;
 	sf::Sprite tempSprite;
@@ -28,16 +31,15 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
 	int row=0; int col=0;
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
+		row+=tmp.container.tileList[i-1].dimensions.y;
 		for(int c=0; c<tmp.container.tileList[i].iconRange; c++)
 		{
-			count++;
-			row=int(count/8);
-			col=count%8;
+			col=c*tmp.container.tileList[i].dimensions.x;
 			tempTexture.loadFromFile("images/" + std::string(tmp.container.tileList[i].spritefile), 
-				sf::IntRect(c*32, 0, 32, 32));
+				sf::IntRect(c*tmp.container.tileList[i].dimensions.x, 0, tmp.container.tileList[i].dimensions.x, tmp.container.tileList[i].dimensions.y));
 			tempSprite.setTexture(tempTexture);
 			tempSprite.setColor(sf::Color(255,255,255,255));
-			tempSprite.setPosition(float(col*32), float(row*32));
+			tempSprite.setPosition(float(col), float(row));
 			spriteSheet.draw(tempSprite);			
 		}
 	}
@@ -68,8 +70,10 @@ sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _
 void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, coord place, sf::Color tint, int con, long sd)
 {
 	currentSprite.setTexture(tileSheet);
-	currentSprite.setTextureRect(obj->txRect);
-	//currentSprite.setColor(sf::Color::White);//obj->curColor);
+	sf::Vector2i o=sf::Vector2i(toVector(obj->origin));
+	int frameskip=obj->frame*obj->dimensions.x;
+	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
+	currentSprite.setColor(obj->distortionColor);
 
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	

@@ -20,16 +20,18 @@ GameObjectClass::GameObjectClass()
 bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
 {
 	bool ret=false;
-	sf::IntRect _texRect;
-	int c=0;
+	coord _orig;
+	int row=0;
 	//first search the template registry
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
-		c+=tmp.container.tileList[i].iconRange;
+		row+=tmp.container.tileList[i-1].dimensions.y;
 		if(strcmp(tmp.container.tileList[i].cname, _name)==0)
 		{
-			_texRect = sf::IntRect((c%8)*32,(int(c/8))*32,32,32);
-			regTiles.push_back(new registeredTile(i, _pos, _texRect));
+			_orig = coord(0, row);
+			regTiles.push_back(new registeredTile(i, _orig, tmp.container.tileList[i].dimensions, _pos));
+			if(tmp.container.tileList[i].variance>0)
+				regTiles[int(regTiles.size()-1)]->distortionColor=getTileDistortion(tmp.container.varianceList[tmp.container.tileList[i].variance], _pos);
 			return true;
 		}
 	}
@@ -135,16 +137,14 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 }
 
 
-/*
-i like the algorithm in this. pretty simple but i would rather not delete it because i shall use if again
-sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, coord _pos, int con, long seed)
+sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate& var, coord _pos)
 {
 	sf::Color ret;
 	unsigned char value=0;
-	unsigned char white = noiseyPixel(_pos, _var->whiteBase, _var->whiteRange, con, seed);
-	ret.r=(noiseyPixel(_pos, _var->redBase, _var->redRange, con, seed));
-	ret.g=(noiseyPixel(_pos, _var->greenBase, _var->greenRange, con, seed));
-	ret.b=(noiseyPixel(_pos, _var->blueBase, _var->blueRange, con, seed));
+	unsigned char white = noiseyPixel(_pos, var.whiteBase, var.whiteRange, 16, 314159);
+	ret.r=(noiseyPixel(_pos, var.redBase, var.redRange, 16, 314159));
+	ret.g=(noiseyPixel(_pos, var.greenBase, var.greenRange, 16, 314159));
+	ret.b=(noiseyPixel(_pos, var.blueBase, var.blueRange, 16, 314159));
 	value=unsigned char(max3(int(ret.r), int(ret.g), int(ret.b)));
 	if(white>value)
 	{
@@ -164,4 +164,4 @@ sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate* _var, 
 	}
 
 	return ret;
-}*/
+}
