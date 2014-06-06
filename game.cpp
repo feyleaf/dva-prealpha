@@ -18,7 +18,7 @@ void GameClass::initialize()
 	gameConstant=60;
 	gamemode=0;
 	header.randSeed=(unsigned int)time(NULL);
-	srand(header.randSeed);
+	initRandom(header.randSeed);
 	tmp.parseFile("allreg-testing.txt");
 	render.createTileSheet(tmp);
 	render.createEntitySheet(tmp);
@@ -56,6 +56,7 @@ void GameClass::gameUpdater(float actSeconds)
 
 void GameClass::experimentalMapGen()
 {
+	initRandom(header.randSeed);
 	for(int y=0; y<settings.tileRows; y++)
 	{
 		for(int x=0; x<settings.tileCols; x++)
@@ -65,7 +66,10 @@ void GameClass::experimentalMapGen()
 				if(rand()%2==0)
 					fillTile("clay", coord(x,y));
 				else
+				{
+					fillTile("greengrass", coord(x,y));
 					fillEntity("marlborobush", coord(x,y));
+				}
 			}
 			else
 				fillTile("greengrass", coord(x,y));

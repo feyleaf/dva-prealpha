@@ -65,6 +65,7 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
 	sf::Sprite tempSprite;
 
 	spriteSheet.create(width, height);
+	spriteSheet.clear(sf::Color(255,255,255,0));
 	int count=0;
 	int row=0; int col=0;
 	for(int i=1; i<int(tmp.container.entityList.size()); i++)
@@ -76,7 +77,7 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
 			tempTexture.loadFromFile("images/" + std::string(tmp.container.entityList[i].spritefile), 
 				sf::IntRect(c*tmp.container.entityList[i].dimensions.x, 0, tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
 			tempSprite.setTexture(tempTexture);
-			tempSprite.setColor(sf::Color(255,255,255,255));
+			//tempSprite.setColor(sf::Color(255,255,255));
 			tempSprite.setPosition(float(col), float(row));
 			spriteSheet.draw(tempSprite);			
 		}
