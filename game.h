@@ -57,7 +57,7 @@ public:
 	void experimentalMapGen();
 
 	void fillTile(const char* codename, coord _pos);
-	void fillEntity(int tileID, coord _pos);
+	void fillEntity(const char* codename, coord _pos);
 	void fillShape(int shapeID, const char* codename_main, const char* codename_accent, coord _tl, coord _br);
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
 

@@ -97,7 +97,7 @@ bool TemplateRegistryClass::linkTileColors(int tileIndex)
 bool TemplateRegistryClass::linkEntityProtocol(int entityIndex)
 {
 	int act=0;
-	for(int i=0; i<int(container.entityList.size()); i++)
+	for(int i=1; i<int(container.entityList.size()); i++)
 	{
 		if(strcmp(container.entityList[entityIndex].creation, container.actionList[i].cname)==0)
 		{
@@ -106,6 +106,6 @@ bool TemplateRegistryClass::linkEntityProtocol(int entityIndex)
 		}
 	}				
 	container.entityList[entityIndex].creationProtocol = act;
-	return (act != 0);
+	return true;//(act != 0);
 
 }

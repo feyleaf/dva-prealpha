@@ -2,7 +2,7 @@
 render.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+June 5, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -23,6 +23,7 @@ class RenderManager
 		~RenderManager() {}
 
 		void createTileSheet(const TemplateRegistryClass& tmp);
+		void createEntitySheet(const TemplateRegistryClass& tmp);
 
 		void loadGraphicsFiles(settingStruct set);
 		sf::IntRect rectFromOrigin(unsigned char _origin, int _wid, int _hig);

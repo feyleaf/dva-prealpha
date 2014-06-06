@@ -47,13 +47,51 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
 	spriteSheet.getTexture().copyToImage().saveToFile("tiles_temp.png");
 }
 
+void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
+{
+	int iconTotalWidth=0;
+	int rowTotalHeight=0;
+	for(int i=1; i<int(tmp.container.entityList.size()); i++)
+	{
+		rowTotalHeight+=tmp.container.entityList[i].dimensions.y;
+		if(iconTotalWidth<(tmp.container.entityList[i].iconRange*tmp.container.entityList[i].dimensions.x))
+			iconTotalWidth=tmp.container.entityList[i].iconRange*tmp.container.entityList[i].dimensions.x;
+	}
+
+	int width=iconTotalWidth;
+	int height=rowTotalHeight;
+	sf::RenderTexture spriteSheet;
+	sf::Texture tempTexture;
+	sf::Sprite tempSprite;
+
+	spriteSheet.create(width, height);
+	int count=0;
+	int row=0; int col=0;
+	for(int i=1; i<int(tmp.container.entityList.size()); i++)
+	{
+		row+=tmp.container.entityList[i-1].dimensions.y;
+		for(int c=0; c<tmp.container.entityList[i].iconRange; c++)
+		{
+			col=c*tmp.container.entityList[i].dimensions.x;
+			tempTexture.loadFromFile("images/" + std::string(tmp.container.entityList[i].spritefile), 
+				sf::IntRect(c*tmp.container.entityList[i].dimensions.x, 0, tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
+			tempSprite.setTexture(tempTexture);
+			tempSprite.setColor(sf::Color(255,255,255,255));
+			tempSprite.setPosition(float(col), float(row));
+			spriteSheet.draw(tempSprite);			
+		}
+	}
+	spriteSheet.display();
+	spriteSheet.getTexture().copyToImage().saveToFile("entities_temp.png");
+}
+
 void RenderManager::loadGraphicsFiles(settingStruct set)
 {
 	font.loadFromFile(set.mainFontFile);
 	entitySheet.setSmooth(false);
 	tileSheet.setSmooth(false);
 	guiSheet.setSmooth(false);
-	entitySheet.loadFromFile(set.entitySheetFile);
+	entitySheet.loadFromFile("entities_temp.png");
 	tileSheet.loadFromFile("tiles_temp.png");
 	guiSheet.loadFromFile(set.guiSheetFile);
 }
@@ -82,8 +120,11 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place)
 {
+	currentSprite.setTexture(entitySheet);
+	coord o=obj->origin;
+	int frameskip=obj->frame*obj->dimensions.x;
+	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	currentSprite.setColor(sf::Color::White);
-
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	
 	win.draw(currentSprite);

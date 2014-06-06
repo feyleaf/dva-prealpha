@@ -1,3 +1,7 @@
 32 x 32
 Title: Druid vs Alchemist Test
 Read 37 templates from the file.
+:Undef
+:Marlboro Bush
+:Boulder
+:Mahogany Log

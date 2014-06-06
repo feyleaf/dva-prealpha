@@ -30,9 +30,12 @@ struct registeredEntity
 	unsigned char type;
 	int entityTemplateIndex;
 	int packTemplateIndex;
+	coord origin;
+	coord dimensions;
+	int frame;
 	coord pos;
-	registeredEntity(int _index, unsigned char _type, int _pack, coord _pos)
-	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; pos=_pos;}
+	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, coord _pos)
+	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; origin=_orig; dimensions=_dim; frame=0; pos=_pos;}
 };
 
 class GameObjectClass
@@ -45,7 +48,7 @@ public:
 	std::vector<registeredEntity*> regEntities;
 
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
-	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, unsigned char _type, coord _pos);
+	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
 };
 

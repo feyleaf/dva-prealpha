@@ -21,6 +21,7 @@ void GameClass::initialize()
 	srand(header.randSeed);
 	tmp.parseFile("allreg-testing.txt");
 	render.createTileSheet(tmp);
+	render.createEntitySheet(tmp);
 	render.loadGraphicsFiles(settings);
 	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
 }
@@ -35,6 +36,12 @@ GameClass::GameClass()
 	header.mapIndex=0;
 	initialize();
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
+	for(int t=0; t<int(tmp.container.decoPackList.size()); t++)
+	{
+		debugFile.write(":", 1);
+		debugFile << tmp.container.entityList[tmp.container.decoPackList[t].entityID].name;
+		debugFile.write("\n", 1);
+	}
 }
 
 //performs update tasks each frame
@@ -54,7 +61,12 @@ void GameClass::experimentalMapGen()
 		for(int x=0; x<settings.tileCols; x++)
 		{
 			if(rand()%4==2)
-				fillTile("clay", coord(x,y));
+			{
+				if(rand()%2==0)
+					fillTile("clay", coord(x,y));
+				else
+					fillEntity("marlborobush", coord(x,y));
+			}
 			else
 				fillTile("greengrass", coord(x,y));
 		}
@@ -136,14 +148,14 @@ void GameClass::fillShape(int shapeID, const char* codename_main, const char* co
 }
 
 void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)
-{
+{//this routine is broken anyway!
 	initRandom(header.randSeed);
 	for(int y=_tl.y; y<=_br.y; y++)
 	{
 		for(int x=_tl.x; x<=_br.x; x++)
 		{
-			if(abs(noiseyPixel(coord(x,y), 0, 255, con, header.randSeed)/density) ==(con/2))
-				fillEntity(entityID, coord(x,y));
+//			if(abs(noiseyPixel(coord(x,y), 0, 255, con, header.randSeed)/density) ==(con/2))
+//				fillEntity(entityID, coord(x,y));
 		}
 	}
 }
@@ -160,15 +172,14 @@ void GameClass::fillTile(const char* codename, coord _pos)
 	}
 }
 
-void GameClass::fillEntity(int entityID, coord _pos)
+void GameClass::fillEntity(const char* codename, coord _pos)
 {
-/*	int index = registry.cloneEntity(entityID, _pos);
-	if(index==0 || registry.regEntities[index]==NULL)
+	if(!registry.createEntity(tmp, codename, _pos))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
-		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
+		debugFile << "FillEntity failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
 		return;
-	}*/
+	}
 }
 
 GameClass::~GameClass()

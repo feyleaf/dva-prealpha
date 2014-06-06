@@ -40,18 +40,21 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 	return ret;
 }
 
-bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, unsigned char _type, coord _pos)
+bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
 {
 	bool ret=false;
-	sf::Texture _tex;
+	coord _orig;
+	unsigned char _type = 0;
+	int row=0;
 	int p=0;
 	//first search the entity template registry
-	for(int i=0; i<int(tmp.container.entityList.size()); i++)
+	for(int i=1; i<int(tmp.container.entityList.size()); i++)
 	{
+		row+=tmp.container.entityList[i-1].dimensions.y;
 		if(strcmp(tmp.container.entityList[i].cname, _name)==0)
 		{
-			_tex.loadFromFile("images/" + std::string(tmp.container.entityList[i].spritefile),
-				sf::IntRect(0,0,tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
+			_type=tmp.container.entityList[i].type;
+			_orig = coord(0, row);
 			p=i; break;
 		}
 	}
@@ -60,71 +63,71 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 	switch(_type)
 	{
 		case ICAT_CREATURE:
-			for(int i=0; i<int(tmp.container.creaturePackList.size()); i++)
+			for(int i=1; i<int(tmp.container.creaturePackList.size()); i++)
 			{
 				if(tmp.container.creaturePackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_DECORATION:
-			for(int i=0; i<int(tmp.container.decoPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.decoPackList.size()); i++)
 			{
 				if(tmp.container.decoPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_INGREDIENT:
-			for(int i=0; i<int(tmp.container.ingredientPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.ingredientPackList.size()); i++)
 			{
 				if(tmp.container.ingredientPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_SEED:
-			for(int i=0; i<int(tmp.container.seedPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.seedPackList.size()); i++)
 			{
 				if(tmp.container.seedPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_SUMMON:
-			for(int i=0; i<int(tmp.container.summonPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.summonPackList.size()); i++)
 			{
 				if(tmp.container.summonPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_TOOL:
-			for(int i=0; i<int(tmp.container.toolPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.toolPackList.size()); i++)
 			{
 				if(tmp.container.toolPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
 			break;
 		case ICAT_VEGETATION:
-			for(int i=0; i<int(tmp.container.vegPackList.size()); i++)
+			for(int i=1; i<int(tmp.container.vegPackList.size()); i++)
 			{
 				if(tmp.container.vegPackList[i].entityID==p)
 				{
-					regEntities.push_back(new registeredEntity(p,_type,i,_pos));
+					regEntities.push_back(new registeredEntity(p,_type,i, _orig, tmp.container.entityList[p].dimensions,_pos));
 					return true;
 				}
 			}
