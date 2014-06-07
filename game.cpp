@@ -68,13 +68,15 @@ void GameClass::experimentalMapGen()
 				else
 				{
 					fillTile("greengrass", coord(x,y));
-					fillEntity("marlborobush", coord(x,y));
+					fillEntity("redrose", coord(x,y));
 				}
 			}
 			else
 				fillTile("greengrass", coord(x,y));
 		}
 	}
+	fillEntity("squirrel", coord(5,5));
+	fillEntity("irongolem", coord(10,10));
 
 	/*
 	//we'll experiment with TERRAIN_BEACH

@@ -346,6 +346,8 @@ class TemplateContainerClass
 			actionList.clear(); actionList.push_back(actionTemplate());
 			entityList.clear(); entityList.push_back(entityTemplate());
 			decoPackList.clear(); decoPackList.push_back(decoPackTemplate());
+			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
+			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
 		}
 		~TemplateContainerClass() {}
 

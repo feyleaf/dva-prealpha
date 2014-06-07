@@ -31,7 +31,7 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				else container.decoPackList.push_back(parser.parseDecoration(index));
 				break;
 			case ICAT_CREATURE:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_CREATURE));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.creaturePackList.push_back(parser.parseCreature(index));
@@ -66,7 +66,7 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				else container.toolPackList.push_back(parser.parseTool(index));
 				break;
 			case ICAT_VEGETATION:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_VEGETATION));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.vegPackList.push_back(parser.parseVegetation(index));

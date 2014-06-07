@@ -125,9 +125,18 @@ creaturePackTemplate TemplateReaderClass::parseCreature(int entityIndex)
 {
 	creaturePackTemplate ret;
 	std::string chunk;
-	ret.entityID=entityIndex;
-
-	std::getline(pFile, chunk, '\n');
+	ret.entityID = entityIndex;
+	std::getline(pFile, chunk, ',');
+	ret.maxHP = unsigned int(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.attack = unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.defense = unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.agility = unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.moveSpeed = unsigned char(atoi(chunk.c_str()));	
+	std::getline(pFile, chunk, '\n');		//TODO: actionList here??
 	return ret;
 }
 
@@ -136,6 +145,12 @@ vegetationPackTemplate TemplateReaderClass::parseVegetation(int entityIndex)
 	vegetationPackTemplate ret;
 	std::string chunk;
 	ret.entityID=entityIndex;
+	std::getline(pFile, chunk, ',');
+	ret.growthTime = unsigned int(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.maxGrowthStages = unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.mapBonus = unsigned char(atoi(chunk.c_str()));
 
 	std::getline(pFile, chunk, '\n');
 	return ret;
