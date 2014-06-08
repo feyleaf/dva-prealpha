@@ -114,7 +114,7 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	currentSprite.setColor(obj->distortionColor);
 
-	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
+	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
 	win.draw(currentSprite);
 }

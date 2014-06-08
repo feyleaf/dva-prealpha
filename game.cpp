@@ -12,6 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 //helps the constructor by reseting values and loading settings
 void GameClass::initialize()
 {
+	pin=false;
 	loadSettings();
 	gameClock.restart();
 	frameClock.restart();
@@ -52,6 +53,35 @@ void GameClass::gameUpdater(float actSeconds)
 		experimentalMapGen();
 		gameConstant=623;
 	}
+	int thisTick=int(registry.actions.size());
+	for(int i=1; i<thisTick; i++)
+	{
+		if(registry.actions[i] != NULL && registry.actions[i]->active)
+		{
+			if(registry.actions[i]->timeToActivate<=actSeconds)
+			{
+				//this is gonna be a more complicated routine lol
+				//right now the only action we're trying to test is the growth, so i'll assume all actions
+				//active are "growflower"
+				if(registry.regEntities[registry.actions[i]->entityIndexSource] != NULL)
+				{
+					int veg=registry.regEntities[registry.actions[i]->entityIndexSource]->packIndex;
+					int src=registry.actions[i]->entityIndexSource;
+					int index=registry.regEntities[src]->entityTemplateIndex;
+					int act=registry.actions[i]->actionTemplateIndex;
+					float duration=float(tmp.container.actionList[act].coolDownTicks)*0.2f;
+					//update the frame as long as it's still less than the max growth stages
+					if(registry.regVeg[veg]->currentGrowth < (registry.regVeg[veg]->maxGrowth-1))
+					{
+						registry.actions[i]->active=false;
+						registry.regVeg[veg]->currentGrowth++;
+						registry.regEntities[src]->frame = registry.regVeg[veg]->currentGrowth;
+						registry.createAction(tmp, "growflower", src, src, 0, actSeconds+duration);
+					}
+				}
+			}
+		}
+	}
 }
 
 void GameClass::experimentalMapGen()
@@ -64,11 +94,20 @@ void GameClass::experimentalMapGen()
 			if(rand()%4==2)
 			{
 				if(rand()%2==0)
-					fillTile("clay", coord(x,y));
+				{
+					fillTile("customgrass", coord(x,y));
+				}				
 				else
 				{
-					fillTile("greengrass", coord(x,y));
-					fillEntity("redrose", coord(x,y));
+					fillTile("dirt", coord(x,y));
+					int r=rand()%4;
+					switch(r)
+					{
+						case 0:fillEntity("hibiscus", coord(x,y)); break;
+						case 1:fillEntity("heavenmirror", coord(x,y)); break;
+						case 2:fillEntity("redrose", coord(x,y)); break;
+						default:fillEntity("bluerose", coord(x,y)); break;
+					}
 				}
 			}
 			else
@@ -180,7 +219,7 @@ void GameClass::fillTile(const char* codename, coord _pos)
 
 void GameClass::fillEntity(const char* codename, coord _pos)
 {
-	if(!registry.createEntity(tmp, codename, _pos))
+	if(!registry.createEntity(tmp, codename, _pos, gameClock.getElapsedTime().asSeconds()))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillEntity failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
@@ -261,7 +300,7 @@ void GameClass::inputHandler()
 //renders the game state to the screen
 void GameClass::gameRenderer()
 {
-	app.clear();
+	app.clear(sf::Color(101,88,65,255));
 
 	//draw the tiles that are registered
 	//TODO: make it map-specific

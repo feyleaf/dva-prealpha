@@ -146,7 +146,7 @@ vegetationPackTemplate TemplateReaderClass::parseVegetation(int entityIndex)
 	std::string chunk;
 	ret.entityID=entityIndex;
 	std::getline(pFile, chunk, ',');
-	ret.growthTime = unsigned int(atoi(chunk.c_str()));
+	ret.growthTime = float(atoi(chunk.c_str()));
 	std::getline(pFile, chunk, ',');
 	ret.maxGrowthStages = unsigned char(atoi(chunk.c_str()));
 	std::getline(pFile, chunk, ',');
@@ -168,6 +168,7 @@ ingredientPackTemplate TemplateReaderClass::parseIngredient(int entityIndex)
 
 summonPackTemplate TemplateReaderClass::parseSummon(int entityIndex)
 {
+	//TODO: don't forget to put a string containing the entity codename!
 	summonPackTemplate ret;
 	std::string chunk;
 	ret.entityID=entityIndex;
@@ -178,6 +179,7 @@ summonPackTemplate TemplateReaderClass::parseSummon(int entityIndex)
 
 seedPackTemplate TemplateReaderClass::parseSeed(int entityIndex)
 {
+	//TODO: don't forget to put a string in for the vegetation codename!
 	seedPackTemplate ret;
 	std::string chunk;
 	ret.entityID=entityIndex;
@@ -207,7 +209,7 @@ actionTemplate TemplateReaderClass::parseAction()
 	std::getline(pFile, chunk, ',');
 	ret.category = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
-	ret.coolDown = float(atoi(chunk.c_str())*0.20f); //read as frame updates, output as float seconds
+	ret.coolDownTicks = int(atoi(chunk.c_str())*0.20f); //read as frame updates, output as float seconds
 	std::getline(pFile, chunk, ',');
 	ret.priority = atoi(chunk.c_str());
 	std::getline(pFile, chunk, '\n');

@@ -38,6 +38,7 @@ protected:
 	sf::Event gameEvent;
 	sf::Keyboard keys;
 	coord mouse;
+	bool pin;
 
 	RenderManager render;
 

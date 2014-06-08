@@ -29,14 +29,128 @@ struct registeredEntity
 {
 	unsigned char type;
 	int entityTemplateIndex;
-	int packTemplateIndex;
+	int packIndex;
 	coord origin;
 	coord dimensions;
 	int frame;
 	coord pos;
 	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, coord _pos)
-	{type=_type; entityTemplateIndex=_index; packTemplateIndex=_pack; origin=_orig; dimensions=_dim; frame=0; pos=_pos;}
+	{type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; pos=_pos;}
 };
+
+struct toolPack
+{
+	bool active;
+	unsigned int maxUses;
+	unsigned int usesLeft;
+	unsigned char usageProtocol;
+	toolPack()
+	{active=false; maxUses=0; usesLeft=0; usageProtocol=0;}
+	toolPack(unsigned int _max, unsigned int _left, unsigned char _proto)
+	{active=true; maxUses=_max; usesLeft=_left; usageProtocol=_proto;}
+	toolPack(const toolPackTemplate& src)
+	{active=true; maxUses=src.maxUses; usesLeft=src.maxUses; usageProtocol=src.usageProtocol;}
+};
+
+struct ingredientPack
+{ //this is superfluous i probably don't need it?
+	bool active;
+	unsigned char usageProtocol;
+	ingredientPack()
+	{active=false; usageProtocol=0;}
+	ingredientPack(unsigned char _proto)
+	{active=true; usageProtocol=_proto;}
+	ingredientPack(const ingredientPackTemplate& src)
+	{active=true; usageProtocol=src.usageProtocol;}
+};
+
+struct seedPack
+{
+	bool active;
+	int vegetationContained;
+	unsigned char usageProtocol;
+	seedPack()
+	{active=false; vegetationContained=0; usageProtocol=0;}
+	seedPack(int _veg, unsigned char _proto)
+	{active=true; vegetationContained=_veg; usageProtocol=_proto;}
+	seedPack(int vegIndex, const seedPackTemplate& src)
+	{active=true; vegetationContained=vegIndex; usageProtocol=src.usageProtocol;}
+};
+
+struct summonPack
+{
+	bool active;
+	int creatureContained;
+	unsigned char usageProtocol;
+	summonPack()
+	{active=false; creatureContained=0; usageProtocol=0;}
+	summonPack(int _creat, unsigned char _proto)
+	{active=true; creatureContained=_creat; usageProtocol=_proto;}
+	summonPack(int creIndex, const summonPackTemplate& src)
+	{active=true; creatureContained=creIndex; usageProtocol=src.usageProtocol;}
+};
+
+struct vegPack
+{
+	bool active;
+	float bornTime;
+	int maxGrowth;
+	int currentGrowth;
+	unsigned char mapBonus;
+	std::vector<int> dropList;
+	vegPack()
+	{active=false; bornTime=0.0f; maxGrowth=0; currentGrowth=0; mapBonus=0; dropList.clear();}
+	vegPack(float _born, int _max, int _stage, unsigned char _bonus)
+	{active=false; bornTime=_born; maxGrowth=_max; currentGrowth=0; mapBonus=_bonus; dropList.clear();}
+	vegPack(float curTime, const vegetationPackTemplate& src)
+	{active=false; bornTime=curTime; maxGrowth=src.maxGrowthStages; currentGrowth=0; mapBonus=src.mapBonus; dropList.clear();}
+};
+
+struct creaturePack
+{
+	bool active;
+	int maxHP;
+	int currentHP;
+	int attack;
+	int defense;
+	int agility;
+	int move;
+	creaturePack()
+	{active=false; maxHP=0; currentHP=0, attack=0; defense=0; agility=0; move=0;}
+	creaturePack(int _max, int _hp, int _atk, int _def, int _agi, int _move)
+	{active=true; maxHP=_max; currentHP=_hp, attack=_atk; defense=_def; agility=_agi; move=_move;}
+	creaturePack(const creaturePackTemplate& src)
+	{active=true; maxHP=src.maxHP; currentHP=src.maxHP, attack=src.attack; defense=src.defense; agility=src.agility; move=src.moveSpeed;}
+};
+
+struct decoPack
+{
+	bool active;
+	int maxHP;
+	int currentHP;
+	int defense;
+	int element;
+	std::vector<int> lootList;
+	decoPack()
+	{active=false; maxHP=0; currentHP=0; defense=0; element=0; lootList.clear();}
+	decoPack(int _max, int _hp, int _def, int _elem)
+	{active=true; maxHP=_max; currentHP=_hp; defense=_def; element=_elem; lootList.clear();}
+	decoPack(const decoPackTemplate& src)
+	{active=true; maxHP=src.maxHP; currentHP=src.maxHP; defense=src.defense; element=src.element; lootList.clear();}
+};
+
+struct actionStruct
+{
+	bool active;
+	bool queued;
+	int actionTemplateIndex;
+	int entityIndexSource;
+	int entityIndexTarget;
+	int tileIndexSource;
+	int priority;
+	float timeToActivate;
+};
+
 
 class GameObjectClass
 {
@@ -46,9 +160,18 @@ public:
 
 	std::vector<registeredTile*> regTiles;
 	std::vector<registeredEntity*> regEntities;
+	std::vector<vegPack*> regVeg;
+	std::vector<decoPack*> regDeco;
+	std::vector<seedPack*> regSeed;
+	std::vector<summonPack*> regSummon;
+	std::vector<toolPack*> regTool;
+	std::vector<creaturePack*> regCreature;
+	std::vector<ingredientPack*> regIng;
+	std::vector<actionStruct*> actions;
 
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
-	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
+	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
+	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
 };
 
