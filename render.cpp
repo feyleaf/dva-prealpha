@@ -112,20 +112,24 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 	sf::Vector2i o=sf::Vector2i(toVector(obj->origin));
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
-	currentSprite.setColor(obj->distortionColor);
+	currentSprite.setColor(tint);
 
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
 	win.draw(currentSprite);
 }
 
-void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place)
+void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place, bool highlight)
 {
 	currentSprite.setTexture(entitySheet);
 	coord o=obj->origin;
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
-	currentSprite.setColor(sf::Color::White);
+	if(highlight)
+	{
+		currentSprite.setColor(sf::Color::Blue);
+	}
+	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
 	
 	win.draw(currentSprite);

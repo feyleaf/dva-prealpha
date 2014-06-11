@@ -37,7 +37,10 @@ protected:
 	sf::RenderWindow app;
 	sf::Event gameEvent;
 	sf::Keyboard keys;
+	sf::Mouse theMouse;
 	coord mouse;
+	coord finemouse;
+	bool isClicking;
 	bool pin;
 
 	RenderManager render;
@@ -61,6 +64,10 @@ public:
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(int shapeID, const char* codename_main, const char* codename_accent, coord _tl, coord _br);
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
+
+	void processAction(actionStruct* act);
+	int entityHover();
+	int tileHover();
 
 	int getTileIndexAt(coord _pt);
 	bool eraseTileAt(coord _pt);

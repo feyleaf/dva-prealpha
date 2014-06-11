@@ -68,6 +68,7 @@ struct entityTemplate
 	unsigned char type;
 	char name[40];
 	coord dimensions;
+	sf::IntRect box;
 	char spritefile[40];
 	unsigned char iconRange;
 	char creation[32];
@@ -153,17 +154,17 @@ struct seedPackTemplate
 struct vegetationPackTemplate
 {
 	int entityID;
-	float growthTime;
+	int growthTicks;
 	unsigned char maxGrowthStages;
 	unsigned char mapBonus;
 	std::vector<unsigned char> lootList;
 	vegetationPackTemplate(int _id,
-							float _growthTime,
+							int _growthTime,
 							unsigned char _maxGrowthStages,
 							unsigned char _mapBonus)
-	{entityID=_id; growthTime=_growthTime; maxGrowthStages=_maxGrowthStages; mapBonus=_mapBonus; lootList.clear();}
+	{entityID=_id; growthTicks=_growthTime; maxGrowthStages=_maxGrowthStages; mapBonus=_mapBonus; lootList.clear();}
 	vegetationPackTemplate()
-	{entityID=0; growthTime=0.0f; maxGrowthStages=0; mapBonus=0; lootList.clear();}
+	{entityID=0; growthTicks=0; maxGrowthStages=0; mapBonus=0; lootList.clear();}
 };
 
 //constructed template of rules for generating creatures

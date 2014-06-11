@@ -32,10 +32,11 @@ struct registeredEntity
 	int packIndex;
 	coord origin;
 	coord dimensions;
+	sf::IntRect box;
 	int frame;
 	coord pos;
-	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, coord _pos)
-	{type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; pos=_pos;}
+	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
+	{type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
 };
 
 struct toolPack
@@ -94,16 +95,17 @@ struct vegPack
 {
 	bool active;
 	float bornTime;
+	int growthTicks;
 	int maxGrowth;
 	int currentGrowth;
 	unsigned char mapBonus;
 	std::vector<int> dropList;
 	vegPack()
-	{active=false; bornTime=0.0f; maxGrowth=0; currentGrowth=0; mapBonus=0; dropList.clear();}
-	vegPack(float _born, int _max, int _stage, unsigned char _bonus)
-	{active=false; bornTime=_born; maxGrowth=_max; currentGrowth=0; mapBonus=_bonus; dropList.clear();}
+	{active=false; bornTime=0.0f; growthTicks=0; maxGrowth=0; currentGrowth=0; mapBonus=0; dropList.clear();}
+	vegPack(float _born, int _ticks, int _max, int _stage, unsigned char _bonus)
+	{active=false; bornTime=_born; growthTicks=_ticks; maxGrowth=_max; currentGrowth=0; mapBonus=_bonus; dropList.clear();}
 	vegPack(float curTime, const vegetationPackTemplate& src)
-	{active=false; bornTime=curTime; maxGrowth=src.maxGrowthStages; currentGrowth=0; mapBonus=src.mapBonus; dropList.clear();}
+	{active=false; bornTime=curTime; growthTicks=src.growthTicks; maxGrowth=src.maxGrowthStages; currentGrowth=0; mapBonus=src.mapBonus; dropList.clear();}
 };
 
 struct creaturePack
@@ -146,7 +148,7 @@ struct actionStruct
 	int actionTemplateIndex;
 	int entityIndexSource;
 	int entityIndexTarget;
-	int tileIndexSource;
+	int tileIndexTarget;
 	int priority;
 	float timeToActivate;
 };

@@ -12,6 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 //helps the constructor by reseting values and loading settings
 void GameClass::initialize()
 {
+	isClicking=false;
 	pin=false;
 	loadSettings();
 	gameClock.restart();
@@ -45,6 +46,42 @@ GameClass::GameClass()
 	}
 }
 
+//processes an active, valid and queued action
+void GameClass::processAction(actionStruct* act)
+{
+	if(registry.regEntities[act->entityIndexSource] != NULL)
+	{
+		//split between entity targets and tile targets
+		if(registry.regEntities[act->entityIndexTarget] != NULL)
+		{
+			//target is an entity
+		}
+		else if(registry.regTiles[act->tileIndexTarget] != NULL)
+		{
+			//target is a tile
+		}
+		else
+		{
+			//no target specified
+			//ideal for growflower
+			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "growflower")==0)
+			{
+				int src=act->entityIndexSource;
+				int veg=registry.regEntities[act->entityIndexSource]->packIndex;
+				float duration=float(registry.regVeg[veg]->growthTicks)*0.2f;
+				//update the frame as long as it's still less than the max growth stages
+				if(registry.regVeg[veg]->currentGrowth < (registry.regVeg[veg]->maxGrowth-1))
+				{
+					act->active=false;
+					registry.regVeg[veg]->currentGrowth++;
+					registry.regEntities[src]->frame = registry.regVeg[veg]->currentGrowth;
+					registry.createAction(tmp, "growflower", src, 0, 0, gameClock.getElapsedTime().asSeconds()+duration);
+				}
+			}
+		}
+	}
+
+}
 //performs update tasks each frame
 void GameClass::gameUpdater(float actSeconds)
 {
@@ -53,32 +90,17 @@ void GameClass::gameUpdater(float actSeconds)
 		experimentalMapGen();
 		gameConstant=623;
 	}
+	//must keep track of the size prior to running the action queues, because the queue will grow every tick
+	//which could result in an infinite loop
 	int thisTick=int(registry.actions.size());
+
 	for(int i=1; i<thisTick; i++)
 	{
 		if(registry.actions[i] != NULL && registry.actions[i]->active)
 		{
 			if(registry.actions[i]->timeToActivate<=actSeconds)
 			{
-				//this is gonna be a more complicated routine lol
-				//right now the only action we're trying to test is the growth, so i'll assume all actions
-				//active are "growflower"
-				if(registry.regEntities[registry.actions[i]->entityIndexSource] != NULL)
-				{
-					int veg=registry.regEntities[registry.actions[i]->entityIndexSource]->packIndex;
-					int src=registry.actions[i]->entityIndexSource;
-					int index=registry.regEntities[src]->entityTemplateIndex;
-					int act=registry.actions[i]->actionTemplateIndex;
-					float duration=float(tmp.container.actionList[act].coolDownTicks)*0.2f;
-					//update the frame as long as it's still less than the max growth stages
-					if(registry.regVeg[veg]->currentGrowth < (registry.regVeg[veg]->maxGrowth-1))
-					{
-						registry.actions[i]->active=false;
-						registry.regVeg[veg]->currentGrowth++;
-						registry.regEntities[src]->frame = registry.regVeg[veg]->currentGrowth;
-						registry.createAction(tmp, "growflower", src, src, 0, actSeconds+duration);
-					}
-				}
+				processAction(registry.actions[i]);
 			}
 		}
 	}
@@ -236,14 +258,38 @@ GameClass::~GameClass()
 //returns the size of the regTiles list
 int GameClass::numberOfTiles()
 {
-	return 0;
-//	return int(registry.regTiles.size()-1);
+	return int(registry.regTiles.size()-1);
 }
 
 int GameClass::numberOfEntities()
 {
+	return int(registry.regEntities.size()-1);
+}
+
+int GameClass::entityHover()
+{
+	//only returns oldest registrered index
+	for(int i=1; i<numberOfEntities(); i++)
+	{
+		if(registry.regEntities[i]->box.contains(finemouse.x, finemouse.y))
+		{
+			return i;
+		}
+	}
 	return 0;
-//	return int(registry.regEntities.size()-1);
+}
+
+int GameClass::tileHover()
+{
+	if(entityHover()>0) return 0; //maybe??
+	for(int i=1; i<numberOfTiles(); i++)
+	{
+		if(registry.regTiles[i]->pos == mouse)
+		{
+			return i;
+		}
+	}
+	return 0;
 }
 
 //returns the grid coordinates of the mouse pointer
@@ -252,12 +298,12 @@ coord GameClass::getMouseGrid()
 	if(app.getSize().x>0 && app.getSize().y>0)
 	{
 		//STANDARD LAYOUT (480x320, fully flexible)
-		mouse.x=(((sf::Mouse::getPosition(app).x)*settings.winWid)/(app.getSize().x));
-		mouse.y=(((sf::Mouse::getPosition(app).y)*settings.winHig)/(app.getSize().y));
+		finemouse.x=(((theMouse.getPosition(app).x)*settings.winWid)/(app.getSize().x));
+		finemouse.y=(((theMouse.getPosition(app).y)*settings.winHig)/(app.getSize().y));
 
 		//align with grid
-		mouse.x=mouse.x/settings.tileWid;
-		mouse.y=mouse.y/settings.tileHig;
+		mouse.x=finemouse.x/settings.tileWid;
+		mouse.y=(finemouse.y-16)/settings.tileHig;
 	}
 	return mouse;
 }
@@ -295,6 +341,14 @@ void GameClass::inputHandler()
 
 	//mouse handling routine
 	getMouseGrid();
+	if(!theMouse.isButtonPressed(sf::Mouse::Button::Left)) isClicking=false;
+	if(theMouse.isButtonPressed(sf::Mouse::Button::Left) && !isClicking)
+	{
+		isClicking=true;
+		//validate clicking inside the game window
+		if(!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows))
+			debugFile << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")\n";
+	}
 }
 
 //renders the game state to the screen
@@ -304,17 +358,21 @@ void GameClass::gameRenderer()
 
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-	for(int i=0; i<int(registry.regTiles.size()); i++)
+	for(int i=1; i<int(registry.regTiles.size()); i++)
 	{
 		if(registry.regTiles[i] != NULL)
 		{
-			render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos);
+			if(i==tileHover())
+			{
+				render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos, sf::Color::Red);
+			}
+			else render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos, registry.regTiles[i]->distortionColor);
 		}
 	}
-	for(int i=0; i<int(registry.regEntities.size()); i++)
+	for(int i=1; i<int(registry.regEntities.size()); i++)
 	{
 		if(registry.regEntities[i] != NULL)
-			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->pos);
+			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->pos, (i==entityHover()));
 	}
 	app.display();
 }

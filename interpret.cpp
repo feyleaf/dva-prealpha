@@ -93,6 +93,14 @@ entityTemplate TemplateReaderClass::parseEntity(unsigned char category)
 	std::getline(pFile, chunk, ',');
 	ret.dimensions.y = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
+	ret.box.left = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.top = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.width = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.height = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
 	strncpy_s(ret.spritefile, 40, chunk.c_str(), 40);
 	std::getline(pFile, chunk, ',');
 	ret.iconRange = unsigned char(atoi(chunk.c_str()));
@@ -146,7 +154,7 @@ vegetationPackTemplate TemplateReaderClass::parseVegetation(int entityIndex)
 	std::string chunk;
 	ret.entityID=entityIndex;
 	std::getline(pFile, chunk, ',');
-	ret.growthTime = float(atoi(chunk.c_str()));
+	ret.growthTicks = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
 	ret.maxGrowthStages = unsigned char(atoi(chunk.c_str()));
 	std::getline(pFile, chunk, ',');
