@@ -165,6 +165,68 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 	return ret;
 }
 
+void GameObjectClass::eraseEntity(int entityIndex)
+{
+	//this routine DOES NOT remove the entity from the list, only empties the data
+	//first erase the associated pack
+	if(regEntities[entityIndex] == NULL) return;
+	int category=regEntities[entityIndex]->type;
+	int catIndex=regEntities[entityIndex]->packIndex;
+	switch(category)
+	{
+		case ICAT_CREATURE:
+			if(regCreature[catIndex] != NULL)
+			{
+				regCreature[catIndex]->active=false;
+			}
+			break;
+		case ICAT_DECORATION:
+			if(regDeco[catIndex] != NULL)
+			{
+				regDeco[catIndex]->active=false;
+			}
+			break;
+		case ICAT_INGREDIENT:
+			if(regIng[catIndex] != NULL)
+			{
+				regIng[catIndex]->active=false;
+			}
+			break;
+		case ICAT_SEED:
+			if(regSeed[catIndex] != NULL)
+			{
+				regSeed[catIndex]->active=false;
+			}
+			break;
+		case ICAT_SUMMON:
+			if(regSummon[catIndex] != NULL)
+			{
+				regSummon[catIndex]->active=false;
+			}
+			break;
+		case ICAT_TOOL:
+			if(regTool[catIndex] != NULL)
+			{
+				regTool[catIndex]->active=false;
+			}
+			break;
+		case ICAT_VEGETATION:
+			if(regVeg[catIndex] != NULL)
+			{
+				regVeg[catIndex]->active=false;
+			}
+			break;
+		default:
+			break;
+	}
+	regEntities[entityIndex]->packIndex=0;
+	regEntities[entityIndex]->type=ICAT_NULLENTITY;
+	regEntities[entityIndex]->entityTemplateIndex=0;
+	regEntities[entityIndex]->origin=coord(0,0);
+	regEntities[entityIndex]->frame=0;
+
+}
+
 bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time)
 {
 	//first search the action template registry

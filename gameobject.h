@@ -174,6 +174,7 @@ public:
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
+	void eraseEntity(int entityIndex);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
 };
 

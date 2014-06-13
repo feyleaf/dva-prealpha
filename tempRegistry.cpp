@@ -37,10 +37,9 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				else container.creaturePackList.push_back(parser.parseCreature(index));
 				break;
 			case ICAT_INGREDIENT:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_INGREDIENT));
 				index=container.entityList.size()-1;
-				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
-				else container.ingredientPackList.push_back(parser.parseIngredient(index));
+				container.ingredientPackList.push_back(parser.parseIngredient(index));
 				break;
 			case ICAT_SEED:
 				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));

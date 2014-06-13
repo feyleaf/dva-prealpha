@@ -49,6 +49,8 @@ GameClass::GameClass()
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
+	if(!act->active) return;
+	act->active = false;
 	if(registry.regEntities[act->entityIndexSource] != NULL)
 	{
 		//split between entity targets and tile targets
@@ -68,6 +70,7 @@ void GameClass::processAction(actionStruct* act)
 			{
 				int src=act->entityIndexSource;
 				int veg=registry.regEntities[act->entityIndexSource]->packIndex;
+				if(veg==0 || src==0) return;
 				float duration=float(registry.regVeg[veg]->growthTicks)*0.2f;
 				//update the frame as long as it's still less than the max growth stages
 				if(registry.regVeg[veg]->currentGrowth < (registry.regVeg[veg]->maxGrowth-1))
@@ -77,6 +80,18 @@ void GameClass::processAction(actionStruct* act)
 					registry.regEntities[src]->frame = registry.regVeg[veg]->currentGrowth;
 					registry.createAction(tmp, "growflower", src, 0, 0, gameClock.getElapsedTime().asSeconds()+duration);
 				}
+				return;
+			}
+			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "convertflower")==0)
+			{
+				int src=act->entityIndexSource;
+				coord psx=registry.regEntities[src]->pos;
+				int veg=registry.regEntities[src]->packIndex;
+				registry.eraseEntity(src);
+				//registry.regEntities.erase(registry.regEntities.begin()+src);
+				//registry.regVeg.erase(registry.regVeg.begin()+veg);
+				fillEntity("bluepetal", psx);
+				return;
 			}
 		}
 	}
@@ -251,6 +266,7 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 
 GameClass::~GameClass()
 {
+	debugFile << "Closed with " << int(registry.actions.size()) << " pending/created actions\n";
 	debugFile.close();
 	app.close();
 }
@@ -347,7 +363,17 @@ void GameClass::inputHandler()
 		isClicking=true;
 		//validate clicking inside the game window
 		if(!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows))
+		{
+			int index=entityHover();
 			debugFile << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")\n";
+			if(index>0)
+			{
+				if(registry.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
+				{
+					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+1);
+				}
+			}
+		}
 	}
 }
 
@@ -371,7 +397,7 @@ void GameClass::gameRenderer()
 	}
 	for(int i=1; i<int(registry.regEntities.size()); i++)
 	{
-		if(registry.regEntities[i] != NULL)
+		if(registry.regEntities[i] != NULL && registry.regEntities[i]->packIndex>0)
 			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->pos, (i==entityHover()));
 	}
 	app.display();
