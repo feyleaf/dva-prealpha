@@ -27,6 +27,7 @@ struct registeredTile
 
 struct registeredEntity
 {
+	bool active;
 	unsigned char type;
 	int entityTemplateIndex;
 	int packIndex;
@@ -36,7 +37,7 @@ struct registeredEntity
 	int frame;
 	coord pos;
 	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
+	{active=true; type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
 };
 
 struct toolPack
@@ -153,12 +154,11 @@ struct actionStruct
 	float timeToActivate;
 };
 
-
-class GameObjectClass
+class GameObjectContainerClass
 {
 public:
-	GameObjectClass();
-	~GameObjectClass(){}
+	GameObjectContainerClass();
+	~GameObjectContainerClass() {}
 
 	std::vector<registeredTile*> regTiles;
 	std::vector<registeredEntity*> regEntities;
@@ -170,6 +170,28 @@ public:
 	std::vector<creaturePack*> regCreature;
 	std::vector<ingredientPack*> regIng;
 	std::vector<actionStruct*> actions;
+
+	std::vector<int> listHandler;
+
+	int numberOfTilesOnGrid(coord _grid);
+	int numberOfEntitiesOnGrid(coord _grid);
+
+	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+
+	void handleIndexesOnGrid(coord _grid);
+	void handleEntitiesList(int _index);
+	void handleTypesList(int _catType);
+	void handleTilesList(int _index);
+};
+
+class GameObjectClass
+{
+public:
+	GameObjectClass();
+	~GameObjectClass(){}
+
+	GameObjectContainerClass obj;
 
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);

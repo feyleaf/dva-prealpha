@@ -5,27 +5,7 @@ Read 48 templates from the file.
 :Marlboro Bush
 :Boulder
 :Mahogany Log
-Mouse Clicked at: (8, 7)
-Mouse Clicked at: (10, 6)
-Mouse Clicked at: (8, 4)
-Mouse Clicked at: (8, 2)
-Mouse Clicked at: (11, 1)
-Mouse Clicked at: (10, 1)
-Mouse Clicked at: (14, 0)
-Mouse Clicked at: (17, 0)
-Mouse Clicked at: (9, 0)
-Mouse Clicked at: (8, 0)
-Mouse Clicked at: (7, 0)
-Mouse Clicked at: (6, 1)
-Mouse Clicked at: (5, 1)
-Mouse Clicked at: (5, 2)
-Mouse Clicked at: (7, 4)
-Mouse Clicked at: (3, 5)
-Mouse Clicked at: (1, 4)
-Mouse Clicked at: (0, 5)
-Mouse Clicked at: (1, 7)
-Mouse Clicked at: (4, 10)
-Mouse Clicked at: (5, 8)
-Mouse Clicked at: (6, 11)
 Mouse Clicked at: (6, 12)
-Closed with 412 pending/created actions
+Mouse Clicked at: (6, 10)
+Mouse Clicked at: (5, 9)
+Closed with 82 pending/created actions

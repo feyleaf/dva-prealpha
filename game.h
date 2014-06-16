@@ -12,7 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 struct gameHeader
 {
-	unsigned int randSeed;
+	unsigned long randSeed;
 	unsigned int mapIndex;
 };
 
@@ -42,6 +42,8 @@ protected:
 	coord finemouse;
 	bool isClicking;
 	bool pin;
+	sf::Font mainfont;
+	sf::Text sidebar;
 
 	RenderManager render;
 
@@ -74,6 +76,8 @@ public:
 
 	int numberOfTiles();
 	int numberOfEntities();
+
+	sf::String outputEntity(int index);
 
 };
 

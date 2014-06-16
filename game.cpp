@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 21, 2014
+June 14, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -32,12 +32,18 @@ void GameClass::initialize()
 //then creates the 'app' window
 GameClass::GameClass()
 {
+	//sidebar.setCharacterSize(24);
+	//sidebar.setColor(sf::Color::White);
+	//sidebar.setString(sf::String("Debug Test"));
 	debugFile.open("processes.txt");
 	newGame=true;
 	quitGame=false;
 	header.mapIndex=0;
 	initialize();
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
+	mainfont.loadFromFile(settings.mainFontFile);
+	sidebar = sf::Text("Debug Test", mainfont, 24);
+	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
 	for(int t=0; t<int(tmp.container.decoPackList.size()); t++)
 	{
 		debugFile.write(":", 1);
@@ -51,14 +57,14 @@ void GameClass::processAction(actionStruct* act)
 {
 	if(!act->active) return;
 	act->active = false;
-	if(registry.regEntities[act->entityIndexSource] != NULL)
+	if(registry.obj.regEntities[act->entityIndexSource] != NULL)
 	{
 		//split between entity targets and tile targets
-		if(registry.regEntities[act->entityIndexTarget] != NULL)
+		if(registry.obj.regEntities[act->entityIndexTarget] != NULL)
 		{
 			//target is an entity
 		}
-		else if(registry.regTiles[act->tileIndexTarget] != NULL)
+		else if(registry.obj.regTiles[act->tileIndexTarget] != NULL)
 		{
 			//target is a tile
 		}
@@ -69,28 +75,37 @@ void GameClass::processAction(actionStruct* act)
 			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "growflower")==0)
 			{
 				int src=act->entityIndexSource;
-				int veg=registry.regEntities[act->entityIndexSource]->packIndex;
+				int veg=registry.obj.regEntities[act->entityIndexSource]->packIndex;
 				if(veg==0 || src==0) return;
-				float duration=float(registry.regVeg[veg]->growthTicks)*0.2f;
+				float duration=float(registry.obj.regVeg[veg]->growthTicks)*0.2f;
 				//update the frame as long as it's still less than the max growth stages
-				if(registry.regVeg[veg]->currentGrowth < (registry.regVeg[veg]->maxGrowth-1))
+				if(registry.obj.regVeg[veg]->currentGrowth < (registry.obj.regVeg[veg]->maxGrowth-1))
 				{
 					act->active=false;
-					registry.regVeg[veg]->currentGrowth++;
-					registry.regEntities[src]->frame = registry.regVeg[veg]->currentGrowth;
+					registry.obj.regVeg[veg]->currentGrowth++;
+					registry.obj.regEntities[src]->frame = registry.obj.regVeg[veg]->currentGrowth;
 					registry.createAction(tmp, "growflower", src, 0, 0, gameClock.getElapsedTime().asSeconds()+duration);
 				}
 				return;
 			}
 			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "convertflower")==0)
 			{
+				bool isRed=false;
 				int src=act->entityIndexSource;
-				coord psx=registry.regEntities[src]->pos;
-				int veg=registry.regEntities[src]->packIndex;
+				isRed=(registry.obj.regEntities[src]->entityTemplateIndex==registry.obj.getEntityTemplateIndex(tmp, "redrose"));
+				coord psx=registry.obj.regEntities[src]->pos;
+				int veg=registry.obj.regEntities[src]->packIndex;
 				registry.eraseEntity(src);
 				//registry.regEntities.erase(registry.regEntities.begin()+src);
 				//registry.regVeg.erase(registry.regVeg.begin()+veg);
-				fillEntity("bluepetal", psx);
+				if(isRed)
+				{
+					fillEntity("redpetal", psx);
+				}
+				else
+				{
+					fillEntity("bluepetal", psx);
+				}
 				return;
 			}
 		}
@@ -107,15 +122,15 @@ void GameClass::gameUpdater(float actSeconds)
 	}
 	//must keep track of the size prior to running the action queues, because the queue will grow every tick
 	//which could result in an infinite loop
-	int thisTick=int(registry.actions.size());
+	int thisTick=int(registry.obj.actions.size());
 
 	for(int i=1; i<thisTick; i++)
 	{
-		if(registry.actions[i] != NULL && registry.actions[i]->active)
+		if(registry.obj.actions[i] != NULL && registry.obj.actions[i]->active)
 		{
-			if(registry.actions[i]->timeToActivate<=actSeconds)
+			if(registry.obj.actions[i]->timeToActivate<=actSeconds)
 			{
-				processAction(registry.actions[i]);
+				processAction(registry.obj.actions[i]);
 			}
 		}
 	}
@@ -153,7 +168,6 @@ void GameClass::experimentalMapGen()
 	}
 	fillEntity("squirrel", coord(5,5));
 	fillEntity("irongolem", coord(10,10));
-
 	/*
 	//we'll experiment with TERRAIN_BEACH
 	int terr_id=TERRAIN_BEACH;
@@ -266,7 +280,7 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 
 GameClass::~GameClass()
 {
-	debugFile << "Closed with " << int(registry.actions.size()) << " pending/created actions\n";
+	debugFile << "Closed with " << int(registry.obj.actions.size()) << " pending/created actions\n";
 	debugFile.close();
 	app.close();
 }
@@ -274,12 +288,12 @@ GameClass::~GameClass()
 //returns the size of the regTiles list
 int GameClass::numberOfTiles()
 {
-	return int(registry.regTiles.size()-1);
+	return int(registry.obj.regTiles.size());
 }
 
 int GameClass::numberOfEntities()
 {
-	return int(registry.regEntities.size()-1);
+	return int(registry.obj.regEntities.size());
 }
 
 int GameClass::entityHover()
@@ -287,7 +301,7 @@ int GameClass::entityHover()
 	//only returns oldest registrered index
 	for(int i=1; i<numberOfEntities(); i++)
 	{
-		if(registry.regEntities[i]->box.contains(finemouse.x, finemouse.y))
+		if(registry.obj.regEntities[i]->active && registry.obj.regEntities[i]->box.contains(finemouse.x, finemouse.y))
 		{
 			return i;
 		}
@@ -297,10 +311,10 @@ int GameClass::entityHover()
 
 int GameClass::tileHover()
 {
-	if(entityHover()>0) return 0; //maybe??
+	//if(entityHover()>0) return 0; //maybe??
 	for(int i=1; i<numberOfTiles(); i++)
 	{
-		if(registry.regTiles[i]->pos == mouse)
+		if(registry.obj.regTiles[i]->pos == mouse)
 		{
 			return i;
 		}
@@ -368,9 +382,9 @@ void GameClass::inputHandler()
 			debugFile << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")\n";
 			if(index>0)
 			{
-				if(registry.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
+				if(registry.obj.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
 				{
-					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+1);
+					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+0.15f);
 				}
 			}
 		}
@@ -384,25 +398,47 @@ void GameClass::gameRenderer()
 
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-	for(int i=1; i<int(registry.regTiles.size()); i++)
+	for(int i=1; i<int(registry.obj.regTiles.size()); i++)
 	{
-		if(registry.regTiles[i] != NULL)
+		if(registry.obj.regTiles[i] != NULL)
 		{
-			if(i==tileHover())
+			if(i==tileHover() && entityHover()==0)
 			{
-				render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos, sf::Color::Red);
+				render.DrawTile(app, registry.obj.regTiles[i], registry.obj.regTiles[i]->pos, sf::Color::Red);
 			}
-			else render.DrawTile(app, registry.regTiles[i], registry.regTiles[i]->pos, registry.regTiles[i]->distortionColor);
+			else render.DrawTile(app, registry.obj.regTiles[i], registry.obj.regTiles[i]->pos, registry.obj.regTiles[i]->distortionColor);
 		}
 	}
-	for(int i=1; i<int(registry.regEntities.size()); i++)
+	for(int i=1; i<int(registry.obj.regEntities.size()); i++)
 	{
-		if(registry.regEntities[i] != NULL && registry.regEntities[i]->packIndex>0)
-			render.DrawEntity(app, registry.regEntities[i], registry.regEntities[i]->pos, (i==entityHover()));
+		if(registry.obj.regEntities[i] != NULL && registry.obj.regEntities[i]->active)
+			render.DrawEntity(app, registry.obj.regEntities[i], registry.obj.regEntities[i]->pos, (i==entityHover()));
 	}
+	if(entityHover() != 0) sidebar.setString(outputEntity(entityHover()));
+	app.draw(sidebar);
 	app.display();
 }
 
+sf::String GameClass::outputEntity(int index)
+{
+	sf::String ret="";
+	if(registry.obj.regEntities[index] == NULL) return ret;
+
+	ret+=tmp.container.entityList[registry.obj.regEntities[index]->entityTemplateIndex].name;
+	ret+="\n";
+	switch (registry.obj.regEntities[index]->type)
+	{
+	case ICAT_CREATURE: ret+="Creature\n"; break;
+	case ICAT_DECORATION: ret+="Decoration\n"; break;
+	case ICAT_VEGETATION: ret+="Vegetation\n"; break;
+	case ICAT_INGREDIENT: ret+="Ingredient\n"; break;
+	case ICAT_SEED: ret+="Seed\n"; break;
+	case ICAT_SUMMON: ret+="Summon Charm\n"; break;
+	case ICAT_TOOL: ret+="Tool\n"; break;
+	default: ret+="Something Else...\n"; break;
+	}
+	return ret;
+}
 
 //loads the game setup information from 'settings.cfg' text file
 //so far inefficient and sloppy code
