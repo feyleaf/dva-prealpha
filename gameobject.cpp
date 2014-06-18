@@ -31,6 +31,8 @@ GameObjectContainerClass::GameObjectContainerClass()
 	regVeg.push_back(NULL);
 	actions.clear();
 	actions.push_back(NULL);
+	regButtons.clear();
+	regButtons.push_back(NULL);
 }
 
 int GameObjectContainerClass::numberOfTilesOnGrid(coord _grid)
@@ -263,6 +265,37 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 		default:
 			return false;
 			break;
+	}
+	return ret;
+}
+
+bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
+{
+	bool ret=false;
+	coord _orig;
+	int row=0;
+	int p=0;
+	sf::IntRect bb; //the bounding box around the entity sprite(for mouse selection, NOT for collision with other entities)
+	//first search the entity template registry
+	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
+	{
+		row+=tmp.container.buttonList[i-1].dimensions.y;
+		if(strcmp(tmp.container.buttonList[i].cname, _name)==0)
+		{
+			_orig = coord(0, row);
+			p=i; break;
+		}
+	}
+	if(p==0) return false;
+	bb=tmp.container.buttonList[p].box; bb.left+=(_pos.x*32); bb.top+=(_pos.y*32);
+
+	for(int i=1; i<int(tmp.container.actionList.size()); i++)
+	{
+		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
+		{
+			obj.regButtons.push_back(new buttonStruct(i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
+			return true;
+		}
 	}
 	return ret;
 }

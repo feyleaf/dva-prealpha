@@ -24,6 +24,7 @@ void GameClass::initialize()
 	tmp.parseFile("allreg-testing.txt");
 	render.createTileSheet(tmp);
 	render.createEntitySheet(tmp);
+	render.createGuiSheet(tmp);
 	render.loadGraphicsFiles(settings);
 	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
 }
@@ -168,6 +169,7 @@ void GameClass::experimentalMapGen()
 	}
 	fillEntity("squirrel", coord(5,5));
 	fillEntity("irongolem", coord(10,10));
+	fillButton("magnifier", coord(1,1));
 	/*
 	//we'll experiment with TERRAIN_BEACH
 	int terr_id=TERRAIN_BEACH;
@@ -278,6 +280,16 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 	}
 }
 
+void GameClass::fillButton(const char* codename, coord _pos)
+{
+	if(!registry.createButton(tmp, codename, _pos))
+	{
+		//if there's nothing matching to clone, we must skip this step and inform the debug log
+		debugFile << "FillGui failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
+		return;
+	}
+}
+
 GameClass::~GameClass()
 {
 	debugFile << "Closed with " << int(registry.obj.actions.size()) << " pending/created actions\n";
@@ -302,6 +314,19 @@ int GameClass::entityHover()
 	for(int i=1; i<numberOfEntities(); i++)
 	{
 		if(registry.obj.regEntities[i]->active && registry.obj.regEntities[i]->box.contains(finemouse.x, finemouse.y))
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
+int GameClass::buttonHover()
+{
+	//only returns oldest registrered index
+	for(int i=1; i<int(registry.obj.regButtons.size()); i++)
+	{
+		if(registry.obj.regButtons[i]->active && registry.obj.regButtons[i]->pos == mouse)
 		{
 			return i;
 		}
@@ -378,15 +403,15 @@ void GameClass::inputHandler()
 		//validate clicking inside the game window
 		if(!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows))
 		{
-			int index=entityHover();
+			int index=buttonHover();
 			debugFile << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")\n";
-			if(index>0)
-			{
-				if(registry.obj.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
-				{
-					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+0.15f);
-				}
-			}
+//			if(index>0)
+//			{
+//				if(registry.obj.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
+//				{
+//					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+0.15f);
+//				}
+//			}
 		}
 	}
 }
@@ -414,7 +439,13 @@ void GameClass::gameRenderer()
 		if(registry.obj.regEntities[i] != NULL && registry.obj.regEntities[i]->active)
 			render.DrawEntity(app, registry.obj.regEntities[i], registry.obj.regEntities[i]->pos, (i==entityHover()));
 	}
+	for(int i=1; i<int(registry.obj.regButtons.size()); i++)
+	{
+		if(registry.obj.regButtons[i] != NULL && registry.obj.regButtons[i]->active)
+			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos);
+	}
 	if(entityHover() != 0) sidebar.setString(outputEntity(entityHover()));
+	if(isClicking && buttonHover()>0) sidebar.setString("Clicked Maginifier!");
 	app.draw(sidebar);
 	app.display();
 }

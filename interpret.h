@@ -61,6 +61,7 @@ public:
 	actionTemplate parseAction();
 	terrainPoolTemplate parseTerrain();
 	biomeInformationTemplate parseBiome();
+	guiButtonTemplate parseButton();
 };
 
 

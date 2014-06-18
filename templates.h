@@ -313,21 +313,25 @@ struct guiButtonTemplate
 {
 	char cname[40];
 	char name[32];				//button will need a name
-	unsigned int actionID;
-	unsigned char sheet;
-	unsigned char sheetOrigin;
-	unsigned char iconRange;	//animating and state
-	unsigned char state;
+	coord dimensions;
+	sf::IntRect box;
+	char spritefile[40];
+	unsigned char iconRange;
+	char actionName[32];
+	unsigned char actionID;
 	sf::IntRect placement;
 	guiButtonTemplate(const char* _cname,
 						const char* _name,
-						unsigned int _action,
-						unsigned char _sheet,
-						unsigned char _sheetOrigin,
+						coord _dim,
+						sf::IntRect _box,
+						const char* _sprite,
+						const char* _actionName,
 						unsigned char _iconRange,
-						unsigned char _state,
+						unsigned char _action,
 						sf::IntRect _placement)
-	{strncpy_s(cname, 40, _cname, 40); strncpy_s(name, 32, _name, 32); actionID=_action; sheet=_sheet; sheetOrigin=_sheetOrigin; iconRange=_iconRange; state=_state; placement=_placement;}
+	{strncpy_s(cname, 40, _cname, 40); strncpy_s(name, 32, _name, 32); dimensions=_dim; box=_box; actionID=_action; strncpy_s(spritefile, 40, _sprite, 40); strncpy_s(actionName, 40, _actionName, 40); iconRange=_iconRange; placement=_placement;}
+	guiButtonTemplate()
+	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); actionID=0; dimensions=coord(0,0); box=sf::IntRect(0,0,0,0); strncpy_s(spritefile, 40, "gui-1_2.png", 40); strncpy_s(actionName, 32, "none", 32); iconRange=0; actionID=0; placement=sf::IntRect(0,0,0,0);}
 };
 
 //template of forms using multiple gui buttons
@@ -350,6 +354,7 @@ class TemplateContainerClass
 			ingredientPackList.clear(); ingredientPackList.push_back(ingredientPackTemplate());
 			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
+			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
 		}
 		~TemplateContainerClass() {}
 

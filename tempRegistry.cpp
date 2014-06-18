@@ -24,6 +24,9 @@ void TemplateRegistryClass::parseFile(const char* filename)
 			case ICAT_PROTOCOL:
 				container.actionList.push_back(parser.parseAction());
 				break;
+			case ICAT_BUTTON:
+				container.buttonList.push_back(parser.parseButton());
+				break;
 			case ICAT_DECORATION:
 				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
 				index=container.entityList.size()-1;

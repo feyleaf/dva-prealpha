@@ -86,6 +86,45 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
 	spriteSheet.getTexture().copyToImage().saveToFile("entities_temp.png");
 }
 
+void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp)
+{
+	int iconTotalWidth=0;
+	int rowTotalHeight=0;
+	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
+	{
+		rowTotalHeight+=tmp.container.buttonList[i].dimensions.y;
+		if(iconTotalWidth<(tmp.container.buttonList[i].iconRange*tmp.container.buttonList[i].dimensions.x))
+			iconTotalWidth=tmp.container.buttonList[i].iconRange*tmp.container.buttonList[i].dimensions.x;
+	}
+
+	int width=iconTotalWidth;
+	int height=rowTotalHeight;
+	sf::RenderTexture spriteSheet;
+	sf::Texture tempTexture;
+	sf::Sprite tempSprite;
+
+	spriteSheet.create(width, height);
+	spriteSheet.clear(sf::Color(255,255,255,0));
+	int count=0;
+	int row=0; int col=0;
+	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
+	{
+		row+=tmp.container.buttonList[i-1].dimensions.y;
+		for(int c=0; c<tmp.container.buttonList[i].iconRange; c++)
+		{
+			col=c*tmp.container.buttonList[i].dimensions.x;
+			tempTexture.loadFromFile("images/" + std::string(tmp.container.buttonList[i].spritefile), 
+				sf::IntRect(c*tmp.container.buttonList[i].dimensions.x, 0, tmp.container.buttonList[i].dimensions.x, tmp.container.buttonList[i].dimensions.y));
+			tempSprite.setTexture(tempTexture);
+			//tempSprite.setColor(sf::Color(255,255,255));
+			tempSprite.setPosition(float(col), float(row));
+			spriteSheet.draw(tempSprite);			
+		}
+	}
+	spriteSheet.display();
+	spriteSheet.getTexture().copyToImage().saveToFile("gui_temp.png");
+}
+
 void RenderManager::loadGraphicsFiles(settingStruct set)
 {
 	font.loadFromFile(set.mainFontFile);
@@ -94,7 +133,7 @@ void RenderManager::loadGraphicsFiles(settingStruct set)
 	guiSheet.setSmooth(false);
 	entitySheet.loadFromFile("entities_temp.png");
 	tileSheet.loadFromFile("tiles_temp.png");
-	guiSheet.loadFromFile(set.guiSheetFile);
+	guiSheet.loadFromFile("gui_temp.png");
 }
 
 sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _hig)
@@ -131,6 +170,17 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	}
 	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
+	
+	win.draw(currentSprite);
+}
+
+void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place)
+{
+	currentSprite.setTexture(guiSheet);
+	coord o=obj->origin;
+	int frameskip=obj->frame*obj->dimensions.x;
+	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
+	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
 	win.draw(currentSprite);
 }

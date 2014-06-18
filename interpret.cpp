@@ -225,3 +225,36 @@ actionTemplate TemplateReaderClass::parseAction()
 
 	return ret;
 }
+
+guiButtonTemplate TemplateReaderClass::parseButton()
+{
+	guiButtonTemplate ret;
+	//we read the codename,printed name,width,height,sprite file,icon range(1 for singles),and color variance codename
+	std::string chunk;
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.name, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	ret.dimensions.x = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.dimensions.y = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.left = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.top = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.width = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.box.height = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.spritefile, 40, chunk.c_str(), 40);
+	std::getline(pFile, chunk, ',');
+	ret.iconRange = unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');					//this reads to comma because we are going to
+														//parse more directly afterward
+	strncpy_s(ret.actionName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, '\n');					//this reads to comma because we are going to
+														//parse more directly afterward
+	return ret;
+}

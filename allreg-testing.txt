@@ -33,6 +33,8 @@ TILE:ice,Ice,32,32,ice.png,1,ice
 TILE:customgrass,Green Grass 2,32,32,emeraldgrass.png,1,greengrass
 PROTOCOL:solidblock,0,0,1,0
 PROTOCOL:growflower,0,0,1,0
+PROTOCOL:guibutton,0,0,1,0
+PROTOCOL:infoget,0,0,1,0
 PROTOCOL:convertflower,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,0,0,32,32,squirrel.png,1,solidblock,1,1,1,1,1,none
 CREATURE:irongolem,Iron Golem,32,32,0,0,32,32,irongolem.png,1,solidblock,1,1,1,1,1,none
@@ -46,3 +48,4 @@ DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidbl
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
 TERRAIN:beachterrain,Beach,(water,greengrass,emeraldgrass,marble),(obsidian,sand,clay),mahoganylog,(circle,box,parabola,conic)
+BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
