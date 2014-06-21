@@ -60,12 +60,18 @@ public:
 	float gameTime() {return gameClock.getElapsedTime().asSeconds();}
 
 	void inputHandler();
+	void pollWindowsEvents();
+	void pollKeys();
+	void pollMouseClicks();
+
 	bool isClickOnBoard();
 	bool isClickOnGUI();
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
 
 	void gameUpdater(float actSeconds);
+	void processActionList(int maxlength, float actSeconds);
+
 	void gameRenderer();
 
 	bool loadSettings();

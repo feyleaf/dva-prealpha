@@ -9,27 +9,6 @@ personal notes:
 
 ==ID 0 will always be the dummy/undefined for any templates==
 
-	Template Structure Sizes: (imported from 'sizes.txt' May 6, 2014)
-tileTemplate: 24 bytes
-entityTemplate: 52 bytes
-colorVarianceTemplate: 8 bytes
-toolPackTemplate: 12 bytes
-seedPackTemplate: 3 bytes
-vegetationPackTemplate: 24 bytes
-creaturePackTemplate: 24 bytes
-decoPackTemplate: 24 bytes
-summonPackTemplate: 12 bytes
-terrainPoolTemplate: 80 bytes
-ecoPoolTemplate: 56 bytes
-biomeInformationTemplate: 38 bytes
-itemTemplate: 8 bytes
-actionTemplate: 16 bytes
-guiButtonTemplate: 56 bytes
-guiFormsTemplate: 32 bytes
-
-these are loaded from a text file
-each in its own container with a pass-by-reference output(get)
-
 include
 	-ic_math.h
 
@@ -110,6 +89,6 @@ int main()
 	while(!game.gameLoop())
 	{
 	}
-	return int(game.numberOfTiles());
+	return EXIT_SUCCESS;
 }
 

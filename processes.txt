@@ -1,6 +1,6 @@
 32 x 32
 Title: Druid vs Alchemist Test
-Read 58 templates from the file.
+Read 59 templates from the file.
 List: beachtiles
 nothing, water, greengrass, emeraldgrass, marble, 
 List: beachworn
@@ -15,4 +15,6 @@ nothing, circle, box, parabola, conic,
 :Marlboro Bush
 :Boulder
 :Mahogany Log
-Closed with 83 pending/created actions
+32 x 32
+Title: Druid vs Alchemist Test
+Closed with 73 pending/created actions

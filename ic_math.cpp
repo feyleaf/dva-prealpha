@@ -122,7 +122,9 @@ float distortedCosine(float _theta, long seed)
 {
 	//output is 0<output<2
 	srand(unsigned long(777*(seed+tan(_theta*(1+seed)))));
-	return ((float(rand()%100)/100)+((1-cos(_theta))/2));
+	float ret=((float(rand()%100)/100)+((1-cos(_theta))/2));
+	srand((rand()%50)+(unsigned)time(NULL));
+	return ret;
 }
 
 unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long seed)

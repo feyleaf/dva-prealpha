@@ -12,6 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 //helps the constructor by reseting values and loading settings
 void GameClass::initialize()
 {
+	header.randSeed+=100;
 	isClicking=false;
 	pin=false;
 	loadSettings();
@@ -19,8 +20,19 @@ void GameClass::initialize()
 	frameClock.restart();
 	gameConstant=60;
 	gamemode=0;
-	header.randSeed=(unsigned int)time(NULL);
 	initRandom(header.randSeed);
+}
+
+//contructor, sets default values to member variables, opens debug log file
+//then creates the 'app' window
+GameClass::GameClass()
+{
+	debugFile.open("processes.txt");
+	newGame=true;
+	quitGame=false;
+	header.mapIndex=0;
+	header.randSeed=(unsigned int)time(NULL);
+	initialize();
 	tmp.parseFile("allreg-testing.txt");
 	render.createTileSheet(tmp);
 	render.createEntitySheet(tmp);
@@ -36,29 +48,78 @@ void GameClass::initialize()
 		}
 		debugFile << "\n";
 	}
-}
-
-//contructor, sets default values to member variables, opens debug log file
-//then creates the 'app' window
-GameClass::GameClass()
-{
-	//sidebar.setCharacterSize(24);
-	//sidebar.setColor(sf::Color::White);
-	//sidebar.setString(sf::String("Debug Test"));
-	debugFile.open("processes.txt");
-	newGame=true;
-	quitGame=false;
-	header.mapIndex=0;
-	initialize();
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 	mainfont.loadFromFile(settings.mainFontFile);
-	sidebar = sf::Text("Debug Test", mainfont, 24);
+	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", mainfont, 24);
 	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
 	for(int t=0; t<int(tmp.container.decoPackList.size()); t++)
 	{
 		debugFile.write(":", 1);
 		debugFile << tmp.container.entityList[tmp.container.decoPackList[t].entityID].name;
 		debugFile.write("\n", 1);
+	}
+	registry.createAction(tmp, "generatemap", 0,0,0,0.0f);
+}
+
+//runs an update each frame (~1/8 second)
+bool GameClass::gameLoop()
+{
+	while(!quitGame)
+	{
+		inputHandler();
+
+		//game world drawing routine
+
+		if(frameClock.getElapsedTime().asSeconds()>0.125f) //force a constant framerate
+		{
+			gameUpdater(gameClock.getElapsedTime().asSeconds());
+			frameClock.restart();
+			gameRenderer();
+		}
+	}
+
+	return true;
+}
+
+//handles the mouse, keyboard, and window-close input
+void GameClass::inputHandler()
+{
+	pollWindowsEvents();
+	pollKeys();
+	pollMouseClicks();
+}
+
+void GameClass::pollWindowsEvents()
+{
+	while(app.pollEvent(gameEvent))
+	{	
+		if((gameEvent.type == sf::Event::Closed) || (gameEvent.type == sf::Event::KeyPressed && gameEvent.key.code == sf::Keyboard::Escape))
+		{
+			quitGame=true;
+		}
+	}
+}
+
+void GameClass::pollKeys()
+{
+}
+
+void GameClass::pollMouseClicks()
+{
+	//mouse handling routine
+	getMouseGrid();
+	if(!theMouse.isButtonPressed(sf::Mouse::Button::Left)) isClicking=false;
+	if(theMouse.isButtonPressed(sf::Mouse::Button::Left) && !isClicking)
+	{
+		isClicking=true;
+		if(isClickOnGUI())
+		{
+			handleGUIClick(mouse); //creates actions based on the button that was clicked
+		}
+		else if(isClickOnBoard())
+		{
+			handleBoardClick(mouse); //creates actions based on the point that was clicked
+		}
 	}
 }
 
@@ -68,19 +129,47 @@ bool GameClass::actionCodeEquals(int index, const char* _code)
 	return (strcmp(tmp.container.actionList[index].cname, _code)==0);
 }
 
+//performs update tasks each frame
+void GameClass::gameUpdater(float actSeconds)
+{
+	//must keep track of the size prior to running the action queues, because the queue will grow every tick
+	//which could result in an infinite loop
+	int thisTick=int(registry.obj.actions.size());
+	processActionList(thisTick, actSeconds);
+}
+
+void GameClass::processActionList(int maxlength, float actSeconds)
+{
+	for(int i=1; i<maxlength; i++)
+	{
+		if(registry.obj.actions[i] != NULL && registry.obj.actions[i]->active)
+		{
+			if(registry.obj.actions[i]->timeToActivate<=actSeconds)
+			{
+				processAction(registry.obj.actions[i]);
+			}
+		}
+	}
+
+}
+
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
 	if(!act->active) return;
 	act->active = false;
-	if(registry.obj.regEntities[act->entityIndexSource] != NULL)
+	int currentIndex=act->actionTemplateIndex;
+	bool enSrc=(registry.obj.regEntities[act->entityIndexSource] != NULL);
+	bool enTrg=(registry.obj.regEntities[act->entityIndexTarget] != NULL);
+	bool tlTrg=(registry.obj.regTiles[act->tileIndexTarget] != NULL);
+	if(enSrc)
 	{
 		//split between entity targets and tile targets
-		if(registry.obj.regEntities[act->entityIndexTarget] != NULL)
+		if(enTrg)
 		{
 			//target is an entity
 		}
-		else if(registry.obj.regTiles[act->tileIndexTarget] != NULL)
+		else if(tlTrg)
 		{
 			//target is a tile
 		}
@@ -88,7 +177,7 @@ void GameClass::processAction(actionStruct* act)
 		{
 			//no target specified
 			//ideal for growflower
-			if(actionCodeEquals(act->actionTemplateIndex, "growflower"))
+			if(actionCodeEquals(currentIndex, "growflower"))
 			{
 				int src=act->entityIndexSource;
 				int veg=registry.obj.regEntities[act->entityIndexSource]->packIndex;
@@ -104,7 +193,7 @@ void GameClass::processAction(actionStruct* act)
 				}
 				return;
 			}
-			if(actionCodeEquals(act->actionTemplateIndex, "convertflower"))
+			if(actionCodeEquals(currentIndex, "convertflower"))
 			{
 				bool isRed=false;
 				int src=act->entityIndexSource;
@@ -124,7 +213,7 @@ void GameClass::processAction(actionStruct* act)
 				}
 				return;
 			}
-			if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
+			if(actionCodeEquals(currentIndex, "selectentity"))
 			{
 				if(gamemode==GAMEMODE_INSPECT)
 				{
@@ -136,7 +225,14 @@ void GameClass::processAction(actionStruct* act)
 	}
 	else
 	{
-			if(actionCodeEquals(act->actionTemplateIndex, "infoget"))
+			if(actionCodeEquals(currentIndex, "generatemap"))
+			{
+				gamemode=GAMEMODE_NEUTRAL;
+				initialize();
+				experimentalMapGen();
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "infoget"))
 			{
 				act->active=false;
 				if(gamemode==GAMEMODE_INSPECT)
@@ -150,7 +246,7 @@ void GameClass::processAction(actionStruct* act)
 				}
 				return;
 			}
-			if(actionCodeEquals(act->actionTemplateIndex, "clearsidebar"))
+			if(actionCodeEquals(currentIndex, "clearsidebar"))
 			{
 				act->active=false;
 				sidebar.setString("");
@@ -160,29 +256,6 @@ void GameClass::processAction(actionStruct* act)
 	}
 
 }
-//performs update tasks each frame
-void GameClass::gameUpdater(float actSeconds)
-{
-	if(gameConstant==60)
-	{
-		experimentalMapGen();
-		gameConstant=623;
-	}
-	//must keep track of the size prior to running the action queues, because the queue will grow every tick
-	//which could result in an infinite loop
-	int thisTick=int(registry.obj.actions.size());
-
-	for(int i=1; i<thisTick; i++)
-	{
-		if(registry.obj.actions[i] != NULL && registry.obj.actions[i]->active)
-		{
-			if(registry.obj.actions[i]->timeToActivate<=actSeconds)
-			{
-				processAction(registry.obj.actions[i]);
-			}
-		}
-	}
-}
 
 void GameClass::experimentalMapGen()
 {
@@ -191,16 +264,16 @@ void GameClass::experimentalMapGen()
 	{
 		for(int x=0; x<settings.tileCols; x++)
 		{
-			if(rand()%4==2)
+			if((noiseyPixel(coord(x,y), 1,255, header.mapIndex, header.randSeed)%4)==2)
 			{
-				if(rand()%2==0)
+				if((noiseyPixel(coord(x,y), 1,255, header.mapIndex, header.randSeed)%5)==2)
 				{
 					fillTile("customgrass", coord(x,y));
 				}				
 				else
 				{
 					fillTile("dirt", coord(x,y));
-					int r=rand()%4;
+					int r=int(noiseyPixel(coord(x,y), 1,255, 20, header.randSeed)%4);
 					switch(r)
 					{
 						case 0:fillEntity("hibiscus", coord(x,y)); break;
@@ -410,54 +483,6 @@ coord GameClass::getMouseGrid()
 	return mouse;
 }
 
-//runs an update each frame (1/8 second)
-bool GameClass::gameLoop()
-{
-	while(!quitGame)
-	{
-		inputHandler();
-
-		//game world drawing routine
-
-		if(frameClock.getElapsedTime().asSeconds()>0.125f) //force a constant framerate
-		{
-			gameUpdater(gameClock.getElapsedTime().asSeconds());
-			frameClock.restart();
-			gameRenderer();
-		}
-	}
-
-	return true;
-}
-
-//handles the mouse, keyboard, and window-close input
-void GameClass::inputHandler()
-{
-	while(app.pollEvent(gameEvent))
-	{	
-		if((gameEvent.type == sf::Event::Closed) || (gameEvent.type == sf::Event::KeyPressed && gameEvent.key.code == sf::Keyboard::Escape))
-		{
-			quitGame=true;
-		}
-	}
-
-	//mouse handling routine
-	getMouseGrid();
-	if(!theMouse.isButtonPressed(sf::Mouse::Button::Left)) isClicking=false;
-	if(theMouse.isButtonPressed(sf::Mouse::Button::Left) && !isClicking)
-	{
-		isClicking=true;
-		if(isClickOnGUI())
-		{
-			handleGUIClick(mouse);
-		}
-		else if(isClickOnBoard())
-		{
-			handleBoardClick(mouse);
-		}
-	}
-}
-
 bool GameClass::isClickOnBoard()
 {
 	return (!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows));
@@ -527,8 +552,6 @@ void GameClass::gameRenderer()
 		if(registry.obj.regButtons[i] != NULL && registry.obj.regButtons[i]->active)
 			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos);
 	}
-	//if(entityHover() != 0) sidebar.setString(outputEntity(entityHover()));
-	//if(isClicking && buttonHover()>0) sidebar.setString("Clicked Maginifier!");
 	app.draw(sidebar);
 	app.display();
 }

@@ -32,6 +32,7 @@ TILE:obsidian,Obsidian,32,32,obsidian.png,1,obsidian
 TILE:ice,Ice,32,32,ice.png,1,ice
 TILE:customgrass,Green Grass 2,32,32,emeraldgrass.png,1,greengrass
 PROTOCOL:solidblock,0,0,1,0
+PROTOCOL:generatemap,0,0,1,0
 PROTOCOL:growflower,0,0,1,0
 PROTOCOL:guibutton,0,0,1,0
 PROTOCOL:infoget,0,0,1,0
