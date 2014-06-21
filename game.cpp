@@ -27,6 +27,15 @@ void GameClass::initialize()
 	render.createGuiSheet(tmp);
 	render.loadGraphicsFiles(settings);
 	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		debugFile << "List: " << tmp.container.valuesList[i].cname << "\n";
+		for(int j=0; j<int(tmp.container.valuesList[i].list.size()); j++)
+		{
+			debugFile << tmp.container.valuesList[i].list[j] << ", ";
+		}
+		debugFile << "\n";
+	}
 }
 
 //contructor, sets default values to member variables, opens debug log file
@@ -53,6 +62,12 @@ GameClass::GameClass()
 	}
 }
 
+bool GameClass::actionCodeEquals(int index, const char* _code)
+{
+	if(index==0 || index>int(tmp.container.actionList.size()) || _code==NULL || tmp.container.actionList[index].cname==NULL) return false;
+	return (strcmp(tmp.container.actionList[index].cname, _code)==0);
+}
+
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
@@ -73,7 +88,7 @@ void GameClass::processAction(actionStruct* act)
 		{
 			//no target specified
 			//ideal for growflower
-			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "growflower")==0)
+			if(actionCodeEquals(act->actionTemplateIndex, "growflower"))
 			{
 				int src=act->entityIndexSource;
 				int veg=registry.obj.regEntities[act->entityIndexSource]->packIndex;
@@ -89,7 +104,7 @@ void GameClass::processAction(actionStruct* act)
 				}
 				return;
 			}
-			if(strcmp(tmp.container.actionList[act->actionTemplateIndex].cname, "convertflower")==0)
+			if(actionCodeEquals(act->actionTemplateIndex, "convertflower"))
 			{
 				bool isRed=false;
 				int src=act->entityIndexSource;
@@ -109,7 +124,39 @@ void GameClass::processAction(actionStruct* act)
 				}
 				return;
 			}
+			if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
+			{
+				if(gamemode==GAMEMODE_INSPECT)
+				{
+					sidebar.setString(outputEntity(act->entityIndexSource));
+				}
+				return;
+			}
 		}
+	}
+	else
+	{
+			if(actionCodeEquals(act->actionTemplateIndex, "infoget"))
+			{
+				act->active=false;
+				if(gamemode==GAMEMODE_INSPECT)
+				{
+					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
+				}
+				else
+				{
+					sidebar.setString("Click an Entity\nto Inspect...");
+					gamemode=GAMEMODE_INSPECT;
+				}
+				return;
+			}
+			if(actionCodeEquals(act->actionTemplateIndex, "clearsidebar"))
+			{
+				act->active=false;
+				sidebar.setString("");
+				gamemode=GAMEMODE_NEUTRAL;
+				return;
+			}
 	}
 
 }
@@ -169,7 +216,7 @@ void GameClass::experimentalMapGen()
 	}
 	fillEntity("squirrel", coord(5,5));
 	fillEntity("irongolem", coord(10,10));
-	fillButton("magnifier", coord(1,1));
+	fillButton("magnifier", coord(24,4));
 	/*
 	//we'll experiment with TERRAIN_BEACH
 	int terr_id=TERRAIN_BEACH;
@@ -400,18 +447,54 @@ void GameClass::inputHandler()
 	if(theMouse.isButtonPressed(sf::Mouse::Button::Left) && !isClicking)
 	{
 		isClicking=true;
-		//validate clicking inside the game window
-		if(!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows))
+		if(isClickOnGUI())
 		{
-			int index=buttonHover();
-			debugFile << "Mouse Clicked at: (" << mouse.x << ", " << mouse.y << ")\n";
-//			if(index>0)
-//			{
-//				if(registry.obj.regEntities[index]->type == ICAT_VEGETATION) //we'll assume it's a flower for now :/
-//				{
-//					registry.createAction(tmp, "convertflower", index, 0, 0, gameClock.getElapsedTime().asSeconds()+0.15f);
-//				}
-//			}
+			handleGUIClick(mouse);
+		}
+		else if(isClickOnBoard())
+		{
+			handleBoardClick(mouse);
+		}
+	}
+}
+
+bool GameClass::isClickOnBoard()
+{
+	return (!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows));
+}
+
+bool GameClass::isClickOnGUI()
+{
+	if(!(finemouse.x<0 || finemouse.y<0 || finemouse.x>settings.winWid || finemouse.y>settings.winHig))
+	{
+		return (buttonHover()>0);
+	}
+	else return false;
+}
+
+void GameClass::handleBoardClick(coord _mouse)
+{
+	int entityIndex=entityHover();
+	if(entityIndex>0)
+	{
+		registry.createAction(tmp, "selectentity", entityIndex, 0,0,gameTime());
+	}
+	else return;
+}
+
+void GameClass::handleGUIClick(coord _mouse)
+{
+	int index=buttonHover();
+	if(index==0 || !registry.obj.regButtons[index]->active) return;
+	if(registry.obj.regButtons[index]->actionTemplateIndex>0)
+	{
+		for(int i=1; i<int(tmp.container.actionList.size()); i++)
+		{
+			if(registry.obj.regButtons[index]->actionTemplateIndex == i)
+			{
+				registry.createAction(tmp, tmp.container.actionList[i].cname, 0, 0, 0,gameTime());
+				return;
+			}
 		}
 	}
 }
@@ -444,8 +527,8 @@ void GameClass::gameRenderer()
 		if(registry.obj.regButtons[i] != NULL && registry.obj.regButtons[i]->active)
 			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos);
 	}
-	if(entityHover() != 0) sidebar.setString(outputEntity(entityHover()));
-	if(isClicking && buttonHover()>0) sidebar.setString("Clicked Maginifier!");
+	//if(entityHover() != 0) sidebar.setString(outputEntity(entityHover()));
+	//if(isClicking && buttonHover()>0) sidebar.setString("Clicked Maginifier!");
 	app.draw(sidebar);
 	app.display();
 }
@@ -453,15 +536,25 @@ void GameClass::gameRenderer()
 sf::String GameClass::outputEntity(int index)
 {
 	sf::String ret="";
+	char buffer[64];
+	int calc=0;
 	if(registry.obj.regEntities[index] == NULL) return ret;
 
 	ret+=tmp.container.entityList[registry.obj.regEntities[index]->entityTemplateIndex].name;
 	ret+="\n";
 	switch (registry.obj.regEntities[index]->type)
 	{
-	case ICAT_CREATURE: ret+="Creature\n"; break;
+	case ICAT_CREATURE: ret+="Creature\n"; ret+="HP: ";
+		calc=registry.obj.regEntities[index]->packIndex;
+		sprintf_s(buffer, "%i / %i", registry.obj.regCreature[calc]->currentHP,registry.obj.regCreature[calc]->maxHP);
+		ret+=sf::String(buffer);
+		break;
 	case ICAT_DECORATION: ret+="Decoration\n"; break;
-	case ICAT_VEGETATION: ret+="Vegetation\n"; break;
+	case ICAT_VEGETATION: ret+="Vegetation\n"; 
+		calc=registry.obj.regEntities[index]->packIndex;
+		sprintf_s(buffer, "Growth: %i / %i", registry.obj.regVeg[calc]->currentGrowth+1,registry.obj.regVeg[calc]->maxGrowth);
+		ret+=sf::String(buffer);
+		break;
 	case ICAT_INGREDIENT: ret+="Ingredient\n"; break;
 	case ICAT_SEED: ret+="Seed\n"; break;
 	case ICAT_SUMMON: ret+="Summon Charm\n"; break;

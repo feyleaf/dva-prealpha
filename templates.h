@@ -238,17 +238,42 @@ struct ingredientPackTemplate
 //compiled container of terrain pools in a template format, used in map generation
 struct terrainPoolTemplate
 {
-	char cname[40];
-	char name[16];
-	std::vector<unsigned char> landTilesList;
-	std::vector<unsigned char> wornTilesList;
-	std::vector<unsigned char> accentTilesList;
-	std::vector<unsigned char> decoEntitiesList;
-	std::vector<unsigned char> shapesList;
+	char cname[32];
+	char name[32];
+	int landTileIndex;
+	int wornTileIndex;
+	int accentTileIndex;
+	int decoEntityIndex;
+	int shapeListIndex;
+	std::vector<int> landTilesList;
+	std::vector<int> wornTilesList;
+	std::vector<int> accentTilesList;
+	std::vector<int> decoEntitiesList;
+	std::vector<int> shapesList;
 	terrainPoolTemplate(const char* _cname, const char* _name)
 	{
-		strncpy_s(cname, 40, _cname, 40);
-		strncpy_s(name, _name, 16);
+		strncpy_s(cname, _cname, 32);
+		strncpy_s(name, _name, 32);
+		landTileIndex = 0;
+		wornTileIndex=0;
+		accentTileIndex=0;
+		decoEntityIndex=0;
+		shapeListIndex=0;
+		landTilesList.clear();
+		wornTilesList.clear();
+		accentTilesList.clear();
+		decoEntitiesList.clear();
+		shapesList.clear();
+	}
+	terrainPoolTemplate()
+	{
+		strncpy_s(cname, "undef", 32);
+		strncpy_s(name, "Undefined", 32);
+		landTileIndex = 0;
+		wornTileIndex=0;
+		accentTileIndex=0;
+		decoEntityIndex=0;
+		shapeListIndex=0;
 		landTilesList.clear();
 		wornTilesList.clear();
 		accentTilesList.clear();
@@ -256,6 +281,13 @@ struct terrainPoolTemplate
 		shapesList.clear();
 	}
 };//size 60 bytes(?)
+
+struct stringList
+{
+	char cname[32];
+	std::vector<std::string> list;
+	stringList() {strncpy_s(cname, 32, "undef", 32); list.clear(); list.push_back("nothing");}
+};
 
 //compiled template of eco pools in the biome/map generation
 struct ecoPoolTemplate
@@ -355,6 +387,7 @@ class TemplateContainerClass
 			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
 			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
+			valuesList.clear(); valuesList.push_back(stringList());
 		}
 		~TemplateContainerClass() {}
 
@@ -375,6 +408,7 @@ class TemplateContainerClass
 		std::vector<actionTemplate> actionList;
 		std::vector<guiButtonTemplate> buttonList;
 		std::vector<guiFormsTemplate> formsList;
+		std::vector<stringList> valuesList;
 };
 
 #endif//TEMPLATES_H

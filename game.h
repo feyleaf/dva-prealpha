@@ -10,6 +10,9 @@ Author: Benjamin C. Watt (@feyleafgames)
 #ifndef GAME_H
 #define GAME_H
 
+#define GAMEMODE_NEUTRAL 0
+#define GAMEMODE_INSPECT 1
+
 struct gameHeader
 {
 	unsigned long randSeed;
@@ -54,8 +57,14 @@ public:
 	void initialize();
 	bool gameLoop();
 	coord getMouseGrid();
+	float gameTime() {return gameClock.getElapsedTime().asSeconds();}
 
 	void inputHandler();
+	bool isClickOnBoard();
+	bool isClickOnGUI();
+	void handleGUIClick(coord _mouse);
+	void handleBoardClick(coord _mouse);
+
 	void gameUpdater(float actSeconds);
 	void gameRenderer();
 
@@ -69,6 +78,7 @@ public:
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
 
 	void processAction(actionStruct* act);
+	bool actionCodeEquals(int index, const char* _code);
 	int entityHover();
 	int buttonHover();
 	int tileHover();

@@ -181,6 +181,7 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
+	currentSprite.setColor(sf::Color::White);
 	
 	win.draw(currentSprite);
 }

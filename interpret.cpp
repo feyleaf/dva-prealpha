@@ -25,6 +25,7 @@ int TemplateReaderClass::selectCategory()
 	if(str=="BUTTON") ret = ICAT_BUTTON;
 	if(str=="FORM") ret = ICAT_FORM;
 	if(str=="PROTOCOL") ret = ICAT_PROTOCOL;
+	if(str=="LIST") ret = ICAT_STRINGLIST;
 
 	return ret;
 }
@@ -256,5 +257,38 @@ guiButtonTemplate TemplateReaderClass::parseButton()
 	strncpy_s(ret.actionName, 32, chunk.c_str(), 32);
 	std::getline(pFile, chunk, '\n');					//this reads to comma because we are going to
 														//parse more directly afterward
+	return ret;
+}
+
+terrainPoolTemplate TemplateReaderClass::parseTerrain()
+{
+	//this could become more efficient with a parser-built-in index finder for tiles and decorations
+	terrainPoolTemplate ret;
+	std::string chunk;
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.name, 32, chunk.c_str(), 32);
+
+	std::getline(pFile, chunk, '\n');//<<<TEMPORARY!!!
+	return ret;
+}
+
+stringList TemplateReaderClass::parseList()
+{
+	stringList ret;
+	std::string chunk;
+
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
+
+	std::getline(pFile, chunk, ',');
+	while(strcmp(chunk.c_str(), "END")!=0)
+	{
+		ret.list.push_back(chunk);
+		std::getline(pFile, chunk, ',');
+	}
+	std::getline(pFile, chunk, '\n'); //i'm pretty sure this works with a trailing comma on the list :/
+
 	return ret;
 }

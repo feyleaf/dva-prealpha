@@ -21,6 +21,12 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				index=container.tileList.size()-1;
 				if(!linkTileColors(index)) container.tileList.erase(container.tileList.begin()+index);
 				break;
+			case ICAT_TERRAIN:
+				container.terrainList.push_back(parser.parseTerrain());
+				break;
+			case ICAT_STRINGLIST:
+				container.valuesList.push_back(parser.parseList());
+				break;
 			case ICAT_PROTOCOL:
 				container.actionList.push_back(parser.parseAction());
 				break;
@@ -109,5 +115,10 @@ bool TemplateRegistryClass::linkEntityProtocol(int entityIndex)
 	}				
 	container.entityList[entityIndex].creationProtocol = act;
 	return true;//(act != 0);
+
+}
+
+void TemplateRegistryClass::linkTerrainParts(int _terrainIndex, int _terrainTileIndex, int _wornTileIndex, int _accentTileIndex, int _decoEntityIndex, int _shapeListIndex)
+{
 
 }

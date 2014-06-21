@@ -67,6 +67,7 @@ int GameObjectContainerClass::getEntityTemplateIndex(const TemplateRegistryClass
 		if(strcmp(tmp.container.entityList[i].cname, _codename)==0)
 			return i;
 	}
+	return 0;
 }
 
 int GameObjectContainerClass::getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
@@ -76,7 +77,7 @@ int GameObjectContainerClass::getTileTemplateIndex(const TemplateRegistryClass& 
 		if(strcmp(tmp.container.tileList[i].cname, _codename)==0)
 			return i;
 	}
-
+	return 0;
 }
 
 void GameObjectContainerClass::handleIndexesOnGrid(coord _grid)

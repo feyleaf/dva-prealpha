@@ -33,6 +33,7 @@ the registered object save/load
 #define ICAT_ACTION 16
 #define ICAT_BUTTON 17
 #define ICAT_FORM 18
+#define ICAT_STRINGLIST 19
 
 class TemplateReaderClass
 {
@@ -60,6 +61,9 @@ public:
 	ingredientPackTemplate parseIngredient(int entityIndex);
 	actionTemplate parseAction();
 	terrainPoolTemplate parseTerrain();
+	stringList parseList();
+	std::vector<std::string> parseTerrainDeco();
+	std::vector<std::string> parseTerrainShapes();
 	biomeInformationTemplate parseBiome();
 	guiButtonTemplate parseButton();
 };
