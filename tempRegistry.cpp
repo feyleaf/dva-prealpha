@@ -117,8 +117,3 @@ bool TemplateRegistryClass::linkEntityProtocol(int entityIndex)
 	return true;//(act != 0);
 
 }
-
-void TemplateRegistryClass::linkTerrainParts(int _terrainIndex, int _terrainTileIndex, int _wornTileIndex, int _accentTileIndex, int _decoEntityIndex, int _shapeListIndex)
-{
-
-}

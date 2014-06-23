@@ -1,9 +1,9 @@
-﻿Build started 6/21/2014 8:31:19 AM.
-     1>Project "C:\Users\Benjamin\Documents\GitHub\distorted-cosine\distorted-cosine\dva-prealpha\dva-prealpha1_2.vcxproj" on node 2 (Build target(s)).
+﻿Build started 6/22/2014 11:27:01 PM.
+     1>Project "C:\Users\Benjamin\Documents\GitHub\dva-prealpha\dva-prealpha1_2.vcxproj" on node 2 (Build target(s)).
      1>Link:
-         dva-prealpha1_2.vcxproj -> C:\Users\Benjamin\Documents\GitHub\distorted-cosine\distorted-cosine\dva-prealpha\Release\dva-prealpha1_2.exe
-     1>Done Building Project "C:\Users\Benjamin\Documents\GitHub\distorted-cosine\distorted-cosine\dva-prealpha\dva-prealpha1_2.vcxproj" (Build target(s)).
+         dva-prealpha1_2.vcxproj -> C:\Users\Benjamin\Documents\GitHub\dva-prealpha\Release\dva-prealpha1_2.exe
+     1>Done Building Project "C:\Users\Benjamin\Documents\GitHub\dva-prealpha\dva-prealpha1_2.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.08
+Time Elapsed 00:00:00.05

@@ -1,6 +1,6 @@
 VARIANCE:greengrass,25,109,142,100,100,100,140,50
 VARIANCE:emeraldgrass,0,120,19,4,100,5,170,50
-VARIANCE:sand,240,240,90,12,12,0,200,30
+VARIANCE:sand,240,240,90,12,12,0,200,5
 VARIANCE:dirt,81,68,45,20,20,20,144,50
 VARIANCE:marshgrass,0,200,0,40,50,0,160,60
 VARIANCE:water,0,19,200,50,50,50,180,70
@@ -51,7 +51,7 @@ DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidbl
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
 LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
-LIST:beachworn,obsidian,sand,clay,END,
+LIST:beachworn,sand,bluebrick,woodplank,obsidian,sand,clay,END,
 LIST:beachaccent,END,
 LIST:beachdeco,mahoganylog,END,
 LIST:beachshapes,circle,box,parabola,conic,END,

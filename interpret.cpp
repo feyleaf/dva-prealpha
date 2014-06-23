@@ -269,8 +269,16 @@ terrainPoolTemplate TemplateReaderClass::parseTerrain()
 	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
 	std::getline(pFile, chunk, ',');
 	strncpy_s(ret.name, 32, chunk.c_str(), 32);
-
-	std::getline(pFile, chunk, '\n');//<<<TEMPORARY!!!
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.landListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.wornListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.accentListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.decoListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.shapesListName, 32, chunk.c_str(), 32);
 	return ret;
 }
 

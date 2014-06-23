@@ -127,9 +127,18 @@ float distortedCosine(float _theta, long seed)
 	return ret;
 }
 
+unsigned int anyRandom(long seed)
+{
+	float theta=float((unsigned)time(NULL))/PI;
+	srand(unsigned long(777*(seed+tan(theta*(1+seed)))));
+	unsigned int ret=unsigned int(float((rand()%100)/100.0f)*100.0f);
+	srand((rand()%50)+(unsigned)time(NULL));
+	return int(ret);
+}
+
 unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long seed)
 {
-	return unsigned char((distortedCosine(_theta, seed)/2)*hi)+low;
+	return unsigned char((distortedCosine(_theta, seed)/2)*(hi-low))+low;
 }
 
 //returns a specific format output for inserting into a sf::Color [either red, green, blue, or alpha]

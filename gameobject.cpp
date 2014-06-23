@@ -33,6 +33,8 @@ GameObjectContainerClass::GameObjectContainerClass()
 	actions.push_back(NULL);
 	regButtons.clear();
 	regButtons.push_back(NULL);
+	regMaps.clear();
+	regMaps.push_back(NULL);
 }
 
 int GameObjectContainerClass::numberOfTilesOnGrid(coord _grid)
@@ -132,6 +134,85 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 			listHandler.push_back(i);
 		}
 	}
+}
+
+bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName)
+{
+	//match the terrain name with a name in the template registry, and store its index
+	int terrainIndex=0;
+	mapGenStruct mapGen;
+	for(int i=1; i<int(tmp.container.terrainList.size()); i++)
+	{
+		if(strcmp(tmp.container.terrainList[i].cname, _terrainName)==0)
+		{
+			terrainIndex=i;
+			break;
+		}
+	}
+	if(terrainIndex==0)	return false;
+	//match the tile list, then select a tile name from the list based on a random number
+	int tileList=0;
+	int numberOfIndexes=0;
+	int tileIndex=0;
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].landListName)==0)
+		{
+			tileList=i;
+			break;
+		}
+	}
+	if(tileList==0) return false;
+	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
+	tileIndex=(rand()%numberOfIndexes)+1;
+	if(tileIndex>0 && tileIndex<=numberOfIndexes)
+	{
+		mapGen.displaying=true;
+		mapGen.active=true;
+		mapGen.baseTiles=tileIndex;
+		mapGen.worldCoords=coord(0,0);
+	}
+	//now we create some shapes
+	int shapeList=0;
+	int numberOfShapes=0;
+	int shapeIndex=0;
+	int shapeTile=0;
+	coord _tl=coord(rand()%5,rand()%5);
+	coord _br=coord(rand()%5+20,rand()%5+10);
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].shapesListName)==0)
+		{
+			shapeList=i;
+			break;
+		}
+	}
+	if(shapeList==0) return false;
+	numberOfShapes=int(tmp.container.valuesList[shapeList].list.size()-1);
+	shapeIndex=(rand()%numberOfShapes)+1;
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].wornListName)==0)
+		{
+			tileList=i;
+			break;
+		}
+	}
+	if(tileList==0) return false;
+	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
+	tileIndex=(rand()%numberOfIndexes)+1;
+	mapShapeStruct layer;
+	if(tileIndex>0 && tileIndex<=numberOfIndexes)
+	{
+		layer.tl=_tl;
+		layer.br=_br;
+		layer.shapeNameIndex=shapeIndex;
+		layer.shapeTemplateIndex=shapeList;
+		layer.terrainTiles=tileIndex;
+		mapGen.shapeLayer.push_back(new mapShapeStruct(layer));
+	}
+	obj.regMaps.push_back(new mapGenStruct(mapGen));
+	return true;	
 }
 
 GameObjectClass::GameObjectClass()

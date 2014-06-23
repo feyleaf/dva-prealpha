@@ -240,45 +240,26 @@ struct terrainPoolTemplate
 {
 	char cname[32];
 	char name[32];
-	int landTileIndex;
-	int wornTileIndex;
-	int accentTileIndex;
-	int decoEntityIndex;
-	int shapeListIndex;
-	std::vector<int> landTilesList;
-	std::vector<int> wornTilesList;
-	std::vector<int> accentTilesList;
-	std::vector<int> decoEntitiesList;
-	std::vector<int> shapesList;
+	char landListName[32];
+	char wornListName[32];
+	char accentListName[32];
+	char decoListName[32];
+	char shapesListName[32];
+
 	terrainPoolTemplate(const char* _cname, const char* _name)
 	{
 		strncpy_s(cname, _cname, 32);
 		strncpy_s(name, _name, 32);
-		landTileIndex = 0;
-		wornTileIndex=0;
-		accentTileIndex=0;
-		decoEntityIndex=0;
-		shapeListIndex=0;
-		landTilesList.clear();
-		wornTilesList.clear();
-		accentTilesList.clear();
-		decoEntitiesList.clear();
-		shapesList.clear();
 	}
 	terrainPoolTemplate()
 	{
 		strncpy_s(cname, "undef", 32);
 		strncpy_s(name, "Undefined", 32);
-		landTileIndex = 0;
-		wornTileIndex=0;
-		accentTileIndex=0;
-		decoEntityIndex=0;
-		shapeListIndex=0;
-		landTilesList.clear();
-		wornTilesList.clear();
-		accentTilesList.clear();
-		decoEntitiesList.clear();
-		shapesList.clear();
+		strncpy_s(landListName, "land", 32);
+		strncpy_s(wornListName, "worn", 32);
+		strncpy_s(accentListName, "accent", 32);
+		strncpy_s(decoListName, "deco", 32);
+		strncpy_s(shapesListName, "shapes", 32);
 	}
 };//size 60 bytes(?)
 
@@ -388,6 +369,7 @@ class TemplateContainerClass
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
 			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
 			valuesList.clear(); valuesList.push_back(stringList());
+			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());
 		}
 		~TemplateContainerClass() {}
 

@@ -26,6 +26,7 @@ sf::Vector2f scalar(float c, sf::Vector2f v);
 void initRandom();
 void initRandom(unsigned long _seed);
 float distortedCosine(float _theta, long seed);
+unsigned int anyRandom(long seed);
 unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long seed);
 unsigned char noiseyPixel(coord pos, unsigned char low, unsigned char range, int con, long seed);
 bool operator==(const coord& a, const coord& b);

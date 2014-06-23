@@ -230,6 +230,7 @@ void GameClass::processAction(actionStruct* act)
 				gamemode=GAMEMODE_NEUTRAL;
 				initialize();
 				experimentalMapGen();
+				fillButton("magnifier", coord(settings.tileCols, 5));
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "infoget"))
@@ -237,7 +238,7 @@ void GameClass::processAction(actionStruct* act)
 				act->active=false;
 				if(gamemode==GAMEMODE_INSPECT)
 				{
-					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
+					registry.createAction(tmp, "generatemap", 0,0,0,gameTime()+0.125f);
 				}
 				else
 				{
@@ -260,31 +261,38 @@ void GameClass::processAction(actionStruct* act)
 void GameClass::experimentalMapGen()
 {
 	initRandom(header.randSeed);
-	for(int y=0; y<settings.tileRows; y++)
+	registry.createMapTerrain(tmp, "beachterrain");
+	int i=registry.obj.regMaps.size()-1;
+	if(registry.obj.regMaps[i] == NULL) return;
+	else
+	{
+		fillShape("box", tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname,  tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+		for(int j=1; j<int(registry.obj.regMaps[i]->shapeLayer.size()); j++)
+		{
+			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname,registry.obj.regMaps[i]->shapeLayer[j]->tl, registry.obj.regMaps[i]->shapeLayer[j]->br);
+		}
+	}
+	/*	for(int y=0; y<settings.tileRows; y++)
 	{
 		for(int x=0; x<settings.tileCols; x++)
 		{
-			if((noiseyPixel(coord(x,y), 1,255, header.mapIndex, header.randSeed)%4)==2)
+			if(rand()%5==2)
 			{
-				if((noiseyPixel(coord(x,y), 1,255, header.mapIndex, header.randSeed)%5)==2)
+				if(rand()%5==2)
 				{
-					fillTile("customgrass", coord(x,y));
+					fillTile("water", coord(x,y));
 				}				
 				else
 				{
-					fillTile("dirt", coord(x,y));
-					int r=int(noiseyPixel(coord(x,y), 1,255, 20, header.randSeed)%4);
-					switch(r)
-					{
-						case 0:fillEntity("hibiscus", coord(x,y)); break;
-						case 1:fillEntity("heavenmirror", coord(x,y)); break;
-						case 2:fillEntity("redrose", coord(x,y)); break;
-						default:fillEntity("bluerose", coord(x,y)); break;
-					}
+					fillTile("clay", coord(x,y));
+					fillEntity("bluerose", coord(x,y));
 				}
 			}
 			else
-				fillTile("greengrass", coord(x,y));
+			{
+				fillTile("water", coord(x,y));
+				fillTile("ice", coord(x,y));
+			}
 		}
 	}
 	fillEntity("squirrel", coord(5,5));
@@ -319,9 +327,9 @@ void GameClass::experimentalMapGen()
 //mainTileID is the id of the tile surrounding the shape and filling the region
 //accentTileID is the id of the tile inside of the shape
 //TODO: set up a registry for shapes. for now we'll handle the formation inside this function
-void GameClass::fillShape(int shapeID, const char* codename_main, const char* codename_accent, coord _tl, coord _br)
+void GameClass::fillShape(const char* shapename, const char* codename_main, const char* codename_accent, coord _tl, coord _br)
 {
-/*	int rangeX=_br.x-_tl.x;
+	int rangeX=_br.x-_tl.x;
 	int rangeY=_br.y-_tl.y;
 	int axisX=rangeX/2;
 	float ratio=float(rangeX)/float(rangeY);
@@ -331,38 +339,42 @@ void GameClass::fillShape(int shapeID, const char* codename_main, const char* co
 		for(int x=0; x<rangeX; x++)
 		{
 			if(codename_main != NULL) fillTile(codename_main, _tl+coord(x,y));
+			if(codename_main == NULL || codename_accent == NULL) return;
 			adjY=int(float(y)*ratio);
-			switch(shapeID)
+			if(strcmp(shapename, "circle")==0)
 			{
-				case SHAPE_NULL:
-					break;
-				case SHAPE_CIRCLE:
-					if((pow(x-axisX, 2)+pow(adjY-(rangeY/2), 2))<pow(axisX, 2))
-					{
-						fillTile(codename_accent, _tl+coord(x,y));
-					}
-					break;
-
-				case SHAPE_BOX: //a rectangle, easy -- fills the entire region with accentTileID tiles
+				if((pow(x-axisX, 2)+pow(adjY-(rangeY/2), 2))<pow(axisX, 2))
+				{
 					fillTile(codename_accent, _tl+coord(x,y));
-					break;
-				case SHAPE_CONIC:
-					if(adjY>=abs(x-axisX))
-						fillTile(codename_accent, _tl+coord(x,y));
-					break;
-				case SHAPE_PARABOLIC:
-					if(adjY>=pow(((axisX-x)/2),2))
-						fillTile(codename_accent, _tl+coord(x,y));
-					break;
-
-				case SHAPE_TRIANGLE:
-				default:
-					if(adjY>=x)
-						fillTile(codename_accent, _tl+coord(x,y));
-					break;
+				}
+			}
+			if(strcmp(shapename, "box")==0)
+			{
+				fillTile(codename_accent, _tl+coord(x,y));
+			}
+			if(strcmp(shapename, "conic")==0)
+			{
+				if(adjY>=abs(x-axisX))
+				{
+					fillTile(codename_accent, _tl+coord(x,y));
+				}
+			}
+			if(strcmp(shapename, "parabola")==0)
+			{
+				if(adjY>=pow(((axisX-x)/2),2))
+				{
+					fillTile(codename_accent, _tl+coord(x,y));
+				}
+			}
+			if(strcmp(shapename, "triangle")==0)
+			{
+				if(adjY>=x)
+				{
+					fillTile(codename_accent, _tl+coord(x,y));
+				}
 			}
 		}
-	}*/
+	}
 }
 
 void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)

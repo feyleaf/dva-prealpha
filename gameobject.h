@@ -167,6 +167,26 @@ struct actionStruct
 	float timeToActivate;
 };
 
+struct mapShapeStruct
+{
+	int shapeTemplateIndex;
+	int shapeNameIndex;
+	coord tl;
+	coord br;
+	int terrainTiles;
+	mapShapeStruct() {shapeTemplateIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
+};
+
+struct mapGenStruct
+{
+	bool active;
+	bool displaying;
+	coord worldCoords;
+	int baseTiles;
+	std::vector<mapShapeStruct*> shapeLayer;
+	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);}
+};
+
 class GameObjectContainerClass
 {
 public:
@@ -184,6 +204,7 @@ public:
 	std::vector<ingredientPack*> regIng;
 	std::vector<actionStruct*> actions;
 	std::vector<buttonStruct*> regButtons;
+	std::vector<mapGenStruct*> regMaps;
 
 	std::vector<int> listHandler;
 
@@ -211,6 +232,7 @@ public:
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos);
+	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName);
 	void eraseEntity(int entityIndex);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
 };

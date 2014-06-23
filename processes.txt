@@ -4,7 +4,7 @@ Read 59 templates from the file.
 List: beachtiles
 nothing, water, greengrass, emeraldgrass, marble, 
 List: beachworn
-nothing, obsidian, sand, clay, 
+nothing, sand, bluebrick, woodplank, obsidian, sand, clay, 
 List: beachaccent
 nothing, 
 List: beachdeco
@@ -17,4 +17,8 @@ nothing, circle, box, parabola, conic,
 :Mahogany Log
 32 x 32
 Title: Druid vs Alchemist Test
-Closed with 73 pending/created actions
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+Closed with 2 pending/created actions
