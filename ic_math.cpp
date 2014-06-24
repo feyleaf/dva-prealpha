@@ -136,9 +136,9 @@ unsigned int anyRandom(long seed)
 	return int(ret);
 }
 
-unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long seed)
+unsigned char newRandom(unsigned char low, unsigned char range, float _theta, long seed)
 {
-	return unsigned char((distortedCosine(_theta, seed)/2)*(hi-low))+low;
+	return unsigned char((distortedCosine(_theta, seed)/2)*range)+low;
 }
 
 //returns a specific format output for inserting into a sf::Color [either red, green, blue, or alpha]

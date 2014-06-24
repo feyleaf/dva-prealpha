@@ -13,6 +13,8 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_NEUTRAL 0
 #define GAMEMODE_INSPECT 1
 
+#define JAN1_2014 1387584000
+
 struct gameHeader
 {
 	unsigned long randSeed;
@@ -22,6 +24,7 @@ struct gameHeader
 class GameClass
 {
 protected:
+	int startTime;
 	int gameConstant;
 	gameHeader header;
 	settingStruct settings;
@@ -57,12 +60,13 @@ public:
 	void initialize();
 	bool gameLoop();
 	coord getMouseGrid();
-	float gameTime() {return gameClock.getElapsedTime().asSeconds();}
+	float gameTime() {return float(startTime)+gameClock.getElapsedTime().asSeconds();}
 
 	void inputHandler();
 	void pollWindowsEvents();
 	void pollKeys();
 	void pollMouseClicks();
+	void capture();
 
 	bool isClickOnBoard();
 	bool isClickOnGUI();

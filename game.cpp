@@ -12,6 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 //helps the constructor by reseting values and loading settings
 void GameClass::initialize()
 {
+	registry.clear();
 	header.randSeed+=100;
 	isClicking=false;
 	pin=false;
@@ -27,6 +28,7 @@ void GameClass::initialize()
 //then creates the 'app' window
 GameClass::GameClass()
 {
+	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
 	debugFile.open("processes.txt");
 	newGame=true;
 	quitGame=false;
@@ -72,7 +74,7 @@ bool GameClass::gameLoop()
 
 		if(frameClock.getElapsedTime().asSeconds()>0.125f) //force a constant framerate
 		{
-			gameUpdater(gameClock.getElapsedTime().asSeconds());
+			gameUpdater(gameTime());
 			frameClock.restart();
 			gameRenderer();
 		}
@@ -189,7 +191,7 @@ void GameClass::processAction(actionStruct* act)
 					act->active=false;
 					registry.obj.regVeg[veg]->currentGrowth++;
 					registry.obj.regEntities[src]->frame = registry.obj.regVeg[veg]->currentGrowth;
-					registry.createAction(tmp, "growflower", src, 0, 0, gameClock.getElapsedTime().asSeconds()+duration);
+					registry.createAction(tmp, "growflower", src, 0, 0, gameTime()+duration);
 				}
 				return;
 			}
@@ -231,6 +233,14 @@ void GameClass::processAction(actionStruct* act)
 				initialize();
 				experimentalMapGen();
 				fillButton("magnifier", coord(settings.tileCols, 5));
+				fillButton("recycle", coord(settings.tileCols+1, 5));
+				fillButton("camera", coord(settings.tileCols+2, 5));
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "screenshot"))
+			{
+				gamemode=GAMEMODE_NEUTRAL;
+				capture();
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "infoget"))
@@ -238,7 +248,7 @@ void GameClass::processAction(actionStruct* act)
 				act->active=false;
 				if(gamemode==GAMEMODE_INSPECT)
 				{
-					registry.createAction(tmp, "generatemap", 0,0,0,gameTime()+0.125f);
+					registry.createAction(tmp, "infoget", 0,0,0,gameTime()+0.125f);
 				}
 				else
 				{
@@ -256,6 +266,15 @@ void GameClass::processAction(actionStruct* act)
 			}
 	}
 
+}
+
+void GameClass::capture()
+{
+	sf::Image shot(app.capture());
+	char buffer[65];
+	sprintf_s(buffer, 65, "screenshots/%i.png", int(gameTime()));
+	shot.saveToFile(buffer);
+	sidebar.setString(sf::String("Saved screen to:\n"+sf::String(buffer))+"\n");
 }
 
 void GameClass::experimentalMapGen()
@@ -394,7 +413,7 @@ void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord 
 //places a tiles map of the selected tile index from the template registry
 void GameClass::fillTile(const char* codename, coord _pos)
 {
-	if(!registry.createTile(tmp, codename, _pos))
+	if(!registry.createTile(tmp, codename, _pos, 16, rand()%50000))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
@@ -404,7 +423,7 @@ void GameClass::fillTile(const char* codename, coord _pos)
 
 void GameClass::fillEntity(const char* codename, coord _pos)
 {
-	if(!registry.createEntity(tmp, codename, _pos, gameClock.getElapsedTime().asSeconds()))
+	if(!registry.createEntity(tmp, codename, _pos, gameTime()))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillEntity failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
@@ -425,6 +444,7 @@ void GameClass::fillButton(const char* codename, coord _pos)
 GameClass::~GameClass()
 {
 	debugFile << "Closed with " << int(registry.obj.actions.size()) << " pending/created actions\n";
+	debugFile << "Time in unsigned long format: " << (unsigned long(time(NULL))) << "\n";
 	debugFile.close();
 	app.close();
 }

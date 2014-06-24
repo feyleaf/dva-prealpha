@@ -1,6 +1,6 @@
 32 x 32
 Title: Druid vs Alchemist Test
-Read 59 templates from the file.
+Read 62 templates from the file.
 List: beachtiles
 nothing, water, greengrass, emeraldgrass, marble, 
 List: beachworn
@@ -21,4 +21,45 @@ Title: Druid vs Alchemist Test
 Title: Druid vs Alchemist Test
 32 x 32
 Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
 Closed with 2 pending/created actions
+Time in unsigned long format: 1403575718

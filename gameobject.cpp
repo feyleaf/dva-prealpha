@@ -136,6 +136,61 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 	}
 }
 
+//wipes all registry items!
+void GameObjectClass::clear()
+{
+	while(!obj.regEntities.empty())
+	{
+		delete obj.regEntities[0];
+		obj.regEntities.erase(obj.regEntities.begin());
+	}
+	while(!obj.regTiles.empty())
+	{
+		delete obj.regTiles[0];
+		obj.regTiles.erase(obj.regTiles.begin());
+	}
+	while(!obj.regCreature.empty())
+	{
+		delete obj.regCreature[0];
+		obj.regCreature.erase(obj.regCreature.begin());
+	}
+	while(!obj.regDeco.empty())
+	{
+		delete obj.regDeco[0];
+		obj.regDeco.erase(obj.regDeco.begin());
+	}
+	while(!obj.regIng.empty())
+	{
+		delete obj.regIng[0];
+		obj.regIng.erase(obj.regIng.begin());
+	}
+	while(!obj.regMaps.empty())
+	{
+		delete obj.regMaps[0];
+		obj.regMaps.erase(obj.regMaps.begin());
+	}
+	while(!obj.regSeed.empty())
+	{
+		delete obj.regSeed[0];
+		obj.regSeed.erase(obj.regSeed.begin());
+	}
+	while(!obj.regSummon.empty())
+	{
+		delete obj.regSummon[0];
+		obj.regSummon.erase(obj.regSummon.begin());
+	}
+	while(!obj.regTool.empty())
+	{
+		delete obj.regTool[0];
+		obj.regTool.erase(obj.regTool.begin());
+	}
+	while(!obj.regVeg.empty())
+	{
+		delete obj.regVeg[0];
+		obj.regVeg.erase(obj.regVeg.begin());
+	}
+}
+
 bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName)
 {
 	//match the terrain name with a name in the template registry, and store its index
@@ -154,6 +209,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	int tileList=0;
 	int numberOfIndexes=0;
 	int tileIndex=0;
+	int tileAlias=0;
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
 	{
 		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].landListName)==0)
@@ -165,11 +221,19 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	if(tileList==0) return false;
 	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
 	tileIndex=(rand()%numberOfIndexes)+1;
+	for(int i=1; i<int(tmp.container.tileList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[tileList].list[tileIndex].c_str(), tmp.container.tileList[i].cname)==0)
+		{
+			tileAlias=i;
+			break;
+		}
+	}
 	if(tileIndex>0 && tileIndex<=numberOfIndexes)
 	{
 		mapGen.displaying=true;
 		mapGen.active=true;
-		mapGen.baseTiles=tileIndex;
+		mapGen.baseTiles=tileAlias;
 		mapGen.worldCoords=coord(0,0);
 	}
 	//now we create some shapes
@@ -200,15 +264,23 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	}
 	if(tileList==0) return false;
 	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
-	tileIndex=(rand()%numberOfIndexes)+1;
+	shapeTile=(rand()%numberOfIndexes)+1;
 	mapShapeStruct layer;
-	if(tileIndex>0 && tileIndex<=numberOfIndexes)
+	for(int i=1; i<int(tmp.container.tileList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[tileList].list[shapeTile].c_str(), tmp.container.tileList[i].cname)==0)
+		{
+			tileAlias=i;
+			break;
+		}
+	}
+	if(shapeTile>0 && shapeTile<=numberOfIndexes)
 	{
 		layer.tl=_tl;
 		layer.br=_br;
 		layer.shapeNameIndex=shapeIndex;
 		layer.shapeTemplateIndex=shapeList;
-		layer.terrainTiles=tileIndex;
+		layer.terrainTiles=tileAlias;
 		mapGen.shapeLayer.push_back(new mapShapeStruct(layer));
 	}
 	obj.regMaps.push_back(new mapGenStruct(mapGen));
@@ -219,7 +291,7 @@ GameObjectClass::GameObjectClass()
 {
 }
 
-bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
+bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed)
 {
 	bool ret=false;
 	coord _orig;
@@ -233,7 +305,7 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 			_orig = coord(0, row);
 			obj.regTiles.push_back(new registeredTile(i, _orig, tmp.container.tileList[i].dimensions, _pos));
 			if(tmp.container.tileList[i].variance>0)
-				obj.regTiles[int(obj.regTiles.size()-1)]->distortionColor=getTileDistortion(tmp.container.varianceList[tmp.container.tileList[i].variance], _pos);
+				obj.regTiles[int(obj.regTiles.size()-1)]->distortionColor=getTileDistortion(tmp.container.varianceList[tmp.container.tileList[i].variance], _pos, _con, _seed);
 			return true;
 		}
 	}
@@ -475,14 +547,14 @@ bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char*
 }
 
 
-sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate& var, coord _pos)
+sf::Color GameObjectClass::getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed)
 {
 	sf::Color ret;
 	unsigned char value=0;
-	unsigned char white = noiseyPixel(_pos, var.whiteBase, var.whiteRange, 16, 314159);
-	ret.r=(noiseyPixel(_pos, var.redBase, var.redRange, 16, 314159));
-	ret.g=(noiseyPixel(_pos, var.greenBase, var.greenRange, 16, 314159));
-	ret.b=(noiseyPixel(_pos, var.blueBase, var.blueRange, 16, 314159));
+	unsigned char white = noiseyPixel(_pos, var.whiteBase, var.whiteRange, con, seed);
+	ret.r=(noiseyPixel(_pos, var.redBase, var.redRange, con, seed));
+	ret.g=(noiseyPixel(_pos, var.greenBase, var.greenRange, con, seed));
+	ret.b=(noiseyPixel(_pos, var.blueBase, var.blueRange, con, seed));
 	value=unsigned char(max3(int(ret.r), int(ret.g), int(ret.b)));
 	if(white>value)
 	{

@@ -174,7 +174,7 @@ struct mapShapeStruct
 	coord tl;
 	coord br;
 	int terrainTiles;
-	mapShapeStruct() {shapeTemplateIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
+	mapShapeStruct() {shapeTemplateIndex=0; shapeNameIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
 };
 
 struct mapGenStruct
@@ -228,13 +228,14 @@ public:
 
 	GameObjectContainerClass obj;
 
-	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos);
+	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos);
 	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName);
 	void eraseEntity(int entityIndex);
-	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos);
+	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
+	void clear();
 };
 
 #endif
