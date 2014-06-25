@@ -54,7 +54,7 @@ DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock
 LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
 LIST:beachworn,sand,bluebrick,woodplank,obsidian,sand,clay,END,
 LIST:beachaccent,END,
-LIST:beachdeco,mahoganylog,END,
+LIST:beachdeco,marlborobush,boulder,mahoganylog,END,
 LIST:beachshapes,circle,box,parabola,conic,END,
 TERRAIN:beachterrain,Beach,beachtiles,beachworn,beachaccent,beachdeco,beachshapes
 BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none

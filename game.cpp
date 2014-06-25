@@ -14,7 +14,7 @@ void GameClass::initialize()
 {
 	registry.clear();
 	header.randSeed+=100;
-	isClicking=false;
+	isClicking=true;
 	pin=false;
 	loadSettings();
 	gameClock.restart();
@@ -118,10 +118,10 @@ void GameClass::pollMouseClicks()
 		{
 			handleGUIClick(mouse); //creates actions based on the button that was clicked
 		}
-		else if(isClickOnBoard())
-		{
-			handleBoardClick(mouse); //creates actions based on the point that was clicked
-		}
+		//else if(isClickOnBoard())
+		//{
+		//	handleBoardClick(mouse); //creates actions based on the point that was clicked
+		//}
 	}
 }
 
@@ -291,56 +291,20 @@ void GameClass::experimentalMapGen()
 			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname,registry.obj.regMaps[i]->shapeLayer[j]->tl, registry.obj.regMaps[i]->shapeLayer[j]->br);
 		}
 	}
-	/*	for(int y=0; y<settings.tileRows; y++)
+	if(registry.obj.regMaps[i]->decoLayer[1] == NULL) return;
+	for(int yy=registry.obj.regMaps[i]->decoLayer[1]->tl.y; yy<registry.obj.regMaps[i]->decoLayer[1]->br.y; yy++)
 	{
-		for(int x=0; x<settings.tileCols; x++)
+		for(int xx=registry.obj.regMaps[i]->decoLayer[1]->tl.x; xx<registry.obj.regMaps[i]->decoLayer[1]->br.x; xx++)
 		{
-			if(rand()%5==2)
+			if(rand()%100<registry.obj.regMaps[i]->decoLayer[1]->density)
 			{
-				if(rand()%5==2)
-				{
-					fillTile("water", coord(x,y));
-				}				
-				else
-				{
-					fillTile("clay", coord(x,y));
-					fillEntity("bluerose", coord(x,y));
-				}
-			}
-			else
-			{
-				fillTile("water", coord(x,y));
-				fillTile("ice", coord(x,y));
+				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->decoLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
 			}
 		}
 	}
-	fillEntity("squirrel", coord(5,5));
-	fillEntity("irongolem", coord(10,10));
-	fillButton("magnifier", coord(24,4));
-	/*
-	//we'll experiment with TERRAIN_BEACH
-	int terr_id=TERRAIN_BEACH;
-	int regCursor=registry.templateRegistry.matchTerrain(terr_id);
-	terrainPoolTemplate* t=registry.templateRegistry.allTerrain[regCursor];
-
-	
-	//make a base layout from one of the main tile types
-	int backgroundTiles=rand()%(unsigned char(t->landTilesList.size()));
-	int tileID=t->landTilesList[backgroundTiles];
-	fillShape(SHAPE_BOX, tileID, tileID, coord(0,0), coord(settings.tileCols, settings.tileRows));
-
-	srand(header.randSeed);
-	//now we test a shape and an accent tile
-	int accentTiles=rand()%(unsigned char(t->accentTilesList.size()));
-	int shapeIndex=rand()%(unsigned char(t->shapesList.size()));
-	int accentID=t->accentTilesList[accentTiles];
-	int shapeID=t->shapesList[shapeIndex];
-	coord a(rand()%5, rand()%5);
-	coord b(rand()%5+15, rand()%5+10);
-	fillShape(shapeID, ID_NONE, accentID, a, b);
-	scatterDeco(ID_SQUIRREL, 15, 60, coord(0,0), coord(settings.tileCols, settings.tileRows));
-	*/
 }
+
+
 //_tl is top left of region
 //_br is bottom right of region
 //mainTileID is the id of the tile surrounding the shape and filling the region

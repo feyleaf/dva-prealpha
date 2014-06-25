@@ -139,11 +139,6 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 //wipes all registry items!
 void GameObjectClass::clear()
 {
-	while(!obj.regEntities.empty())
-	{
-		delete obj.regEntities[0];
-		obj.regEntities.erase(obj.regEntities.begin());
-	}
 	while(!obj.regTiles.empty())
 	{
 		delete obj.regTiles[0];
@@ -189,6 +184,12 @@ void GameObjectClass::clear()
 		delete obj.regVeg[0];
 		obj.regVeg.erase(obj.regVeg.begin());
 	}
+	int max=obj.regEntities.size()-1;
+	for(int i=0; i<max; i++)
+	{
+		delete obj.regEntities[max-i];
+		obj.regEntities.erase(obj.regEntities.begin()+(max-i));
+	}
 }
 
 bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName)
@@ -210,6 +211,9 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	int numberOfIndexes=0;
 	int tileIndex=0;
 	int tileAlias=0;
+	int decoList=0;
+	int decoIndex=0;
+	int decoAlias=0;
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
 	{
 		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].landListName)==0)
@@ -266,6 +270,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
 	shapeTile=(rand()%numberOfIndexes)+1;
 	mapShapeStruct layer;
+	mapDecoSpreadStruct decoSpread;
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
 		if(strcmp(tmp.container.valuesList[tileList].list[shapeTile].c_str(), tmp.container.tileList[i].cname)==0)
@@ -282,6 +287,36 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 		layer.shapeTemplateIndex=shapeList;
 		layer.terrainTiles=tileAlias;
 		mapGen.shapeLayer.push_back(new mapShapeStruct(layer));
+	}
+	//then the decorations
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].decoListName)==0)
+		{
+			decoList=i;
+			break;
+		}
+	}
+	if(decoList==0) return false;
+	numberOfIndexes=int(tmp.container.valuesList[decoList].list.size()-1);
+	decoIndex=(rand()%numberOfIndexes)+1;
+	for(int i=1; i<int(tmp.container.entityList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[decoList].list[decoIndex].c_str(), tmp.container.entityList[i].cname)==0)
+		{
+			decoAlias=i;
+			break;
+		}
+	}
+	if(decoIndex>0 && decoIndex<=numberOfIndexes)
+	{
+		_tl=coord(rand()%5,rand()%5);
+		_br=coord(rand()%5+20,rand()%5+10);
+		decoSpread.tl=_tl;
+		decoSpread.br=_br;
+		decoSpread.density=rand()%5+2;
+		decoSpread.entityTemplateIndex=decoAlias;
+		mapGen.decoLayer.push_back(new mapDecoSpreadStruct(decoSpread));
 	}
 	obj.regMaps.push_back(new mapGenStruct(mapGen));
 	return true;	

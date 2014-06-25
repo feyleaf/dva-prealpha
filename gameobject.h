@@ -177,6 +177,15 @@ struct mapShapeStruct
 	mapShapeStruct() {shapeTemplateIndex=0; shapeNameIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
 };
 
+struct mapDecoSpreadStruct
+{
+	int entityTemplateIndex;
+	int density;
+	coord tl;
+	coord br;
+	mapDecoSpreadStruct() {entityTemplateIndex=0; density=0; tl=coord(0,0); br=coord(0,0);}
+};
+
 struct mapGenStruct
 {
 	bool active;
@@ -184,7 +193,8 @@ struct mapGenStruct
 	coord worldCoords;
 	int baseTiles;
 	std::vector<mapShapeStruct*> shapeLayer;
-	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);}
+	std::vector<mapDecoSpreadStruct*> decoLayer;
+	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL); decoLayer.clear(); decoLayer.push_back(NULL);}
 };
 
 class GameObjectContainerClass
