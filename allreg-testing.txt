@@ -51,12 +51,15 @@ VEGETATION:heavenmirror,Heavens Mirror,32,32,0,0,32,32,hmirror.png,3,growflower,
 DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidblock,1,0,1,1,none
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
+LIST:beachplants,hibiscus,heavenmirror,END,
+LIST:beachcreatures,squirrel,END,
 LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
 LIST:beachworn,sand,bluebrick,woodplank,obsidian,sand,clay,END,
 LIST:beachaccent,END,
 LIST:beachdeco,marlborobush,boulder,mahoganylog,END,
 LIST:beachshapes,circle,box,parabola,conic,END,
 TERRAIN:beachterrain,Beach,beachtiles,beachworn,beachaccent,beachdeco,beachshapes
+ECOLOGY:beachecology,Beach,beachplants,beachcreatures
 BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
 BUTTON:recycle,Recycle Map,32,32,0,0,32,32,recycle.png,1,generatemap,none
 BUTTON:camera,Screenshot,32,32,0,0,32,32,camera.png,1,screenshot,none

@@ -282,6 +282,22 @@ terrainPoolTemplate TemplateReaderClass::parseTerrain()
 	return ret;
 }
 
+ecoPoolTemplate TemplateReaderClass::parseEcology()
+{
+	//this could become more efficient with a parser-built-in index finder for tiles and decorations
+	ecoPoolTemplate ret;
+	std::string chunk;
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.name, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.plantListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.creatureListName, 32, chunk.c_str(), 32);
+	return ret;
+}
+
 stringList TemplateReaderClass::parseList()
 {
 	stringList ret;

@@ -118,10 +118,10 @@ void GameClass::pollMouseClicks()
 		{
 			handleGUIClick(mouse); //creates actions based on the button that was clicked
 		}
-		//else if(isClickOnBoard())
-		//{
-		//	handleBoardClick(mouse); //creates actions based on the point that was clicked
-		//}
+		else if(isClickOnBoard())
+		{
+			handleBoardClick(mouse); //creates actions based on the point that was clicked
+		}
 	}
 }
 
@@ -161,9 +161,9 @@ void GameClass::processAction(actionStruct* act)
 	if(!act->active) return;
 	act->active = false;
 	int currentIndex=act->actionTemplateIndex;
-	bool enSrc=(registry.obj.regEntities[act->entityIndexSource] != NULL);
-	bool enTrg=(registry.obj.regEntities[act->entityIndexTarget] != NULL);
-	bool tlTrg=(registry.obj.regTiles[act->tileIndexTarget] != NULL);
+	bool enSrc=(act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
+	bool enTrg=(act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
+	bool tlTrg=(act->tileIndexTarget != 0 && registry.obj.regTiles[act->tileIndexTarget] != NULL);
 	if(enSrc)
 	{
 		//split between entity targets and tile targets
@@ -177,7 +177,7 @@ void GameClass::processAction(actionStruct* act)
 		}
 		else
 		{
-			//no target specified
+			//source entity with no target specified
 			//ideal for growflower
 			if(actionCodeEquals(currentIndex, "growflower"))
 			{
@@ -245,10 +245,9 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "infoget"))
 			{
-				act->active=false;
 				if(gamemode==GAMEMODE_INSPECT)
 				{
-					registry.createAction(tmp, "infoget", 0,0,0,gameTime()+0.125f);
+					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
 				}
 				else
 				{
@@ -259,7 +258,6 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "clearsidebar"))
 			{
-				act->active=false;
 				sidebar.setString("");
 				gamemode=GAMEMODE_NEUTRAL;
 				return;
@@ -280,7 +278,7 @@ void GameClass::capture()
 void GameClass::experimentalMapGen()
 {
 	initRandom(header.randSeed);
-	registry.createMapTerrain(tmp, "beachterrain");
+	registry.createMapTerrain(tmp, "beachterrain", "beachecology");
 	int i=registry.obj.regMaps.size()-1;
 	if(registry.obj.regMaps[i] == NULL) return;
 	else
@@ -299,6 +297,28 @@ void GameClass::experimentalMapGen()
 			if(rand()%100<registry.obj.regMaps[i]->decoLayer[1]->density)
 			{
 				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->decoLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
+			}
+		}
+	}
+	if(registry.obj.regMaps[i]->vegLayer[1] == NULL) return;
+	for(int yy=registry.obj.regMaps[i]->vegLayer[1]->tl.y; yy<registry.obj.regMaps[i]->vegLayer[1]->br.y; yy++)
+	{
+		for(int xx=registry.obj.regMaps[i]->vegLayer[1]->tl.x; xx<registry.obj.regMaps[i]->vegLayer[1]->br.x; xx++)
+		{
+			if(rand()%100<registry.obj.regMaps[i]->vegLayer[1]->density)
+			{
+				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->vegLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
+			}
+		}
+	}
+	if(registry.obj.regMaps[i]->creatureLayer[1] == NULL) return;
+	for(int yy=registry.obj.regMaps[i]->creatureLayer[1]->tl.y; yy<registry.obj.regMaps[i]->creatureLayer[1]->br.y; yy++)
+	{
+		for(int xx=registry.obj.regMaps[i]->creatureLayer[1]->tl.x; xx<registry.obj.regMaps[i]->creatureLayer[1]->br.x; xx++)
+		{
+			if(rand()%100<registry.obj.regMaps[i]->creatureLayer[1]->density)
+			{
+				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->creatureLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
 			}
 		}
 	}
@@ -498,9 +518,8 @@ void GameClass::handleBoardClick(coord _mouse)
 	int entityIndex=entityHover();
 	if(entityIndex>0)
 	{
-		registry.createAction(tmp, "selectentity", entityIndex, 0,0,gameTime());
+		registry.createAction(tmp, "selectentity", entityIndex, 0,0,gameTime()+0.125f);
 	}
-	else return;
 }
 
 void GameClass::handleGUIClick(coord _mouse)

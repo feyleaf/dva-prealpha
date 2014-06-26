@@ -192,7 +192,7 @@ void GameObjectClass::clear()
 	}
 }
 
-bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName)
+bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName)
 {
 	//match the terrain name with a name in the template registry, and store its index
 	int terrainIndex=0;
@@ -270,7 +270,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
 	shapeTile=(rand()%numberOfIndexes)+1;
 	mapShapeStruct layer;
-	mapDecoSpreadStruct decoSpread;
+	mapSpreadStruct decoSpread;
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
 		if(strcmp(tmp.container.valuesList[tileList].list[shapeTile].c_str(), tmp.container.tileList[i].cname)==0)
@@ -316,8 +316,18 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 		decoSpread.br=_br;
 		decoSpread.density=rand()%5+2;
 		decoSpread.entityTemplateIndex=decoAlias;
-		mapGen.decoLayer.push_back(new mapDecoSpreadStruct(decoSpread));
+		mapGen.decoLayer.push_back(new mapSpreadStruct(decoSpread));
 	}
+	mapSpreadStruct vegSpread;
+	vegSpread.entityTemplateIndex=obj.getEntityTemplateIndex(tmp, "bluerose");
+	vegSpread.density=4;
+	vegSpread.tl=coord(0,0); vegSpread.br=coord(15,15);
+	mapGen.vegLayer.push_back(new mapSpreadStruct(vegSpread));
+	mapSpreadStruct creatureSpread;
+	creatureSpread.entityTemplateIndex=obj.getEntityTemplateIndex(tmp, "squirrel");
+	creatureSpread.density=2;
+	creatureSpread.tl=coord(0,0); creatureSpread.br=coord(15,15);
+	mapGen.creatureLayer.push_back(new mapSpreadStruct(creatureSpread));
 	obj.regMaps.push_back(new mapGenStruct(mapGen));
 	return true;	
 }

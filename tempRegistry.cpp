@@ -24,6 +24,9 @@ void TemplateRegistryClass::parseFile(const char* filename)
 			case ICAT_TERRAIN:
 				container.terrainList.push_back(parser.parseTerrain());
 				break;
+			case ICAT_ECOLOGY:
+				container.ecoList.push_back(parser.parseEcology());
+				break;
 			case ICAT_STRINGLIST:
 				container.valuesList.push_back(parser.parseList());
 				break;

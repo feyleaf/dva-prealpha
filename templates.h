@@ -273,12 +273,22 @@ struct stringList
 //compiled template of eco pools in the biome/map generation
 struct ecoPoolTemplate
 {
-	char cname[40];
-	char name[16];
-	std::vector<unsigned char> vegetationList;
-	std::vector<unsigned char> seedList;
-	std::vector<unsigned char> creatureList;
-};
+	char cname[32];
+	char name[32];
+	char plantListName[32];
+	char creatureListName[32];
+	ecoPoolTemplate(const char* _cname, const char* _name)
+	{
+		strncpy_s(cname, _cname, 32);
+		strncpy_s(name, _name, 32);
+	}
+	ecoPoolTemplate()
+	{
+		strncpy_s(cname, "undef", 32);
+		strncpy_s(name, "Undefined", 32);
+		strncpy_s(plantListName, "plant", 32);
+		strncpy_s(creatureListName, "creature", 32);
+	}};
 
 //compiled template of biome information used in map generation
 struct biomeInformationTemplate
@@ -370,6 +380,7 @@ class TemplateContainerClass
 			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
 			valuesList.clear(); valuesList.push_back(stringList());
 			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());
+			ecoList.clear(); ecoList.push_back(ecoPoolTemplate());
 		}
 		~TemplateContainerClass() {}
 

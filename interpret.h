@@ -61,6 +61,7 @@ public:
 	ingredientPackTemplate parseIngredient(int entityIndex);
 	actionTemplate parseAction();
 	terrainPoolTemplate parseTerrain();
+	ecoPoolTemplate parseEcology();
 	stringList parseList();
 	std::vector<std::string> parseTerrainDeco();
 	std::vector<std::string> parseTerrainShapes();

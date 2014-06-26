@@ -177,13 +177,13 @@ struct mapShapeStruct
 	mapShapeStruct() {shapeTemplateIndex=0; shapeNameIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
 };
 
-struct mapDecoSpreadStruct
+struct mapSpreadStruct
 {
 	int entityTemplateIndex;
 	int density;
 	coord tl;
 	coord br;
-	mapDecoSpreadStruct() {entityTemplateIndex=0; density=0; tl=coord(0,0); br=coord(0,0);}
+	mapSpreadStruct() {entityTemplateIndex=0; density=0; tl=coord(0,0); br=coord(0,0);}
 };
 
 struct mapGenStruct
@@ -193,8 +193,11 @@ struct mapGenStruct
 	coord worldCoords;
 	int baseTiles;
 	std::vector<mapShapeStruct*> shapeLayer;
-	std::vector<mapDecoSpreadStruct*> decoLayer;
-	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL); decoLayer.clear(); decoLayer.push_back(NULL);}
+	std::vector<mapSpreadStruct*> decoLayer;
+	std::vector<mapSpreadStruct*> vegLayer;
+	std::vector<mapSpreadStruct*> creatureLayer;
+	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
+		decoLayer.clear(); decoLayer.push_back(NULL); vegLayer.clear(); vegLayer.push_back(NULL); creatureLayer.clear(); creatureLayer.push_back(NULL);}
 };
 
 class GameObjectContainerClass
@@ -242,7 +245,7 @@ public:
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos);
-	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName);
+	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName);
 	void eraseEntity(int entityIndex);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
 	void clear();
