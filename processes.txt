@@ -14,7 +14,7 @@ nothing,
 List: beachdeco
 nothing, marlborobush, boulder, mahoganylog, 
 List: beachshapes
-nothing, circle, box, parabola, conic, 
+nothing, circle, conic, parabola, conic, 
 :Undef
 :Marlboro Bush
 :Boulder
@@ -23,5 +23,57 @@ nothing, circle, box, parabola, conic,
 Title: Druid vs Alchemist Test
 32 x 32
 Title: Druid vs Alchemist Test
-Closed with 13 pending/created actions
-Time in unsigned long format: 1403750524
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+Closed with 11 pending/created actions
+Time in unsigned long format: 1403924493

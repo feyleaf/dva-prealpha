@@ -11,6 +11,11 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 GameObjectContainerClass::GameObjectContainerClass()
 {
+	init();
+}
+
+void GameObjectContainerClass::init()
+{
 	regTiles.clear();
 	regEntities.clear();
 	regTiles.push_back(NULL);
@@ -190,6 +195,13 @@ void GameObjectClass::clear()
 		delete obj.regEntities[max-i];
 		obj.regEntities.erase(obj.regEntities.begin()+(max-i));
 	}
+	int ac=obj.actions.size()-1;
+	for(int i=0; i<ac; i++)
+	{
+		delete obj.actions[ac-i];
+		obj.actions.erase(obj.actions.begin()+(ac-i));
+	}
+	obj.init();
 }
 
 bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName)

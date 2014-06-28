@@ -220,6 +220,7 @@ public:
 	std::vector<mapGenStruct*> regMaps;
 
 	std::vector<int> listHandler;
+	void init();
 
 	int numberOfTilesOnGrid(coord _grid);
 	int numberOfEntitiesOnGrid(coord _grid);

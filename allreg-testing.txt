@@ -57,7 +57,7 @@ LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
 LIST:beachworn,sand,bluebrick,woodplank,obsidian,sand,clay,END,
 LIST:beachaccent,END,
 LIST:beachdeco,marlborobush,boulder,mahoganylog,END,
-LIST:beachshapes,circle,box,parabola,conic,END,
+LIST:beachshapes,circle,conic,parabola,conic,END,
 TERRAIN:beachterrain,Beach,beachtiles,beachworn,beachaccent,beachdeco,beachshapes
 ECOLOGY:beachecology,Beach,beachplants,beachcreatures
 BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none

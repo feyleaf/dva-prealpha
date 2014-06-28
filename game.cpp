@@ -283,10 +283,10 @@ void GameClass::experimentalMapGen()
 	if(registry.obj.regMaps[i] == NULL) return;
 	else
 	{
-		fillShape("box", tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname,  tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+		fillShape("box", tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
 		for(int j=1; j<int(registry.obj.regMaps[i]->shapeLayer.size()); j++)
 		{
-			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname,registry.obj.regMaps[i]->shapeLayer[j]->tl, registry.obj.regMaps[i]->shapeLayer[j]->br);
+			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
 		}
 	}
 	if(registry.obj.regMaps[i]->decoLayer[1] == NULL) return;
@@ -330,50 +330,88 @@ void GameClass::experimentalMapGen()
 //mainTileID is the id of the tile surrounding the shape and filling the region
 //accentTileID is the id of the tile inside of the shape
 //TODO: set up a registry for shapes. for now we'll handle the formation inside this function
-void GameClass::fillShape(const char* shapename, const char* codename_main, const char* codename_accent, coord _tl, coord _br)
+void GameClass::fillShape(const char* shapename, const char* codename, coord _tl, coord _br)
 {
+	int safeborder=8;
+	float A=0;
+	float B=0;
+	float C=0;
+	float D=0;
+	float E=0;
+	float F=0;
+	float thetaRotation=(float(rand()%360)/360.0f)*(2.0f*PI);
 	int rangeX=_br.x-_tl.x;
 	int rangeY=_br.y-_tl.y;
 	int axisX=rangeX/2;
 	float ratio=float(rangeX)/float(rangeY);
 	int adjY=0;
+	int radius=rand()%5+5;
+	coord origin=coord(0,0);
+	coord vertex=coord(rand()%5+5, rand()%5+5);
+	coord focus=coord(vertex.x+rand()%5+1, vertex.y);
+	int p=focus.x/4;
 	for(int y=0; y<rangeY; y++)
 	{
 		for(int x=0; x<rangeX; x++)
 		{
-			if(codename_main != NULL) fillTile(codename_main, _tl+coord(x,y));
-			if(codename_main == NULL || codename_accent == NULL) return;
+			float yt=(float(-1.0f*x*sinf(thetaRotation))+(float(y*cosf(thetaRotation))));
+			float xt=(float(x*cosf(thetaRotation))+float(y*sinf(thetaRotation)));
+			if(codename == NULL) return;
 			adjY=int(float(y)*ratio);
-			if(strcmp(shapename, "circle")==0)
-			{
-				if((pow(x-axisX, 2)+pow(adjY-(rangeY/2), 2))<pow(axisX, 2))
-				{
-					fillTile(codename_accent, _tl+coord(x,y));
-				}
-			}
 			if(strcmp(shapename, "box")==0)
 			{
-				fillTile(codename_accent, _tl+coord(x,y));
+				A=0;B=0;C=0;D=0;E=0;F=0;
+				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)==0)
+				{
+					fillTile(codename, _tl+coord(x,y));
+				}
+			}
+			if(strcmp(shapename, "circle")==0)
+			{
+				A=1;B=0;C=1;
+				D=((-2)*focus.x);E=((-2)*focus.y);F=(pow(focus.x,2)+pow(focus.y,2)-pow(radius,2));
+				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
+				{
+					fillTile(codename, _tl+coord(x,y));
+				}
+				//if((pow(x,2)+pow(y,2)-((radius*4)*x)-((radius*4)*y)+(pow(-radius*2,2)+pow(-radius*2,2)-pow(radius,2)))<0)
+				//{
+				//	fillTile(codename, _tl+coord(x,y));
+				//}
 			}
 			if(strcmp(shapename, "conic")==0)
 			{
-				if(adjY>=abs(x-axisX))
+				A=(1.0f/float(pow(vertex.x, 2)));
+				B=0;
+				C=(-1.0f/float((pow(focus.x,2)-pow(vertex.x,2))));
+				D=(-2.0f*float(origin.x))/float(pow(vertex.x, 2));
+				E=(2.0f*float(origin.y))/float(pow(focus.x,2)-pow(vertex.x,2));
+				F=float(pow(origin.x, 2)/pow(vertex.x, 2))-float(pow(origin.y, 2)/(pow(focus.x,2)-pow(vertex.x,2)))+1.0f;
+				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
 				{
-					fillTile(codename_accent, _tl+coord(x,y));
+					fillTile(codename, _tl+coord(x,y));
 				}
 			}
 			if(strcmp(shapename, "parabola")==0)
 			{
-				if(adjY>=pow(((axisX-x)/2),2))
+				//(x-h)^2 = 4p(y-k)
+				//x^2-2hx+h^2-4py+4pk=0
+				A=1;
+				B=0;
+				C=0;
+				D=-2*vertex.x;
+				E=-1*focus.x;
+				F=pow(vertex.x,2)+(1*focus.x*origin.y);
+				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
 				{
-					fillTile(codename_accent, _tl+coord(x,y));
+					fillTile(codename, _tl+coord(x,y));
 				}
 			}
 			if(strcmp(shapename, "triangle")==0)
 			{
 				if(adjY>=x)
 				{
-					fillTile(codename_accent, _tl+coord(x,y));
+					fillTile(codename, _tl+coord(x,y));
 				}
 			}
 		}
