@@ -87,6 +87,16 @@ int GameObjectContainerClass::getTileTemplateIndex(const TemplateRegistryClass& 
 	return 0;
 }
 
+int GameObjectContainerClass::getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
+	{
+		if(strcmp(tmp.container.buttonList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
 void GameObjectContainerClass::handleIndexesOnGrid(coord _grid)
 {
 	listHandler.clear();
@@ -480,7 +490,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 	return ret;
 }
 
-bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos)
+bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, bool act)
 {
 	bool ret=false;
 	coord _orig;
@@ -504,7 +514,7 @@ bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char*
 	{
 		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
 		{
-			obj.regButtons.push_back(new buttonStruct(i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
+			obj.regButtons.push_back(new buttonStruct(act, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
 			return true;
 		}
 	}

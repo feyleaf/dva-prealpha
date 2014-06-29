@@ -49,8 +49,8 @@ struct buttonStruct
 	sf::IntRect box;
 	int frame;
 	coord pos;
-	buttonStruct(int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=true; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
+	buttonStruct(bool act, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
+	{active=act; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
 };
 
 struct toolPack
@@ -227,6 +227,7 @@ public:
 
 	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 
 	void handleIndexesOnGrid(coord _grid);
 	void handleEntitiesList(int _index);
@@ -245,7 +246,7 @@ public:
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
-	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos);
+	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, bool act=true);
 	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName);
 	void eraseEntity(int entityIndex);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);

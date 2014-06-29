@@ -183,5 +183,34 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	currentSprite.setColor(sf::Color::White);
 	
-	win.draw(currentSprite);
+	if(obj->active) win.draw(currentSprite);
+}
+
+void RenderManager::DrawInventory(sf::RenderWindow& win, const InventoryClass& items, const buttonStruct* cell)
+{
+	currentSprite.setTexture(guiSheet);
+	coord o=cell->origin;
+	currentSprite.setTextureRect(sf::IntRect(o.x, o.y, cell->dimensions.x, cell->dimensions.y));
+	for(int y=items.tl.y; y<items.tl.y+items.dimensions.y; y++)
+	{
+		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
+		{
+			currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
+			if(items.cursor==(x+(y*items.dimensions.x))) currentSprite.setColor(sf::Color::Green);
+			else currentSprite.setColor(sf::Color::White);
+	
+			win.draw(currentSprite);
+		}
+	}
+	for(int y=items.tl.y; y<items.tl.y+items.dimensions.y; y++)
+	{
+		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
+		{
+			currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
+			currentSprite.setColor(sf::Color::White);
+	
+			win.draw(currentSprite);
+		}
+	}
+
 }

@@ -22,6 +22,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "interpret.h"
 #include "tempRegistry.h"
 #include "gameobject.h"
+#include "inventory.h"
 #include "render.h"
 #include "game.h"
 

@@ -235,6 +235,19 @@ void GameClass::processAction(actionStruct* act)
 				fillButton("magnifier", coord(settings.tileCols, 5));
 				fillButton("recycle", coord(settings.tileCols+1, 5));
 				fillButton("camera", coord(settings.tileCols+2, 5));
+				fillButton("backpack", coord(settings.tileCols+3, 5));
+				fillButton("inventorycell", coord(0,0), false);
+				return;
+			}
+			if(actionCodeEquals(currentIndex,"backpack"))
+			{
+				if(gamemode!=GAMEMODE_INVENTORY) gamemode=GAMEMODE_INVENTORY;
+				else gamemode=GAMEMODE_NEUTRAL;
+				return;
+			}
+			if(actionCodeEquals(currentIndex,"selectinventory"))
+			{
+				if(gamemode==GAMEMODE_INVENTORY) inv.select(mouse);
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "screenshot"))
@@ -286,6 +299,7 @@ void GameClass::experimentalMapGen()
 		fillShape("box", tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
 		for(int j=1; j<int(registry.obj.regMaps[i]->shapeLayer.size()); j++)
 		{
+			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
 			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
 		}
 	}
@@ -453,9 +467,9 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 	}
 }
 
-void GameClass::fillButton(const char* codename, coord _pos)
+void GameClass::fillButton(const char* codename, coord _pos, bool act)
 {
-	if(!registry.createButton(tmp, codename, _pos))
+	if(!registry.createButton(tmp, codename, _pos, act))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillGui failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
@@ -562,6 +576,14 @@ void GameClass::handleBoardClick(coord _mouse)
 
 void GameClass::handleGUIClick(coord _mouse)
 {
+	if(gamemode==GAMEMODE_INVENTORY)
+	{
+		if(!(_mouse.x<inv.tl.x || _mouse.y<inv.tl.y || _mouse.x>inv.tl.x+inv.dimensions.x || _mouse.y>inv.tl.y+inv.dimensions.y))
+		{
+			inv.select(_mouse);
+			return;
+		}
+	}
 	int index=buttonHover();
 	if(index==0 || !registry.obj.regButtons[index]->active) return;
 	if(registry.obj.regButtons[index]->actionTemplateIndex>0)
@@ -582,6 +604,7 @@ void GameClass::gameRenderer()
 {
 	app.clear(sf::Color(101,88,65,255));
 
+	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
 	for(int i=1; i<int(registry.obj.regTiles.size()); i++)
@@ -602,9 +625,23 @@ void GameClass::gameRenderer()
 	}
 	for(int i=1; i<int(registry.obj.regButtons.size()); i++)
 	{
-		if(registry.obj.regButtons[i] != NULL && registry.obj.regButtons[i]->active)
+		if(registry.obj.regButtons[i] != NULL)
 			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos);
 	}
+	if(gamemode == GAMEMODE_INVENTORY)
+	{
+/*		sf::Image imgdummy;
+		sf::Texture dummy;
+		imgdummy.create(settings.winWid, settings.winHig, sf::Color(80, 80, 80, 188));
+		dummy.loadFromImage(imgdummy);
+		dummy.update(imgdummy);
+		render.currentSprite.setTexture(dummy);
+		render.currentSprite.setPosition(sf::Vector2f(0,0));
+		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
+		app.draw(render.currentSprite);*/
+		render.DrawInventory(app, inv, registry.obj.regButtons[5]);
+	}
+
 	app.draw(sidebar);
 	app.display();
 }

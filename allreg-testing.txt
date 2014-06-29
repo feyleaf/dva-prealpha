@@ -39,7 +39,9 @@ PROTOCOL:infoget,0,0,1,0
 PROTOCOL:clearsidebar,0,0,1,0
 PROTOCOL:convertflower,0,0,1,0
 PROTOCOL:selectentity,0,0,1,0
+PROTOCOL:selectinventory,0,0,1,0
 PROTOCOL:screenshot,0,0,1,0
+PROTOCOL:backpack,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,0,0,32,32,squirrel.png,1,solidblock,1,1,1,1,1,none
 CREATURE:irongolem,Iron Golem,32,32,0,0,32,32,irongolem.png,1,solidblock,1,1,1,1,1,none
 INGREDIENT:redpetal,Red Rose Petal,32,32,0,0,32,32,redpetal.png,1,solidblock,none
@@ -63,3 +65,5 @@ ECOLOGY:beachecology,Beach,beachplants,beachcreatures
 BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
 BUTTON:recycle,Recycle Map,32,32,0,0,32,32,recycle.png,1,generatemap,none
 BUTTON:camera,Screenshot,32,32,0,0,32,32,camera.png,1,screenshot,none
+BUTTON:backpack,Backpack,32,32,0,0,32,32,backpack.png,1,backpack,none
+BUTTON:inventorycell,Cell,32,32,0,0,32,32,invcell.png,1,selectinventory,none

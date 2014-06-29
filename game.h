@@ -12,6 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 #define GAMEMODE_NEUTRAL 0
 #define GAMEMODE_INSPECT 1
+#define GAMEMODE_INVENTORY 2
 
 #define JAN1_2014 1387584000
 
@@ -34,6 +35,7 @@ protected:
 	std::ofstream debugFile;
 	TemplateRegistryClass tmp;
 	GameObjectClass registry;
+	InventoryClass inv;
 	sf::Clock frameClock;
 	sf::Clock gameClock;
 	sf::Image entitySheet;
@@ -82,7 +84,7 @@ public:
 	void experimentalMapGen();
 
 	void fillTile(const char* codename, coord _pos);
-	void fillButton(const char* codename, coord _pos);
+	void fillButton(const char* codename, coord _pos, bool act=true);
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
 	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
