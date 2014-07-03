@@ -2,7 +2,7 @@
 render.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+June 30, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -160,6 +160,7 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place, bool highlight)
 {
+	if(obj==NULL || obj->plane>0) return;
 	currentSprite.setTexture(entitySheet);
 	coord o=obj->origin;
 	int frameskip=obj->frame*obj->dimensions.x;
@@ -186,8 +187,9 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 	if(obj->active) win.draw(currentSprite);
 }
 
-void RenderManager::DrawInventory(sf::RenderWindow& win, const InventoryClass& items, const buttonStruct* cell)
+void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectClass& _reg, const InventoryClass& items, const buttonStruct* cell)
 {
+	int held=0;
 	currentSprite.setTexture(guiSheet);
 	coord o=cell->origin;
 	currentSprite.setTextureRect(sf::IntRect(o.x, o.y, cell->dimensions.x, cell->dimensions.y));
@@ -196,21 +198,28 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const InventoryClass& i
 		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
 		{
 			currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
-			if(items.cursor==(x+(y*items.dimensions.x))) currentSprite.setColor(sf::Color::Green);
+			if(items.cursor==((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x))) currentSprite.setColor(sf::Color::Green);
 			else currentSprite.setColor(sf::Color::White);
 	
 			win.draw(currentSprite);
 		}
 	}
+	currentSprite.setTexture(entitySheet);
 	for(int y=items.tl.y; y<items.tl.y+items.dimensions.y; y++)
 	{
 		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
 		{
-			currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
-			currentSprite.setColor(sf::Color::White);
 	
-			win.draw(currentSprite);
+			held=items.cellList[((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x))].idx_item;
+			if((_reg.obj.regEntities[held] != NULL) && _reg.obj.regEntities[held]->plane==1)
+			{
+				o=_reg.obj.regEntities[held]->origin;
+				currentSprite.setTextureRect(sf::IntRect(o.x, o.y, 32, 32));
+				currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
+				currentSprite.setColor(sf::Color::White);
+	
+				win.draw(currentSprite);
+			}
 		}
 	}
-
 }

@@ -13,6 +13,8 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_NEUTRAL 0
 #define GAMEMODE_INSPECT 1
 #define GAMEMODE_INVENTORY 2
+#define GAMEMODE_DRAWBEGIN 3
+#define GAMEMODE_DRAWEND 4
 
 #define JAN1_2014 1387584000
 
@@ -53,6 +55,9 @@ protected:
 	sf::Font mainfont;
 	sf::Text sidebar;
 
+	TerrainClass terrain;
+	AStarClass astar;
+
 	RenderManager render;
 
 
@@ -84,6 +89,7 @@ public:
 	void experimentalMapGen();
 
 	void fillTile(const char* codename, coord _pos);
+	void fillRoad(const char* codename, coord start, coord end);
 	void fillButton(const char* codename, coord _pos, bool act=true);
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);

@@ -3,8 +3,11 @@
 
 struct cellStruct
 {
-	registeredEntity* ptr_item;
-	unsigned int quantity;
+	unsigned int tmp_idx; //template index
+	unsigned int idx_item; //registry index
+	unsigned int quantity; //how many are held
+	cellStruct() {tmp_idx=0; idx_item=0; quantity=0;}
+
 };
 
 class InventoryClass
@@ -30,10 +33,10 @@ public:
 	bool clearSlot(int plc);
 	bool clearAll();
 	bool swap(int plcA, int plcB);
-	bool add(registeredEntity* it, short q=1);
-	registeredEntity* drop(int plc);
-	registeredEntity* getItemAt(int plc);
-	registeredEntity* getItemAtCursor();
+	bool add(registeredEntity* ent, int entIndex, short q=1);
+	unsigned int drop(int plc);
+	unsigned int getItemAt(int plc);
+	unsigned int getItemAtCursor();
 	short getQuantityAt(int plc);
 	short getQuantityAtCursor();
 

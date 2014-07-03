@@ -65,6 +65,7 @@ int GameObjectContainerClass::numberOfEntitiesOnGrid(coord _grid)
 			ret++;
 		}
 	}
+	return ret;
 }
 
 int GameObjectContainerClass::getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
@@ -379,6 +380,22 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 
 	//TODO: color varaince!! :)
 	return ret;
+}
+
+void GameObjectClass::cloneToInventory(int entityIndex)
+{
+	//if(entityIndex<1 || entityIndex>int(obj.regEntities.size())) return;
+	//if(obj.regEntities[entityIndex] == NULL) return;
+	obj.regEntities[entityIndex]->plane=1;
+	obj.regEntities[entityIndex]->pos=coord(-1,-1);
+}
+
+void GameObjectClass::cloneFromInventory(int entityIndex, coord _pos)
+{
+	if(entityIndex<1 || entityIndex>int(obj.regEntities.size())) return;
+	if(obj.regEntities[entityIndex] == NULL) return;
+	obj.regEntities[entityIndex]->plane=0;
+	obj.regEntities[entityIndex]->pos=_pos;
 }
 
 bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time)

@@ -36,8 +36,9 @@ struct registeredEntity
 	sf::IntRect box;
 	int frame;
 	coord pos;
+	int plane; //0 for the world plane, 1 for inventory, 2 for registered entities inside of other entities (ie loot or summon)
 	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=true; type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
+	{active=true; type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos; plane=0;}
 };
 
 struct buttonStruct
@@ -251,6 +252,8 @@ public:
 	void eraseEntity(int entityIndex);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
 	void clear();
+	void cloneToInventory(int entityIndex);
+	void cloneFromInventory(int entityIndex, coord _pos);
 };
 
 #endif

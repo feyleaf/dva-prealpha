@@ -72,22 +72,26 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="ic_math.cpp" />
+    <ClCompile Include="ic_pathing.cpp" />
     <ClCompile Include="interpret.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
+    <ClCompile Include="terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="ic_pathing.h" />
     <ClInclude Include="interpret.h" />
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="tempRegistry.h" />
     <ClInclude Include="templates.h" />
+    <ClInclude Include="terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg" />

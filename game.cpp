@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-June 14, 2014
+July 2, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -13,10 +13,12 @@ Author: Benjamin C. Watt (@feyleafgames)
 void GameClass::initialize()
 {
 	registry.clear();
+	inv.clearAll();
 	header.randSeed+=100;
 	isClicking=true;
 	pin=false;
 	loadSettings();
+	astar.initBounds(settings);
 	gameClock.restart();
 	frameClock.restart();
 	gameConstant=60;
@@ -158,8 +160,13 @@ void GameClass::processActionList(int maxlength, float actSeconds)
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
+	if(act==NULL) return;
 	if(!act->active) return;
 	act->active = false;
+	if(act->entityIndexSource<0) return;
+	if(act->entityIndexTarget<0 || act->entityIndexTarget>numberOfEntities()) return;
+	if(act->tileIndexTarget<0 || act->tileIndexTarget>numberOfTiles()) return;
+
 	int currentIndex=act->actionTemplateIndex;
 	bool enSrc=(act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
 	bool enTrg=(act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
@@ -174,6 +181,43 @@ void GameClass::processAction(actionStruct* act)
 		else if(tlTrg)
 		{
 			//target is a tile
+			if(actionCodeEquals(currentIndex, "selecttile"))
+			{
+				if(gamemode==GAMEMODE_DRAWBEGIN)
+				{
+					registry.createAction(tmp, "drawroada", act->tileIndexTarget,0,act->tileIndexTarget, gameTime());
+				}
+				if(gamemode==GAMEMODE_DRAWEND)
+				{
+					registry.createAction(tmp, "drawroadb", act->tileIndexTarget,0,act->tileIndexTarget, gameTime());
+				}
+				return;
+			}
+			//target is a tile
+			if(actionCodeEquals(currentIndex, "drawroada"))
+			{
+				if(gamemode==GAMEMODE_DRAWBEGIN)
+				{
+					gamemode=GAMEMODE_DRAWEND;
+					sidebar.setString("Great!");
+					astar.setStart(registry.obj.regTiles[act->tileIndexTarget]->pos);
+				}
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "drawroadb"))
+			{
+				if(gamemode==GAMEMODE_DRAWEND)
+				{
+					gamemode=GAMEMODE_NEUTRAL;
+					sidebar.setString("Done!!");
+					coord target=registry.obj.regTiles[act->tileIndexTarget]->pos;
+					coord start=astar.getStart();
+					astar.setTarget(target);
+					astar.runPathing(terrain, start, target);
+					fillRoad("stonewall", start, target);
+				}
+				return;
+			}
 		}
 		else
 		{
@@ -193,6 +237,12 @@ void GameClass::processAction(actionStruct* act)
 					registry.obj.regEntities[src]->frame = registry.obj.regVeg[veg]->currentGrowth;
 					registry.createAction(tmp, "growflower", src, 0, 0, gameTime()+duration);
 				}
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "randomheld"))
+			{
+				inv.add(registry.obj.regEntities[act->entityIndexSource], act->entityIndexSource);
+				registry.cloneToInventory(act->entityIndexSource);
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "convertflower"))
@@ -220,6 +270,8 @@ void GameClass::processAction(actionStruct* act)
 				if(gamemode==GAMEMODE_INSPECT)
 				{
 					sidebar.setString(outputEntity(act->entityIndexSource));
+					registry.createAction(tmp, "randomheld", act->entityIndexSource, 0, 0, gameTime());
+					
 				}
 				return;
 			}
@@ -232,7 +284,7 @@ void GameClass::processAction(actionStruct* act)
 				gamemode=GAMEMODE_NEUTRAL;
 				initialize();
 				experimentalMapGen();
-				fillButton("magnifier", coord(settings.tileCols, 5));
+				fillButton("road", coord(settings.tileCols, 5));
 				fillButton("recycle", coord(settings.tileCols+1, 5));
 				fillButton("camera", coord(settings.tileCols+2, 5));
 				fillButton("backpack", coord(settings.tileCols+3, 5));
@@ -266,6 +318,20 @@ void GameClass::processAction(actionStruct* act)
 				{
 					sidebar.setString("Click an Entity\nto Inspect...");
 					gamemode=GAMEMODE_INSPECT;
+				}
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "drawroadx"))
+			{
+				if(gamemode==GAMEMODE_DRAWBEGIN)
+				{
+					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
+					gamemode=GAMEMODE_NEUTRAL;
+				}
+				else
+				{
+					sidebar.setString("Click a Tile (Point A)");
+					gamemode=GAMEMODE_DRAWBEGIN;
 				}
 				return;
 			}
@@ -336,6 +402,16 @@ void GameClass::experimentalMapGen()
 			}
 		}
 	}
+	for(int y=0; y<settings.tileRows; y++)
+	{
+		for(int x=0; x<settings.tileCols; x++)
+		{
+			if(registry.obj.numberOfEntitiesOnGrid(coord(x,y))>0)
+			{
+				terrain.setTerrainRuleAt(coord(x,y), 4);
+			}
+		}
+	}
 }
 
 
@@ -383,7 +459,7 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 			if(strcmp(shapename, "circle")==0)
 			{
 				A=1;B=0;C=1;
-				D=((-2)*focus.x);E=((-2)*focus.y);F=(pow(focus.x,2)+pow(focus.y,2)-pow(radius,2));
+				D=float((-2)*focus.x);E=float((-2)*focus.y);F=float(pow(focus.x,2)+pow(focus.y,2)-pow(radius,2));
 				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
 				{
 					fillTile(codename, _tl+coord(x,y));
@@ -413,9 +489,9 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 				A=1;
 				B=0;
 				C=0;
-				D=-2*vertex.x;
-				E=-1*focus.x;
-				F=pow(vertex.x,2)+(1*focus.x*origin.y);
+				D=-2.0f*vertex.x;
+				E=-1.0f*focus.x;
+				F=float(pow(vertex.x,2)+(1*focus.x*origin.y));
 				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
 				{
 					fillTile(codename, _tl+coord(x,y));
@@ -454,6 +530,23 @@ void GameClass::fillTile(const char* codename, coord _pos)
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillTile failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
 		return;
+	}
+}
+
+//places a tiles map of the selected tile index from the template registry
+void GameClass::fillRoad(const char* codename, coord start, coord end)
+{
+	astar.initialize(start, end);
+	coord current=start;
+	while(current != end)
+	{
+		current = astar.getNextTile(terrain, current, end);
+		if(!registry.createTile(tmp, codename, current, 16, rand()%50000))
+		{
+			//if there's nothing matching to clone, we must skip this step and inform the debug log
+			debugFile << "FillRoad failed at (" << current.x << ", " << current.y << "). clone was undefined.\n";
+			return;
+		}
 	}
 }
 
@@ -525,7 +618,7 @@ int GameClass::buttonHover()
 int GameClass::tileHover()
 {
 	//if(entityHover()>0) return 0; //maybe??
-	for(int i=1; i<numberOfTiles(); i++)
+	for(int i=numberOfTiles()-1; i>0; i--)
 	{
 		if(registry.obj.regTiles[i]->pos == mouse)
 		{
@@ -560,17 +653,26 @@ bool GameClass::isClickOnGUI()
 {
 	if(!(finemouse.x<0 || finemouse.y<0 || finemouse.x>settings.winWid || finemouse.y>settings.winHig))
 	{
+		if(!(mouse.x<inv.tl.x || mouse.y<inv.tl.y || mouse.x>inv.tl.x+inv.dimensions.x || mouse.y>inv.tl.y+inv.dimensions.y))
+		{
+			return true;
+		}
 		return (buttonHover()>0);
 	}
-	else return false;
+	return false;
 }
 
 void GameClass::handleBoardClick(coord _mouse)
 {
 	int entityIndex=entityHover();
+	int tileIndex=tileHover();
 	if(entityIndex>0)
 	{
 		registry.createAction(tmp, "selectentity", entityIndex, 0,0,gameTime()+0.125f);
+	}
+	else if(tileIndex)
+	{
+		registry.createAction(tmp, "selecttile", 1, 0,tileIndex,gameTime()+0.125f);
 	}
 }
 
@@ -639,7 +741,7 @@ void GameClass::gameRenderer()
 		render.currentSprite.setPosition(sf::Vector2f(0,0));
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
-		render.DrawInventory(app, inv, registry.obj.regButtons[5]);
+		render.DrawInventory(app, registry, inv, registry.obj.regButtons[5]);
 	}
 
 	app.draw(sidebar);

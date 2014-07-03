@@ -22,6 +22,8 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "interpret.h"
 #include "tempRegistry.h"
 #include "gameobject.h"
+#include "terrain.h"
+#include "ic_pathing.h"
 #include "inventory.h"
 #include "render.h"
 #include "game.h"
