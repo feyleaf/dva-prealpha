@@ -83,18 +83,24 @@ public:
 	bool validateAction(const actionStruct* act);
 
 	void processGrowth(int entityIndex);
+	void processFlowerConversion(int entityIndex);
 
 	void gameRenderer();
 
 	bool loadSettings();
-	void experimentalMapGen();
+	void experimentalMapGen(const char* biome);
+	void createBaseMapLayer(const mapGenStruct* map);
+	void createDecorationLayer(const mapGenStruct* map);
+	void createEcologyLayer(const mapGenStruct* map);
 
+	void fillPathingRoutes();
 	void fillTile(const char* codename, coord _pos);
 	void fillRoad(const char* codename, coord start, coord end);
 	void fillButton(const char* codename, coord _pos, bool act=true);
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
-	void scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br);
+	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);
+	void scatterEntity(const mapSpreadStruct* spread);
 
 	void processAction(actionStruct* act);
 	bool actionCodeEquals(int index, const char* _code);

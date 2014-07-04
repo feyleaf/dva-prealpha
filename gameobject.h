@@ -170,12 +170,11 @@ struct actionStruct
 
 struct mapShapeStruct
 {
-	int shapeTemplateIndex;
-	int shapeNameIndex;
+	char shapeName[32];
 	coord tl;
 	coord br;
 	int terrainTiles;
-	mapShapeStruct() {shapeTemplateIndex=0; shapeNameIndex=0; tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
+	mapShapeStruct() {strcpy_s(shapeName, ""); tl=coord(0,0); br=coord(0,0); terrainTiles=0;}
 };
 
 struct mapSpreadStruct
@@ -223,6 +222,8 @@ public:
 	std::vector<int> listHandler;
 	void init();
 
+	void eraseEntity(int entityIndex);
+
 	int numberOfTilesOnGrid(coord _grid);
 	int numberOfEntitiesOnGrid(coord _grid);
 
@@ -230,6 +231,10 @@ public:
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getTerrainTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getEcologyTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getBiomeTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	std::string randomShapeFromList(const TemplateRegistryClass& tmp, const char* _codename);
 
 	void fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename);
 
@@ -254,8 +259,7 @@ public:
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, bool act=true);
-	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName);
-	void eraseEntity(int entityIndex);
+	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
 	void clear();
 	void cloneToInventory(int entityIndex);

@@ -95,7 +95,7 @@ int GameObjectContainerClass::randomEntityFromList(const TemplateRegistryClass& 
 	int listIndex=getListTemplateIndex(tmp, _codename);
 	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return 0;
 	if(tmp.container.valuesList[listIndex].list.empty()) return 0;
-	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size()-1);
+	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size())-1;
 	int selection = rand()%numberOfItems + 1;
 	return getEntityTemplateIndex(tmp, tmp.container.valuesList[listIndex].list[selection].c_str());
 }
@@ -104,10 +104,20 @@ int GameObjectContainerClass::randomTileFromList(const TemplateRegistryClass& tm
 {
 	int listIndex=getListTemplateIndex(tmp, _codename);
 	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return 0;
-	if(tmp.container.valuesList[listIndex].list.empty()) return 0;
-	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size());
+	if(tmp.container.valuesList[listIndex].list.size()<2) return 0;
+	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size())-1;
 	int selection = rand()%numberOfItems + 1;
 	return getTileTemplateIndex(tmp, tmp.container.valuesList[listIndex].list[selection].c_str());
+}
+
+std::string GameObjectContainerClass::randomShapeFromList(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	int listIndex=getListTemplateIndex(tmp, _codename);
+	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return "";
+	if(tmp.container.valuesList[listIndex].list.empty()) return "";
+	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size())-1;
+	int selection = rand()%numberOfItems + 1;
+	return tmp.container.valuesList[listIndex].list[selection];
 }
 
 int GameObjectContainerClass::getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
@@ -135,6 +145,36 @@ int GameObjectContainerClass::getListTemplateIndex(const TemplateRegistryClass& 
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
 	{
 		if(strcmp(tmp.container.valuesList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::getTerrainTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.terrainList.size()); i++)
+	{
+		if(strcmp(tmp.container.terrainList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::getEcologyTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.ecoList.size()); i++)
+	{
+		if(strcmp(tmp.container.ecoList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::getBiomeTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.biomeList.size()); i++)
+	{
+		if(strcmp(tmp.container.biomeList[i].cname, _codename)==0)
 			return i;
 	}
 	return 0;
@@ -257,143 +297,81 @@ void GameObjectClass::clear()
 	obj.init();
 }
 
-bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _terrainName, const char* _ecologyName)
+bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomename)
 {
-	//match the terrain name with a name in the template registry, and store its index
-	int terrainIndex=0;
-	mapGenStruct mapGen;
-	for(int i=1; i<int(tmp.container.terrainList.size()); i++)
-	{
-		if(strcmp(tmp.container.terrainList[i].cname, _terrainName)==0)
-		{
-			terrainIndex=i;
-			break;
-		}
-	}
-	if(terrainIndex==0)	return false;
-	//match the tile list, then select a tile name from the list based on a random number
-	int tileList=0;
-	int numberOfIndexes=0;
-	int tileIndex=0;
-	int tileAlias=0;
-	int decoList=0;
-	int decoIndex=0;
-	int decoAlias=0;
-	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].landListName)==0)
-		{
-			tileList=i;
-			break;
-		}
-	}
-	if(tileList==0) return false;
-	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
-	tileIndex=(rand()%numberOfIndexes)+1;
-	for(int i=1; i<int(tmp.container.tileList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[tileList].list[tileIndex].c_str(), tmp.container.tileList[i].cname)==0)
-		{
-			tileAlias=i;
-			break;
-		}
-	}
-	if(tileIndex>0 && tileIndex<=numberOfIndexes)
-	{
-		mapGen.displaying=true;
-		mapGen.active=true;
-		mapGen.baseTiles=tileAlias;
-		mapGen.worldCoords=coord(0,0);
-	}
-	//now we create some shapes
-	int shapeList=0;
-	int numberOfShapes=0;
-	int shapeIndex=0;
-	int shapeTile=0;
 	coord _tl=coord(rand()%5,rand()%5);
 	coord _br=coord(rand()%5+20,rand()%5+10);
-	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].shapesListName)==0)
-		{
-			shapeList=i;
-			break;
-		}
-	}
-	if(shapeList==0) return false;
-	numberOfShapes=int(tmp.container.valuesList[shapeList].list.size()-1);
-	shapeIndex=(rand()%numberOfShapes)+1;
-	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].wornListName)==0)
-		{
-			tileList=i;
-			break;
-		}
-	}
-	if(tileList==0) return false;
-	numberOfIndexes=int(tmp.container.valuesList[tileList].list.size()-1);
-	shapeTile=(rand()%numberOfIndexes)+1;
+	int biomeIndex=obj.getBiomeTemplateIndex(tmp, _biomename);
+	//match the terrain name with a name in the template registry, and store its index
+	int terrainIndex=obj.getTerrainTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].terrainListName);
+	int ecoIndex=obj.getEcologyTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].ecologyListName);
+	mapGenStruct mapGen;
+	if(terrainIndex==0)	return false;
+	//match the tile list, then select a tile name from the list based on a random number
+	int tileAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].landListName);
+	int accentAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].accentListName);
+	int wornAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].wornListName);
+	int decoAlias=obj.randomEntityFromList(tmp, tmp.container.terrainList[terrainIndex].decoListName);
+	int vegAlias=obj.randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].plantListName);
+	int creatureAlias=obj.randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].creatureListName);
+
+	mapGen.displaying=true;
+	mapGen.active=true;
+	mapGen.baseTiles=tileAlias;
+	mapGen.worldCoords=coord(0,0);
+
+	//now we create some shapes
 	mapShapeStruct layer;
 	mapSpreadStruct decoSpread;
-	for(int i=1; i<int(tmp.container.tileList.size()); i++)
+	if(wornAlias>0)
 	{
-		if(strcmp(tmp.container.valuesList[tileList].list[shapeTile].c_str(), tmp.container.tileList[i].cname)==0)
-		{
-			tileAlias=i;
-			break;
-		}
-	}
-	if(shapeTile>0 && shapeTile<=numberOfIndexes)
-	{
+		std::string shapeString=obj.randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
 		layer.tl=_tl;
 		layer.br=_br;
-		layer.shapeNameIndex=shapeIndex;
-		layer.shapeTemplateIndex=shapeList;
-		layer.terrainTiles=tileAlias;
+		strncpy_s(layer.shapeName, 32, shapeString.c_str(), 32);
+		layer.terrainTiles=wornAlias;
 		mapGen.shapeLayer.push_back(new mapShapeStruct(layer));
 	}
+	if(accentAlias>0)
+	{
+		std::string shapeString=obj.randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
+		layer.tl=_tl;
+		layer.br=_br;
+		strncpy_s(layer.shapeName, 32, shapeString.c_str(), 32);
+		layer.terrainTiles=accentAlias;
+		mapGen.shapeLayer.push_back(new mapShapeStruct(layer));
+	}
+
 	//then the decorations
-	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[i].cname, tmp.container.terrainList[terrainIndex].decoListName)==0)
-		{
-			decoList=i;
-			break;
-		}
-	}
-	if(decoList==0) return false;
-	numberOfIndexes=int(tmp.container.valuesList[decoList].list.size()-1);
-	decoIndex=(rand()%numberOfIndexes)+1;
-	for(int i=1; i<int(tmp.container.entityList.size()); i++)
-	{
-		if(strcmp(tmp.container.valuesList[decoList].list[decoIndex].c_str(), tmp.container.entityList[i].cname)==0)
-		{
-			decoAlias=i;
-			break;
-		}
-	}
-	if(decoIndex>0 && decoIndex<=numberOfIndexes)
+	if(decoAlias>0)
 	{
 		_tl=coord(rand()%5,rand()%5);
 		_br=coord(rand()%5+20,rand()%5+10);
 		decoSpread.tl=_tl;
 		decoSpread.br=_br;
-		decoSpread.density=rand()%5+2;
+		decoSpread.density=rand()%15+3;
 		decoSpread.entityTemplateIndex=decoAlias;
 		mapGen.decoLayer.push_back(new mapSpreadStruct(decoSpread));
 	}
-	mapSpreadStruct vegSpread;
-	vegSpread.entityTemplateIndex=obj.getEntityTemplateIndex(tmp, "bluerose");
-	vegSpread.density=4;
-	vegSpread.tl=coord(0,0); vegSpread.br=coord(15,15);
-	mapGen.vegLayer.push_back(new mapSpreadStruct(vegSpread));
-	mapSpreadStruct creatureSpread;
-	creatureSpread.entityTemplateIndex=obj.getEntityTemplateIndex(tmp, "squirrel");
-	creatureSpread.density=2;
-	creatureSpread.tl=coord(0,0); creatureSpread.br=coord(15,15);
-	mapGen.creatureLayer.push_back(new mapSpreadStruct(creatureSpread));
-	obj.regMaps.push_back(new mapGenStruct(mapGen));
+
+	if(vegAlias>0)
+	{
+		mapSpreadStruct vegSpread;
+		vegSpread.entityTemplateIndex=vegAlias;
+		vegSpread.density=rand()%10+3;
+		vegSpread.tl=coord(0,0); vegSpread.br=coord(15,15);
+		mapGen.vegLayer.push_back(new mapSpreadStruct(vegSpread));
+	}
+
+	if(creatureAlias>0)
+	{
+		mapSpreadStruct creatureSpread;
+		creatureSpread.entityTemplateIndex=creatureAlias;
+		creatureSpread.density=rand()%2+2;
+		creatureSpread.tl=coord(0,0); creatureSpread.br=coord(15,15);
+		mapGen.creatureLayer.push_back(new mapSpreadStruct(creatureSpread));
+		obj.regMaps.push_back(new mapGenStruct(mapGen));
+	}
 	return true;	
 }
 
@@ -581,61 +559,61 @@ bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char*
 	return ret;
 }
 
-void GameObjectClass::eraseEntity(int entityIndex)
+void GameObjectContainerClass::eraseEntity(int entityIndex)
 {
 	//this routine DOES NOT remove the entity from the list, only empties the data
 	//first erase the associated pack
-	if(obj.regEntities[entityIndex] == NULL) return;
-	int category=obj.regEntities[entityIndex]->type;
-	int catIndex=obj.regEntities[entityIndex]->packIndex;
+	if(regEntities[entityIndex] == NULL) return;
+	int category=regEntities[entityIndex]->type;
+	int catIndex=regEntities[entityIndex]->packIndex;
 	switch(category)
 	{
 		case ICAT_CREATURE:
-			if(obj.regCreature[catIndex] != NULL)
+			if(regCreature[catIndex] != NULL)
 			{
-				obj.regCreature[catIndex]->active=false;
+				regCreature[catIndex]->active=false;
 			}
 			break;
 		case ICAT_DECORATION:
-			if(obj.regDeco[catIndex] != NULL)
+			if(regDeco[catIndex] != NULL)
 			{
-				obj.regDeco[catIndex]->active=false;
+				regDeco[catIndex]->active=false;
 			}
 			break;
 		case ICAT_INGREDIENT:
-			if(obj.regIng[catIndex] != NULL)
+			if(regIng[catIndex] != NULL)
 			{
-				obj.regIng[catIndex]->active=false;
+				regIng[catIndex]->active=false;
 			}
 			break;
 		case ICAT_SEED:
-			if(obj.regSeed[catIndex] != NULL)
+			if(regSeed[catIndex] != NULL)
 			{
-				obj.regSeed[catIndex]->active=false;
+				regSeed[catIndex]->active=false;
 			}
 			break;
 		case ICAT_SUMMON:
-			if(obj.regSummon[catIndex] != NULL)
+			if(regSummon[catIndex] != NULL)
 			{
-				obj.regSummon[catIndex]->active=false;
+				regSummon[catIndex]->active=false;
 			}
 			break;
 		case ICAT_TOOL:
-			if(obj.regTool[catIndex] != NULL)
+			if(regTool[catIndex] != NULL)
 			{
-				obj.regTool[catIndex]->active=false;
+				regTool[catIndex]->active=false;
 			}
 			break;
 		case ICAT_VEGETATION:
-			if(obj.regVeg[catIndex] != NULL)
+			if(regVeg[catIndex] != NULL)
 			{
-				obj.regVeg[catIndex]->active=false;
+				regVeg[catIndex]->active=false;
 			}
 			break;
 		default:
 			break;
 	}
-	obj.regEntities[entityIndex]->active=false;
+	regEntities[entityIndex]->active=false;
 }
 
 bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time)

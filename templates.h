@@ -293,13 +293,21 @@ struct ecoPoolTemplate
 //compiled template of biome information used in map generation
 struct biomeInformationTemplate
 {
-	char cname[40];
+	char cname[32];
 	char name[32];
-	unsigned char terrainIndex;
-	unsigned char ecoIndex;
+	char terrainListName[32];
+	char ecologyListName[32];
 	unsigned char temperature;
 	unsigned char elevation;
 	unsigned char atmosphere;
+	biomeInformationTemplate()
+	{
+		strncpy_s(cname, "biome", 32);
+		strncpy_s(name, "Undefined Biome", 32);
+		strncpy_s(terrainListName, "terrain", 32);
+		strncpy_s(ecologyListName, "ecology", 32);
+		temperature=0; elevation=0; atmosphere=0;
+	}
 };
 
 //item template
@@ -381,6 +389,7 @@ class TemplateContainerClass
 			valuesList.clear(); valuesList.push_back(stringList());
 			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());
 			ecoList.clear(); ecoList.push_back(ecoPoolTemplate());
+			biomeList.clear(); biomeList.push_back(biomeInformationTemplate());
 		}
 		~TemplateContainerClass() {}
 

@@ -299,6 +299,21 @@ ecoPoolTemplate TemplateReaderClass::parseEcology()
 	return ret;
 }
 
+biomeInformationTemplate TemplateReaderClass::parseBiome()
+{
+	biomeInformationTemplate ret;
+	std::string chunk;
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.name, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.terrainListName, 32, chunk.c_str(), 32);
+	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.ecologyListName, 32, chunk.c_str(), 32);
+	return ret;
+}
+
 stringList TemplateReaderClass::parseList()
 {
 	stringList ret;

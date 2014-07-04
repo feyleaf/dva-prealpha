@@ -154,6 +154,17 @@ void GameClass::processGrowth(int entityIndex)
 	}
 }
 
+void GameClass::processFlowerConversion(int entityIndex)
+{
+	if(registry.obj.regEntities[entityIndex]->type != ICAT_VEGETATION) return;
+	int veg=registry.obj.regEntities[entityIndex]->packIndex;
+	int drops=registry.obj.regVeg[veg]->dropList;
+	coord psx=registry.obj.regEntities[entityIndex]->pos;
+	int pick=registry.obj.randomEntityFromList(tmp, tmp.container.valuesList[drops].cname);
+	registry.obj.eraseEntity(entityIndex);
+	fillEntity(tmp.container.entityList[pick].cname, psx);
+}
+
 bool GameClass::validateAction(const actionStruct* act)
 {
 	if(act==NULL) return false;
@@ -214,14 +225,7 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "convertflower"))
 			{
-				int src=act->entityIndexSource;
-				if(registry.obj.regEntities[src]->type != ICAT_VEGETATION) return;
-				int veg=registry.obj.regEntities[src]->packIndex;
-				int drops=registry.obj.regVeg[veg]->dropList;
-				coord psx=registry.obj.regEntities[src]->pos;
-				int pick=registry.obj.randomEntityFromList(tmp, tmp.container.valuesList[drops].cname);
-				registry.eraseEntity(src);
-				fillEntity(tmp.container.entityList[pick].cname, psx);
+				processFlowerConversion(act->entityIndexSource);
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "selectentity"))
@@ -242,7 +246,7 @@ void GameClass::processAction(actionStruct* act)
 			{
 				gamemode=GAMEMODE_NEUTRAL;
 				initialize();
-				experimentalMapGen();
+				experimentalMapGen("beach");
 				fillButton("magnifier", coord(settings.tileCols, 5));
 				fillButton("recycle", coord(settings.tileCols+1, 5));
 				fillButton("camera", coord(settings.tileCols+2, 5));
@@ -299,54 +303,24 @@ void GameClass::capture()
 	sidebar.setString(sf::String("Saved screen to:\n"+sf::String(buffer))+"\n");
 }
 
-void GameClass::experimentalMapGen()
+void GameClass::experimentalMapGen(const char* biome)
 {
 	initRandom(header.randSeed);
-	registry.createMapTerrain(tmp, "beachterrain", "beachecology");
+	registry.createMapTerrain(tmp, biome);
 	int i=registry.obj.regMaps.size()-1;
 	if(registry.obj.regMaps[i] == NULL) return;
 	else
 	{
-		fillShape("box", tmp.container.tileList[registry.obj.regMaps[i]->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
-		for(int j=1; j<int(registry.obj.regMaps[i]->shapeLayer.size()); j++)
-		{
-			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
-			fillShape(tmp.container.valuesList[registry.obj.regMaps[i]->shapeLayer[j]->shapeTemplateIndex].list[registry.obj.regMaps[i]->shapeLayer[j]->shapeNameIndex].c_str(), tmp.container.tileList[registry.obj.regMaps[i]->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
-		}
+		createBaseMapLayer(registry.obj.regMaps[i]);
+		createDecorationLayer(registry.obj.regMaps[i]);
+		createEcologyLayer(registry.obj.regMaps[i]);
 	}
-	if(registry.obj.regMaps[i]->decoLayer[1] == NULL) return;
-	for(int yy=registry.obj.regMaps[i]->decoLayer[1]->tl.y; yy<registry.obj.regMaps[i]->decoLayer[1]->br.y; yy++)
-	{
-		for(int xx=registry.obj.regMaps[i]->decoLayer[1]->tl.x; xx<registry.obj.regMaps[i]->decoLayer[1]->br.x; xx++)
-		{
-			if(rand()%100<registry.obj.regMaps[i]->decoLayer[1]->density)
-			{
-				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->decoLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
-			}
-		}
-	}
-	if(registry.obj.regMaps[i]->vegLayer[1] == NULL) return;
-	for(int yy=registry.obj.regMaps[i]->vegLayer[1]->tl.y; yy<registry.obj.regMaps[i]->vegLayer[1]->br.y; yy++)
-	{
-		for(int xx=registry.obj.regMaps[i]->vegLayer[1]->tl.x; xx<registry.obj.regMaps[i]->vegLayer[1]->br.x; xx++)
-		{
-			if(rand()%100<registry.obj.regMaps[i]->vegLayer[1]->density)
-			{
-				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->vegLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
-			}
-		}
-	}
-	if(registry.obj.regMaps[i]->creatureLayer[1] == NULL) return;
-	for(int yy=registry.obj.regMaps[i]->creatureLayer[1]->tl.y; yy<registry.obj.regMaps[i]->creatureLayer[1]->br.y; yy++)
-	{
-		for(int xx=registry.obj.regMaps[i]->creatureLayer[1]->tl.x; xx<registry.obj.regMaps[i]->creatureLayer[1]->br.x; xx++)
-		{
-			if(rand()%100<registry.obj.regMaps[i]->creatureLayer[1]->density)
-			{
-				fillEntity(tmp.container.entityList[registry.obj.regMaps[i]->creatureLayer[1]->entityTemplateIndex].cname, coord(xx,yy));
-			}
-		}
-	}
+	fillPathingRoutes();
+}
+
+void GameClass::fillPathingRoutes()
+{
+	//establish pathing rules
 	for(int y=0; y<settings.tileRows; y++)
 	{
 		for(int x=0; x<settings.tileCols; x++)
@@ -359,6 +333,30 @@ void GameClass::experimentalMapGen()
 	}
 }
 
+void GameClass::createBaseMapLayer(const mapGenStruct* map)
+{
+	fillShape("box", tmp.container.tileList[map->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+	for(int j=1; j<int(map->shapeLayer.size()); j++)
+	{
+		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+	}
+
+}
+
+void GameClass::createDecorationLayer(const mapGenStruct* map)
+{
+	for(int j=0; j<int(map->decoLayer.size()); j++)
+		scatterEntity(map->decoLayer[j]);
+}
+
+void GameClass::createEcologyLayer(const mapGenStruct* map)
+{
+	for(int j=0; j<int(map->vegLayer.size()); j++)
+		scatterEntity(map->vegLayer[j]);
+	for(int j=0; j<int(map->creatureLayer.size()); j++)
+		scatterEntity(map->creatureLayer[j]);
+}
 
 //_tl is top left of region
 //_br is bottom right of region
@@ -367,13 +365,7 @@ void GameClass::experimentalMapGen()
 //TODO: set up a registry for shapes. for now we'll handle the formation inside this function
 void GameClass::fillShape(const char* shapename, const char* codename, coord _tl, coord _br)
 {
-	int safeborder=8;
-	float A=0;
-	float B=0;
-	float C=0;
-	float D=0;
-	float E=0;
-	float F=0;
+	float A=0;	float B=0;	float C=0;	float D=0;	float E=0;	float F=0;
 	float thetaRotation=(float(rand()%360)/360.0f)*(2.0f*PI);
 	int rangeX=_br.x-_tl.x;
 	int rangeY=_br.y-_tl.y;
@@ -396,23 +388,13 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 			if(strcmp(shapename, "box")==0)
 			{
 				A=0;B=0;C=0;D=0;E=0;F=0;
-				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)==0)
-				{
-					fillTile(codename, _tl+coord(x,y));
-				}
+				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "circle")==0)
 			{
 				A=1;B=0;C=1;
 				D=float((-2)*focus.x);E=float((-2)*focus.y);F=float(pow(focus.x,2)+pow(focus.y,2)-pow(radius,2));
-				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
-				{
-					fillTile(codename, _tl+coord(x,y));
-				}
-				//if((pow(x,2)+pow(y,2)-((radius*4)*x)-((radius*4)*y)+(pow(-radius*2,2)+pow(-radius*2,2)-pow(radius,2)))<0)
-				//{
-				//	fillTile(codename, _tl+coord(x,y));
-				//}
+				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "conic")==0)
 			{
@@ -422,10 +404,7 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 				D=(-2.0f*float(origin.x))/float(pow(vertex.x, 2));
 				E=(2.0f*float(origin.y))/float(pow(focus.x,2)-pow(vertex.x,2));
 				F=float(pow(origin.x, 2)/pow(vertex.x, 2))-float(pow(origin.y, 2)/(pow(focus.x,2)-pow(vertex.x,2)))+1.0f;
-				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
-				{
-					fillTile(codename, _tl+coord(x,y));
-				}
+				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "parabola")==0)
 			{
@@ -437,10 +416,7 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 				D=-2.0f*vertex.x;
 				E=-1.0f*focus.x;
 				F=float(pow(vertex.x,2)+(1*focus.x*origin.y));
-				if(((A*pow(xt,2))+(B*xt*yt)+(C*pow(yt,2))+(D*xt)+(E*yt)+F)<=0)
-				{
-					fillTile(codename, _tl+coord(x,y));
-				}
+				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "triangle")==0)
 			{
@@ -453,17 +429,25 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 	}
 }
 
-void GameClass::scatterDeco(int entityID, int con, unsigned char density, coord _tl, coord _br)
-{//this routine is broken anyway!
-	initRandom(header.randSeed);
-	for(int y=_tl.y; y<=_br.y; y++)
+bool GameClass::processConic(coord _pt, float a, float b, float c, float d, float e, float f)
+{
+	return (((a*pow(_pt.x,2))+(b*_pt.x*_pt.y)+(c*pow(_pt.y,2))+(d*_pt.x)+(e*_pt.x)+f)<=0);
+}
+
+void GameClass::scatterEntity(const mapSpreadStruct* spread)
+{
+	if(spread == NULL) return;
+	for(int y=spread->tl.y; y<spread->br.y; y++)
 	{
-		for(int x=_tl.x; x<=_br.x; x++)
+		for(int x=spread->tl.x; x<spread->br.x; x++)
 		{
-//			if(abs(noiseyPixel(coord(x,y), 0, 255, con, header.randSeed)/density) ==(con/2))
-//				fillEntity(entityID, coord(x,y));
+			if(rand()%100<spread->density)
+			{
+				fillEntity(tmp.container.entityList[spread->entityTemplateIndex].cname, coord(x,y));
+			}
 		}
 	}
+
 }
 
 

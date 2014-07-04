@@ -55,6 +55,13 @@ VEGETATION:heavenmirror,Heavens Mirror,32,32,0,0,32,32,hmirror.png,3,growflower,
 DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidblock,1,0,1,1,none
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
+LIST:forestplants,redrose,bluerose,END,
+LIST:forestcreatures,squirrel,irongolem,END,
+LIST:foresttiles,greengrass,emeraldgrass,marshgrass,END,
+LIST:forestworn,sand,dirt,clay,END,
+LIST:forestaccent,customgrass,greengrass,END,
+LIST:forestdeco,boulder,mahoganylog,END,
+LIST:forestshapes,circle,parabola,parabola,circle,END,
 LIST:beachplants,hibiscus,heavenmirror,END,
 LIST:beachcreatures,squirrel,END,
 LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
@@ -64,7 +71,12 @@ LIST:beachdeco,marlborobush,boulder,mahoganylog,END,
 LIST:beachshapes,circle,conic,parabola,conic,END,
 LIST:basicloot,redpetal,bluepetal,END,
 TERRAIN:beachterrain,Beach,beachtiles,beachworn,beachaccent,beachdeco,beachshapes
+TERRAIN:forestterrain,Forest,foresttiles,forestworn,forestaccent,forestdeco,forestshapes
 ECOLOGY:beachecology,Beach,beachplants,beachcreatures
+ECOLOGY:forestecology,Forest,forestplants,forestcreatures
+BIOME:forest,Forest Biome,forestterrain,forestecology
+BIOME:beach,Beach Biome,beachterrain,beachecology
+BIOME:beachforest,Beach Forest Biome,forestterrain,beachecology
 BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
 BUTTON:recycle,Recycle Map,32,32,0,0,32,32,recycle.png,1,generatemap,none
 BUTTON:camera,Screenshot,32,32,0,0,32,32,camera.png,1,screenshot,none
