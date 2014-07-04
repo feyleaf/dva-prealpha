@@ -13,8 +13,6 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_NEUTRAL 0
 #define GAMEMODE_INSPECT 1
 #define GAMEMODE_INVENTORY 2
-#define GAMEMODE_DRAWBEGIN 3
-#define GAMEMODE_DRAWEND 4
 
 #define JAN1_2014 1387584000
 
@@ -82,6 +80,9 @@ public:
 
 	void gameUpdater(float actSeconds);
 	void processActionList(int maxlength, float actSeconds);
+	bool validateAction(const actionStruct* act);
+
+	void processGrowth(int entityIndex);
 
 	void gameRenderer();
 
@@ -108,6 +109,7 @@ public:
 	int numberOfEntities();
 
 	sf::String outputEntity(int index);
+	sf::String outputTile(int index);
 
 };
 

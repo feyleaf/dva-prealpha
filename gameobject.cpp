@@ -2,7 +2,7 @@
 gameobject.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 19, 2014
+July 3, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -78,6 +78,38 @@ int GameObjectContainerClass::getEntityTemplateIndex(const TemplateRegistryClass
 	return 0;
 }
 
+void GameObjectContainerClass::fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, _codename)==0)
+		{
+			regVeg[packIndex]->dropList=i;
+			break;
+		}
+	}
+}
+
+int GameObjectContainerClass::randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	int listIndex=getListTemplateIndex(tmp, _codename);
+	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return 0;
+	if(tmp.container.valuesList[listIndex].list.empty()) return 0;
+	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size()-1);
+	int selection = rand()%numberOfItems + 1;
+	return getEntityTemplateIndex(tmp, tmp.container.valuesList[listIndex].list[selection].c_str());
+}
+
+int GameObjectContainerClass::randomTileFromList(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	int listIndex=getListTemplateIndex(tmp, _codename);
+	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return 0;
+	if(tmp.container.valuesList[listIndex].list.empty()) return 0;
+	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size());
+	int selection = rand()%numberOfItems + 1;
+	return getTileTemplateIndex(tmp, tmp.container.valuesList[listIndex].list[selection].c_str());
+}
+
 int GameObjectContainerClass::getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
 {
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
@@ -93,6 +125,16 @@ int GameObjectContainerClass::getGuiTemplateIndex(const TemplateRegistryClass& t
 	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
 	{
 		if(strcmp(tmp.container.buttonList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
+	{
+		if(strcmp(tmp.container.valuesList[i].cname, _codename)==0)
 			return i;
 	}
 	return 0;
@@ -494,6 +536,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 				if(tmp.container.vegPackList[i].entityID==p)
 				{
 					obj.regVeg.push_back(new vegPack(time, tmp.container.vegPackList[i]));
+					obj.fillVegDropList(tmp, int(obj.regVeg.size())-1, tmp.container.vegPackList[i].lootList);
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regVeg.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f));
 					return true;

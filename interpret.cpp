@@ -162,6 +162,7 @@ vegetationPackTemplate TemplateReaderClass::parseVegetation(int entityIndex)
 	ret.mapBonus = unsigned char(atoi(chunk.c_str()));
 
 	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.lootList, chunk.c_str(), 32);
 	return ret;
 }
 

@@ -1,25 +1,6 @@
 32 x 32
 Title: Druid vs Alchemist Test
-Read 74 templates from the file.
-List: beachplants
-nothing, hibiscus, heavenmirror, 
-List: beachcreatures
-nothing, squirrel, 
-List: beachtiles
-nothing, water, greengrass, emeraldgrass, marble, 
-List: beachworn
-nothing, sand, bluebrick, woodplank, obsidian, sand, clay, 
-List: beachaccent
-nothing, 
-List: beachdeco
-nothing, marlborobush, boulder, mahoganylog, 
-List: beachshapes
-nothing, circle, conic, parabola, conic, 
-:Undef
-:Marlboro Bush
-:Boulder
-:Mahogany Log
 32 x 32
 Title: Druid vs Alchemist Test
-Closed with 9 pending/created actions
-Time in unsigned long format: 1404355614
+Closed with 11 pending/created actions
+Time in unsigned long format: 1404444738

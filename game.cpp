@@ -42,26 +42,10 @@ GameClass::GameClass()
 	render.createEntitySheet(tmp);
 	render.createGuiSheet(tmp);
 	render.loadGraphicsFiles(settings);
-	debugFile << "Read " << tmp.parser.getLineNumber()-1 << " templates from the file.\n";
-	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
-	{
-		debugFile << "List: " << tmp.container.valuesList[i].cname << "\n";
-		for(int j=0; j<int(tmp.container.valuesList[i].list.size()); j++)
-		{
-			debugFile << tmp.container.valuesList[i].list[j] << ", ";
-		}
-		debugFile << "\n";
-	}
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 	mainfont.loadFromFile(settings.mainFontFile);
 	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", mainfont, 24);
 	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
-	for(int t=0; t<int(tmp.container.decoPackList.size()); t++)
-	{
-		debugFile.write(":", 1);
-		debugFile << tmp.container.entityList[tmp.container.decoPackList[t].entityID].name;
-		debugFile.write("\n", 1);
-	}
 	registry.createAction(tmp, "generatemap", 0,0,0,0.0f);
 }
 
@@ -157,16 +141,35 @@ void GameClass::processActionList(int maxlength, float actSeconds)
 
 }
 
+void GameClass::processGrowth(int entityIndex)
+{
+	int veg=registry.obj.regEntities[entityIndex]->packIndex;
+	if(veg==0 || entityIndex==0) return;
+	float duration=float(registry.obj.regVeg[veg]->growthTicks)*0.2f;
+	if(registry.obj.regVeg[veg]->currentGrowth < (registry.obj.regVeg[veg]->maxGrowth-1))
+	{
+		registry.obj.regVeg[veg]->currentGrowth++;
+		registry.obj.regEntities[entityIndex]->frame = registry.obj.regVeg[veg]->currentGrowth;
+		registry.createAction(tmp, "growflower", entityIndex, 0, 0, gameTime()+duration);
+	}
+}
+
+bool GameClass::validateAction(const actionStruct* act)
+{
+	if(act==NULL) return false;
+	if(!act->active) return false;
+	if(act->entityIndexSource<0) return false;
+	if(act->entityIndexTarget<0 || act->entityIndexTarget>numberOfEntities()) return false;
+	if(act->tileIndexTarget<0 || act->tileIndexTarget>numberOfTiles()) return false;
+	return true;
+}
+
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
-	if(act==NULL) return;
-	if(!act->active) return;
-	act->active = false;
-	if(act->entityIndexSource<0) return;
-	if(act->entityIndexTarget<0 || act->entityIndexTarget>numberOfEntities()) return;
-	if(act->tileIndexTarget<0 || act->tileIndexTarget>numberOfTiles()) return;
+	if(!validateAction(act)) return;
 
+	act->active = false;
 	int currentIndex=act->actionTemplateIndex;
 	bool enSrc=(act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
 	bool enTrg=(act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
@@ -183,41 +186,14 @@ void GameClass::processAction(actionStruct* act)
 			//target is a tile
 			if(actionCodeEquals(currentIndex, "selecttile"))
 			{
-				if(gamemode==GAMEMODE_DRAWBEGIN)
+				if(gamemode==GAMEMODE_INSPECT)
 				{
-					registry.createAction(tmp, "drawroada", act->tileIndexTarget,0,act->tileIndexTarget, gameTime());
-				}
-				if(gamemode==GAMEMODE_DRAWEND)
-				{
-					registry.createAction(tmp, "drawroadb", act->tileIndexTarget,0,act->tileIndexTarget, gameTime());
+					sidebar.setString(outputTile(act->tileIndexTarget));
+	
 				}
 				return;
 			}
 			//target is a tile
-			if(actionCodeEquals(currentIndex, "drawroada"))
-			{
-				if(gamemode==GAMEMODE_DRAWBEGIN)
-				{
-					gamemode=GAMEMODE_DRAWEND;
-					sidebar.setString("Great!");
-					astar.setStart(registry.obj.regTiles[act->tileIndexTarget]->pos);
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "drawroadb"))
-			{
-				if(gamemode==GAMEMODE_DRAWEND)
-				{
-					gamemode=GAMEMODE_NEUTRAL;
-					sidebar.setString("Done!!");
-					coord target=registry.obj.regTiles[act->tileIndexTarget]->pos;
-					coord start=astar.getStart();
-					astar.setTarget(target);
-					astar.runPathing(terrain, start, target);
-					fillRoad("stonewall", start, target);
-				}
-				return;
-			}
 		}
 		else
 		{
@@ -225,18 +201,9 @@ void GameClass::processAction(actionStruct* act)
 			//ideal for growflower
 			if(actionCodeEquals(currentIndex, "growflower"))
 			{
-				int src=act->entityIndexSource;
-				int veg=registry.obj.regEntities[act->entityIndexSource]->packIndex;
-				if(veg==0 || src==0) return;
-				float duration=float(registry.obj.regVeg[veg]->growthTicks)*0.2f;
 				//update the frame as long as it's still less than the max growth stages
-				if(registry.obj.regVeg[veg]->currentGrowth < (registry.obj.regVeg[veg]->maxGrowth-1))
-				{
-					act->active=false;
-					registry.obj.regVeg[veg]->currentGrowth++;
-					registry.obj.regEntities[src]->frame = registry.obj.regVeg[veg]->currentGrowth;
-					registry.createAction(tmp, "growflower", src, 0, 0, gameTime()+duration);
-				}
+				processGrowth(act->entityIndexSource);
+
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "randomheld"))
@@ -247,22 +214,14 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "convertflower"))
 			{
-				bool isRed=false;
 				int src=act->entityIndexSource;
-				isRed=(registry.obj.regEntities[src]->entityTemplateIndex==registry.obj.getEntityTemplateIndex(tmp, "redrose"));
-				coord psx=registry.obj.regEntities[src]->pos;
+				if(registry.obj.regEntities[src]->type != ICAT_VEGETATION) return;
 				int veg=registry.obj.regEntities[src]->packIndex;
+				int drops=registry.obj.regVeg[veg]->dropList;
+				coord psx=registry.obj.regEntities[src]->pos;
+				int pick=registry.obj.randomEntityFromList(tmp, tmp.container.valuesList[drops].cname);
 				registry.eraseEntity(src);
-				//registry.regEntities.erase(registry.regEntities.begin()+src);
-				//registry.regVeg.erase(registry.regVeg.begin()+veg);
-				if(isRed)
-				{
-					fillEntity("redpetal", psx);
-				}
-				else
-				{
-					fillEntity("bluepetal", psx);
-				}
+				fillEntity(tmp.container.entityList[pick].cname, psx);
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "selectentity"))
@@ -270,7 +229,7 @@ void GameClass::processAction(actionStruct* act)
 				if(gamemode==GAMEMODE_INSPECT)
 				{
 					sidebar.setString(outputEntity(act->entityIndexSource));
-					registry.createAction(tmp, "randomheld", act->entityIndexSource, 0, 0, gameTime());
+					registry.createAction(tmp, "convertflower", act->entityIndexSource, 0, 0, gameTime());
 					
 				}
 				return;
@@ -284,7 +243,7 @@ void GameClass::processAction(actionStruct* act)
 				gamemode=GAMEMODE_NEUTRAL;
 				initialize();
 				experimentalMapGen();
-				fillButton("road", coord(settings.tileCols, 5));
+				fillButton("magnifier", coord(settings.tileCols, 5));
 				fillButton("recycle", coord(settings.tileCols+1, 5));
 				fillButton("camera", coord(settings.tileCols+2, 5));
 				fillButton("backpack", coord(settings.tileCols+3, 5));
@@ -318,20 +277,6 @@ void GameClass::processAction(actionStruct* act)
 				{
 					sidebar.setString("Click an Entity\nto Inspect...");
 					gamemode=GAMEMODE_INSPECT;
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "drawroadx"))
-			{
-				if(gamemode==GAMEMODE_DRAWBEGIN)
-				{
-					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
-					gamemode=GAMEMODE_NEUTRAL;
-				}
-				else
-				{
-					sidebar.setString("Click a Tile (Point A)");
-					gamemode=GAMEMODE_DRAWBEGIN;
 				}
 				return;
 			}
@@ -670,7 +615,7 @@ void GameClass::handleBoardClick(coord _mouse)
 	{
 		registry.createAction(tmp, "selectentity", entityIndex, 0,0,gameTime()+0.125f);
 	}
-	else if(tileIndex)
+	else if(tileIndex>0)
 	{
 		registry.createAction(tmp, "selecttile", 1, 0,tileIndex,gameTime()+0.125f);
 	}
@@ -776,6 +721,17 @@ sf::String GameClass::outputEntity(int index)
 	case ICAT_TOOL: ret+="Tool\n"; break;
 	default: ret+="Something Else...\n"; break;
 	}
+	return ret;
+}
+
+sf::String GameClass::outputTile(int index)
+{
+	sf::String ret="";
+	int calc=0;
+	if(registry.obj.regTiles[index] == NULL) return ret;
+
+	ret+=tmp.container.tileList[registry.obj.regTiles[index]->tileTemplateIndex].name;
+	ret+="\n";
 	return ret;
 }
 

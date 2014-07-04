@@ -114,13 +114,13 @@ struct vegPack
 	int maxGrowth;
 	int currentGrowth;
 	unsigned char mapBonus;
-	std::vector<int> dropList;
+	int dropList; //the template index to the list
 	vegPack()
-	{active=false; bornTime=0.0f; growthTicks=0; maxGrowth=0; currentGrowth=0; mapBonus=0; dropList.clear();}
+	{active=false; bornTime=0.0f; growthTicks=0; maxGrowth=0; currentGrowth=0; mapBonus=0; dropList=0;}
 	vegPack(float _born, int _ticks, int _max, int _stage, unsigned char _bonus)
-	{active=false; bornTime=_born; growthTicks=_ticks; maxGrowth=_max; currentGrowth=0; mapBonus=_bonus; dropList.clear();}
+	{active=false; bornTime=_born; growthTicks=_ticks; maxGrowth=_max; currentGrowth=0; mapBonus=_bonus; dropList=0;}
 	vegPack(float curTime, const vegetationPackTemplate& src)
-	{active=false; bornTime=curTime; growthTicks=src.growthTicks; maxGrowth=src.maxGrowthStages; currentGrowth=0; mapBonus=src.mapBonus; dropList.clear();}
+	{active=false; bornTime=curTime; growthTicks=src.growthTicks; maxGrowth=src.maxGrowthStages; currentGrowth=0; mapBonus=src.mapBonus; dropList=0;}
 };
 
 struct creaturePack
@@ -229,6 +229,12 @@ public:
 	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+
+	void fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename);
+
+	int randomTileFromList(const TemplateRegistryClass& tmp, const char* _codename);
+	int randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename);
 
 	void handleIndexesOnGrid(coord _grid);
 	void handleEntitiesList(int _index);

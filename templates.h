@@ -157,14 +157,14 @@ struct vegetationPackTemplate
 	int growthTicks;
 	unsigned char maxGrowthStages;
 	unsigned char mapBonus;
-	std::vector<unsigned char> lootList;
+	char lootList[32];
 	vegetationPackTemplate(int _id,
 							int _growthTime,
 							unsigned char _maxGrowthStages,
 							unsigned char _mapBonus)
-	{entityID=_id; growthTicks=_growthTime; maxGrowthStages=_maxGrowthStages; mapBonus=_mapBonus; lootList.clear();}
+	{entityID=_id; growthTicks=_growthTime; maxGrowthStages=_maxGrowthStages; mapBonus=_mapBonus; strcpy_s(lootList, "");}
 	vegetationPackTemplate()
-	{entityID=0; growthTicks=0; maxGrowthStages=0; mapBonus=0; lootList.clear();}
+	{entityID=0; growthTicks=0; maxGrowthStages=0; mapBonus=0; strcpy_s(lootList, "");}
 };
 
 //constructed template of rules for generating creatures
