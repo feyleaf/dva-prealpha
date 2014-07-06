@@ -140,6 +140,16 @@ int GameObjectContainerClass::getGuiTemplateIndex(const TemplateRegistryClass& t
 	return 0;
 }
 
+int GameObjectContainerClass::getButtonForAction(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(regButtons.size()); i++)
+	{
+		if(strcmp(tmp.container.actionList[regButtons[i]->actionTemplateIndex].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
 int GameObjectContainerClass::getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
 {
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)

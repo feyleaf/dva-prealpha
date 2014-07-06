@@ -230,6 +230,7 @@ public:
 	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getButtonForAction(const TemplateRegistryClass& tmp, const char* _codename);
 	int getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTerrainTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getEcologyTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);

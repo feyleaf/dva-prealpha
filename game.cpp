@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 2, 2014
+July 5, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -23,6 +23,7 @@ void GameClass::initialize()
 	frameClock.restart();
 	gameConstant=60;
 	gamemode=0;
+	cursor=0;
 	initRandom(header.randSeed);
 }
 
@@ -190,6 +191,13 @@ void GameClass::processAction(actionStruct* act)
 		//split between entity targets and tile targets
 		if(enTrg)
 		{
+			if(actionCodeEquals(currentIndex, "establishtarget"))
+			{
+				char buffer[64]="";
+				sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
+				sidebar.setString("Target moving to:\n" + std::string(buffer));
+				return;
+			}
 			//target is an entity
 		}
 		else if(tlTrg)
@@ -200,8 +208,20 @@ void GameClass::processAction(actionStruct* act)
 				if(gamemode==GAMEMODE_INSPECT)
 				{
 					sidebar.setString(outputTile(act->tileIndexTarget));
-	
+					return;
 				}
+				if(gamemode==GAMEMODE_ENTITYACTION)
+				{
+					registry.createAction(tmp, "establishtarget", cursor, 0, act->tileIndexTarget, gameTime()+0.5f);
+					//registry.createAction(tmp, "creatureguioff", 0, 0, 0, gameTime());
+					return;
+				}
+			}
+			if(actionCodeEquals(currentIndex, "establishtarget"))
+			{
+				char buffer[64]="";
+				sprintf_s(buffer, "(%i, %i)", registry.obj.regTiles[act->tileIndexTarget]->pos.x, registry.obj.regTiles[act->tileIndexTarget]->pos.y);
+				sidebar.setString("Target moving to:\n" + std::string(buffer));
 				return;
 			}
 			//target is a tile
@@ -234,8 +254,29 @@ void GameClass::processAction(actionStruct* act)
 				{
 					sidebar.setString(outputEntity(act->entityIndexSource));
 					registry.createAction(tmp, "convertflower", act->entityIndexSource, 0, 0, gameTime());
-					
+					return;
 				}
+				if(gamemode==GAMEMODE_ENTITYACTION)
+				{
+					registry.createAction(tmp, "establishtarget", cursor, act->entityIndexSource, 0, gameTime()+0.5f);
+					//registry.createAction(tmp, "creatureguioff", 0, 0, 0, gameTime());
+					return;
+				}
+				if(gamemode==GAMEMODE_NEUTRAL)
+				{
+					if(registry.obj.regEntities[act->entityIndexSource]->type == ICAT_CREATURE)
+					{
+						registry.createAction(tmp, "creatureguion", act->entityIndexSource, 0, 0, gameTime());
+					}
+					return;
+				}
+			}
+			if(actionCodeEquals(currentIndex, "creatureguion"))
+			{
+				if(gamemode!=GAMEMODE_ENTITYACTION) gamemode=GAMEMODE_ENTITYACTION;
+				sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
+				cursor=act->entityIndexSource;
+				registry.obj.regButtons[registry.obj.getButtonForAction(tmp, "movecreature")]->active=true;
 				return;
 			}
 		}
@@ -252,6 +293,20 @@ void GameClass::processAction(actionStruct* act)
 				fillButton("camera", coord(settings.tileCols+2, 5));
 				fillButton("backpack", coord(settings.tileCols+3, 5));
 				fillButton("inventorycell", coord(0,0), false);
+				fillButton("movebutton", coord(settings.tileCols+1,3), false);
+				return;
+			}
+			if(actionCodeEquals(currentIndex,"creatureguioff"))
+			{
+				sidebar.setString("");
+				registry.obj.regButtons[registry.obj.getButtonForAction(tmp, "movecreature")]->active=false;
+				gamemode=GAMEMODE_NEUTRAL;
+				cursor=0;
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "movecreature"))
+			{
+				sidebar.setString("MOVED!?\n"+outputEntity(cursor));
 				return;
 			}
 			if(actionCodeEquals(currentIndex,"backpack"))
@@ -657,7 +712,7 @@ void GameClass::gameRenderer()
 	for(int i=1; i<int(registry.obj.regButtons.size()); i++)
 	{
 		if(registry.obj.regButtons[i] != NULL)
-			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos);
+			render.DrawGui(app, registry.obj.regButtons[i], registry.obj.regButtons[i]->pos, i==buttonHover());
 	}
 	if(gamemode == GAMEMODE_INVENTORY)
 	{

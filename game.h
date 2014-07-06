@@ -13,6 +13,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_NEUTRAL 0
 #define GAMEMODE_INSPECT 1
 #define GAMEMODE_INVENTORY 2
+#define GAMEMODE_ENTITYACTION 3
 
 #define JAN1_2014 1387584000
 
@@ -32,6 +33,7 @@ protected:
 	bool newGame;
 	bool quitGame;
 	int gamemode;
+	int cursor;
 	std::ofstream debugFile;
 	TemplateRegistryClass tmp;
 	GameObjectClass registry;

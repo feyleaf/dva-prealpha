@@ -175,14 +175,18 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	win.draw(currentSprite);
 }
 
-void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place)
+void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover)
 {
 	currentSprite.setTexture(guiSheet);
 	coord o=obj->origin;
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
-	currentSprite.setColor(sf::Color::White);
+	if(hover)
+		currentSprite.setColor(sf::Color::Yellow);
+	else
+		currentSprite.setColor(sf::Color::White);
+
 	
 	if(obj->active) win.draw(currentSprite);
 }
