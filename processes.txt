@@ -2,7 +2,5 @@
 Title: Druid vs Alchemist Test
 32 x 32
 Title: Druid vs Alchemist Test
-32 x 32
-Title: Druid vs Alchemist Test
-Closed with 12 pending/created actions
-Time in unsigned long format: 1404613885
+Closed with 32 pending/created actions
+Time in unsigned long format: 1404681382

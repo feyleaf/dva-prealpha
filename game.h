@@ -14,6 +14,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_INSPECT 1
 #define GAMEMODE_INVENTORY 2
 #define GAMEMODE_ENTITYACTION 3
+#define GAMEMODE_ENTITYTARGETING 4
 
 #define JAN1_2014 1387584000
 
@@ -33,7 +34,6 @@ protected:
 	bool newGame;
 	bool quitGame;
 	int gamemode;
-	int cursor;
 	std::ofstream debugFile;
 	TemplateRegistryClass tmp;
 	GameObjectClass registry;
@@ -98,7 +98,7 @@ public:
 	void fillPathingRoutes();
 	void fillTile(const char* codename, coord _pos);
 	void fillRoad(const char* codename, coord start, coord end);
-	void fillButton(const char* codename, coord _pos, bool act=true);
+	void fillButton(const char* codename, coord _pos, int linkedEntity=0, bool act=true);
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
 	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);

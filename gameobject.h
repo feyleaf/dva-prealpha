@@ -44,14 +44,15 @@ struct registeredEntity
 struct buttonStruct
 {
 	bool active;
+	int linkedEntityIndex;
 	int actionTemplateIndex;
 	coord origin;
 	coord dimensions;
 	sf::IntRect box;
 	int frame;
 	coord pos;
-	buttonStruct(bool act, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=act; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
+	buttonStruct(bool act, int _linked, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
+	{active=act; linkedEntityIndex=_linked; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
 };
 
 struct toolPack
@@ -231,11 +232,15 @@ public:
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getButtonForAction(const TemplateRegistryClass& tmp, const char* _codename);
+	int getButtonLinkedEntity(const TemplateRegistryClass& tmp, const char* _codename);
 	int getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTerrainTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getEcologyTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getBiomeTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	std::string randomShapeFromList(const TemplateRegistryClass& tmp, const char* _codename);
+
+	void activateEntityButtons(int entityIndex);
+	void deactivateEntityButtons(int entityIndex);
 
 	void fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename);
 
@@ -259,7 +264,7 @@ public:
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed);
 	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
-	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, bool act=true);
+	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, int linkedEntity=0, bool act=true);
 	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
 	void clear();

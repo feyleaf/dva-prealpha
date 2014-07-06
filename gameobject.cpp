@@ -150,6 +150,37 @@ int GameObjectContainerClass::getButtonForAction(const TemplateRegistryClass& tm
 	return 0;
 }
 
+int GameObjectContainerClass::getButtonLinkedEntity(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	int ret=0;
+	for(int i=1; i<int(regButtons.size()); i++)
+	{
+		if(strcmp(tmp.container.actionList[regButtons[i]->actionTemplateIndex].cname, _codename)==0)
+		{
+			if(regButtons[i]->active) ret=regButtons[i]->linkedEntityIndex;
+		}
+	}
+	return ret;
+}
+
+void GameObjectContainerClass::activateEntityButtons(int entityIndex)
+{
+	for(int i=1; i<int(regButtons.size()); i++)
+	{
+		if(regButtons[i]->linkedEntityIndex == entityIndex)
+			regButtons[i]->active=true;
+	}
+}
+
+void GameObjectContainerClass::deactivateEntityButtons(int entityIndex)
+{
+	for(int i=1; i<int(regButtons.size()); i++)
+	{
+		if(regButtons[i]->linkedEntityIndex == entityIndex)
+			regButtons[i]->active=false;
+	}
+}
+
 int GameObjectContainerClass::getListTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
 {
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
@@ -459,6 +490,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 				{
 					obj.regCreature.push_back(new creaturePack(tmp.container.creaturePackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regCreature.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time);
 					return true;
 				}
 			}
@@ -538,7 +570,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 	return ret;
 }
 
-bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, bool act)
+bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int linkedEntity, bool act)
 {
 	bool ret=false;
 	coord _orig;
@@ -562,7 +594,7 @@ bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char*
 	{
 		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
 		{
-			obj.regButtons.push_back(new buttonStruct(act, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
+			obj.regButtons.push_back(new buttonStruct(act, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
 			return true;
 		}
 	}
