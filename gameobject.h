@@ -133,12 +133,13 @@ struct creaturePack
 	int defense;
 	int agility;
 	int move;
+	coord offset;
 	creaturePack()
-	{active=false; maxHP=0; currentHP=0, attack=0; defense=0; agility=0; move=0;}
+	{active=false; maxHP=0; currentHP=0, attack=0; defense=0; agility=0; move=0;offset=coord(0,0);}
 	creaturePack(int _max, int _hp, int _atk, int _def, int _agi, int _move)
-	{active=true; maxHP=_max; currentHP=_hp, attack=_atk; defense=_def; agility=_agi; move=_move;}
+	{active=true; maxHP=_max; currentHP=_hp, attack=_atk; defense=_def; agility=_agi; move=_move;offset=coord(0,0);}
 	creaturePack(const creaturePackTemplate& src)
-	{active=true; maxHP=src.maxHP; currentHP=src.maxHP, attack=src.attack; defense=src.defense; agility=src.agility; move=src.moveSpeed;}
+	{active=true; maxHP=src.maxHP; currentHP=src.maxHP, attack=src.attack; defense=src.defense; agility=src.agility; move=src.moveSpeed;offset=coord(0,0);}
 };
 
 struct decoPack

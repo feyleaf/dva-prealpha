@@ -207,6 +207,44 @@ void GameClass::processAction(actionStruct* act)
 				char buffer[64]="";
 				sprintf_s(buffer, "(%i, %i)", registry.obj.regTiles[act->tileIndexTarget]->pos.x, registry.obj.regTiles[act->tileIndexTarget]->pos.y);
 				sidebar.setString("Target moving to:\n" + std::string(buffer));
+				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime()+0.125f);
+
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "movestep"))
+			{
+				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
+				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos))
+				{
+					coord d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos);
+					char buffer[64]="";
+					sprintf_s(buffer, "(%i, %i)", d.x, d.y);
+					sidebar.setString("Target \'movestep\' to:\n" + std::string(buffer));
+					coord grid=registry.obj.regEntities[act->entityIndexSource]->pos;
+					coord ff(0,0);
+					coord fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
+					if(d==grid)
+					{
+						registry.obj.regEntities[act->entityIndexSource]->pos=d;
+						return;
+					}
+					if(d.x>grid.x) {ff=coord(4,0);}
+					else if(d.x<grid.x) {ff=coord(-4,0);}
+					else if(d.y>grid.y) ff=coord(0,4);
+					else if(d.y<grid.y) ff=coord(0,-4);
+
+					fine = fine+ff;
+					fine.x=fine.x%settings.tileCols;
+					fine.y=fine.y%settings.tileHig;
+
+					if(fine==coord(0,0)) grid=d;
+					registry.obj.regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
+					registry.obj.regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
+
+					registry.obj.regEntities[act->entityIndexSource]->pos=grid;
+					registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
+					registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime()+0.0125f);
+				}
 
 				return;
 			}
@@ -584,8 +622,8 @@ int GameClass::numberOfEntities()
 
 int GameClass::entityHover()
 {
-	//only returns oldest registrered index
-	for(int i=1; i<numberOfEntities(); i++)
+	//only returns newest registrered index
+	for(int i=numberOfEntities()-1; i>0; i--)
 	{
 		if(registry.obj.regEntities[i]->active && registry.obj.regEntities[i]->box.contains(finemouse.x, finemouse.y))
 		{
@@ -716,7 +754,14 @@ void GameClass::gameRenderer()
 	for(int i=1; i<int(registry.obj.regEntities.size()); i++)
 	{
 		if(registry.obj.regEntities[i] != NULL && registry.obj.regEntities[i]->active)
-			render.DrawEntity(app, registry.obj.regEntities[i], registry.obj.regEntities[i]->pos, (i==entityHover()));
+		{
+			coord pixel=coord(registry.obj.regEntities[i]->pos.x*32, registry.obj.regEntities[i]->pos.y*32);
+			if(registry.obj.regEntities[i]->type==ICAT_CREATURE)
+			{
+				pixel=pixel+(registry.obj.regCreature[registry.obj.regEntities[i]->packIndex]->offset);
+			}
+			render.DrawEntity(app, registry.obj.regEntities[i], pixel, (i==entityHover()));
+		}
 	}
 	for(int i=1; i<int(registry.obj.regButtons.size()); i++)
 	{

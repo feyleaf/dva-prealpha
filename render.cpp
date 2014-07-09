@@ -158,7 +158,7 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 	win.draw(currentSprite);
 }
 
-void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord place, bool highlight)
+void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)
 {
 	if(obj==NULL || obj->plane>0) return;
 	currentSprite.setTexture(entitySheet);
@@ -170,7 +170,7 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 		currentSprite.setColor(sf::Color::Blue);
 	}
 	else currentSprite.setColor(sf::Color::White);
-	currentSprite.setPosition(float((place.x*32)), float((place.y*32)));
+	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));
 	
 	win.draw(currentSprite);
 }
