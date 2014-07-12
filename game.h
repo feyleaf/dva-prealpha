@@ -83,6 +83,8 @@ public:
 	void gameUpdater(float actSeconds);
 	void processActionList(int maxlength, float actSeconds);
 	bool validateAction(const actionStruct* act);
+	bool isPerformingAction(int entityIndex, const char* actionName);
+	coord getLatestTargetPosition(int entityIndex);
 
 	void processGrowth(int entityIndex);
 	void processFlowerConversion(int entityIndex);

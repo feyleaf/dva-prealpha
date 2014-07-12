@@ -135,6 +135,7 @@ void GameClass::processActionList(int maxlength, float actSeconds)
 			if(registry.obj.actions[i]->timeToActivate<=actSeconds)
 			{
 				processAction(registry.obj.actions[i]);
+				registry.obj.actions[i]->active=false;
 			}
 		}
 	}
@@ -175,12 +176,63 @@ bool GameClass::validateAction(const actionStruct* act)
 	return true;
 }
 
+bool GameClass::isPerformingAction(int entityIndex, const char* actionName)
+{
+	bool ret=false;
+	for(int i=1; i<int(registry.obj.actions.size()); i++)
+	{
+		if(actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, actionName) && registry.obj.actions[i]->entityIndexSource==entityIndex)
+		{
+			if(registry.obj.actions[i]->active)
+				ret=true;
+		}
+	}
+	return ret;
+}
+
+coord GameClass::getLatestTargetPosition(int entityIndex)
+{
+	int latestTile=0;
+	int latestEnt=0;
+	float tiletime=0.0f;
+	float enttime=0.0f;
+	for(int i=1; i<int(registry.obj.actions.size()); i++)
+	{
+		float time=registry.obj.actions[i]->timeToActivate;
+		if(actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "movestep") || actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "establishtarget"))
+		{
+			int tile=registry.obj.actions[i]->tileIndexTarget;
+			int ent=registry.obj.actions[i]->entityIndexTarget;
+			if(tile>0 && time>tiletime)
+			{
+				tiletime=time;
+				latestTile=tile;
+			}
+			if(ent>0 && time>enttime)
+			{
+				enttime=time;
+				latestEnt=ent;
+			}
+		}
+	}
+	if(enttime==tiletime && tiletime==0.0f) return registry.obj.regEntities[entityIndex]->pos;
+	if(enttime>tiletime)
+	{
+		//entity position is latest
+		return registry.obj.regEntities[latestEnt]->pos;
+	}
+	else
+	{
+		return registry.obj.regTiles[latestTile]->pos;
+	}
+	return coord(0,0);
+}
+
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
 	if(!validateAction(act)) return;
 
-	act->active = false;
 	int currentIndex=act->actionTemplateIndex;
 	bool enSrc=(act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
 	bool enTrg=(act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
@@ -207,19 +259,16 @@ void GameClass::processAction(actionStruct* act)
 				char buffer[64]="";
 				sprintf_s(buffer, "(%i, %i)", registry.obj.regTiles[act->tileIndexTarget]->pos.x, registry.obj.regTiles[act->tileIndexTarget]->pos.y);
 				sidebar.setString("Target moving to:\n" + std::string(buffer));
-				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime()+0.125f);
-
+				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime());
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "movestep"))
 			{
+				if(registry.obj.regTiles[act->tileIndexTarget]->pos != getLatestTargetPosition(act->entityIndexSource)) return;
 				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
 				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos))
 				{
 					coord d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos);
-					char buffer[64]="";
-					sprintf_s(buffer, "(%i, %i)", d.x, d.y);
-					sidebar.setString("Target \'movestep\' to:\n" + std::string(buffer));
 					coord grid=registry.obj.regEntities[act->entityIndexSource]->pos;
 					coord ff(0,0);
 					coord fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
@@ -234,7 +283,7 @@ void GameClass::processAction(actionStruct* act)
 					else if(d.y<grid.y) ff=coord(0,-4);
 
 					fine = fine+ff;
-					fine.x=fine.x%settings.tileCols;
+					fine.x=fine.x%settings.tileWid;
 					fine.y=fine.y%settings.tileHig;
 
 					if(fine==coord(0,0)) grid=d;
@@ -243,9 +292,8 @@ void GameClass::processAction(actionStruct* act)
 
 					registry.obj.regEntities[act->entityIndexSource]->pos=grid;
 					registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
-					registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime()+0.0125f);
+					registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime());
 				}
-
 				return;
 			}
 			//target is a tile
@@ -263,7 +311,38 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "makecreature"))
 			{
+				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime());
 				fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "wandercreature"))
+			{
+				float seconds=float(rand()%7+2);
+				if(!isPerformingAction(act->entityIndexSource, "movestep"))
+				{
+					int dir=rand()%4;
+					coord ff=registry.obj.regEntities[act->entityIndexSource]->pos;
+					switch(dir)
+					{
+						case 0://north
+							if(ff.y>0) ff=ff+coord(0,-1);
+							break;
+						case 1://east
+							if(ff.x<settings.tileCols) ff=ff+coord(1,0);
+							break;
+						case 2://south
+							if(ff.y<settings.tileRows) ff=ff+coord(0,1);
+							break;
+						default://west
+							if(ff.x>0) ff=ff+coord(-1,0);
+							break;
+					}
+					if(terrain.getTerrainAt(ff)==0)
+					{
+						registry.createAction(tmp, "movestep", act->entityIndexSource, 0, getTileIndexAt(ff), gameTime());
+					}
+				}
+				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime()+seconds);
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "randomheld"))
@@ -337,6 +416,7 @@ void GameClass::processAction(actionStruct* act)
 				}
 				if(gamemode==GAMEMODE_NEUTRAL)
 				{
+					if(act->entityIndexTarget==0) return;
 					if(registry.obj.regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
 					{
 						registry.createAction(tmp, "creatureguion", act->entityIndexTarget, 0, 0, gameTime());
@@ -652,6 +732,19 @@ int GameClass::tileHover()
 	for(int i=numberOfTiles()-1; i>0; i--)
 	{
 		if(registry.obj.regTiles[i]->pos == mouse)
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
+int GameClass::getTileIndexAt(coord pos)
+{
+	//if(entityHover()>0) return 0; //maybe??
+	for(int i=numberOfTiles()-1; i>0; i--)
+	{
+		if(registry.obj.regTiles[i]->pos == pos)
 		{
 			return i;
 		}
