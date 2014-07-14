@@ -78,6 +78,16 @@ int GameObjectContainerClass::getEntityTemplateIndex(const TemplateRegistryClass
 	return 0;
 }
 
+int GameObjectContainerClass::getActionTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename)
+{
+	for(int i=1; i<int(tmp.container.actionList.size()); i++)
+	{
+		if(strcmp(tmp.container.actionList[i].cname, _codename)==0)
+			return i;
+	}
+	return 0;
+}
+
 void GameObjectContainerClass::fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename)
 {
 	for(int i=1; i<int(tmp.container.valuesList.size()); i++)
@@ -459,9 +469,9 @@ void GameObjectClass::cloneFromInventory(int entityIndex, coord _pos)
 	obj.regEntities[entityIndex]->pos=_pos;
 }
 
-bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time)
+int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time)
 {
-	bool ret=false;
+	bool ret=0;
 	coord _orig;
 	unsigned char _type = 0;
 	int row=0;
@@ -491,7 +501,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 					obj.regCreature.push_back(new creaturePack(tmp.container.creaturePackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regCreature.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time);
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -502,7 +512,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 				{
 					obj.regDeco.push_back(new decoPack(tmp.container.decoPackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regDeco.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -513,7 +523,7 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 				{
 					obj.regIng.push_back(new ingredientPack(tmp.container.ingredientPackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regIng.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -522,9 +532,9 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 			{
 				if(tmp.container.seedPackList[i].entityID==p)
 				{
-					obj.regSeed.push_back(new seedPack());
+					obj.regSeed.push_back(new seedPack(tmp.container.seedPackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regSeed.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -533,9 +543,9 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 			{
 				if(tmp.container.summonPackList[i].entityID==p)
 				{
-					obj.regSummon.push_back(new summonPack());
+					obj.regSummon.push_back(new summonPack(tmp.container.summonPackList[i]));
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regSummon.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -544,9 +554,12 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 			{
 				if(tmp.container.toolPackList[i].entityID==p)
 				{
-					obj.regTool.push_back(new toolPack());
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regTool.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return true;
+					obj.regTool.push_back(new toolPack(tmp.container.toolPackList[i]));
+					int toolIndex=int(obj.regTool.size())-1;
+					obj.regTool[toolIndex]->usageProtocol = obj.getActionTemplateIndex(tmp, tmp.container.toolPackList[i].usageProtocol);
+					obj.regEntities.push_back(new registeredEntity(p,_type,toolIndex, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
@@ -559,12 +572,12 @@ bool GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char*
 					obj.fillVegDropList(tmp, int(obj.regVeg.size())-1, tmp.container.vegPackList[i].lootList);
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regVeg.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f));
-					return true;
+					return int(obj.regEntities.size()-1);
 				}
 			}
 			break;
 		default:
-			return false;
+			return 0;
 			break;
 	}
 	return ret;

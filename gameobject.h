@@ -66,7 +66,7 @@ struct toolPack
 	toolPack(unsigned int _max, unsigned int _left, unsigned char _proto)
 	{active=true; maxUses=_max; usesLeft=_left; usageProtocol=_proto;}
 	toolPack(const toolPackTemplate& src)
-	{active=true; maxUses=src.maxUses; usesLeft=src.maxUses; usageProtocol=src.usageProtocol;}
+	{active=true; maxUses=src.maxUses; usesLeft=src.maxUses; usageProtocol=0;}
 };
 
 struct ingredientPack
@@ -78,7 +78,7 @@ struct ingredientPack
 	ingredientPack(unsigned char _proto)
 	{active=true; usageProtocol=_proto;}
 	ingredientPack(const ingredientPackTemplate& src)
-	{active=true; usageProtocol=src.usageProtocol;}
+	{active=true;  usageProtocol=0;}
 };
 
 struct seedPack
@@ -90,8 +90,8 @@ struct seedPack
 	{active=false; vegetationContained=0; usageProtocol=0;}
 	seedPack(int _veg, unsigned char _proto)
 	{active=true; vegetationContained=_veg; usageProtocol=_proto;}
-	seedPack(int vegIndex, const seedPackTemplate& src)
-	{active=true; vegetationContained=vegIndex; usageProtocol=src.usageProtocol;}
+	seedPack(const seedPackTemplate& src)
+	{active=true; vegetationContained=0;  usageProtocol=0;}
 };
 
 struct summonPack
@@ -103,8 +103,8 @@ struct summonPack
 	{active=false; creatureContained=0; usageProtocol=0;}
 	summonPack(int _creat, unsigned char _proto)
 	{active=true; creatureContained=_creat; usageProtocol=_proto;}
-	summonPack(int creIndex, const summonPackTemplate& src)
-	{active=true; creatureContained=creIndex; usageProtocol=src.usageProtocol;}
+	summonPack(const summonPackTemplate& src)
+	{active=true; creatureContained=0;  usageProtocol=0;}
 };
 
 struct vegPack
@@ -230,6 +230,7 @@ public:
 	int numberOfEntitiesOnGrid(coord _grid);
 
 	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
+	int getActionTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getTileTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getGuiTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getButtonForAction(const TemplateRegistryClass& tmp, const char* _codename);
@@ -263,7 +264,7 @@ public:
 	GameObjectContainerClass obj;
 
 	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed);
-	bool createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
+	int createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
 	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, int linkedEntity=0, bool act=true);
 	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);

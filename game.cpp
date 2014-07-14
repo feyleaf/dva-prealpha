@@ -155,6 +155,23 @@ void GameClass::processGrowth(int entityIndex)
 	}
 }
 
+void GameClass::processMagic(int entityIndex)
+{
+	if(entityIndex==0) return;
+	float duration=0.5f;
+	if(registry.obj.regEntities[entityIndex]->frame < 8)
+	{
+		registry.obj.regEntities[entityIndex]->frame += 1;
+		registry.createAction(tmp, "effects", entityIndex, 0, 0, gameTime()+duration);
+	}
+	else
+	{
+		coord pos=registry.obj.regEntities[entityIndex]->pos;
+		registry.createTile(tmp, "stonewall", pos, gameConstant, header.randSeed);
+		registry.createEntity(tmp, "irongolem", pos, gameTime());
+	}
+}
+
 void GameClass::processFlowerConversion(int entityIndex)
 {
 	if(registry.obj.regEntities[entityIndex]->type != ICAT_VEGETATION) return;
@@ -254,6 +271,12 @@ void GameClass::processAction(actionStruct* act)
 		else if(tlTrg)
 		{
 			//target is a tile
+			if(actionCodeEquals(currentIndex, "spelltile"))
+			{
+				int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
+				registry.createAction(tmp, "effects", regMagic, 0, 0, gameTime());
+				return;
+			}
 			if(actionCodeEquals(currentIndex, "establishtarget"))
 			{
 				char buffer[64]="";
@@ -306,6 +329,13 @@ void GameClass::processAction(actionStruct* act)
 			{
 				//update the frame as long as it's still less than the max growth stages
 				processGrowth(act->entityIndexSource);
+
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "effects"))
+			{
+				//update the frame as long as it's still less than the max growth stages
+				processMagic(act->entityIndexSource);
 
 				return;
 			}
@@ -434,6 +464,8 @@ void GameClass::processAction(actionStruct* act)
 				fillButton("camera", coord(settings.tileCols+2, 5));
 				fillButton("backpack", coord(settings.tileCols+3, 5));
 				fillButton("inventorycell", coord(0,0), 0, false);
+				int toolIndex=registry.createEntity(tmp, "magicwand", coord(0,0), gameTime());
+				registry.createAction(tmp, "randomheld", toolIndex, 0, 0, gameTime());
 				return;
 			}
 			if(actionCodeEquals(currentIndex,"backpack"))
@@ -663,7 +695,7 @@ void GameClass::fillRoad(const char* codename, coord start, coord end)
 
 void GameClass::fillEntity(const char* codename, coord _pos)
 {
-	if(!registry.createEntity(tmp, codename, _pos, gameTime()))
+	if(registry.createEntity(tmp, codename, _pos, gameTime())<1)
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillEntity failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
@@ -796,7 +828,38 @@ void GameClass::handleBoardClick(coord _mouse)
 	}
 	else if(tileIndex>0)
 	{
-		registry.createAction(tmp, "selecttile", 0, 0,tileIndex,gameTime()+0.125f);
+		if(inv.getItemAtCursor()>0)
+		{
+			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			{
+				useTool(inv.getItemAtCursor(), 0, tileIndex);
+			}
+		}
+		else
+		{
+			registry.createAction(tmp, "selecttile", 0, 0,tileIndex,gameTime()+0.125f);
+		}
+	}
+}
+
+void GameClass::useTool(int entityIndex, int entityTarget, int tileTarget)
+{
+	if(entityTarget==0 && tileTarget==0) return;
+	if(entityTarget>0)
+	{
+		return;
+	}
+	if(tileTarget>0)
+	{
+		//work on a tile
+		int toolPack=registry.obj.regEntities[entityIndex]->packIndex;
+		int protocol=registry.obj.regTool[toolPack]->usageProtocol;
+		registry.obj.regTool[toolPack]->usesLeft-=1;
+		if(registry.obj.regTool[toolPack]->usesLeft>0)
+		{
+			registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
+		}
+		return;
 	}
 }
 

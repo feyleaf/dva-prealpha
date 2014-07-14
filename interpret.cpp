@@ -26,6 +26,7 @@ int TemplateReaderClass::selectCategory()
 	if(str=="FORM") ret = ICAT_FORM;
 	if(str=="PROTOCOL") ret = ICAT_PROTOCOL;
 	if(str=="LIST") ret = ICAT_STRINGLIST;
+	if(str=="COMMENT") std::getline(pFile, str, '\n');
 
 	return ret;
 }
@@ -173,6 +174,7 @@ ingredientPackTemplate TemplateReaderClass::parseIngredient(int entityIndex)
 	ret.entityID=entityIndex;
 
 	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.usageProtocol, 32, chunk.c_str(), 32);
 	return ret;
 }
 
@@ -182,8 +184,10 @@ summonPackTemplate TemplateReaderClass::parseSummon(int entityIndex)
 	summonPackTemplate ret;
 	std::string chunk;
 	ret.entityID=entityIndex;
-
+	//we'll skip the registered entity index in parsing, because it requires a unique value
+	ret.regEntityIndex=0;
 	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.usageProtocol, 32, chunk.c_str(), 32);
 	return ret;
 }
 
@@ -194,7 +198,10 @@ seedPackTemplate TemplateReaderClass::parseSeed(int entityIndex)
 	std::string chunk;
 	ret.entityID=entityIndex;
 
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.plantSummon, 32, chunk.c_str(), 32);
 	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.usageProtocol, 32, chunk.c_str(), 32);
 	return ret;
 }
 
@@ -203,8 +210,10 @@ toolPackTemplate TemplateReaderClass::parseTool(int entityIndex)
 	toolPackTemplate ret;
 	std::string chunk;
 	ret.entityID=entityIndex;
-
+	std::getline(pFile, chunk, ',');
+	ret.maxUses=atoi(chunk.c_str());
 	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.usageProtocol, 32, chunk.c_str(), 32);
 	return ret;
 }
 
@@ -331,4 +340,10 @@ stringList TemplateReaderClass::parseList()
 	std::getline(pFile, chunk, '\n'); //i'm pretty sure this works with a trailing comma on the list :/
 
 	return ret;
+}
+
+void TemplateReaderClass::skipLine()
+{
+	std::string chunk;
+	std::getline(pFile, chunk, '\n');
 }

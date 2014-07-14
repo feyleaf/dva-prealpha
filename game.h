@@ -15,6 +15,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_INVENTORY 2
 #define GAMEMODE_ENTITYACTION 3
 #define GAMEMODE_ENTITYTARGETING 4
+#define GAMEMODE_MAGICSPELL 5
 
 #define JAN1_2014 1387584000
 
@@ -79,6 +80,7 @@ public:
 	bool isClickOnGUI();
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
+	void useTool(int entityIndex, int entityTarget, int tileTarget);
 
 	void gameUpdater(float actSeconds);
 	void processActionList(int maxlength, float actSeconds);
@@ -87,6 +89,7 @@ public:
 	coord getLatestTargetPosition(int entityIndex);
 
 	void processGrowth(int entityIndex);
+	void processMagic(int entityIndex);
 	void processFlowerConversion(int entityIndex);
 
 	void gameRenderer();

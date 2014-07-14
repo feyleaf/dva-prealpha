@@ -127,27 +127,27 @@ struct toolPackTemplate
 {
 	int entityID;
 	unsigned int maxUses;
-	unsigned char usageProtocol; //ie: what it works on, the input to give that subject
+	char usageProtocol[32]; //ie: what it works on, the input to give that subject
 	toolPackTemplate(int _id,
 					unsigned int _maxUses,
-					unsigned char _usageProtocol)
-	{entityID=_id; maxUses=_maxUses; usageProtocol=_usageProtocol;}
+					const char* _usageProtocol)
+	{entityID=_id; maxUses=_maxUses; strcpy_s(usageProtocol, 32, _usageProtocol);}
 	toolPackTemplate()
-	{entityID=0; maxUses=0; usageProtocol=0;}
+	{entityID=0; maxUses=0; strcpy_s(usageProtocol, 32, "none");}
 };
 
 //constructed template of rules for directing seed creation
 struct seedPackTemplate
 {
 	int entityID;
-	unsigned char plantSummon;
-	unsigned char usageProtocol;	//ie: allowed terrain
+	char plantSummon[32];
+	char usageProtocol[32];	//ie: allowed terrain
 	seedPackTemplate(int _id,
-						unsigned char _plantSummon,
-						unsigned char _usageProtocol)
-	{entityID=_id; plantSummon=_plantSummon; usageProtocol=_usageProtocol;}
+						const char* _plantSummon,
+						const char* _usageProtocol)
+	{entityID=_id; strcpy_s(plantSummon, 32, _plantSummon);strcpy_s(usageProtocol, 32, _usageProtocol);}
 	seedPackTemplate()
-	{entityID=0; plantSummon=0; usageProtocol=0;}
+	{entityID=0; strcpy_s(usageProtocol, 32, "none");strcpy_s(usageProtocol, 32, "none");}
 };
 
 //constructed template of rules for generating vegetation
@@ -211,28 +211,28 @@ struct decoPackTemplate
 struct summonPackTemplate
 {
 	int entityID;
-	unsigned int registeredCreatureSummon;	//0 if empty, must hold the **game-registered** id
-											//meaning create the creature first then the summon
-											//or create it empty
-	unsigned char usageProtocol;
+	unsigned int regEntityIndex;	//0 if empty, must hold the **game-registered** id
+									//meaning create the creature first then the summon
+									//or create it empty
+	char usageProtocol[32];
 	summonPackTemplate(int _id,
-						unsigned int _registeredCreatureSummon,
-						unsigned char _usageProtocol)
-	{entityID=_id; registeredCreatureSummon=_registeredCreatureSummon; usageProtocol=_usageProtocol;}
+						unsigned int _regEntityIndex,
+						const char* _usageProtocol)
+	{entityID=_id; regEntityIndex=_regEntityIndex; strcpy_s(usageProtocol, 32, _usageProtocol);}
 	summonPackTemplate()
-	{entityID=0; registeredCreatureSummon=0; usageProtocol=0;}
+	{entityID=0; regEntityIndex=0; strcpy_s(usageProtocol, 32, "none");}
 };
 
 //constructed template of rules for summon charm generation
 struct ingredientPackTemplate
 {
 	int entityID;
-	unsigned char usageProtocol;
+	char usageProtocol[32];
 	ingredientPackTemplate(int _id,
-						unsigned char _usageProtocol)
-	{entityID=_id; usageProtocol=_usageProtocol;}
+						const char* _usageProtocol)
+	{entityID=_id; strcpy_s(usageProtocol, 32, _usageProtocol);}
 	ingredientPackTemplate()
-	{entityID=0; usageProtocol=0;}
+	{entityID=0; strcpy_s(usageProtocol, 32, "none");}
 };
 
 //compiled container of terrain pools in a template format, used in map generation
@@ -382,6 +382,7 @@ class TemplateContainerClass
 			actionList.clear(); actionList.push_back(actionTemplate());
 			entityList.clear(); entityList.push_back(entityTemplate());
 			decoPackList.clear(); decoPackList.push_back(decoPackTemplate());
+			toolPackList.clear(); toolPackList.push_back(toolPackTemplate());
 			ingredientPackList.clear(); ingredientPackList.push_back(ingredientPackTemplate());
 			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());

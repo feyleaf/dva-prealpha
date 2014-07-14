@@ -57,24 +57,24 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				container.ingredientPackList.push_back(parser.parseIngredient(index));
 				break;
 			case ICAT_SEED:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_SEED));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.seedPackList.push_back(parser.parseSeed(index));
 				break;
 			case ICAT_NULLENTITY:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_NULLENTITY));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				break;
 			case ICAT_SUMMON:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_SUMMON));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.summonPackList.push_back(parser.parseSummon(index));
 				break;
 			case ICAT_TOOL:
-				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				container.entityList.push_back(parser.parseEntity(ICAT_TOOL));
 				index=container.entityList.size()-1;
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.toolPackList.push_back(parser.parseTool(index));
@@ -86,7 +86,7 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				else container.vegPackList.push_back(parser.parseVegetation(index));
 				break;
 			default:
-				parser.parseTool(0);
+				//parser.skipLine();
 				break;
 		}
 	} while(cat != ICAT_NONE);
