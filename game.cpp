@@ -215,20 +215,23 @@ coord GameClass::getLatestTargetPosition(int entityIndex)
 	float enttime=0.0f;
 	for(int i=1; i<int(registry.obj.actions.size()); i++)
 	{
-		float time=registry.obj.actions[i]->timeToActivate;
-		if(actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "movestep") || actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "establishtarget"))
+		if(registry.obj.actions[i]->entityIndexSource==entityIndex)
 		{
-			int tile=registry.obj.actions[i]->tileIndexTarget;
-			int ent=registry.obj.actions[i]->entityIndexTarget;
-			if(tile>0 && time>tiletime)
+			float time=registry.obj.actions[i]->timeToActivate;
+			if(actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "movestep") || actionCodeEquals(registry.obj.actions[i]->actionTemplateIndex, "establishtarget"))
 			{
-				tiletime=time;
-				latestTile=tile;
-			}
-			if(ent>0 && time>enttime)
-			{
-				enttime=time;
-				latestEnt=ent;
+				int tile=registry.obj.actions[i]->tileIndexTarget;
+				int ent=registry.obj.actions[i]->entityIndexTarget;
+				if(tile>0 && time>tiletime)
+				{
+					tiletime=time;
+					latestTile=tile;
+				}
+				if(ent>0 && time>enttime)
+				{
+					enttime=time;
+					latestEnt=ent;
+				}
 			}
 		}
 	}
@@ -287,6 +290,7 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "movestep"))
 			{
+				fillPathingRoutes();
 				if(registry.obj.regTiles[act->tileIndexTarget]->pos != getLatestTargetPosition(act->entityIndexSource)) return;
 				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
 				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos))
@@ -320,6 +324,14 @@ void GameClass::processAction(actionStruct* act)
 				return;
 			}
 			//target is a tile
+			if(actionCodeEquals(currentIndex, "plantflower"))
+			{
+				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_SEED) return;
+				int seedIndex=registry.obj.regEntities[act->entityIndexSource]->packIndex;
+				int vegTemplate=registry.obj.regSeed[seedIndex]->vegetationContained;
+				fillEntity(tmp.container.entityList[vegTemplate].cname, registry.obj.regTiles[act->tileIndexTarget]->pos);
+				return;
+			}
 		}
 		else
 		{
@@ -332,6 +344,14 @@ void GameClass::processAction(actionStruct* act)
 
 				return;
 			}
+			if(actionCodeEquals(currentIndex, "destroytool"))
+			{
+				//erase a tool from existence
+				inv.clearSlot(inv.cursor);
+				registry.obj.eraseEntity(act->entityIndexSource);
+
+				return;
+			}
 			if(actionCodeEquals(currentIndex, "effects"))
 			{
 				//update the frame as long as it's still less than the max growth stages
@@ -341,7 +361,8 @@ void GameClass::processAction(actionStruct* act)
 			}
 			if(actionCodeEquals(currentIndex, "makecreature"))
 			{
-				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime());
+				float seconds=float(rand()%7+2);
+				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime()+seconds);
 				fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
 				return;
 			}
@@ -466,6 +487,15 @@ void GameClass::processAction(actionStruct* act)
 				fillButton("inventorycell", coord(0,0), 0, false);
 				int toolIndex=registry.createEntity(tmp, "magicwand", coord(0,0), gameTime());
 				registry.createAction(tmp, "randomheld", toolIndex, 0, 0, gameTime());
+				int plantIndex=registry.createEntity(tmp, "s_redrose", coord(0,0), gameTime());
+				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+				registry.cloneToInventory(plantIndex);
+				plantIndex=registry.createEntity(tmp, "s_heaven", coord(0,0), gameTime());
+				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+				registry.cloneToInventory(plantIndex);
+				plantIndex=registry.createEntity(tmp, "s_hibiscus", coord(0,0), gameTime());
+				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+				registry.cloneToInventory(plantIndex);
 				return;
 			}
 			if(actionCodeEquals(currentIndex,"backpack"))
@@ -543,6 +573,7 @@ void GameClass::fillPathingRoutes()
 			{
 				terrain.setTerrainRuleAt(coord(x,y), 4);
 			}
+			else terrain.setTerrainRuleAt(coord(x,y),0);
 		}
 	}
 }
@@ -715,7 +746,16 @@ void GameClass::fillButton(const char* codename, coord _pos, int linkedEntity, b
 
 GameClass::~GameClass()
 {
-	debugFile << "Closed with " << int(registry.obj.actions.size()) << " pending/created actions\n";
+	registry.clear();
+	debugFile << "Closed with " << int(registry.obj.actions.size()) << " pending/created actions:\n";
+	for(int i=1; i<int(registry.obj.actions.size()); i++)
+	{
+		int actTemp=registry.obj.actions[i]->actionTemplateIndex;
+		debugFile << tmp.container.actionList[actTemp].cname << "-->\t";
+		debugFile << registry.obj.actions[i]->entityIndexSource << "\t";
+		debugFile << registry.obj.actions[i]->entityIndexTarget << "\t";
+		debugFile << registry.obj.actions[i]->tileIndexTarget << "\n";
+	}
 	debugFile << "Time in unsigned long format: " << (unsigned long(time(NULL))) << "\n";
 	debugFile.close();
 	app.close();
@@ -828,11 +868,17 @@ void GameClass::handleBoardClick(coord _mouse)
 	}
 	else if(tileIndex>0)
 	{
-		if(inv.getItemAtCursor()>0)
+		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
 		{
 			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_TOOL)
 			{
 				useTool(inv.getItemAtCursor(), 0, tileIndex);
+				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+			}
+			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_SEED)
+			{
+				plantSeed(inv.drop(inv.cursor), 0, tileIndex);
+				sidebar.setString(outputEntity(inv.getItemAtCursor()));
 			}
 		}
 		else
@@ -855,10 +901,28 @@ void GameClass::useTool(int entityIndex, int entityTarget, int tileTarget)
 		int toolPack=registry.obj.regEntities[entityIndex]->packIndex;
 		int protocol=registry.obj.regTool[toolPack]->usageProtocol;
 		registry.obj.regTool[toolPack]->usesLeft-=1;
-		if(registry.obj.regTool[toolPack]->usesLeft>0)
+		if(registry.obj.regTool[toolPack]->usesLeft<1)
 		{
-			registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
+			registry.createAction(tmp, "destroytool", entityIndex, 0, 0, gameTime()+0.5f);
 		}
+		registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
+		return;
+	}
+}
+
+void GameClass::plantSeed(int entityIndex, int entityTarget, int tileTarget)
+{
+	if(entityTarget==0 && tileTarget==0) return;
+	if(entityTarget>0)
+	{
+		return;
+	}
+	if(tileTarget>0)
+	{
+		//work on a tile
+		int seedPack=registry.obj.regEntities[entityIndex]->packIndex;
+		int protocol=registry.obj.regSeed[seedPack]->usageProtocol;
+		registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
 		return;
 	}
 }
@@ -870,6 +934,7 @@ void GameClass::handleGUIClick(coord _mouse)
 		if(!(_mouse.x<inv.tl.x || _mouse.y<inv.tl.y || _mouse.x>inv.tl.x+inv.dimensions.x || _mouse.y>inv.tl.y+inv.dimensions.y))
 		{
 			inv.select(_mouse);
+			sidebar.setString(outputEntity(inv.getItemAtCursor()));
 			return;
 		}
 	}

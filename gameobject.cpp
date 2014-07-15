@@ -288,6 +288,7 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 //wipes all registry items!
 void GameObjectClass::clear()
 {
+	/*
 	while(!obj.regTiles.empty())
 	{
 		delete obj.regTiles[0];
@@ -345,6 +346,7 @@ void GameObjectClass::clear()
 		delete obj.actions[ac-i];
 		obj.actions.erase(obj.actions.begin()+(ac-i));
 	}
+	*/
 	obj.init();
 }
 
@@ -532,8 +534,11 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.seedPackList[i].entityID==p)
 				{
+					int seedI=int(obj.regSeed.size());
 					obj.regSeed.push_back(new seedPack(tmp.container.seedPackList[i]));
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regSeed.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					obj.regSeed[seedI]->usageProtocol=obj.getActionTemplateIndex(tmp, tmp.container.seedPackList[i].usageProtocol);
+					obj.regSeed[seedI]->vegetationContained=obj.getEntityTemplateIndex(tmp, tmp.container.seedPackList[i].plantSummon);
+					obj.regEntities.push_back(new registeredEntity(p,_type,seedI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 					return int(obj.regEntities.size()-1);
 				}
 			}
@@ -568,11 +573,13 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.vegPackList[i].entityID==p)
 				{
+					int entI=int(obj.regEntities.size());
+					int vegI=int(obj.regVeg.size());
 					obj.regVeg.push_back(new vegPack(time, tmp.container.vegPackList[i]));
-					obj.fillVegDropList(tmp, int(obj.regVeg.size())-1, tmp.container.vegPackList[i].lootList);
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regVeg.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f));
-					return int(obj.regEntities.size()-1);
+					obj.fillVegDropList(tmp, vegI, tmp.container.vegPackList[i].lootList);
+					obj.regEntities.push_back(new registeredEntity(p,_type,vegI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					createAction(tmp, tmp.container.entityList[p].creation, entI, 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f));
+					return entI;
 				}
 			}
 			break;

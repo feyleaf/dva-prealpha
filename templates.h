@@ -126,10 +126,10 @@ struct colorVarianceTemplate
 struct toolPackTemplate
 {
 	int entityID;
-	unsigned int maxUses;
+	int maxUses;
 	char usageProtocol[32]; //ie: what it works on, the input to give that subject
 	toolPackTemplate(int _id,
-					unsigned int _maxUses,
+					int _maxUses,
 					const char* _usageProtocol)
 	{entityID=_id; maxUses=_maxUses; strcpy_s(usageProtocol, 32, _usageProtocol);}
 	toolPackTemplate()
@@ -386,6 +386,7 @@ class TemplateContainerClass
 			ingredientPackList.clear(); ingredientPackList.push_back(ingredientPackTemplate());
 			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
+			seedPackList.clear(); seedPackList.push_back(seedPackTemplate());
 			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
 			valuesList.clear(); valuesList.push_back(stringList());
 			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());

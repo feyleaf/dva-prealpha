@@ -17,8 +17,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ENTITYTARGETING 4
 #define GAMEMODE_MAGICSPELL 5
 
-#define JAN1_2014 1387584000
-
+#define JAN1_2014	1387584000
 struct gameHeader
 {
 	unsigned long randSeed;
@@ -81,6 +80,7 @@ public:
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
 	void useTool(int entityIndex, int entityTarget, int tileTarget);
+	void plantSeed(int entityIndex, int entityTarget, int tileTarget);
 
 	void gameUpdater(float actSeconds);
 	void processActionList(int maxlength, float actSeconds);

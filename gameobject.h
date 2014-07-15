@@ -58,12 +58,12 @@ struct buttonStruct
 struct toolPack
 {
 	bool active;
-	unsigned int maxUses;
-	unsigned int usesLeft;
+	int maxUses;
+	int usesLeft;
 	unsigned char usageProtocol;
 	toolPack()
 	{active=false; maxUses=0; usesLeft=0; usageProtocol=0;}
-	toolPack(unsigned int _max, unsigned int _left, unsigned char _proto)
+	toolPack(int _max, int _left, unsigned char _proto)
 	{active=true; maxUses=_max; usesLeft=_left; usageProtocol=_proto;}
 	toolPack(const toolPackTemplate& src)
 	{active=true; maxUses=src.maxUses; usesLeft=src.maxUses; usageProtocol=0;}
