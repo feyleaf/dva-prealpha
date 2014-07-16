@@ -59,6 +59,7 @@ PROTOCOL:spelltile,0,0,1,0
 PROTOCOL:wand,0,0,1,0
 PROTOCOL:destroytool,0,0,1,0
 PROTOCOL:plantflower,0,0,1,0
+PROTOCOL:usecharm,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,0,0,32,32,squirrel.png,1,makecreature,1,1,1,1,1,none
 CREATURE:irongolem,Iron Golem,32,32,0,0,32,32,irongolem.png,1,makecreature,1,1,1,1,1,none
 INGREDIENT:redpetal,Red Rose Petal,32,32,0,0,32,32,redpetal.png,1,solidblock,none
@@ -67,6 +68,8 @@ VEGETATION:redrose,Red Rose,32,32,0,0,32,32,redrose.png,4,growflower,22,4,50,bas
 VEGETATION:bluerose,Blue Rose,32,32,0,0,32,32,bluerose.png,4,growflower,17,4,60,basicloot
 VEGETATION:hibiscus,Hibiscus,32,32,0,0,32,32,hibiscus.png,4,growflower,19,4,70,basicloot
 VEGETATION:heavenmirror,Heavens Mirror,32,32,0,0,32,32,hmirror.png,3,growflower,20,3,80,basicloot
+SUMMON:redcharm,Red Summon Charm,32,32,0,0,32,32,redsummon.png,1,solidblock,usecharm
+SUMMON:bluecharm,Blue Summon Charm,32,32,0,0,32,32,bluesummon.png,1,solidblock,usecharm
 SEED:s_redrose,Red Rose Seed,32,32,0,0,32,32,seed_redrose.png,1,solidblock,redrose,plantflower
 SEED:s_bluerose,Blue Rose Seed,32,32,0,0,32,32,seed_bluerose.png,1,solidblock,bluerose,plantflower
 SEED:s_hibiscus,Hibiscus Seed,32,32,0,0,32,32,seed_hibiscus.png,1,solidblock,hibiscus,plantflower
@@ -74,7 +77,7 @@ SEED:s_heaven,Heaven\'s Mirror Seed,32,32,0,0,32,32,seed_heavens.png,1,solidbloc
 DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidblock,1,0,1,1,none
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
-DECORATION:magiceffect,Magic Effect,32,32,0,0,32,32,magiceffect.png,8,effects,1,0,1,1,none
+DECORATION:magiceffect,Magic Effect,32,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
 TOOL:magicwand,Magic Wand,32,32,0,0,32,32,wand.png,1,solidblock,10,spelltile
 LIST:forestplants,redrose,bluerose,END,
 LIST:forestcreatures,squirrel,irongolem,END,

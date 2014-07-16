@@ -171,7 +171,7 @@ bool InventoryClass::add(registeredEntity* ent, int entIndex, short q)
 
 	for(int i=0; i<q; i++)
 	{
-		if(ent->type != ICAT_CREATURE) //add types that are not stackable
+		if(ent->type != ICAT_CREATURE && ent->type != ICAT_SUMMON) //add types that are not stackable
 		{
 			plc = getFirstMatch(ent->entityTemplateIndex);
 			if(plc == -1) //if no first match is found, then look for the next empty slot

@@ -164,12 +164,6 @@ void GameClass::processMagic(int entityIndex)
 		registry.obj.regEntities[entityIndex]->frame += 1;
 		registry.createAction(tmp, "effects", entityIndex, 0, 0, gameTime()+duration);
 	}
-	else
-	{
-		coord pos=registry.obj.regEntities[entityIndex]->pos;
-		registry.createTile(tmp, "stonewall", pos, gameConstant, header.randSeed);
-		registry.createEntity(tmp, "irongolem", pos, gameTime());
-	}
 }
 
 void GameClass::processFlowerConversion(int entityIndex)
@@ -269,11 +263,37 @@ void GameClass::processAction(actionStruct* act)
 				sidebar.setString("Target moving to:\n" + std::string(buffer));
 				return;
 			}
+			if(actionCodeEquals(currentIndex, "usecharm"))
+			{
+				registry.obj.regEntities[act->entityIndexTarget]->plane=1;
+				registry.obj.regEntities[act->entityIndexTarget]->pos=coord(0,0);
+				registry.obj.regEntities[act->entityIndexTarget]->active=false;
+				int summonPack = registry.obj.regEntities[act->entityIndexSource]->packIndex;
+				registry.obj.regSummon[summonPack]->creatureContained=act->entityIndexTarget;
+				return;
+			}
 			//target is an entity
 		}
 		else if(tlTrg)
 		{
 			//target is a tile
+			if(actionCodeEquals(currentIndex, "usecharm"))
+			{
+				int summonPack = registry.obj.regEntities[act->entityIndexSource]->packIndex;
+				int held = registry.obj.regSummon[summonPack]->creatureContained;
+				if(held>0)
+				{
+					int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
+					registry.createAction(tmp, "effects", regMagic, 0, 0, gameTime());
+					registry.obj.regEntities[held]->plane=0;
+					registry.obj.regEntities[held]->pos=registry.obj.regTiles[act->tileIndexTarget]->pos;
+					registry.obj.regEntities[held]->active=true;
+					registry.obj.regEntities[held]->box.left=registry.obj.regEntities[held]->pos.x*32;
+					registry.obj.regEntities[held]->box.top=registry.obj.regEntities[held]->pos.y*32;
+					registry.obj.regSummon[summonPack]->creatureContained=0;
+				}
+				return;
+			}
 			if(actionCodeEquals(currentIndex, "spelltile"))
 			{
 				int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
@@ -495,6 +515,12 @@ void GameClass::processAction(actionStruct* act)
 				registry.cloneToInventory(plantIndex);
 				plantIndex=registry.createEntity(tmp, "s_hibiscus", coord(0,0), gameTime());
 				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+				registry.cloneToInventory(plantIndex);
+				plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
+				inv.add(registry.obj.regEntities[plantIndex], plantIndex);
+				registry.cloneToInventory(plantIndex);
+				plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
+				inv.add(registry.obj.regEntities[plantIndex], plantIndex);
 				registry.cloneToInventory(plantIndex);
 				return;
 			}
@@ -864,7 +890,23 @@ void GameClass::handleBoardClick(coord _mouse)
 	int tileIndex=tileHover();
 	if(entityIndex>0)
 	{
-		registry.createAction(tmp, "selectentity", 0, entityIndex,0,gameTime()+0.125f);
+		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
+		{
+			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			{
+				useTool(inv.getItemAtCursor(), entityIndex, 0);
+				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+			}
+			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			{
+				useCharm(inv.getItemAtCursor(), entityIndex, 0);
+				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+			}
+		}
+		else
+		{
+			registry.createAction(tmp, "selectentity", 0, entityIndex,0,gameTime()+0.125f);
+		}
 	}
 	else if(tileIndex>0)
 	{
@@ -874,11 +916,19 @@ void GameClass::handleBoardClick(coord _mouse)
 			{
 				useTool(inv.getItemAtCursor(), 0, tileIndex);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				return;
 			}
 			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_SEED)
 			{
 				plantSeed(inv.drop(inv.cursor), 0, tileIndex);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				return;
+			}
+			if(registry.obj.regEntities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			{
+				useCharm(inv.getItemAtCursor(), 0, tileIndex);
+				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				return;
 			}
 		}
 		else
@@ -905,6 +955,33 @@ void GameClass::useTool(int entityIndex, int entityTarget, int tileTarget)
 		{
 			registry.createAction(tmp, "destroytool", entityIndex, 0, 0, gameTime()+0.5f);
 		}
+		registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
+		return;
+	}
+}
+
+void GameClass::useCharm(int entityIndex, int entityTarget, int tileTarget)
+{
+	if(entityIndex==0) return;
+	if(entityTarget==0 && tileTarget==0) return;
+	if(entityTarget>0)
+	{
+		//work on a tile (summon contained entity)
+		int summonPack=registry.obj.regEntities[entityIndex]->packIndex;
+		int held=registry.obj.regSummon[summonPack]->creatureContained;
+		int protocol=registry.obj.regSummon[summonPack]->usageProtocol;
+		bool isCreature = (registry.obj.regEntities[entityTarget]->type==ICAT_CREATURE);
+		if(held==0 && isCreature) //if the charm is empty, we'll capture the creature
+			registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, entityTarget, 0, gameTime());
+		return;
+	}
+	if(tileTarget>0)
+	{
+		//work on a tile (summon contained entity)
+		int summonPack=registry.obj.regEntities[entityIndex]->packIndex;
+		int held=registry.obj.regSummon[summonPack]->creatureContained;
+		int protocol=registry.obj.regSummon[summonPack]->usageProtocol;
+		if(held==0) return; //if the charm is empty, we have nothing to summon
 		registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime());
 		return;
 	}
@@ -1031,7 +1108,10 @@ sf::String GameClass::outputEntity(int index)
 		break;
 	case ICAT_INGREDIENT: ret+="Ingredient\n"; break;
 	case ICAT_SEED: ret+="Seed\n"; break;
-	case ICAT_SUMMON: ret+="Summon Charm\n"; break;
+	case ICAT_SUMMON: ret+="Summon Charm\n"; 
+		calc=registry.obj.regEntities[index]->packIndex;
+		calc=registry.obj.regSummon[calc]->creatureContained;
+		ret+= outputEntity(calc); break;
 	case ICAT_TOOL: ret+="Tool\n"; break;
 	default: ret+="Something Else...\n"; break;
 	}

@@ -548,7 +548,9 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.summonPackList[i].entityID==p)
 				{
+					int summonI=int(obj.regSummon.size());
 					obj.regSummon.push_back(new summonPack(tmp.container.summonPackList[i]));
+					obj.regSummon[summonI]->usageProtocol=obj.getActionTemplateIndex(tmp, tmp.container.summonPackList[i].usageProtocol);
 					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regSummon.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 					return int(obj.regEntities.size()-1);
 				}

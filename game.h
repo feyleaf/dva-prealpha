@@ -80,6 +80,7 @@ public:
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
 	void useTool(int entityIndex, int entityTarget, int tileTarget);
+	void useCharm(int entityIndex, int entityTarget, int tileTarget);
 	void plantSeed(int entityIndex, int entityTarget, int tileTarget);
 
 	void gameUpdater(float actSeconds);

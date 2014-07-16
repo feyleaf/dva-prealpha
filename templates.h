@@ -387,6 +387,7 @@ class TemplateContainerClass
 			creaturePackList.clear(); creaturePackList.push_back(creaturePackTemplate());
 			vegPackList.clear(); vegPackList.push_back(vegetationPackTemplate());
 			seedPackList.clear(); seedPackList.push_back(seedPackTemplate());
+			summonPackList.clear(); summonPackList.push_back(summonPackTemplate());
 			buttonList.clear(); buttonList.push_back(guiButtonTemplate());
 			valuesList.clear(); valuesList.push_back(stringList());
 			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());
