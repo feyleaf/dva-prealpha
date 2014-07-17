@@ -261,6 +261,64 @@ void GameClass::processAction(actionStruct* act)
 				char buffer[64]="";
 				sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
 				sidebar.setString("Target moving to:\n" + std::string(buffer));
+				registry.createAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "attack"))
+			{
+				if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))>1.4f)
+					return;
+				int regSlash = registry.createEntity(tmp, "claw", registry.obj.regEntities[act->entityIndexTarget]->pos, gameTime());
+				registry.createAction(tmp, "endattack", regSlash, 0, 0, gameTime()+0.15f);
+				registry.createAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, 0, gameTime()+0.75f);
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "engagecombat"))
+			{
+				char buffer[64]="";
+				sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
+				sidebar.setString("Combat Engaged:\n" + std::string(buffer));
+				registry.createAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, 0, gameTime()+0.5f);
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "movestep"))
+			{
+				if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))<1.4f)
+				{
+					registry.createAction(tmp, "engagecombat", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
+					return;
+				}
+				fillPathingRoutes();
+				terrain.setTerrainRuleAt(registry.obj.regEntities[act->entityIndexTarget]->pos, 0);
+				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
+				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regEntities[act->entityIndexTarget]->pos))
+				{
+					coord d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regEntities[act->entityIndexTarget]->pos);
+					coord grid=registry.obj.regEntities[act->entityIndexSource]->pos;
+					coord ff(0,0);
+					coord fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
+					if(d==grid)
+					{
+						registry.obj.regEntities[act->entityIndexSource]->pos=d;
+						return;
+					}
+					if(d.x>grid.x) {ff=coord(4,0);}
+					else if(d.x<grid.x) {ff=coord(-4,0);}
+					else if(d.y>grid.y) ff=coord(0,4);
+					else if(d.y<grid.y) ff=coord(0,-4);
+
+					fine = fine+ff;
+					fine.x=fine.x%settings.tileWid;
+					fine.y=fine.y%settings.tileHig;
+
+					if(fine==coord(0,0)) grid=d;
+					registry.obj.regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
+					registry.obj.regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
+
+					registry.obj.regEntities[act->entityIndexSource]->pos=grid;
+					registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
+					registry.createAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
+				}
 				return;
 			}
 			if(actionCodeEquals(currentIndex, "usecharm"))
@@ -368,6 +426,13 @@ void GameClass::processAction(actionStruct* act)
 			{
 				//erase a tool from existence
 				inv.clearSlot(inv.cursor);
+				registry.obj.eraseEntity(act->entityIndexSource);
+
+				return;
+			}
+			if(actionCodeEquals(currentIndex, "endattack"))
+			{
+				//erase an effect from existence
 				registry.obj.eraseEntity(act->entityIndexSource);
 
 				return;
