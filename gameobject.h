@@ -2,7 +2,7 @@
 gameobject.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 31, 2014
+July 17, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 This class header defines the routines and members to contain pointers to objects that exist in the world

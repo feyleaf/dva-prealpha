@@ -2,7 +2,7 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-May 22, 2014
+July 17, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -16,6 +16,11 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ENTITYACTION 3
 #define GAMEMODE_ENTITYTARGETING 4
 #define GAMEMODE_MAGICSPELL 5
+
+#define IS_NOTARGET 0
+#define IS_TILETARGET 1
+#define IS_ENTITYTARGET 2
+#define IS_BOTHTARGET 3
 
 #define JAN1_2014	1387584000
 struct gameHeader
@@ -111,6 +116,23 @@ public:
 	void scatterEntity(const mapSpreadStruct* spread);
 
 	void processAction(actionStruct* act);
+	bool hasSource(const actionStruct* act);
+	bool noTarget(const actionStruct* act);
+	bool entityTarget(const actionStruct* act);
+	bool tileTarget(const actionStruct* act);
+	bool fullTargets(const actionStruct* act);
+
+	void handleMovementPipeline(const actionStruct* act);
+	void handleCombatPipeline(const actionStruct* act);
+	void handleCreationPipeline(const actionStruct* act);
+	void handleButtonPipeline(const actionStruct* act);
+	void handleItemsPipeline(const actionStruct* act);
+	void handleAIPipeline(const actionStruct* act);
+	void handleGUIPipeline(const actionStruct* act);
+
+	void fillSourceAction(const char* actionname, int entityIndex, float delay=0.0f);
+	void fillEntityTargetAction(const char* actionname, int sourceIndex, int entityTarget, float delay=0.0f);
+	void fillTileTargetAction(const char* actionname, int sourceIndex, int tileTarget, float delay=0.0f);
 	bool actionCodeEquals(int index, const char* _code);
 	int entityHover();
 	int buttonHover();

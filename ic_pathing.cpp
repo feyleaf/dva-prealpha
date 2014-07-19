@@ -313,7 +313,7 @@ bool AStarClass::runPathing(TerrainClass& _tr, const coord& _start, const coord&
 
 coord AStarClass::getNextTile(TerrainClass& _tr, const coord& _start, const coord& _target)
 {
-	runPathing(_tr, _start, _target);
+	if(!runPathing(_tr, _start, _target)) return _start;
 	int index=int(pathList.size());
 	return pathList[index-2];
 }

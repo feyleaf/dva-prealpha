@@ -2,7 +2,7 @@
 gameobject.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 3, 2014
+July 17, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */

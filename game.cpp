@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 5, 2014
+July 17, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -43,6 +43,7 @@ GameClass::GameClass()
 	render.createGuiSheet(tmp);
 	render.loadGraphicsFiles(settings);
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
+	app.setFramerateLimit(60);
 	mainfont.loadFromFile(settings.mainFontFile);
 	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", mainfont, 24);
 	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
@@ -201,6 +202,21 @@ bool GameClass::isPerformingAction(int entityIndex, const char* actionName)
 	return ret;
 }
 
+void GameClass::fillSourceAction(const char* actionname, int entityIndex, float delay)
+{
+	registry.createAction(tmp, actionname, entityIndex, 0, 0, gameTime()+delay);
+}
+
+void GameClass::fillEntityTargetAction(const char* actionname, int entityIndex, int entityTarget, float delay)
+{
+	registry.createAction(tmp, actionname, entityIndex, entityTarget, 0, gameTime()+delay);
+}
+
+void GameClass::fillTileTargetAction(const char* actionname, int entityIndex, int tileTarget, float delay)
+{
+	registry.createAction(tmp, actionname, entityIndex, 0, tileTarget, gameTime()+delay);
+}
+
 coord GameClass::getLatestTargetPosition(int entityIndex)
 {
 	int latestTile=0;
@@ -242,391 +258,430 @@ coord GameClass::getLatestTargetPosition(int entityIndex)
 	return coord(0,0);
 }
 
+bool GameClass::hasSource(const actionStruct* act)
+{
+	return (act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
+}
+
+bool GameClass::noTarget(const actionStruct* act)
+{
+	return (!(entityTarget(act) || tileTarget(act)));
+}
+
+bool GameClass::entityTarget(const actionStruct* act)
+{
+	return (act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
+}
+
+bool GameClass::tileTarget(const actionStruct* act)
+{
+	return (act->tileIndexTarget != 0 && registry.obj.regTiles[act->tileIndexTarget] != NULL);
+}
+
+bool GameClass::fullTargets(const actionStruct* act)
+{
+	return (entityTarget(act) && tileTarget(act));
+}
+
+void GameClass::handleMovementPipeline(const actionStruct* act)
+{
+	if(actionCodeEquals(act->actionTemplateIndex, "selecttile"))
+	{
+		if(gamemode==GAMEMODE_ENTITYTARGETING)
+		{
+			int regEnt=registry.obj.getButtonLinkedEntity(tmp, "movecreature");
+			if(tileTarget(act))
+			{
+				fillTileTargetAction("establishtarget", regEnt, act->tileIndexTarget, 0.5f);
+			}
+			fillSourceAction("creatureguioff", regEnt);
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
+	{
+		if(gamemode==GAMEMODE_ENTITYTARGETING)
+		{
+			int regEnt=registry.obj.getButtonLinkedEntity(tmp, "movecreature");
+			fillEntityTargetAction("establishtarget", regEnt, act->entityIndexTarget, 0.5f);
+			fillSourceAction("creatureguioff", regEnt);
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "establishtarget"))
+	{
+		char buffer[64]="";
+		if(tileTarget(act))
+		{
+			sprintf_s(buffer, "(%i, %i)", registry.obj.regTiles[act->tileIndexTarget]->pos.x, registry.obj.regTiles[act->tileIndexTarget]->pos.y);
+			fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+		}
+		else
+		{
+			sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
+			fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+		}
+		sidebar.setString("Target moving to:\n" + std::string(buffer));
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "movestep"))
+	{
+		if(!hasSource(act) || noTarget(act)) return;
+		if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
+		coord d;
+		coord grid;
+		coord ff;
+		coord fine;
+		grid=registry.obj.regEntities[act->entityIndexSource]->pos;
+		ff=coord(0,0);
+		fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
+		if(entityTarget(act))
+		{
+			if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))<1.4f)
+			{
+				fillEntityTargetAction("engagecombat", act->entityIndexSource, act->entityIndexTarget);
+				return;
+			}
+			fillPathingRoutes();
+			terrain.setTerrainRuleAt(registry.obj.regEntities[act->entityIndexTarget]->pos, 0);
+			d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regEntities[act->entityIndexTarget]->pos);
+		}
+		else
+		{
+			fillPathingRoutes();
+			if(registry.obj.regTiles[act->tileIndexTarget]->pos != getLatestTargetPosition(act->entityIndexSource)) return;
+			d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos);
+		}
+		if(d==grid)
+		{
+			registry.obj.regEntities[act->entityIndexSource]->pos=d;
+			return;
+		}
+		if(d.x>grid.x) {ff=coord(4,0);}
+		else if(d.x<grid.x) {ff=coord(-4,0);}
+		else if(d.y>grid.y) ff=coord(0,4);
+		else if(d.y<grid.y) ff=coord(0,-4);
+
+		fine = fine+ff;
+		fine.x=fine.x%settings.tileWid;
+		fine.y=fine.y%settings.tileHig;
+
+		if(fine==coord(0,0)) grid=d;
+		registry.obj.regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
+		registry.obj.regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
+
+		registry.obj.regEntities[act->entityIndexSource]->pos=grid;
+		registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
+		if(entityTarget(act))
+		{
+			fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			return;
+		}
+		else
+		{
+			fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "movecreature"))
+	{
+		sidebar.setString("targeting!?\n"+outputEntity(act->entityIndexSource));
+		gamemode=GAMEMODE_ENTITYTARGETING;
+		return;
+	}
+}
+
+void GameClass::handleCombatPipeline(const actionStruct* act)
+{
+	if(!entityTarget(act) || !hasSource(act)) return;
+	if(actionCodeEquals(act->actionTemplateIndex, "attack"))
+	{
+		if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))>1.4f)
+			return;
+		int regSlash = registry.createEntity(tmp, "claw", registry.obj.regEntities[act->entityIndexTarget]->pos, gameTime());
+		fillEntityTargetAction("endattack", regSlash, act->entityIndexTarget, 0.15f);
+		fillEntityTargetAction("engagecombat", act->entityIndexSource, act->entityIndexTarget, 0.5f);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "endattack"))
+	{
+		//erase an effect from existence
+		registry.obj.eraseEntity(act->entityIndexSource);
+
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "engagecombat"))
+	{
+		char buffer[64]="";
+		sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
+		sidebar.setString("Combat Engaged:\n" + std::string(buffer));
+		fillEntityTargetAction("attack", act->entityIndexSource, act->entityIndexTarget, 0.5f);
+		return;
+	}
+}
+
+void GameClass::handleCreationPipeline(const actionStruct* act)
+{
+	if(!hasSource(act)) return;
+	if(actionCodeEquals(act->actionTemplateIndex, "makecreature"))
+	{
+		float seconds=float(rand()%7+2);
+		fillSourceAction("wandercreature", act->entityIndexSource, seconds);
+		fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "growflower"))
+	{
+		//update the frame as long as it's still less than the max growth stages
+		processGrowth(act->entityIndexSource);
+
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "effects"))
+	{
+		//update the frame as long as it's still less than the max growth stages
+		processMagic(act->entityIndexSource);
+
+		return;
+	}
+}
+
+void GameClass::handleButtonPipeline(const actionStruct* act)
+{
+	if(actionCodeEquals(act->actionTemplateIndex, "infoget"))
+	{
+		if(gamemode==GAMEMODE_INSPECT)
+		{
+			fillSourceAction("clearsidebar", 0, 0.125f);
+		}
+		else
+		{
+			sidebar.setString("Click an Entity\nto Inspect...");
+			gamemode=GAMEMODE_INSPECT;
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "generatemap"))
+	{
+		gamemode=GAMEMODE_NEUTRAL;
+		initialize();
+		experimentalMapGen("forest");
+		fillButton("magnifier", coord(settings.tileCols, 5));
+		fillButton("recycle", coord(settings.tileCols+1, 5));
+		fillButton("camera", coord(settings.tileCols+2, 5));
+		fillButton("backpack", coord(settings.tileCols+3, 5));
+		fillButton("inventorycell", coord(0,0), 0, false);
+		int toolIndex=registry.createEntity(tmp, "magicwand", coord(0,0), gameTime());
+		registry.createAction(tmp, "randomheld", toolIndex, 0, 0, gameTime());
+		int plantIndex=registry.createEntity(tmp, "s_redrose", coord(0,0), gameTime());
+		inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+		registry.cloneToInventory(plantIndex);
+		plantIndex=registry.createEntity(tmp, "s_heaven", coord(0,0), gameTime());
+		inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+		registry.cloneToInventory(plantIndex);
+		plantIndex=registry.createEntity(tmp, "s_hibiscus", coord(0,0), gameTime());
+		inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
+		registry.cloneToInventory(plantIndex);
+		plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
+		inv.add(registry.obj.regEntities[plantIndex], plantIndex);
+		registry.cloneToInventory(plantIndex);
+		plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
+		inv.add(registry.obj.regEntities[plantIndex], plantIndex);
+		registry.cloneToInventory(plantIndex);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "screenshot"))
+	{
+//		gamemode=GAMEMODE_NEUTRAL;
+		capture();
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex,"backpack"))
+	{
+		if(gamemode!=GAMEMODE_INVENTORY) gamemode=GAMEMODE_INVENTORY;
+		else gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex,"selectinventory"))
+	{
+		if(gamemode==GAMEMODE_INVENTORY) inv.select(mouse);
+		return;
+	}
+}
+
+void GameClass::handleItemsPipeline(const actionStruct* act)
+{
+	if(actionCodeEquals(act->actionTemplateIndex, "usecharm"))
+	{
+		if(!hasSource(act)) return;
+		int summonPack = registry.obj.regEntities[act->entityIndexSource]->packIndex;
+		int held = registry.obj.regSummon[summonPack]->creatureContained;
+		if(entityTarget(act))
+		{
+			registry.obj.regEntities[act->entityIndexTarget]->plane=1;
+			registry.obj.regEntities[act->entityIndexTarget]->pos=coord(0,0);
+			registry.obj.regEntities[act->entityIndexTarget]->active=false;
+		
+			if(held==0) registry.obj.regSummon[summonPack]->creatureContained=act->entityIndexTarget;
+			return;
+		}
+		else if(tileTarget(act))
+		{
+			if(held>0)
+			{
+				int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
+				fillSourceAction("effects", regMagic);
+				registry.obj.regEntities[held]->plane=0;
+				registry.obj.regEntities[held]->pos=registry.obj.regTiles[act->tileIndexTarget]->pos;
+				registry.obj.regEntities[held]->active=true;
+
+				//fix this, boxes will be wrong if not 32x32
+				registry.obj.regEntities[held]->box.left=registry.obj.regEntities[held]->pos.x*32;
+				registry.obj.regEntities[held]->box.top=registry.obj.regEntities[held]->pos.y*32;
+
+				registry.obj.regSummon[summonPack]->creatureContained=0;
+			}
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "spelltile"))
+	{
+		int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
+		fillSourceAction("effects", regMagic);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "plantflower"))
+	{
+		if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_SEED) return;
+		int seedIndex=registry.obj.regEntities[act->entityIndexSource]->packIndex;
+		int vegTemplate=registry.obj.regSeed[seedIndex]->vegetationContained;
+		fillEntity(tmp.container.entityList[vegTemplate].cname, registry.obj.regTiles[act->tileIndexTarget]->pos);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "destroytool"))
+	{
+		//erase a tool from existence
+		inv.clearSlot(inv.cursor);
+		registry.obj.eraseEntity(act->entityIndexSource);
+
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "convertflower"))
+	{
+		processFlowerConversion(act->entityIndexSource);
+		return;
+	}
+}
+
+void GameClass::handleAIPipeline(const actionStruct* act)
+{
+	if(actionCodeEquals(act->actionTemplateIndex, "wandercreature"))
+	{
+		float seconds=float(rand()%7+2);
+		if(!isPerformingAction(act->entityIndexSource, "movestep"))
+		{
+			int dir=rand()%4;
+			coord ff=registry.obj.regEntities[act->entityIndexSource]->pos;
+			switch(dir)
+			{
+				case 0://north
+					if(ff.y>0) ff=ff+coord(0,-1);
+					break;
+				case 1://east
+					if(ff.x<settings.tileCols) ff=ff+coord(1,0);
+					break;
+				case 2://south
+					if(ff.y<settings.tileRows) ff=ff+coord(0,1);
+					break;
+				default://west
+					if(ff.x>0) ff=ff+coord(-1,0);
+					break;
+			}
+			if(terrain.getTerrainAt(ff)==0)
+			{
+				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, getTileIndexAt(ff), gameTime());
+			}
+		}
+		fillSourceAction("wandercreature", act->entityIndexSource, seconds);
+		return;
+	}
+}
+
+void GameClass::handleGUIPipeline(const actionStruct* act)
+{
+	if(actionCodeEquals(act->actionTemplateIndex, "randomheld"))
+	{
+		inv.add(registry.obj.regEntities[act->entityIndexSource], act->entityIndexSource);
+		registry.cloneToInventory(act->entityIndexSource);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "creatureguion"))
+	{
+		if(gamemode!=GAMEMODE_ENTITYACTION)
+		{
+			gamemode=GAMEMODE_ENTITYACTION;
+			sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
+			registry.obj.activateEntityButtons(act->entityIndexSource);
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex,"creatureguioff"))
+	{
+		registry.obj.deactivateEntityButtons(act->entityIndexSource);
+		gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "selecttile"))
+	{
+		if(gamemode==GAMEMODE_INSPECT)
+		{
+			sidebar.setString(outputTile(act->tileIndexTarget));
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
+	{
+		if(gamemode==GAMEMODE_INSPECT)
+		{
+			sidebar.setString(outputEntity(act->entityIndexTarget));
+			fillSourceAction("convertflower", act->entityIndexTarget);
+			return;
+		}
+		if(gamemode==GAMEMODE_NEUTRAL)
+		{
+			if(act->entityIndexTarget==0) return;
+			if(registry.obj.regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
+			{
+				fillSourceAction("creatureguion", act->entityIndexTarget);
+			}
+			return;
+		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "clearsidebar"))
+	{
+		sidebar.setString("");
+		gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+}
+
 //processes an active, valid and queued action
 void GameClass::processAction(actionStruct* act)
 {
 	if(!validateAction(act)) return;
 
-	int currentIndex=act->actionTemplateIndex;
-	bool enSrc=(act->entityIndexSource != 0 && registry.obj.regEntities[act->entityIndexSource] != NULL);
-	bool enTrg=(act->entityIndexTarget != 0 && registry.obj.regEntities[act->entityIndexTarget] != NULL);
-	bool tlTrg=(act->tileIndexTarget != 0 && registry.obj.regTiles[act->tileIndexTarget] != NULL);
-	if(enSrc)
-	{
-		//split between entity targets and tile targets
-		if(enTrg)
-		{
-			if(actionCodeEquals(currentIndex, "establishtarget"))
-			{
-				char buffer[64]="";
-				sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
-				sidebar.setString("Target moving to:\n" + std::string(buffer));
-				registry.createAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "attack"))
-			{
-				if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))>1.4f)
-					return;
-				int regSlash = registry.createEntity(tmp, "claw", registry.obj.regEntities[act->entityIndexTarget]->pos, gameTime());
-				registry.createAction(tmp, "endattack", regSlash, 0, 0, gameTime()+0.15f);
-				registry.createAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, 0, gameTime()+0.75f);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "engagecombat"))
-			{
-				char buffer[64]="";
-				sprintf_s(buffer, "(%i, %i)", registry.obj.regEntities[act->entityIndexTarget]->pos.x, registry.obj.regEntities[act->entityIndexTarget]->pos.y);
-				sidebar.setString("Combat Engaged:\n" + std::string(buffer));
-				registry.createAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, 0, gameTime()+0.5f);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "movestep"))
-			{
-				if(calcDist(toVector(registry.obj.regEntities[act->entityIndexTarget]->pos), toVector(registry.obj.regEntities[act->entityIndexSource]->pos))<1.4f)
-				{
-					registry.createAction(tmp, "engagecombat", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
-					return;
-				}
-				fillPathingRoutes();
-				terrain.setTerrainRuleAt(registry.obj.regEntities[act->entityIndexTarget]->pos, 0);
-				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
-				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regEntities[act->entityIndexTarget]->pos))
-				{
-					coord d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regEntities[act->entityIndexTarget]->pos);
-					coord grid=registry.obj.regEntities[act->entityIndexSource]->pos;
-					coord ff(0,0);
-					coord fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
-					if(d==grid)
-					{
-						registry.obj.regEntities[act->entityIndexSource]->pos=d;
-						return;
-					}
-					if(d.x>grid.x) {ff=coord(4,0);}
-					else if(d.x<grid.x) {ff=coord(-4,0);}
-					else if(d.y>grid.y) ff=coord(0,4);
-					else if(d.y<grid.y) ff=coord(0,-4);
-
-					fine = fine+ff;
-					fine.x=fine.x%settings.tileWid;
-					fine.y=fine.y%settings.tileHig;
-
-					if(fine==coord(0,0)) grid=d;
-					registry.obj.regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
-					registry.obj.regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
-
-					registry.obj.regEntities[act->entityIndexSource]->pos=grid;
-					registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
-					registry.createAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, 0, gameTime());
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "usecharm"))
-			{
-				registry.obj.regEntities[act->entityIndexTarget]->plane=1;
-				registry.obj.regEntities[act->entityIndexTarget]->pos=coord(0,0);
-				registry.obj.regEntities[act->entityIndexTarget]->active=false;
-				int summonPack = registry.obj.regEntities[act->entityIndexSource]->packIndex;
-				registry.obj.regSummon[summonPack]->creatureContained=act->entityIndexTarget;
-				return;
-			}
-			//target is an entity
-		}
-		else if(tlTrg)
-		{
-			//target is a tile
-			if(actionCodeEquals(currentIndex, "usecharm"))
-			{
-				int summonPack = registry.obj.regEntities[act->entityIndexSource]->packIndex;
-				int held = registry.obj.regSummon[summonPack]->creatureContained;
-				if(held>0)
-				{
-					int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
-					registry.createAction(tmp, "effects", regMagic, 0, 0, gameTime());
-					registry.obj.regEntities[held]->plane=0;
-					registry.obj.regEntities[held]->pos=registry.obj.regTiles[act->tileIndexTarget]->pos;
-					registry.obj.regEntities[held]->active=true;
-					registry.obj.regEntities[held]->box.left=registry.obj.regEntities[held]->pos.x*32;
-					registry.obj.regEntities[held]->box.top=registry.obj.regEntities[held]->pos.y*32;
-					registry.obj.regSummon[summonPack]->creatureContained=0;
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "spelltile"))
-			{
-				int regMagic = registry.createEntity(tmp, "magiceffect", registry.obj.regTiles[act->tileIndexTarget]->pos, gameTime()+0.125f);
-				registry.createAction(tmp, "effects", regMagic, 0, 0, gameTime());
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "establishtarget"))
-			{
-				char buffer[64]="";
-				sprintf_s(buffer, "(%i, %i)", registry.obj.regTiles[act->tileIndexTarget]->pos.x, registry.obj.regTiles[act->tileIndexTarget]->pos.y);
-				sidebar.setString("Target moving to:\n" + std::string(buffer));
-				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime());
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "movestep"))
-			{
-				fillPathingRoutes();
-				if(registry.obj.regTiles[act->tileIndexTarget]->pos != getLatestTargetPosition(act->entityIndexSource)) return;
-				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
-				if(astar.runPathing(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos))
-				{
-					coord d=astar.getNextTile(terrain, registry.obj.regEntities[act->entityIndexSource]->pos, registry.obj.regTiles[act->tileIndexTarget]->pos);
-					coord grid=registry.obj.regEntities[act->entityIndexSource]->pos;
-					coord ff(0,0);
-					coord fine=registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset;
-					if(d==grid)
-					{
-						registry.obj.regEntities[act->entityIndexSource]->pos=d;
-						return;
-					}
-					if(d.x>grid.x) {ff=coord(4,0);}
-					else if(d.x<grid.x) {ff=coord(-4,0);}
-					else if(d.y>grid.y) ff=coord(0,4);
-					else if(d.y<grid.y) ff=coord(0,-4);
-
-					fine = fine+ff;
-					fine.x=fine.x%settings.tileWid;
-					fine.y=fine.y%settings.tileHig;
-
-					if(fine==coord(0,0)) grid=d;
-					registry.obj.regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
-					registry.obj.regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
-
-					registry.obj.regEntities[act->entityIndexSource]->pos=grid;
-					registry.obj.regCreature[registry.obj.regEntities[act->entityIndexSource]->packIndex]->offset=fine;
-					registry.createAction(tmp, "movestep", act->entityIndexSource, 0, act->tileIndexTarget, gameTime());
-				}
-				return;
-			}
-			//target is a tile
-			if(actionCodeEquals(currentIndex, "plantflower"))
-			{
-				if(registry.obj.regEntities[act->entityIndexSource]->type != ICAT_SEED) return;
-				int seedIndex=registry.obj.regEntities[act->entityIndexSource]->packIndex;
-				int vegTemplate=registry.obj.regSeed[seedIndex]->vegetationContained;
-				fillEntity(tmp.container.entityList[vegTemplate].cname, registry.obj.regTiles[act->tileIndexTarget]->pos);
-				return;
-			}
-		}
-		else
-		{
-			//source entity with no target specified
-			//ideal for growflower
-			if(actionCodeEquals(currentIndex, "growflower"))
-			{
-				//update the frame as long as it's still less than the max growth stages
-				processGrowth(act->entityIndexSource);
-
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "destroytool"))
-			{
-				//erase a tool from existence
-				inv.clearSlot(inv.cursor);
-				registry.obj.eraseEntity(act->entityIndexSource);
-
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "endattack"))
-			{
-				//erase an effect from existence
-				registry.obj.eraseEntity(act->entityIndexSource);
-
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "effects"))
-			{
-				//update the frame as long as it's still less than the max growth stages
-				processMagic(act->entityIndexSource);
-
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "makecreature"))
-			{
-				float seconds=float(rand()%7+2);
-				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime()+seconds);
-				fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "wandercreature"))
-			{
-				float seconds=float(rand()%7+2);
-				if(!isPerformingAction(act->entityIndexSource, "movestep"))
-				{
-					int dir=rand()%4;
-					coord ff=registry.obj.regEntities[act->entityIndexSource]->pos;
-					switch(dir)
-					{
-						case 0://north
-							if(ff.y>0) ff=ff+coord(0,-1);
-							break;
-						case 1://east
-							if(ff.x<settings.tileCols) ff=ff+coord(1,0);
-							break;
-						case 2://south
-							if(ff.y<settings.tileRows) ff=ff+coord(0,1);
-							break;
-						default://west
-							if(ff.x>0) ff=ff+coord(-1,0);
-							break;
-					}
-					if(terrain.getTerrainAt(ff)==0)
-					{
-						registry.createAction(tmp, "movestep", act->entityIndexSource, 0, getTileIndexAt(ff), gameTime());
-					}
-				}
-				registry.createAction(tmp, "wandercreature", act->entityIndexSource, 0, 0, gameTime()+seconds);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "randomheld"))
-			{
-				inv.add(registry.obj.regEntities[act->entityIndexSource], act->entityIndexSource);
-				registry.cloneToInventory(act->entityIndexSource);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "convertflower"))
-			{
-				processFlowerConversion(act->entityIndexSource);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "creatureguion"))
-			{
-				if(gamemode!=GAMEMODE_ENTITYACTION)
-				{
-					gamemode=GAMEMODE_ENTITYACTION;
-					sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
-					registry.obj.activateEntityButtons(act->entityIndexSource);
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "movecreature"))
-			{
-				sidebar.setString("targeting!?\n"+outputEntity(act->entityIndexSource));
-				gamemode=GAMEMODE_ENTITYTARGETING;
-				return;
-			}
-			if(actionCodeEquals(currentIndex,"creatureguioff"))
-			{
-				registry.obj.deactivateEntityButtons(act->entityIndexSource);
-				gamemode=GAMEMODE_NEUTRAL;
-				return;
-			}
-		}
-	}
-	else
-	{
-		//uses tileIndexTarget
-			if(actionCodeEquals(currentIndex, "selecttile"))
-			{
-				if(gamemode==GAMEMODE_INSPECT)
-				{
-					sidebar.setString(outputTile(act->tileIndexTarget));
-					return;
-				}
-				if(gamemode==GAMEMODE_ENTITYTARGETING)
-				{
-					int regEnt=registry.obj.getButtonLinkedEntity(tmp, "movecreature");
-					registry.createAction(tmp, "establishtarget", regEnt, 0, act->tileIndexTarget, gameTime()+0.5f);
-					registry.createAction(tmp, "creatureguioff", regEnt, 0, 0, gameTime());
-					return;
-				}
-			}
-		//uses entityIndexTarget
-			if(actionCodeEquals(currentIndex, "selectentity"))
-			{
-				if(gamemode==GAMEMODE_INSPECT)
-				{
-					sidebar.setString(outputEntity(act->entityIndexTarget));
-					registry.createAction(tmp, "convertflower", act->entityIndexTarget, 0, 0, gameTime());
-					return;
-				}
-				if(gamemode==GAMEMODE_ENTITYTARGETING)
-				{
-					int regEnt=registry.obj.getButtonLinkedEntity(tmp, "movecreature");
-					registry.createAction(tmp, "establishtarget", regEnt, act->entityIndexTarget, 0, gameTime()+0.5f);
-					registry.createAction(tmp, "creatureguioff", regEnt, 0, 0, gameTime());
-					return;
-				}
-				if(gamemode==GAMEMODE_NEUTRAL)
-				{
-					if(act->entityIndexTarget==0) return;
-					if(registry.obj.regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
-					{
-						registry.createAction(tmp, "creatureguion", act->entityIndexTarget, 0, 0, gameTime());
-					}
-					return;
-				}
-			}
-			if(actionCodeEquals(currentIndex, "generatemap"))
-			{
-				gamemode=GAMEMODE_NEUTRAL;
-				initialize();
-				experimentalMapGen("forest");
-				fillButton("magnifier", coord(settings.tileCols, 5));
-				fillButton("recycle", coord(settings.tileCols+1, 5));
-				fillButton("camera", coord(settings.tileCols+2, 5));
-				fillButton("backpack", coord(settings.tileCols+3, 5));
-				fillButton("inventorycell", coord(0,0), 0, false);
-				int toolIndex=registry.createEntity(tmp, "magicwand", coord(0,0), gameTime());
-				registry.createAction(tmp, "randomheld", toolIndex, 0, 0, gameTime());
-				int plantIndex=registry.createEntity(tmp, "s_redrose", coord(0,0), gameTime());
-				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
-				registry.cloneToInventory(plantIndex);
-				plantIndex=registry.createEntity(tmp, "s_heaven", coord(0,0), gameTime());
-				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
-				registry.cloneToInventory(plantIndex);
-				plantIndex=registry.createEntity(tmp, "s_hibiscus", coord(0,0), gameTime());
-				inv.add(registry.obj.regEntities[plantIndex], plantIndex, 4);
-				registry.cloneToInventory(plantIndex);
-				plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
-				inv.add(registry.obj.regEntities[plantIndex], plantIndex);
-				registry.cloneToInventory(plantIndex);
-				plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime());
-				inv.add(registry.obj.regEntities[plantIndex], plantIndex);
-				registry.cloneToInventory(plantIndex);
-				return;
-			}
-			if(actionCodeEquals(currentIndex,"backpack"))
-			{
-				if(gamemode!=GAMEMODE_INVENTORY) gamemode=GAMEMODE_INVENTORY;
-				else gamemode=GAMEMODE_NEUTRAL;
-				return;
-			}
-			if(actionCodeEquals(currentIndex,"selectinventory"))
-			{
-				if(gamemode==GAMEMODE_INVENTORY) inv.select(mouse);
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "screenshot"))
-			{
-				gamemode=GAMEMODE_NEUTRAL;
-				capture();
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "infoget"))
-			{
-				if(gamemode==GAMEMODE_INSPECT)
-				{
-					registry.createAction(tmp, "clearsidebar", 0,0,0,gameTime()+0.125f);
-				}
-				else
-				{
-					sidebar.setString("Click an Entity\nto Inspect...");
-					gamemode=GAMEMODE_INSPECT;
-				}
-				return;
-			}
-			if(actionCodeEquals(currentIndex, "clearsidebar"))
-			{
-				sidebar.setString("");
-				gamemode=GAMEMODE_NEUTRAL;
-				return;
-			}
-	}
-
+	debugFile << "Handling event: " << tmp.container.actionList[act->actionTemplateIndex].cname << "\t";
+	debugFile << "Source: " << act->entityIndexSource << ": " << outputEntity(act->entityIndexSource).toAnsiString();
+	debugFile << "Target Entity: " << act->entityIndexTarget << ": " << outputEntity(act->entityIndexTarget).toAnsiString();
+	debugFile << "Target Tile: " << act->tileIndexTarget << ": " << outputTile(act->tileIndexTarget).toAnsiString();
+	debugFile << "==================================================\n";
+	handleMovementPipeline(act);
+	handleCombatPipeline(act);
+	handleCreationPipeline(act);
+	handleButtonPipeline(act);
+	handleItemsPipeline(act);
+	handleAIPipeline(act);
+	handleGUIPipeline(act);
 }
 
 void GameClass::capture()

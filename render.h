@@ -2,7 +2,7 @@
 render.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-June 5, 2014
+July 17, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */

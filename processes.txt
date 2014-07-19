@@ -1,6 +1,2086 @@
 32 x 32
 Title: Druid vs Alchemist Test
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 32 x 32
 Title: Druid vs Alchemist Test
+Handling event: makecreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 28: Squirrel
+Creature
+HP: 1 / 1Target Tile: 0: ==================================================
+Handling event: creatureguion	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movecreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 434: Green Grass 2
+==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: establishtarget	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: creatureguioff	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 675: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 22: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: backpack	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 34: Hibiscus Seed
+Seed
+Target Entity: 0: Target Tile: 542: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 23: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 22: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 34: Hibiscus Seed
+Seed
+Target Entity: 0: Target Tile: 563: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 632: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 34: Hibiscus Seed
+Seed
+Target Entity: 0: Target Tile: 142: Green Grass
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 37: Hibiscus
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 34: Hibiscus Seed
+Seed
+Target Entity: 0: Target Tile: 165: Green Grass
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 24: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Hibiscus
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Hibiscus
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 618: Green Grass 2
+==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Hibiscus
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Hibiscus
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 33: Heaven\'s Mirror Seed
+Seed
+Target Entity: 0: Target Tile: 469: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 619: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 33: Heaven\'s Mirror Seed
+Seed
+Target Entity: 0: Target Tile: 492: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 33: Heaven\'s Mirror Seed
+Seed
+Target Entity: 0: Target Tile: 516: Green Grass 2
+==================================================
+Handling event: growflower	Source: 39: Hibiscus
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Hibiscus
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 490: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 603: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 33: Heaven\'s Mirror Seed
+Seed
+Target Entity: 0: Target Tile: 489: Green Grass 2
+==================================================
+Handling event: growflower	Source: 40: Hibiscus
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Heavens Mirror
+Vegetation
+Growth: 1 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Hibiscus
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Heavens Mirror
+Vegetation
+Growth: 1 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Heavens Mirror
+Vegetation
+Growth: 1 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: plantflower	Source: 32: Red Rose Seed
+Seed
+Target Entity: 0: Target Tile: 467: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 32: Red Rose Seed
+Seed
+Target Entity: 0: Target Tile: 491: Green Grass 2
+==================================================
+Handling event: growflower	Source: 38: Hibiscus
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Hibiscus
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 44: Heavens Mirror
+Vegetation
+Growth: 1 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: plantflower	Source: 32: Red Rose Seed
+Seed
+Target Entity: 0: Target Tile: 514: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 666: Green Grass 2
+==================================================
+Handling event: growflower	Source: 42: Heavens Mirror
+Vegetation
+Growth: 2 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Hibiscus
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Hibiscus
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Heavens Mirror
+Vegetation
+Growth: 2 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Heavens Mirror
+Vegetation
+Growth: 2 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: plantflower	Source: 32: Red Rose Seed
+Seed
+Target Entity: 0: Target Tile: 537: Green Grass 2
+==================================================
+Handling event: growflower	Source: 39: Hibiscus
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 44: Heavens Mirror
+Vegetation
+Growth: 2 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Hibiscus
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 604: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 674: Green Grass 2
+==================================================
+Handling event: growflower	Source: 40: Hibiscus
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Heavens Mirror
+Vegetation
+Growth: 3 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Heavens Mirror
+Vegetation
+Growth: 3 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Heavens Mirror
+Vegetation
+Growth: 3 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Red Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: usecharm	Source: 35: Red Summon Charm
+Summon Charm
+Target Entity: 28: Squirrel
+Creature
+HP: 1 / 1Target Tile: 0: ==================================================
+Handling event: growflower	Source: 44: Heavens Mirror
+Vegetation
+Growth: 3 / 3Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 586: Green Grass 2
+==================================================
+Handling event: usecharm	Source: 35: Red Summon Charm
+Summon Charm
+Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 539: Green Grass 2
+==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 49: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Red Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: movestep	Source: 28: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 561: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 673: Green Grass 2
+==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 580: Green Grass 2
+==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 579: Green Grass 2
+==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 578: Green Grass 2
+==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 50: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 556: Green Grass 2
+==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 555: Green Grass 2
+==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 555: Green Grass 2
+==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 51: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 575: Green Grass 2
+==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 52: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 593: Green Grass 2
+==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 53: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 593: Green Grass 2
+==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: destroytool	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: spelltile	Source: 31: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 613: Green Grass 2
+==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 54: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 629: Green Grass 2
+==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 629: Green Grass 2
+==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 55: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 56: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 643: Green Grass 2
+==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 57: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 58: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: effects	Source: 59: Magic Effect
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Red Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: wandercreature	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: movestep	Source: 29: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 585: Green Grass 2
+==================================================
+Handling event: wandercreature	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Red Rose
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: movestep	Source: 30: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 665: Green Grass 2
+==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+32 x 32
+Title: Druid vs Alchemist Test
+Handling event: growflower	Source: 26: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 48: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 49: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 50: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 51: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 52: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 53: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 54: Magic Wand
+Tool
+Target Entity: 0: Target Tile: 0: ==================================================
 Closed with 1 pending/created actions:
-Time in unsigned long format: 1405562096
+Time in unsigned long format: 1405736834
