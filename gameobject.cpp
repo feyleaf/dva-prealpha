@@ -286,7 +286,7 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 }
 
 //wipes all registry items!
-void GameObjectClass::clear()
+void GameObjectClass::clear(coord worldCursor)
 {
 	/*
 	while(!obj.regTiles.empty())
@@ -340,33 +340,33 @@ void GameObjectClass::clear()
 		delete obj.regEntities[max-i];
 		obj.regEntities.erase(obj.regEntities.begin()+(max-i));
 	}
-	int ac=obj.actions.size()-1;
+	*/
+	int ac=objMap[worldCursor].actions.size()-1;
 	for(int i=0; i<ac; i++)
 	{
-		delete obj.actions[ac-i];
-		obj.actions.erase(obj.actions.begin()+(ac-i));
+		delete objMap[worldCursor].actions[ac-i];
+		objMap[worldCursor].actions.erase(objMap[worldCursor].actions.begin()+(ac-i));
 	}
-	*/
-	obj.init();
+	objMap[worldCursor].init();
 }
 
-bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomename)
+bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomename, coord worldCursor)
 {
 	coord _tl=coord(rand()%5,rand()%5);
 	coord _br=coord(rand()%5+20,rand()%5+10);
-	int biomeIndex=obj.getBiomeTemplateIndex(tmp, _biomename);
+	int biomeIndex=objMap[worldCursor].getBiomeTemplateIndex(tmp, _biomename);
 	//match the terrain name with a name in the template registry, and store its index
-	int terrainIndex=obj.getTerrainTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].terrainListName);
-	int ecoIndex=obj.getEcologyTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].ecologyListName);
+	int terrainIndex=objMap[worldCursor].getTerrainTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].terrainListName);
+	int ecoIndex=objMap[worldCursor].getEcologyTemplateIndex(tmp, tmp.container.biomeList[biomeIndex].ecologyListName);
 	mapGenStruct mapGen;
 	if(terrainIndex==0)	return false;
 	//match the tile list, then select a tile name from the list based on a random number
-	int tileAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].landListName);
-	int accentAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].accentListName);
-	int wornAlias=obj.randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].wornListName);
-	int decoAlias=obj.randomEntityFromList(tmp, tmp.container.terrainList[terrainIndex].decoListName);
-	int vegAlias=obj.randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].plantListName);
-	int creatureAlias=obj.randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].creatureListName);
+	int tileAlias=objMap[worldCursor].randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].landListName);
+	int accentAlias=objMap[worldCursor].randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].accentListName);
+	int wornAlias=objMap[worldCursor].randomTileFromList(tmp, tmp.container.terrainList[terrainIndex].wornListName);
+	int decoAlias=objMap[worldCursor].randomEntityFromList(tmp, tmp.container.terrainList[terrainIndex].decoListName);
+	int vegAlias=objMap[worldCursor].randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].plantListName);
+	int creatureAlias=objMap[worldCursor].randomEntityFromList(tmp, tmp.container.ecoList[ecoIndex].creatureListName);
 
 	mapGen.displaying=true;
 	mapGen.active=true;
@@ -378,7 +378,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	mapSpreadStruct decoSpread;
 	if(wornAlias>0)
 	{
-		std::string shapeString=obj.randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
+		std::string shapeString=objMap[worldCursor].randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
 		layer.tl=_tl;
 		layer.br=_br;
 		strncpy_s(layer.shapeName, 32, shapeString.c_str(), 32);
@@ -387,7 +387,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 	}
 	if(accentAlias>0)
 	{
-		std::string shapeString=obj.randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
+		std::string shapeString=objMap[worldCursor].randomShapeFromList(tmp, tmp.container.terrainList[terrainIndex].shapesListName);
 		layer.tl=_tl;
 		layer.br=_br;
 		strncpy_s(layer.shapeName, 32, shapeString.c_str(), 32);
@@ -423,7 +423,7 @@ bool GameObjectClass::createMapTerrain(const TemplateRegistryClass& tmp, const c
 		creatureSpread.density=rand()%2+2;
 		creatureSpread.tl=coord(0,0); creatureSpread.br=coord(15,15);
 		mapGen.creatureLayer.push_back(new mapSpreadStruct(creatureSpread));
-		obj.regMaps.push_back(new mapGenStruct(mapGen));
+		objMap[worldCursor].regMaps.push_back(new mapGenStruct(mapGen));
 	}
 	return true;	
 }
@@ -432,7 +432,7 @@ GameObjectClass::GameObjectClass()
 {
 }
 
-bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed)
+bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed, coord worldCoord)
 {
 	bool ret=false;
 	coord _orig;
@@ -444,9 +444,9 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 		if(strcmp(tmp.container.tileList[i].cname, _name)==0)
 		{
 			_orig = coord(0, row);
-			obj.regTiles.push_back(new registeredTile(i, _orig, tmp.container.tileList[i].dimensions, _pos));
+			objMap[worldCoord].regTiles.push_back(new registeredTile(i, _orig, tmp.container.tileList[i].dimensions, _pos));
 			if(tmp.container.tileList[i].variance>0)
-				obj.regTiles[int(obj.regTiles.size()-1)]->distortionColor=getTileDistortion(tmp.container.varianceList[tmp.container.tileList[i].variance], _pos, _con, _seed);
+				objMap[worldCoord].regTiles[int(objMap[worldCoord].regTiles.size()-1)]->distortionColor=getTileDistortion(tmp.container.varianceList[tmp.container.tileList[i].variance], _pos, _con, _seed);
 			return true;
 		}
 	}
@@ -455,23 +455,23 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 	return ret;
 }
 
-void GameObjectClass::cloneToInventory(int entityIndex)
+void GameObjectClass::cloneToInventory(int entityIndex, coord worldCoord)
 {
-	//if(entityIndex<1 || entityIndex>int(obj.regEntities.size())) return;
+	//if(entityIndex<1 || entityIndex>int(objMap[worldCursor].regEntities.size())) return;
 	//if(obj.regEntities[entityIndex] == NULL) return;
-	obj.regEntities[entityIndex]->plane=1;
-	obj.regEntities[entityIndex]->pos=coord(-1,-1);
+	objMap[worldCoord].regEntities[entityIndex]->plane=1;
+	objMap[worldCoord].regEntities[entityIndex]->pos=coord(-1,-1);
 }
 
-void GameObjectClass::cloneFromInventory(int entityIndex, coord _pos)
+void GameObjectClass::cloneFromInventory(int entityIndex, coord _pos, coord worldCoord)
 {
-	if(entityIndex<1 || entityIndex>int(obj.regEntities.size())) return;
-	if(obj.regEntities[entityIndex] == NULL) return;
-	obj.regEntities[entityIndex]->plane=0;
-	obj.regEntities[entityIndex]->pos=_pos;
+	if(entityIndex<1 || entityIndex>int(objMap[worldCoord].regEntities.size())) return;
+	if(objMap[worldCoord].regEntities[entityIndex] == NULL) return;
+	objMap[worldCoord].regEntities[entityIndex]->plane=0;
+	objMap[worldCoord].regEntities[entityIndex]->pos=_pos;
 }
 
-int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time)
+int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time, coord worldCoord)
 {
 	bool ret=0;
 	coord _orig;
@@ -500,10 +500,10 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.creaturePackList[i].entityID==p)
 				{
-					obj.regCreature.push_back(new creaturePack(tmp.container.creaturePackList[i]));
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regCreature.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					createAction(tmp, tmp.container.entityList[p].creation, int(obj.regEntities.size()-1), 0, 0, time);
-					return int(obj.regEntities.size()-1);
+					objMap[worldCoord].regCreature.push_back(new creaturePack(tmp.container.creaturePackList[i]));
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,int(objMap[worldCoord].regCreature.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					createAction(tmp, tmp.container.entityList[p].creation, int(objMap[worldCoord].regEntities.size()-1), 0, 0, time, worldCoord);
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -512,9 +512,9 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.decoPackList[i].entityID==p)
 				{
-					obj.regDeco.push_back(new decoPack(tmp.container.decoPackList[i]));
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regDeco.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return int(obj.regEntities.size()-1);
+					objMap[worldCoord].regDeco.push_back(new decoPack(tmp.container.decoPackList[i]));
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,int(objMap[worldCoord].regDeco.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -523,9 +523,9 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.ingredientPackList[i].entityID==p)
 				{
-					obj.regIng.push_back(new ingredientPack(tmp.container.ingredientPackList[i]));
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regIng.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return int(obj.regEntities.size()-1);
+					objMap[worldCoord].regIng.push_back(new ingredientPack(tmp.container.ingredientPackList[i]));
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,int(objMap[worldCoord].regIng.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -534,12 +534,12 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.seedPackList[i].entityID==p)
 				{
-					int seedI=int(obj.regSeed.size());
-					obj.regSeed.push_back(new seedPack(tmp.container.seedPackList[i]));
-					obj.regSeed[seedI]->usageProtocol=obj.getActionTemplateIndex(tmp, tmp.container.seedPackList[i].usageProtocol);
-					obj.regSeed[seedI]->vegetationContained=obj.getEntityTemplateIndex(tmp, tmp.container.seedPackList[i].plantSummon);
-					obj.regEntities.push_back(new registeredEntity(p,_type,seedI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return int(obj.regEntities.size()-1);
+					int seedI=int(objMap[worldCoord].regSeed.size());
+					objMap[worldCoord].regSeed.push_back(new seedPack(tmp.container.seedPackList[i]));
+					objMap[worldCoord].regSeed[seedI]->usageProtocol=objMap[worldCoord].getActionTemplateIndex(tmp, tmp.container.seedPackList[i].usageProtocol);
+					objMap[worldCoord].regSeed[seedI]->vegetationContained=objMap[worldCoord].getEntityTemplateIndex(tmp, tmp.container.seedPackList[i].plantSummon);
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,seedI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -548,11 +548,11 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.summonPackList[i].entityID==p)
 				{
-					int summonI=int(obj.regSummon.size());
-					obj.regSummon.push_back(new summonPack(tmp.container.summonPackList[i]));
-					obj.regSummon[summonI]->usageProtocol=obj.getActionTemplateIndex(tmp, tmp.container.summonPackList[i].usageProtocol);
-					obj.regEntities.push_back(new registeredEntity(p,_type,int(obj.regSummon.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					return int(obj.regEntities.size()-1);
+					int summonI=int(objMap[worldCoord].regSummon.size());
+					objMap[worldCoord].regSummon.push_back(new summonPack(tmp.container.summonPackList[i]));
+					objMap[worldCoord].regSummon[summonI]->usageProtocol=objMap[worldCoord].getActionTemplateIndex(tmp, tmp.container.summonPackList[i].usageProtocol);
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,int(objMap[worldCoord].regSummon.size())-1, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -561,12 +561,12 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.toolPackList[i].entityID==p)
 				{
-					obj.regTool.push_back(new toolPack(tmp.container.toolPackList[i]));
-					int toolIndex=int(obj.regTool.size())-1;
-					obj.regTool[toolIndex]->usageProtocol = obj.getActionTemplateIndex(tmp, tmp.container.toolPackList[i].usageProtocol);
-					obj.regEntities.push_back(new registeredEntity(p,_type,toolIndex, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					objMap[worldCoord].regTool.push_back(new toolPack(tmp.container.toolPackList[i]));
+					int toolIndex=int(objMap[worldCoord].regTool.size())-1;
+					objMap[worldCoord].regTool[toolIndex]->usageProtocol = objMap[worldCoord].getActionTemplateIndex(tmp, tmp.container.toolPackList[i].usageProtocol);
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,toolIndex, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
 
-					return int(obj.regEntities.size()-1);
+					return int(objMap[worldCoord].regEntities.size()-1);
 				}
 			}
 			break;
@@ -575,12 +575,12 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 			{
 				if(tmp.container.vegPackList[i].entityID==p)
 				{
-					int entI=int(obj.regEntities.size());
-					int vegI=int(obj.regVeg.size());
-					obj.regVeg.push_back(new vegPack(time, tmp.container.vegPackList[i]));
-					obj.fillVegDropList(tmp, vegI, tmp.container.vegPackList[i].lootList);
-					obj.regEntities.push_back(new registeredEntity(p,_type,vegI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
-					createAction(tmp, tmp.container.entityList[p].creation, entI, 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f));
+					int entI=int(objMap[worldCoord].regEntities.size());
+					int vegI=int(objMap[worldCoord].regVeg.size());
+					objMap[worldCoord].regVeg.push_back(new vegPack(time, tmp.container.vegPackList[i]));
+					objMap[worldCoord].fillVegDropList(tmp, vegI, tmp.container.vegPackList[i].lootList);
+					objMap[worldCoord].regEntities.push_back(new registeredEntity(p,_type,vegI, _orig, tmp.container.entityList[p].dimensions,bb,_pos));
+					createAction(tmp, tmp.container.entityList[p].creation, entI, 0, 0, time+float((tmp.container.vegPackList[i].growthTicks)*0.2f), worldCoord);
 					return entI;
 				}
 			}
@@ -592,7 +592,7 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 	return ret;
 }
 
-bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int linkedEntity, bool act)
+bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, coord worldCoord, int linkedEntity, bool act)
 {
 	bool ret=false;
 	coord _orig;
@@ -616,7 +616,7 @@ bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char*
 	{
 		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
 		{
-			obj.regButtons.push_back(new buttonStruct(act, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
+			objMap[worldCoord].regButtons.push_back(new buttonStruct(act, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
 			return true;
 		}
 	}
@@ -680,7 +680,7 @@ void GameObjectContainerClass::eraseEntity(int entityIndex)
 	regEntities[entityIndex]->active=false;
 }
 
-bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time)
+bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time, coord worldCoord)
 {
 	//first search the action template registry
 	for(int i=1; i<int(tmp.container.actionList.size()); i++)
@@ -698,17 +698,17 @@ bool GameObjectClass::createAction(const TemplateRegistryClass& tmp, const char*
 			act.timeToActivate=time+float((tmp.container.actionList[i].coolDownTicks)*0.2f);
 			//we can recycle inactive actions at this point
 			//SIGNIFICANT decrease in vector size :)
-			for(int i=1; i<int(obj.actions.size()); i++)
+			for(int i=1; i<int(objMap[worldCoord].actions.size()); i++)
 			{
-				if(!obj.actions[i]->active)
+				if(!objMap[worldCoord].actions[i]->active)
 				{
-					delete obj.actions[i]; //deallocate old memory
-					obj.actions[i] = new actionStruct(act);	//allocate new memory
+					delete objMap[worldCoord].actions[i]; //deallocate old memory
+					objMap[worldCoord].actions[i] = new actionStruct(act);	//allocate new memory
 					return true;
 				}
 			}
 			//create a new action is all the rest of the actions are active
-			obj.actions.push_back(new actionStruct(act));
+			objMap[worldCoord].actions.push_back(new actionStruct(act));
 			return true;
 		}
 	}

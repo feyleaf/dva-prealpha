@@ -31,6 +31,11 @@ unsigned char newRandom(unsigned char low, unsigned char hi, float _theta, long 
 unsigned char noiseyPixel(coord pos, unsigned char low, unsigned char range, int con, long seed);
 bool operator==(const coord& a, const coord& b);
 bool operator!=(const coord& a, const coord& b);
+bool operator<(const coord& a, const coord& b);
+bool operator>(const coord& a, const coord& b);
+bool operator<=(const coord& a, const coord& b);
+bool operator>=(const coord& a, const coord& b);
+
 coord operator+(const coord& a, const coord& b);
 coord operator-(const coord& a, const coord& b);
 int max3(int a, int b, int c);

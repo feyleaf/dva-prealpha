@@ -182,6 +182,38 @@ coord operator-(const coord& a, const coord& b)
 	return coord(a.x-b.x, a.y-b.y);
 }
 
+bool operator<(const coord& a, const coord& b)
+{
+	if(a.y<b.y) return true;
+	if(a.y>b.y) return false;
+	if(a.x<b.x) return true;
+	return false;
+}
+
+bool operator>=(const coord& a, const coord& b)
+{
+	if(a.y>b.y) return true;
+	if(a.y<b.y) return false;
+	if(a.x>=b.x) return true;
+	return false;
+}
+
+bool operator<=(const coord& a, const coord& b)
+{
+	if(a.y<b.y) return true;
+	if(a.y>b.y) return false;
+	if(a.x<=b.x) return true;
+	return false;
+}
+
+bool operator>(const coord& a, const coord& b)
+{
+	if(a.y>b.y) return true;
+	if(a.y<b.y) return false;
+	if(a.x>b.x) return true;
+	return false;
+}
+
 int max3(int a, int b, int c)
 {
 	int ret=0;

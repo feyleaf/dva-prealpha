@@ -191,7 +191,7 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 	if(obj->active) win.draw(currentSprite);
 }
 
-void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectClass& _reg, const InventoryClass& items, const buttonStruct* cell)
+void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectContainerClass& _obj, const InventoryClass& items, const buttonStruct* cell)
 {
 	int held=0;
 	currentSprite.setTexture(guiSheet);
@@ -215,9 +215,9 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectClass& 
 		{
 	
 			held=items.cellList[((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x))].idx_item;
-			if((_reg.obj.regEntities[held] != NULL) && _reg.obj.regEntities[held]->plane==1)
+			if((_obj.regEntities[held] != NULL) && _obj.regEntities[held]->plane==1)
 			{
-				o=_reg.obj.regEntities[held]->origin;
+				o=_obj.regEntities[held]->origin;
 				currentSprite.setTextureRect(sf::IntRect(o.x, o.y, 32, 32));
 				currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
 				currentSprite.setColor(sf::Color::White);

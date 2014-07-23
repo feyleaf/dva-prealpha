@@ -2,7 +2,7 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 17, 2014
+July 22, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -17,10 +17,15 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ENTITYTARGETING 4
 #define GAMEMODE_MAGICSPELL 5
 
-#define IS_NOTARGET 0
-#define IS_TILETARGET 1
-#define IS_ENTITYTARGET 2
-#define IS_BOTHTARGET 3
+#define ACAT_NEUTRAL 0
+#define ACAT_MOVEMENT 1
+#define ACAT_COMBAT 2
+#define ACAT_ITEMS 3
+#define ACAT_PEACEFULAI 4
+#define ACAT_HOSTILEAI 5
+#define ACAT_PLANTS 6
+#define ACAT_GUI 7
+
 
 #define JAN1_2014	1387584000
 struct gameHeader
@@ -59,6 +64,8 @@ protected:
 	bool pin;
 	sf::Font mainfont;
 	sf::Text sidebar;
+	coord worldCursor;
+	bool dumpActionList;
 
 	TerrainClass terrain;
 	AStarClass astar;
@@ -90,6 +97,9 @@ public:
 
 	void gameUpdater(float actSeconds);
 	void processActionList(int maxlength, float actSeconds);
+	void stopAction(int entityIndex, const char* actionName);
+	void stopActionCategory(int entityIndex, int category);
+	int getActionIndex(int entityIndex, const char* actionName);
 	bool validateAction(const actionStruct* act);
 	bool isPerformingAction(int entityIndex, const char* actionName);
 	coord getLatestTargetPosition(int entityIndex);
@@ -114,6 +124,7 @@ public:
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
 	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);
 	void scatterEntity(const mapSpreadStruct* spread);
+	void gridAlignEntity(int entityIndex, coord pos);
 
 	void processAction(actionStruct* act);
 	bool hasSource(const actionStruct* act);

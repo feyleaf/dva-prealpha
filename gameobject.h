@@ -14,6 +14,12 @@ search algorithm or tree structure to optimize the searching of values (yet).
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#define MAPMODE_NEUTRAL 0
+#define MAPMODE_SANCTUARY 1
+#define MAPMODE_BATTLE 2
+#define MAPMODE_THREATEN 3
+
+
 struct registeredTile
 {
 	int tileTemplateIndex;
@@ -191,6 +197,7 @@ struct mapSpreadStruct
 struct mapGenStruct
 {
 	bool active;
+	int mapMode;
 	bool displaying;
 	coord worldCoords;
 	int baseTiles;
@@ -198,7 +205,7 @@ struct mapGenStruct
 	std::vector<mapSpreadStruct*> decoLayer;
 	std::vector<mapSpreadStruct*> vegLayer;
 	std::vector<mapSpreadStruct*> creatureLayer;
-	mapGenStruct() {active=true; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
+	mapGenStruct() {active=true; mapMode=MAPMODE_NEUTRAL; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
 		decoLayer.clear(); decoLayer.push_back(NULL); vegLayer.clear(); vegLayer.push_back(NULL); creatureLayer.clear(); creatureLayer.push_back(NULL);}
 };
 
@@ -261,17 +268,17 @@ public:
 	GameObjectClass();
 	~GameObjectClass(){}
 
-	GameObjectContainerClass obj;
+	std::map<coord, GameObjectContainerClass> objMap;
 
-	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed);
-	int createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time);
-	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
-	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, int linkedEntity=0, bool act=true);
-	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);
+	bool createTile(const TemplateRegistryClass& tmp, const char* _name, coord _pos, int _con, long _seed, coord worldCoord);
+	int createEntity(const TemplateRegistryClass& tmp, const char* _name, coord _pos, float time, coord worldCoord);
+	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time, coord worldCoord);
+	bool createButton(const TemplateRegistryClass& tmp, const char* name, coord _pos, coord worldCoord, int linkedEntity=0, bool act=true);
+	bool createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName, coord worldCoord);
 	sf::Color getTileDistortion(const colorVarianceTemplate& var, coord _pos, int con, long seed);
-	void clear();
-	void cloneToInventory(int entityIndex);
-	void cloneFromInventory(int entityIndex, coord _pos);
+	void clear(coord worldCursor);
+	void cloneToInventory(int entityIndex, coord worldCoord);
+	void cloneFromInventory(int entityIndex, coord _pos, coord worldCoord);
 };
 
 #endif

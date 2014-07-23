@@ -325,7 +325,7 @@ struct itemTemplate
 struct actionTemplate
 {
 	char cname[40];
-	unsigned char category;	//split between immediate actions, and queued actions 0=imm 1=que
+	unsigned char category;	//divide actions to movement, combat, healing, item use, etc.
 	int coolDownTicks;			//number of ticks * 0.20f
 	unsigned char priority; //greater number is more ugrent
 	unsigned char restrictions;	//another linked vector that will be needed, no value now
