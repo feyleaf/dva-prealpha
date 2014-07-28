@@ -167,7 +167,10 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	if(highlight)
 	{
-		currentSprite.setColor(sf::Color::Blue);
+		if(obj->isEnemy)
+			currentSprite.setColor(sf::Color::Cyan);
+		else
+			currentSprite.setColor(sf::Color::Magenta);
 	}
 	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));

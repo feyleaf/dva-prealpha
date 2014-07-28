@@ -35,6 +35,7 @@ struct registeredEntity
 {
 	bool active;
 	unsigned char type;
+	bool isEnemy;
 	int entityTemplateIndex;
 	int packIndex;
 	coord origin;
@@ -44,7 +45,7 @@ struct registeredEntity
 	coord pos;
 	int plane; //0 for the world plane, 1 for inventory, 2 for registered entities inside of other entities (ie loot or summon)
 	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=true; type=_type; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos; plane=0;}
+	{active=true; type=_type; isEnemy=false; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos; plane=0;}
 };
 
 struct buttonStruct
@@ -140,12 +141,13 @@ struct creaturePack
 	int agility;
 	int move;
 	coord offset;
+	coord velocity;
 	creaturePack()
-	{active=false; maxHP=0; currentHP=0, attack=0; defense=0; agility=0; move=0;offset=coord(0,0);}
+	{active=false; maxHP=0; currentHP=0, attack=0; defense=0; agility=0; move=0;offset=coord(0,0);velocity=coord(0,0);}
 	creaturePack(int _max, int _hp, int _atk, int _def, int _agi, int _move)
-	{active=true; maxHP=_max; currentHP=_hp, attack=_atk; defense=_def; agility=_agi; move=_move;offset=coord(0,0);}
+	{active=true; maxHP=_max; currentHP=_hp, attack=_atk; defense=_def; agility=_agi; move=_move;offset=coord(0,0);velocity=coord(0,0);}
 	creaturePack(const creaturePackTemplate& src)
-	{active=true; maxHP=src.maxHP; currentHP=src.maxHP, attack=src.attack; defense=src.defense; agility=src.agility; move=src.moveSpeed;offset=coord(0,0);}
+	{active=true; maxHP=src.maxHP; currentHP=src.maxHP, attack=src.attack; defense=src.defense; agility=src.agility; move=src.moveSpeed;offset=coord(0,0);velocity=coord(0,0);}
 };
 
 struct decoPack

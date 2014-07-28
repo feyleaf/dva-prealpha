@@ -239,6 +239,26 @@ bool GameClass::validateAction(const actionStruct* act)
 	return true;
 }
 
+bool GameClass::validateTilePosition(coord pos)
+{
+	if(pos.x>settings.tileCols || pos.y>settings.tileRows || pos.x<0 || pos.y<0) return false;
+	if(registry.objMap[worldCursor].numberOfTilesOnGrid(pos)<1) return false;
+	return true;
+}
+
+bool GameClass::validateEntity(int entityIndex)
+{
+	if(entityIndex<1 || entityIndex>numberOfEntities()) return false;
+	if(!registry.objMap[worldCursor].regEntities[entityIndex]->active) return false;
+	if(registry.objMap[worldCursor].regEntities[entityIndex]->plane>0) return false;
+	return true;
+}
+
+bool GameClass::isCreature(int entityIndex)
+{
+	return (registry.objMap[worldCursor].regEntities[entityIndex]->type==ICAT_CREATURE);
+}
+
 bool GameClass::isPerformingAction(int entityIndex, const char* actionName)
 {
 	bool ret=false;
@@ -334,6 +354,65 @@ bool GameClass::fullTargets(const actionStruct* act)
 	return (entityTarget(act) && tileTarget(act));
 }
 
+coord GameClass::smartPathing(int entityIndex, coord pos)
+{
+	coord start=registry.objMap[worldCursor].regEntities[entityIndex]->pos;
+	coord ret=pos;
+	coord north = pos+coord(0,-1);
+	coord south = pos+coord(0,1);
+	coord east = pos+coord(1, 0);
+	coord west = pos+coord(-1, 0);
+	coord closest=pos;
+	int leastMoves=100;
+	if(start==pos) return start;
+	if(!astar.runPathing(terrain, start, pos))
+	{
+		//if there is a blocked pathing to the position, we find the next neighbor that is closest
+		//and valid
+		//test valid north
+		if(astar.runPathing(terrain, start, north))
+		{
+			if(leastMoves>int(astar.pathList.size()))
+			{
+				leastMoves=int(astar.pathList.size());
+				closest=north;
+			}
+		}
+		if(astar.runPathing(terrain, start, south))
+		{
+			if(leastMoves>int(astar.pathList.size()))
+			{
+				leastMoves=int(astar.pathList.size());
+				closest=south;
+			}
+		}
+		if(astar.runPathing(terrain, start, east))
+		{
+			if(leastMoves>int(astar.pathList.size()))
+			{
+				leastMoves=int(astar.pathList.size());
+				closest=east;
+			}
+		}
+		if(astar.runPathing(terrain, start, west))
+		{
+			if(leastMoves>int(astar.pathList.size()))
+			{
+				leastMoves=int(astar.pathList.size());
+				closest=west;
+			}
+		}
+		//return the next tile based upon the closest
+		//if none of the 4 directions are approachable, this will just return the start position :-/
+		ret=astar.getNextTile(terrain, start, closest);
+	}
+	else
+	{
+		ret=astar.getNextTile(terrain, start, pos);
+	}
+	return ret;
+}
+
 void GameClass::gridAlignEntity(int entityIndex, coord _pos)
 {
 	registry.objMap[worldCursor].regEntities[entityIndex]->pos=_pos;
@@ -342,7 +421,216 @@ void GameClass::gridAlignEntity(int entityIndex, coord _pos)
 
 	if(registry.objMap[worldCursor].regEntities[entityIndex]->type != ICAT_CREATURE) return;
 	registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[entityIndex]->packIndex]->offset=coord(0,0);
+	registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[entityIndex]->packIndex]->velocity=coord(0,0);
 }
+
+//moving a creature along a path
+/*
+xstep 1: use the A* algorithm with 'smartPathing' to determine the next tile in the path (ultimate target)
+xstep 2: commit the movement to that position, ensure that it is an adjacent VALID tile
+step 3: set velocity to the creature based on the direction of the chosen tile, and its movement speed
+step 4: if the tile contains any solid entity (terrain>0), we reverse the velocity and continue
+step 5: if the 'offset' of the creature is not congruent with the velocity, we set the velocity to correct it
+step 6: add velocity to offset, effectively moving the creature
+step 7: repeat per frame from step 3 until the creature has (aligned with a grid)*, then turn off velocity and offset
+step 8: repeat from step 1 until the ultimate target is reached
+variables:
+coord ultimate target (uTarget)
+coord tile target (tTarget)
+int entityIndex (creature)
+int packIndex (creature pack)
+coord offset
+coord velocity
+bool valid tile (isTileValid)
+bool solid block (isSolidTerrain)
+bool isEntityAligned
+bool isOffsetCongruent
+bool isTargetReached
+
+
+*aligned with a grid: the axis from velocity has passed the tile size
+*/
+
+bool GameClass::isOffsetCongruent(int entityIndex)
+{
+	if(!isCreature(entityIndex)) return false;
+	creaturePack* creature = registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[entityIndex]->packIndex];
+	if(creature->offset.x>0)
+		return creature->velocity.x>0;
+	if(creature->offset.y>0)
+		return creature->velocity.y>0;
+	if(creature->offset.x<0)
+		return creature->velocity.x<0;
+	if(creature->offset.y<0)
+		return creature->velocity.y<0;
+	return (creature->offset==coord(0,0));
+
+}
+
+
+void GameClass::forceOffsetCorrection(int entityIndex, coord direction)
+{
+	if(!isCreature(entityIndex)) return;
+	creaturePack* creature = registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[entityIndex]->packIndex];
+	int speed = creature->move;
+	if(creature->offset.x>0)
+	{
+		creature->velocity=coord(-speed, 0);
+		return;
+	}
+	if(creature->offset.y>0)
+	{
+		creature->velocity=coord(0,-speed);
+		return;
+	}
+	if(creature->offset.x<0)
+	{
+		creature->velocity=coord(speed, 0);
+		return;
+	}
+	if(creature->offset.y<0)
+	{
+		creature->velocity=coord(0, speed);
+		return;
+	}
+}
+
+//sets the velocity of the creature
+void GameClass::forcePushCreature(int entityIndex, coord direction)
+{
+	if(!isCreature(entityIndex)) return; //this is only operable on creatures
+	int pack = registry.objMap[worldCursor].regEntities[entityIndex]->packIndex;
+	int xvel = direction.x*registry.objMap[worldCursor].regCreature[pack]->move;
+	int yvel = direction.y*registry.objMap[worldCursor].regCreature[pack]->move;
+	if(xvel==0 && yvel==0) return;
+	if(xvel!=0 && yvel!=0) return;
+	registry.objMap[worldCursor].regCreature[pack]->velocity=coord(xvel, yvel);
+
+}
+
+bool GameClass::commitMovement(int entityIndex, coord tTarget, const actionStruct* act)
+{
+	//if we cannot validate movement, fail immediately
+	if(!(validateTilePosition(tTarget) && validateEntity(entityIndex) && isCreature(entityIndex))) return false;
+
+	//determine the cardinal direction of the next tile
+	coord creaturePosition = registry.objMap[worldCursor].regEntities[entityIndex]->pos;
+	int dx = tTarget.x - creaturePosition.x;
+	int dy = tTarget.y - creaturePosition.y;
+	if(dx==0 && dy==0) return false; //if the creature is at the target, there is no movement to commit to
+	if(dx!=0 && dy!=0) return false; //if there are multiple tiles between the creature and target, this fails too
+	//now that that is out of the way, we determine the direction of movement
+	if(dy>0) // move south
+	{
+		//commit to a southern movement
+		if(entityTarget(act))
+			fillEntityTargetAction("movesouth", entityIndex, act->entityIndexTarget);
+		else
+			fillTileTargetAction("movesouth", entityIndex, act->tileIndexTarget);
+		return true;
+	}
+	if(dy<0) //move north
+	{
+		//commit to a northern movement
+		if(entityTarget(act))
+			fillEntityTargetAction("movenorth", entityIndex, act->entityIndexTarget);
+		else
+			fillTileTargetAction("movenorth", entityIndex, act->tileIndexTarget);
+		return true;
+	}
+	if(dx>0) // move east
+	{
+		//commit to a eastern movement
+		if(entityTarget(act))
+			fillEntityTargetAction("moveeast", entityIndex, act->entityIndexTarget);
+		else
+			fillTileTargetAction("moveeast", entityIndex, act->tileIndexTarget);
+		return true;
+	}
+	if(dx<0) //move west
+	{
+		//commit to a western movement
+		if(entityTarget(act))
+			fillEntityTargetAction("movewest", entityIndex, act->entityIndexTarget);
+		else
+			fillTileTargetAction("movewest", entityIndex, act->tileIndexTarget);
+		return true;
+	}
+	return false; //if we made it this far, something went wrong, fail the commitment! :D
+
+}
+
+//fails if in movement, true if aligned with grid
+//this carries the action for forced movement/velocity
+bool GameClass::moveToAlign(int entityIndex)
+{
+	registeredEntity* ent = registry.objMap[worldCursor].regEntities[entityIndex];
+	creaturePack* pack = registry.objMap[worldCursor].regCreature[ent->packIndex];
+	coord off=pack->offset;
+	coord vel=pack->velocity;
+	coord pos=registry.objMap[worldCursor].regEntities[entityIndex]->pos;
+
+	//basing this solely on the velocity and the offset. we assume everything is valid with the data,
+	//and that the velocity has been set to a direction that it needs to go
+	if(abs(off.x+vel.x)>=settings.tileWid) //if we reached the target on the x axis:
+	{
+		//heading east, increment the position
+		if(vel.x>0)
+		{
+			gridAlignEntity(entityIndex, pos+coord(1,0));
+			return true;
+		}
+		//heading west, decrement the position
+		if(vel.x<0)
+		{
+			gridAlignEntity(entityIndex, pos+coord(-1,0));
+			return true;
+		}
+	}
+	if(abs(off.y+vel.y)>=settings.tileHig) //if we reached the target on the y axis:
+	{
+		//heading south, increment the position
+		if(vel.y>0)
+		{
+			gridAlignEntity(entityIndex, pos+coord(0,1));
+			return true;
+		}
+		//heading north, decrement the position
+		if(vel.y<0)
+		{
+			gridAlignEntity(entityIndex, pos+coord(0,-1));
+			return true;
+		}
+	}
+	off=off+vel;
+	registry.objMap[worldCursor].regCreature[ent->packIndex]->offset=off;
+	return false;
+}
+
+int GameClass::getEnemyNeighbor(int entityIndex)
+{
+	coord pos=registry.objMap[worldCursor].regEntities[entityIndex]->pos;
+	for(int i=1; i<numberOfEntities(); i++)
+	{
+		if(registry.objMap[worldCursor].regEntities[i]->active)
+		{
+			if(registry.objMap[worldCursor].regEntities[i]->isEnemy)
+			{
+				if(calcDist(toVector(pos), toVector(registry.objMap[worldCursor].regEntities[i]->pos))<1.4f)
+				{
+					return i;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+bool GameClass::isEnemyNeighbor(int entityIndex)
+{
+	return (getEnemyNeighbor(entityIndex)!=0);
+}
+
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
 {
@@ -390,62 +678,133 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	{
 		if(!hasSource(act) || noTarget(act)) return;
 		if(registry.objMap[worldCursor].regEntities[act->entityIndexSource]->type != ICAT_CREATURE) return;
-		coord d;
-		coord grid;
-		coord ff;
-		coord fine;
-		grid=registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos;
-		ff=coord(0,0);
-		fine=registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[act->entityIndexSource]->packIndex]->offset;
-		if(entityTarget(act))
+		if(isEnemyNeighbor(act->entityIndexSource))
 		{
-			if(calcDist(toVector(registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->pos), toVector(grid))<1.4f)
-			{
-				fillSourceAction("canceltarget", act->entityIndexSource);
-				fillEntityTargetAction("engagecombat", act->entityIndexSource, act->entityIndexTarget, 0.125f);
-				return;
-			}
-			fillPathingRoutes();
-			terrain.setTerrainRuleAt(registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->pos, 0);
-			d=astar.getNextTile(terrain, grid, registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->pos);
-		}
-		else
-		{
-			fillPathingRoutes();
-			if(registry.objMap[worldCursor].regTiles[act->tileIndexTarget]->pos != getLatestTargetPosition(act->entityIndexSource)) return;
-			d=astar.getNextTile(terrain, grid, registry.objMap[worldCursor].regTiles[act->tileIndexTarget]->pos);
-		}
-		if(d==grid)
-		{
+			int enemy=getEnemyNeighbor(act->entityIndexSource);
 			fillSourceAction("canceltarget", act->entityIndexSource);
-			registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos=d;
+			fillEntityTargetAction("engagecombat", act->entityIndexSource, enemy, 0.125f);
 			return;
 		}
-		if(d.x>grid.x) {ff=coord(4,0);}
-		else if(d.x<grid.x) {ff=coord(-4,0);}
-		else if(d.y>grid.y) ff=coord(0,4);
-		else if(d.y<grid.y) ff=coord(0,-4);
-
-		fine = fine+ff;
-		fine.x=fine.x%settings.tileWid;
-		fine.y=fine.y%settings.tileHig;
-
-		if(fine==coord(0,0)) grid=d;
-		registry.objMap[worldCursor].regEntities[act->entityIndexSource]->box.left=(grid.x*32)+fine.x;
-		registry.objMap[worldCursor].regEntities[act->entityIndexSource]->box.top=(grid.y*32)+fine.y;
-
-		registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos=grid;
-		registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[act->entityIndexSource]->packIndex]->offset=fine;
+		coord tTarget;
+		fillPathingRoutes();
 		if(entityTarget(act))
 		{
-			fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			tTarget=smartPathing(act->entityIndexSource, registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->pos);
+			if(!commitMovement(act->entityIndexSource, tTarget, act))
+				fillSourceAction("canceltarget", act->entityIndexSource);
 			return;
 		}
 		else
 		{
-			fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+			tTarget=smartPathing(act->entityIndexSource, registry.objMap[worldCursor].regTiles[act->tileIndexTarget]->pos);
+			if(!commitMovement(act->entityIndexSource, tTarget, act))
+				fillSourceAction("canceltarget", act->entityIndexSource);
 			return;
 		}
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "movenorth"))
+	{
+		coord dir=coord(0,-1);
+		coord trg=registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos+dir;
+		if(terrain.getTerrainAt(trg)>0) dir=coord(0,1);
+		forcePushCreature(act->entityIndexSource, dir);
+		if(!isOffsetCongruent(act->entityIndexSource))
+		{
+			forceOffsetCorrection(act->entityIndexSource, dir);
+		}
+		if(!moveToAlign(act->entityIndexSource))
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movenorth", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movenorth", act->entityIndexSource, act->tileIndexTarget);
+		}
+		else
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "movesouth"))
+	{
+		coord dir=coord(0,1);
+		coord trg=registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos+dir;
+		if(terrain.getTerrainAt(trg)>0) dir=coord(0,-1);
+		forcePushCreature(act->entityIndexSource, dir);
+		if(!isOffsetCongruent(act->entityIndexSource))
+		{
+			forceOffsetCorrection(act->entityIndexSource, dir);
+		}
+		if(!moveToAlign(act->entityIndexSource))
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movesouth", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movesouth", act->entityIndexSource, act->tileIndexTarget);
+		}
+		else
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "moveeast"))
+	{
+		coord dir=coord(1,0);
+		coord trg=registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos+dir;
+		if(terrain.getTerrainAt(trg)>0) dir=coord(-1,0);
+		forcePushCreature(act->entityIndexSource, dir);
+		if(!isOffsetCongruent(act->entityIndexSource))
+		{
+			forceOffsetCorrection(act->entityIndexSource, dir);
+		}
+		if(!moveToAlign(act->entityIndexSource))
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("moveeast", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("moveeast", act->entityIndexSource, act->tileIndexTarget);
+		}
+		else
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "movewest"))
+	{
+		coord dir=coord(-1,0);
+		coord trg=registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos+dir;
+		if(terrain.getTerrainAt(trg)>0) dir=coord(1,0);
+		forcePushCreature(act->entityIndexSource, dir);
+		if(!isOffsetCongruent(act->entityIndexSource))
+		{
+			forceOffsetCorrection(act->entityIndexSource, dir);
+		}
+		if(!moveToAlign(act->entityIndexSource))
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movewest", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movewest", act->entityIndexSource, act->tileIndexTarget);
+		}
+		else
+		{
+			if(entityTarget(act))
+				fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+			else
+				fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget);
+		}
+		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "movecreature"))
 	{
@@ -456,6 +815,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "canceltarget"))
 	{
 		stopActionCategory(act->entityIndexSource, ACAT_MOVEMENT);
+		stopAction(act->entityIndexSource, "pursuit");
 		gridAlignEntity(act->entityIndexSource, registry.objMap[worldCursor].regEntities[act->entityIndexSource]->pos);
 		return;
 	}
@@ -499,8 +859,13 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "makecreature"))
 	{
 		float seconds=float(rand()%7+2);
-		fillSourceAction("wandercreature", act->entityIndexSource, seconds);
+		//fillSourceAction("wandercreature", act->entityIndexSource, seconds);
 		fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "makeenemy"))
+	{
+		registry.objMap[worldCursor].regEntities[act->entityIndexSource]->isEnemy=true;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "growflower"))
@@ -561,9 +926,15 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		inv.add(registry.objMap[worldCursor].regEntities[plantIndex], plantIndex, 4);
 		registry.cloneToInventory(plantIndex, worldCursor);
 		plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime(), worldCursor);
+		int monster=registry.createEntity(tmp, "irongolem", coord(0,0), gameTime(), worldCursor);
+		registry.objMap[worldCursor].regSummon[registry.objMap[worldCursor].regEntities[plantIndex]->packIndex]->creatureContained=monster;
+		registry.objMap[worldCursor].regEntities[monster]->plane=2;
 		inv.add(registry.objMap[worldCursor].regEntities[plantIndex], plantIndex);
 		registry.cloneToInventory(plantIndex, worldCursor);
 		plantIndex=registry.createEntity(tmp, "redcharm", coord(0,0), gameTime(), worldCursor);
+		monster=registry.createEntity(tmp, "irongolem", coord(0,0), gameTime(), worldCursor);
+		registry.objMap[worldCursor].regSummon[registry.objMap[worldCursor].regEntities[plantIndex]->packIndex]->creatureContained=monster;
+		registry.objMap[worldCursor].regEntities[monster]->plane=2;
 		inv.add(registry.objMap[worldCursor].regEntities[plantIndex], plantIndex);
 		registry.cloneToInventory(plantIndex, worldCursor);
 		return;
@@ -663,6 +1034,18 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 
 void GameClass::handleAIPipeline(const actionStruct* act)
 {
+	if(actionCodeEquals(act->actionTemplateIndex, "pursuit"))
+	{
+		if(entityTarget(act))
+		{
+			if(registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->active)
+			{
+				fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget);
+				fillEntityTargetAction("pursuit", act->entityIndexSource, act->entityIndexTarget);
+			}
+		}
+		return;
+	}
 	if(actionCodeEquals(act->actionTemplateIndex, "wandercreature"))
 	{
 		float seconds=float(rand()%7+2);
@@ -690,7 +1073,7 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, getTileIndexAt(ff), gameTime(), worldCursor);
 			}
 		}
-		fillSourceAction("wandercreature", act->entityIndexSource, seconds);
+		//fillSourceAction("wandercreature", act->entityIndexSource, seconds);
 		return;
 	}
 }
@@ -866,36 +1249,36 @@ void GameClass::fillShape(const char* shapename, const char* codename, coord _tl
 			adjY=int(float(y)*ratio);
 			if(strcmp(shapename, "box")==0)
 			{
-				A=0;B=0;C=0;D=0;E=0;F=0;
-				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
+				A=float(0.0f);B=float(0.0f);C=float(0.0f);D=float(0.0f);E=float(0.0f);F=float(0.0f);
+				if(processConic(coord(int(xt),int(yt)), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "circle")==0)
 			{
-				A=1;B=0;C=1;
+				A=1.0f;B=0.0f;C=1.0f;
 				D=float((-2)*focus.x);E=float((-2)*focus.y);F=float(pow(focus.x,2)+pow(focus.y,2)-pow(radius,2));
-				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
+				if(processConic(coord(int(xt),int(yt)), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "conic")==0)
 			{
-				A=(1.0f/float(pow(vertex.x, 2)));
-				B=0;
-				C=(-1.0f/float((pow(focus.x,2)-pow(vertex.x,2))));
-				D=(-2.0f*float(origin.x))/float(pow(vertex.x, 2));
-				E=(2.0f*float(origin.y))/float(pow(focus.x,2)-pow(vertex.x,2));
+				A=float(1.0f/float(pow(vertex.x, 2)));
+				B=0.0f;
+				C=float(-1.0f/float((pow(focus.x,2)-pow(vertex.x,2))));
+				D=float(-2.0f*float(origin.x))/float(pow(vertex.x, 2));
+				E=float(2.0f*float(origin.y))/float(pow(focus.x,2)-pow(vertex.x,2));
 				F=float(pow(origin.x, 2)/pow(vertex.x, 2))-float(pow(origin.y, 2)/(pow(focus.x,2)-pow(vertex.x,2)))+1.0f;
-				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
+				if(processConic(coord(int(xt),int(yt)), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "parabola")==0)
 			{
 				//(x-h)^2 = 4p(y-k)
 				//x^2-2hx+h^2-4py+4pk=0
-				A=1;
-				B=0;
-				C=0;
-				D=-2.0f*vertex.x;
-				E=-1.0f*focus.x;
+				A=1.0f;
+				B=0.0f;
+				C=0.0f;
+				D=float(-2.0f*vertex.x);
+				E=float(-1.0f*focus.x);
 				F=float(pow(vertex.x,2)+(1*focus.x*origin.y));
-				if(processConic(coord(xt,yt), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
+				if(processConic(coord(int(xt),int(yt)), A, B, C, D, E, F)) fillTile(codename, _tl+coord(x,y));
 			}
 			if(strcmp(shapename, "triangle")==0)
 			{

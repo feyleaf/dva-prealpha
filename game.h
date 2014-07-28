@@ -101,8 +101,13 @@ public:
 	void stopActionCategory(int entityIndex, int category);
 	int getActionIndex(int entityIndex, const char* actionName);
 	bool validateAction(const actionStruct* act);
+	bool validateTilePosition(coord pos);
+	bool validateEntity(int entityIndex);
+	bool isCreature(int entityIndex);
 	bool isPerformingAction(int entityIndex, const char* actionName);
 	coord getLatestTargetPosition(int entityIndex);
+	int getEnemyNeighbor(int entityIndex);
+	bool isEnemyNeighbor(int entityIndex);
 
 	void processGrowth(int entityIndex);
 	void processMagic(int entityIndex);
@@ -125,6 +130,12 @@ public:
 	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);
 	void scatterEntity(const mapSpreadStruct* spread);
 	void gridAlignEntity(int entityIndex, coord pos);
+	coord smartPathing(int entityIndex, coord pos);
+	void forcePushCreature(int entityIndex, coord direction);
+	bool moveToAlign(int entityIndex);
+	bool commitMovement(int entityIndex, coord tTarget, const actionStruct* act);
+	bool isOffsetCongruent(int entityIndex);
+	void forceOffsetCorrection(int entityIndex, coord direction);
 
 	void processAction(actionStruct* act);
 	bool hasSource(const actionStruct* act);
