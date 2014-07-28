@@ -626,6 +626,17 @@ int GameClass::getEnemyNeighbor(int entityIndex)
 	return 0;
 }
 
+bool GameClass::isReachedEntityTarget(int entityIndex, int entityTarget)
+{
+	coord pos=registry.objMap[worldCursor].regEntities[entityIndex]->pos;
+	coord trg=registry.objMap[worldCursor].regEntities[entityTarget]->pos;
+	if(calcDist(toVector(pos), toVector(trg))<1.4f)
+	{
+		return true;
+	}
+	return false;
+}
+
 bool GameClass::isEnemyNeighbor(int entityIndex)
 {
 	return (getEnemyNeighbor(entityIndex)!=0);
@@ -689,6 +700,11 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 		fillPathingRoutes();
 		if(entityTarget(act))
 		{
+			if(isReachedEntityTarget(act->entityIndexSource, act->entityIndexTarget))
+			{
+				fillSourceAction("canceltarget", act->entityIndexSource);
+				return;
+			}
 			tTarget=smartPathing(act->entityIndexSource, registry.objMap[worldCursor].regEntities[act->entityIndexTarget]->pos);
 			if(!commitMovement(act->entityIndexSource, tTarget, act))
 				fillSourceAction("canceltarget", act->entityIndexSource);

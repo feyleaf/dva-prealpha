@@ -108,6 +108,7 @@ public:
 	coord getLatestTargetPosition(int entityIndex);
 	int getEnemyNeighbor(int entityIndex);
 	bool isEnemyNeighbor(int entityIndex);
+	bool isReachedEntityTarget(int entityIndex, int entityTarget);
 
 	void processGrowth(int entityIndex);
 	void processMagic(int entityIndex);
