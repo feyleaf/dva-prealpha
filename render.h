@@ -33,5 +33,6 @@ class RenderManager
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, const GameObjectContainerClass& _reg, const InventoryClass& items, const buttonStruct* cell);
+		void DrawMinimap(sf::RenderWindow& win, settingStruct set, const GameObjectContainerClass& _reg, const coord map_pos, float scale);
 };
 #endif //RENDER_H

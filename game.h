@@ -15,7 +15,9 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_INVENTORY 2
 #define GAMEMODE_ENTITYACTION 3
 #define GAMEMODE_ENTITYTARGETING 4
-#define GAMEMODE_MAGICSPELL 5
+#define GAMEMODE_ZOOMOUT 5
+#define GAMEMODE_ZOOMIN 6
+#define GAMEMODE_MINIMAP 7
 
 #define ACAT_NEUTRAL 0
 #define ACAT_MOVEMENT 1
@@ -65,6 +67,7 @@ protected:
 	sf::Font mainfont;
 	sf::Text sidebar;
 	coord worldCursor;
+	float mapscale;
 	bool dumpActionList;
 
 	TerrainClass terrain;
@@ -113,6 +116,10 @@ public:
 	void processGrowth(int entityIndex);
 	void processMagic(int entityIndex);
 	void processFlowerConversion(int entityIndex);
+
+	void zoomOutMinimap(coord map_pos);
+	void zoomIntoMap(coord map_pos);
+	void selectMap(coord cursor) {worldCursor=cursor;}
 
 	void gameRenderer();
 

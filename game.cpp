@@ -29,6 +29,7 @@ void GameClass::initialize()
 //then creates the 'app' window
 GameClass::GameClass()
 {
+	mapscale=1.0f;
 	dumpActionList=false;
 	worldCursor=coord(0,0);
 	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
@@ -642,6 +643,29 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 	return (getEnemyNeighbor(entityIndex)!=0);
 }
 
+void GameClass::zoomOutMinimap(coord map_pos)
+{
+	gamemode=GAMEMODE_ZOOMOUT;
+	if(mapscale<float(1.0f/settings.tileWid))
+	{
+		mapscale=float(1.0f/settings.tileWid);
+		gamemode=GAMEMODE_MINIMAP;
+		return;
+	}
+	else mapscale-=(1.0f/settings.tileWid);
+}
+
+void GameClass::zoomIntoMap(coord map_pos)
+{
+	gamemode=GAMEMODE_ZOOMIN;
+	if(mapscale>=1.0f)
+	{
+		mapscale=1.0f;
+		gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+	else mapscale+=float(1.0f/settings.tileWid);
+}
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
 {
@@ -915,6 +939,32 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		}
 		return;
 	}
+	if(actionCodeEquals(act->actionTemplateIndex, "togglemap"))
+	{
+		if(gamemode==GAMEMODE_MINIMAP)
+		{
+			registry.createAction(tmp, "growmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
+		}
+		else if(gamemode==GAMEMODE_NEUTRAL)
+		{
+			registry.createAction(tmp, "shrinkmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
+		}
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "shrinkmapstep"))
+	{
+		zoomOutMinimap(worldCursor);
+		if(gamemode==GAMEMODE_ZOOMOUT)
+			registry.createAction(tmp, "shrinkmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "growmapstep"))
+	{
+		zoomIntoMap(worldCursor);
+		if(gamemode==GAMEMODE_ZOOMIN)
+			registry.createAction(tmp, "growmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
+		return;
+	}
 	if(actionCodeEquals(act->actionTemplateIndex, "generatemap"))
 	{
 		dumpActionList=true;
@@ -925,8 +975,8 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		worldCursor=newCursor;
 		initialize();
 		experimentalMapGen("forest");
-		fillButton("magnifier", coord(settings.tileCols, 5));
-		fillButton("recycle", coord(settings.tileCols+1, 5));
+		fillButton("recycle", coord(settings.tileCols, 5));
+		fillButton("worldmap", coord(settings.tileCols+1, 5));
 		fillButton("camera", coord(settings.tileCols+2, 5));
 		fillButton("backpack", coord(settings.tileCols+3, 5));
 		fillButton("inventorycell", coord(0,0), 0, false);
@@ -1645,27 +1695,34 @@ void GameClass::gameRenderer()
 	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
+	if(gamemode==GAMEMODE_ZOOMOUT || gamemode==GAMEMODE_ZOOMIN || gamemode==GAMEMODE_MINIMAP)
 	{
-		if(registry.objMap[worldCursor].regTiles[i] != NULL)
-		{
-			if(i==tileHover() && entityHover()==0)
-			{
-				render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
-			}
-			else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
-		}
+		render.DrawMinimap(app, settings, registry.objMap[worldCursor], worldCursor, mapscale);
 	}
-	for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+	else
 	{
-		if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
+		for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
 		{
-			coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
-			if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
+			if(registry.objMap[worldCursor].regTiles[i] != NULL)
 			{
-				pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
+				if(i==tileHover() && entityHover()==0)
+				{
+					render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
+				}
+				else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
 			}
-			render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
+		}
+		for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+		{
+			if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
+			{
+				coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
+				if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
+				{
+					pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
+				}
+				render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
+			}
 		}
 	}
 	for(int i=1; i<int(registry.objMap[worldCursor].regButtons.size()); i++)
