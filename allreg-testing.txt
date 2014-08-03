@@ -82,6 +82,7 @@ VEGETATION:redrose,Red Rose,32,32,0,0,32,32,redrose.png,4,growflower,22,4,50,bas
 VEGETATION:bluerose,Blue Rose,32,32,0,0,32,32,bluerose.png,4,growflower,17,4,60,basicloot
 VEGETATION:hibiscus,Hibiscus,32,32,0,0,32,32,hibiscus.png,4,growflower,19,4,70,basicloot
 VEGETATION:heavenmirror,Heavens Mirror,32,32,0,0,32,32,hmirror.png,3,growflower,20,3,80,basicloot
+VEGETATION:flytrap,Mortlock Fly Trap,32,32,0,0,32,32,flytrap.png,4,growflower,20,4,90,basicloot
 SUMMON:redcharm,Red Summon Charm,32,32,0,0,32,32,redsummon.png,1,solidblock,usecharm
 SUMMON:bluecharm,Blue Summon Charm,32,32,0,0,32,32,bluesummon.png,1,solidblock,usecharm
 SEED:s_redrose,Red Rose Seed,32,32,0,0,32,32,seed_redrose.png,1,solidblock,redrose,plantflower
@@ -94,7 +95,7 @@ DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock
 DECORATION:magiceffect,Magic Effect,32,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
 DECORATION:claw,Squirrel Claw Effect,32,32,0,0,0,0,squirrelclaw.png,8,solidblock,1,0,1,1,none
 TOOL:magicwand,Magic Wand,32,32,0,0,32,32,wand.png,1,solidblock,10,spelltile
-LIST:forestplants,redrose,bluerose,END,
+LIST:forestplants,redrose,flytrap,bluerose,END,
 LIST:forestcreatures,squirrel,irongolem,END,
 LIST:foresttiles,greengrass,emeraldgrass,marshgrass,END,
 LIST:forestworn,sand,dirt,clay,END,

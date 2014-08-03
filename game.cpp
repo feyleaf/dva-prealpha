@@ -47,6 +47,7 @@ GameClass::GameClass()
 	render.loadGraphicsFiles(settings);
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 	app.setFramerateLimit(60);
+	render.init(app);
 	mainfont.loadFromFile(settings.mainFontFile);
 	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", mainfont, 24);
 	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
@@ -652,7 +653,8 @@ void GameClass::zoomOutMinimap(coord map_pos)
 		gamemode=GAMEMODE_MINIMAP;
 		return;
 	}
-	else mapscale-=(1.0f/settings.tileWid);
+	mapscale-=(1.0f/settings.tileWid);
+	render.viewport.zoom(1+float(1.0f/16.0f));
 }
 
 void GameClass::zoomIntoMap(coord map_pos)
@@ -664,7 +666,8 @@ void GameClass::zoomIntoMap(coord map_pos)
 		gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
-	else mapscale+=float(1.0f/settings.tileWid);
+	mapscale+=float(1.0f/settings.tileWid);
+	render.viewport.zoom(1-float(1.0f/16.0f));
 }
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
@@ -1695,34 +1698,28 @@ void GameClass::gameRenderer()
 	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-	if(gamemode==GAMEMODE_ZOOMOUT || gamemode==GAMEMODE_ZOOMIN || gamemode==GAMEMODE_MINIMAP)
+	if(gamemode==GAMEMODE_NEUTRAL) render.init(app);
+	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
 	{
-		render.DrawMinimap(app, settings, registry.objMap[worldCursor], worldCursor, mapscale);
-	}
-	else
-	{
-		for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
+		if(registry.objMap[worldCursor].regTiles[i] != NULL)
 		{
-			if(registry.objMap[worldCursor].regTiles[i] != NULL)
+			if(i==tileHover() && entityHover()==0)
 			{
-				if(i==tileHover() && entityHover()==0)
-				{
-					render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
-				}
-				else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
+				render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
 			}
+			else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
 		}
-		for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+	}
+	for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+	{
+		if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
 		{
-			if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
+			coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
+			if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
 			{
-				coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
-				if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
-				{
-					pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
-				}
-				render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
+				pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
 			}
+			render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
 		}
 	}
 	for(int i=1; i<int(registry.objMap[worldCursor].regButtons.size()); i++)

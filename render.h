@@ -19,9 +19,11 @@ class RenderManager
 		sf::Font font;
 	public:
 		sf::Sprite currentSprite;
+		sf::View viewport;
 		RenderManager() {}
 		~RenderManager() {}
 
+		void init(sf::RenderWindow& win) {viewport = win.getDefaultView();}
 		void createTileSheet(const TemplateRegistryClass& tmp);
 		void createEntitySheet(const TemplateRegistryClass& tmp);
 		void createGuiSheet(const TemplateRegistryClass& tmp);
@@ -33,6 +35,5 @@ class RenderManager
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, const GameObjectContainerClass& _reg, const InventoryClass& items, const buttonStruct* cell);
-		void DrawMinimap(sf::RenderWindow& win, settingStruct set, const GameObjectContainerClass& _reg, const coord map_pos, float scale);
 };
 #endif //RENDER_H

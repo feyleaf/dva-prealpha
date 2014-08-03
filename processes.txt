@@ -3,1152 +3,345 @@ Title: Druid vs Alchemist Test
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 32 x 32
 Title: Druid vs Alchemist Test
-Handling event: makecreature	Source: 24: Squirrel
+Handling event: makeenemy	Source: 44: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 25: Squirrel
+Handling event: makeenemy	Source: 45: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 26: Squirrel
+Handling event: makeenemy	Source: 46: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 27: Squirrel
+Handling event: makeenemy	Source: 47: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 28: Squirrel
+Handling event: makeenemy	Source: 48: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 29: Magic Wand
+Handling event: randomheld	Source: 49: Magic Wand
 Tool
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 34: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 36: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Blue Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: makeenemy	Source: 31: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 32: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 33: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 34: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 35: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 36: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 41: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 43: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: makeenemy	Source: 16: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 17: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 18: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 19: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 24: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 26: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 6: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 7: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Blue Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 7: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 6: Blue Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: makecreature	Source: 46: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 47: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 48: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 49: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 50: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 51: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 56: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 58: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
 Handling event: makeenemy	Source: 54: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 55: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: makeenemy	Source: 56: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 57: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 58: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 59: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 64: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 66: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Mortlock Fly Trap
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Mortlock Fly Trap
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 38: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 39: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 40: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 41: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 42: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 43: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 32 x 32
 Title: Druid vs Alchemist Test
-Handling event: makecreature	Source: 24: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 25: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 26: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 27: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: makecreature	Source: 28: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
@@ -1158,306 +351,239 @@ HP: 1 / 1Target Entity: 0: Target Tile: 0: =====================================
 Handling event: makecreature	Source: 30: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 31: Magic Wand
+Handling event: makecreature	Source: 31: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 32: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 33: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 34: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 35: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 36: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makecreature	Source: 37: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 38: Magic Wand
 Tool
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 36: Iron Golem
+Handling event: makeenemy	Source: 43: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 38: Iron Golem
+Handling event: makeenemy	Source: 45: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: randomheld	Source: 20: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 25: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 27: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: makeenemy	Source: 30: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 31: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 36: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 38: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
+Handling event: growflower	Source: 11: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
+Handling event: growflower	Source: 12: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
+Handling event: growflower	Source: 13: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
+Handling event: growflower	Source: 14: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
+Handling event: growflower	Source: 15: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
+Handling event: growflower	Source: 16: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
+Handling event: growflower	Source: 17: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
+Handling event: growflower	Source: 18: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
+Handling event: growflower	Source: 19: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
+Handling event: growflower	Source: 20: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
+Handling event: growflower	Source: 21: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 22: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 23: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 24: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 25: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 26: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 27: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
+Handling event: growflower	Source: 12: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
+Handling event: growflower	Source: 13: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
+Handling event: growflower	Source: 14: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
+Handling event: growflower	Source: 15: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
+Handling event: growflower	Source: 16: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
+Handling event: growflower	Source: 17: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
+Handling event: growflower	Source: 18: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
+Handling event: growflower	Source: 19: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
+Handling event: growflower	Source: 20: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
+Handling event: growflower	Source: 21: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 22: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 23: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 24: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 25: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 26: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 27: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 11: Mortlock Fly Trap
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 10: Red Rose
+Handling event: growflower	Source: 13: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Red Rose
+Handling event: growflower	Source: 14: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Red Rose
+Handling event: growflower	Source: 15: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Red Rose
+Handling event: growflower	Source: 16: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Red Rose
+Handling event: growflower	Source: 17: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Red Rose
+Handling event: growflower	Source: 18: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Red Rose
+Handling event: growflower	Source: 19: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Red Rose
+Handling event: growflower	Source: 20: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Red Rose
+Handling event: growflower	Source: 21: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 22: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 23: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 24: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 25: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 26: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 27: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 11: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Handling event: growflower	Source: 12: Mortlock Fly Trap
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
+Handling event: growflower	Source: 14: Mortlock Fly Trap
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 15: Mortlock Fly Trap
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 16: Mortlock Fly Trap
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 8: Red Rose
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 17: Mortlock Fly Trap
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 9: Red Rose
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Mortlock Fly Trap
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 11: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 12: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 13: Mortlock Fly Trap
+Vegetation
+Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
 Closed with 1 pending/created actions:
-Time in unsigned long format: 1406690114
+Time in unsigned long format: 1407035429

@@ -155,7 +155,9 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
+	win.setView(viewport);
 	win.draw(currentSprite);
+	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)
@@ -175,7 +177,9 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));
 	
+	win.setView(viewport);
 	win.draw(currentSprite);
+	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover)
@@ -229,38 +233,4 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectContain
 			}
 		}
 	}
-}
-
-void RenderManager::DrawMinimap(sf::RenderWindow& win, settingStruct set, const GameObjectContainerClass& _reg, const coord map_pos, float scale)
-{
-	sf::Image tileimg = tileSheet.copyToImage();
-	sf::Vector2i o;
-	sf::Image img;
-	sf::Texture tex;
-	img.create(set.tileCols, set.tileRows);
-	sf::Color colormap;
-	for(int y=0; y<set.tileRows; y++)
-	{
-		for(int x=0; x<set.tileCols; x++)
-		{
-			for(int i=1; i<int(_reg.regTiles.size()); i++)
-			{
-				if(_reg.regTiles[i]->pos == coord(x,y))
-				{
-					o=sf::Vector2i(toVector(_reg.regTiles[i]->origin));			
-					colormap=tileimg.getPixel(o.x+16, o.y+16);
-					img.setPixel(x,y,colormap);
-				}
-			}
-		}
-	}
-	tex.loadFromImage(img, sf::IntRect(0,0,set.tileCols, set.tileRows));
-	currentSprite.setTexture(tex, true);
-//	------------this will center it at scale 1
-	float halfheight=float((set.tileHig*set.tileRows)-set.tileRows)/2.0f;
-	float halfwidth=float((set.tileWid*set.tileCols)-set.tileCols)/2.0f;
-	currentSprite.setPosition(halfwidth-(halfwidth*scale),halfheight-(halfheight*scale));
-	currentSprite.setScale(32.0f*scale, 32.0f*scale);
-	win.draw(currentSprite);
-	currentSprite.setScale(1,1);
 }
