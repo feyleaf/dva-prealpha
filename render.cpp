@@ -155,9 +155,7 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
-	win.setView(viewport);
 	win.draw(currentSprite);
-	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)
@@ -177,9 +175,7 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));
 	
-	win.setView(viewport);
 	win.draw(currentSprite);
-	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover)

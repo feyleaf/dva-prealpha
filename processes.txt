@@ -1,14 +1,102 @@
 32 x 32
 Title: Druid vs Alchemist Test
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 32 x 32
 Title: Druid vs Alchemist Test
-Handling event: makeenemy	Source: 44: Iron Golem
+Handling event: makeenemy	Source: 35: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 45: Iron Golem
+Handling event: makeenemy	Source: 36: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makeenemy	Source: 37: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makeenemy	Source: 38: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: shrinkmapstep	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+32 x 32
+Title: Druid vs Alchemist Test
+Handling event: solidblock	Source: 1: Boulder
+Decoration
+Target Entity: 1: Boulder
+Decoration
+Target Tile: 1: Marsh Grass
+==================================================
+Handling event: solidblock	Source: 1: Boulder
+Decoration
+Target Entity: 1: Boulder
+Decoration
+Target Tile: 1: Marsh Grass
+==================================================
+Handling event: solidblock	Source: 1: Boulder
+Decoration
+Target Entity: 1: Boulder
+Decoration
+Target Tile: 1: Marsh Grass
+==================================================
 Handling event: makeenemy	Source: 46: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
@@ -18,572 +106,14 @@ HP: 1 / 1Target Entity: 0: Target Tile: 0: =====================================
 Handling event: makeenemy	Source: 48: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 49: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 54: Iron Golem
+Handling event: makeenemy	Source: 49: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 56: Iron Golem
+Handling event: makeenemy	Source: 50: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-32 x 32
-Title: Druid vs Alchemist Test
-Handling event: makecreature	Source: 28: Squirrel
+Handling event: makeenemy	Source: 51: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 29: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 30: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 31: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 32: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 33: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 34: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 35: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 36: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 37: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 38: Magic Wand
-Tool
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 43: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 45: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 14: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 15: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 16: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 17: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 18: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 11: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 12: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 13: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
 Closed with 1 pending/created actions:
-Time in unsigned long format: 1407035429
+Time in unsigned long format: 1407209448
