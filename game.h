@@ -114,6 +114,7 @@ public:
 	void processMagic(int entityIndex);
 	void processFlowerConversion(int entityIndex);
 
+	bool mapExists(coord map_pos);
 	void gameRenderer();
 
 	bool loadSettings();

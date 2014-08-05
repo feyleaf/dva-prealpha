@@ -643,91 +643,10 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 	return (getEnemyNeighbor(entityIndex)!=0);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 bool GameClass::mapExists(coord map_pos)
 {
 	return !(registry.objMap.find(map_pos) == registry.objMap.end());
 }
-
-void GameClass::createMap(const char* biome, coord map_pos)
-{
-	registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(map_pos, GameObjectContainerClass()));
-	registry.clear(map_pos);
-	initialize();
-	experimentalMapGen(biome);
-}
-
-void GameClass::renderMiniMap(int range, coord center, float zoomPercent)
-{
-	//render.viewport=app.getDefaultView();
-	render.viewport.setCenter(scalar(0.5f, toVector(coord(settings.winWid, settings.winHig))));
-	//render.viewport.setSize(scalar(float(range*range), toVector(coord(settings.winWid, settings.winHig))));
-	render.viewport.zoom(1.0f/zoomPercent);
-	//app.setView(render.viewport);
-	for(int y=center.y-range; y<=center.y+range; y++)
-	{
-		for(int x=center.x-range; x<=center.x+range; x++)
-		{
-			if(!mapExists(coord(x,y))) createMap("forest", coord(x,y));
-			renderMap(coord(x,y), center);
-		}
-	}
-}
-void GameClass::renderMap(coord map, coord center)
-{
-	if(mapExists(map))
-	{
-		app.setView(render.viewport);
-		coord place=map-center;
-		coord offset=coord(place.x*settings.tileCols, place.y*settings.tileRows);
-		for(int i=1; i<int(registry.objMap[map].regTiles.size()); i++)
-		{
-			if(registry.objMap[map].regTiles[i] != NULL)
-			{
-				render.DrawTile(app, registry.objMap[map].regTiles[i], registry.objMap[map].regTiles[i]->pos+offset, registry.objMap[map].regTiles[i]->distortionColor);
-			}
-		}
-		for(int i=1; i<int(registry.objMap[map].regEntities.size()); i++)
-		{
-			if(registry.objMap[map].regEntities[i] != NULL && registry.objMap[map].regEntities[i]->active)
-			{
-				coord pixel=coord((registry.objMap[map].regEntities[i]->pos.x+offset.x)*32, (registry.objMap[map].regEntities[i]->pos.y+offset.y)*32);
-				render.DrawEntity(app, registry.objMap[map].regEntities[i], pixel, false);
-			}
-		}
-	}
-}
-
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-void GameClass::zoomOutMinimap(coord map_pos)
-{
-	gamemode=GAMEMODE_ZOOMOUT;
-	if(mapscale<float(1.0f/settings.tileWid))
-	{
-		mapscale=float(1.0f/settings.tileWid);
-		gamemode=GAMEMODE_MINIMAP;
-		return;
-	}
-	mapscale-=(1.0f/settings.tileWid);
-	render.viewport.zoom(1+float(1.0f/16.0f));
-}
-
-void GameClass::zoomIntoMap(coord map_pos)
-{
-	gamemode=GAMEMODE_ZOOMIN;
-	if(mapscale>=1.0f)
-	{
-		mapscale=1.0f;
-		gamemode=GAMEMODE_NEUTRAL;
-		return;
-	}
-	mapscale+=float(1.0f/settings.tileWid);
-	render.viewport.zoom(1-float(1.0f/16.0f));
-}
-=======
->>>>>>> parent of fc3a278... Map Scaling
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
 {
@@ -1005,23 +924,6 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	{
 		dumpActionList=true;
 		gamemode=GAMEMODE_NEUTRAL;
-<<<<<<< HEAD
-<<<<<<< HEAD
-//		if(!mapExists(worldCursor))
-//		{
-//			createMap("forest", worldCursor);
-//		}
-=======
-		coord newCursor=coord(worldCursor.x+1, worldCursor.y);
-		registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(newCursor, GameObjectContainerClass()));
-		registry.clear(newCursor);
-		worldCursor=newCursor;
-		initialize();
-		experimentalMapGen("forest");
->>>>>>> parent of d7c2c03... Buggy Zoom
-		fillButton("recycle", coord(settings.tileCols, 5));
-		fillButton("worldmap", coord(settings.tileCols+1, 5));
-=======
 		coord newCursor=coord(worldCursor.x+1, worldCursor.y);
 		registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(newCursor, GameObjectContainerClass()));
 		registry.clear(newCursor);
@@ -1030,7 +932,6 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		experimentalMapGen("forest");
 		fillButton("magnifier", coord(settings.tileCols, 5));
 		fillButton("recycle", coord(settings.tileCols+1, 5));
->>>>>>> parent of fc3a278... Map Scaling
 		fillButton("camera", coord(settings.tileCols+2, 5));
 		fillButton("backpack", coord(settings.tileCols+3, 5));
 		fillButton("inventorycell", coord(0,0), 0, false);
@@ -1749,16 +1650,7 @@ void GameClass::gameRenderer()
 	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-<<<<<<< HEAD
-<<<<<<< HEAD
-	//renderMap(worldCursor, worldCursor);
-	if(gamemode==GAMEMODE_NEUTRAL)	render.init(app);
-	app.setView(render.viewport);
-=======
->>>>>>> parent of fc3a278... Map Scaling
-=======
 	if(gamemode==GAMEMODE_NEUTRAL) render.init(app);
->>>>>>> parent of d7c2c03... Buggy Zoom
 	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
 	{
 		if(registry.objMap[worldCursor].regTiles[i] != NULL)
