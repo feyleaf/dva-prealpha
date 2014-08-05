@@ -109,10 +109,6 @@ public:
 	int getEnemyNeighbor(int entityIndex);
 	bool isEnemyNeighbor(int entityIndex);
 	bool isReachedEntityTarget(int entityIndex, int entityTarget);
-	bool mapExists(coord map_pos);
-	void createMap(const char* biome, coord map_pos);
-	void renderMap(coord map, coord center);
-	void renderMiniMap(int range, coord center, float zoomPercent);
 
 	void processGrowth(int entityIndex);
 	void processMagic(int entityIndex);
