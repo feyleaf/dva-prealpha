@@ -71,9 +71,6 @@ PROTOCOL:endattack,2,0,1,0
 PROTOCOL:combatdeath,2,0,1,0
 PROTOCOL:combatwin,2,0,1,0
 PROTOCOL:pursuit,4,0,1,0
-PROTOCOL:togglemap,7,0,1,0
-PROTOCOL:shrinkmapstep,0,0,1,0
-PROTOCOL:growmapstep,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,0,0,32,32,squirrel.png,1,makecreature,1,1,1,1,5,none
 CREATURE:irongolem,Iron Golem,32,32,0,0,32,32,irongolem.png,1,makeenemy,1,1,1,1,1,none
 INGREDIENT:redpetal,Red Rose Petal,32,32,0,0,32,32,redpetal.png,1,solidblock,none
@@ -122,5 +119,4 @@ BUTTON:recycle,Recycle Map,32,32,0,0,32,32,recycle.png,1,generatemap,none
 BUTTON:camera,Screenshot,32,32,0,0,32,32,camera.png,1,screenshot,none
 BUTTON:backpack,Backpack,32,32,0,0,32,32,backpack.png,1,backpack,none
 BUTTON:movebutton,Move Creature,32,32,0,0,32,32,road.png,1,movecreature,none
-BUTTON:worldmap,World Map,32,32,0,0,32,32,worldmap.png,1,togglemap,none
 BUTTON:inventorycell,Cell,32,32,0,0,32,32,invcell.png,1,selectinventory,none

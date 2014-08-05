@@ -229,4 +229,8 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const GameObjectContain
 			}
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> parent of fc3a278... Map Scaling

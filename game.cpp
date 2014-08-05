@@ -29,7 +29,6 @@ void GameClass::initialize()
 //then creates the 'app' window
 GameClass::GameClass()
 {
-	mapscale=1.0f;
 	dumpActionList=false;
 	worldCursor=coord(0,0);
 	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
@@ -645,6 +644,7 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 	return (getEnemyNeighbor(entityIndex)!=0);
 }
 
+<<<<<<< HEAD
 bool GameClass::mapExists(coord map_pos)
 {
 	return !(registry.objMap.find(map_pos) == registry.objMap.end());
@@ -730,6 +730,8 @@ void GameClass::zoomIntoMap(coord map_pos)
 	mapscale+=float(1.0f/settings.tileWid);
 	render.viewport.zoom(1-float(1.0f/16.0f));
 }
+=======
+>>>>>>> parent of fc3a278... Map Scaling
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
 {
@@ -1003,43 +1005,28 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		}
 		return;
 	}
-	if(actionCodeEquals(act->actionTemplateIndex, "togglemap"))
-	{
-		if(gamemode==GAMEMODE_MINIMAP)
-		{
-			registry.createAction(tmp, "growmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
-		}
-		else if(gamemode==GAMEMODE_NEUTRAL)
-		{
-			registry.createAction(tmp, "shrinkmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
-		}
-		return;
-	}
-	if(actionCodeEquals(act->actionTemplateIndex, "shrinkmapstep"))
-	{
-		zoomOutMinimap(worldCursor);
-		if(gamemode==GAMEMODE_ZOOMOUT)
-			registry.createAction(tmp, "shrinkmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
-		return;
-	}
-	if(actionCodeEquals(act->actionTemplateIndex, "growmapstep"))
-	{
-		zoomIntoMap(worldCursor);
-		if(gamemode==GAMEMODE_ZOOMIN)
-			registry.createAction(tmp, "growmapstep", act->entityIndexSource, 0, 0, gameTime(), worldCursor);
-		return;
-	}
 	if(actionCodeEquals(act->actionTemplateIndex, "generatemap"))
 	{
 		if(gamemode==GAMEMODE_MINIMAP) return;
 		dumpActionList=true;
 		gamemode=GAMEMODE_NEUTRAL;
+<<<<<<< HEAD
 //		if(!mapExists(worldCursor))
 //		{
 //			createMap("forest", worldCursor);
 //		}
 		fillButton("recycle", coord(settings.tileCols, 5));
 		fillButton("worldmap", coord(settings.tileCols+1, 5));
+=======
+		coord newCursor=coord(worldCursor.x+1, worldCursor.y);
+		registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(newCursor, GameObjectContainerClass()));
+		registry.clear(newCursor);
+		worldCursor=newCursor;
+		initialize();
+		experimentalMapGen("forest");
+		fillButton("magnifier", coord(settings.tileCols, 5));
+		fillButton("recycle", coord(settings.tileCols+1, 5));
+>>>>>>> parent of fc3a278... Map Scaling
 		fillButton("camera", coord(settings.tileCols+2, 5));
 		fillButton("backpack", coord(settings.tileCols+3, 5));
 /*		fillButton("inventorycell", coord(0,0), 0, false);
@@ -1759,9 +1746,12 @@ void GameClass::gameRenderer()
 	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
+<<<<<<< HEAD
 	//renderMap(worldCursor, worldCursor);
 	if(gamemode==GAMEMODE_NEUTRAL)	render.init(app);
 	app.setView(render.viewport);
+=======
+>>>>>>> parent of fc3a278... Map Scaling
 	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
 	{
 		if(registry.objMap[worldCursor].regTiles[i] != NULL)
