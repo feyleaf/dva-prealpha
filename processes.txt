@@ -2,27 +2,15 @@
 Title: Druid vs Alchemist Test
 32 x 32
 Title: Druid vs Alchemist Test
+Handling event: makecreature	Source: 36: Squirrel
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: makecreature	Source: 37: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: makecreature	Source: 38: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 39: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 40: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 41: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 42: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makecreature	Source: 43: Squirrel
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 FillGui failed at (25, 5). clone was undefined.
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
@@ -61,45 +49,139 @@ Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: =======
 FillGui failed at (25, 5). clone was undefined.
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 FillGui failed at (25, 5). clone was undefined.
-Handling event: growflower	Source: 24: Red Rose
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: growflower	Source: 25: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 26: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Handling event: growflower	Source: 27: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 27: Red Rose
+Handling event: growflower	Source: 28: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 28: Red Rose
+Handling event: growflower	Source: 29: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 29: Red Rose
+Handling event: growflower	Source: 30: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 30: Red Rose
+Handling event: growflower	Source: 31: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 31: Red Rose
+Handling event: growflower	Source: 32: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 32: Red Rose
+Handling event: growflower	Source: 33: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Red Rose
+Handling event: growflower	Source: 34: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Red Rose
+Handling event: growflower	Source: 35: Mortlock Fly Trap
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Red Rose
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: growflower	Source: 26: Mortlock Fly Trap
 Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Red Rose
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 27: Mortlock Fly Trap
 Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 28: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 29: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 30: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 31: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 32: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 33: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 34: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Mortlock Fly Trap
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
+Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+FillGui failed at (25, 5). clone was undefined.
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 FillGui failed at (25, 5). clone was undefined.
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
@@ -117,4 +199,4 @@ FillGui failed at (25, 5). clone was undefined.
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
 FillGui failed at (25, 5). clone was undefined.
 Closed with 1 pending/created actions:
-Time in unsigned long format: 1407209949
+Time in unsigned long format: 1407210094
