@@ -644,10 +644,13 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 bool GameClass::mapExists(coord map_pos)
 {
 	return !(registry.objMap.find(map_pos) == registry.objMap.end());
 =======
+=======
+>>>>>>> parent of d7c2c03... Buggy Zoom
 void GameClass::zoomOutMinimap(coord map_pos)
 {
 	gamemode=GAMEMODE_ZOOMOUT;
@@ -958,9 +961,12 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		initialize();
 		experimentalMapGen("forest");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		fillButton("magnifier", coord(settings.tileCols, 5));
 		fillButton("recycle", coord(settings.tileCols+1, 5));
 =======
+=======
+>>>>>>> parent of d7c2c03... Buggy Zoom
 		fillButton("recycle", coord(settings.tileCols, 5));
 		fillButton("worldmap", coord(settings.tileCols+1, 5));
 >>>>>>> parent of d7c2c03... Buggy Zoom
