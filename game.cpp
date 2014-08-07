@@ -643,9 +643,36 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 	return (getEnemyNeighbor(entityIndex)!=0);
 }
 
+<<<<<<< HEAD
 bool GameClass::mapExists(coord map_pos)
 {
 	return !(registry.objMap.find(map_pos) == registry.objMap.end());
+=======
+void GameClass::zoomOutMinimap(coord map_pos)
+{
+	gamemode=GAMEMODE_ZOOMOUT;
+	if(mapscale<float(1.0f/settings.tileWid))
+	{
+		mapscale=float(1.0f/settings.tileWid);
+		gamemode=GAMEMODE_MINIMAP;
+		return;
+	}
+	mapscale-=(1.0f/settings.tileWid);
+	render.viewport.zoom(1+float(1.0f/16.0f));
+}
+
+void GameClass::zoomIntoMap(coord map_pos)
+{
+	gamemode=GAMEMODE_ZOOMIN;
+	if(mapscale>=1.0f)
+	{
+		mapscale=1.0f;
+		gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+	mapscale+=float(1.0f/settings.tileWid);
+	render.viewport.zoom(1-float(1.0f/16.0f));
+>>>>>>> parent of d7c2c03... Buggy Zoom
 }
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
@@ -930,8 +957,13 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		worldCursor=newCursor;
 		initialize();
 		experimentalMapGen("forest");
+<<<<<<< HEAD
 		fillButton("magnifier", coord(settings.tileCols, 5));
 		fillButton("recycle", coord(settings.tileCols+1, 5));
+=======
+		fillButton("recycle", coord(settings.tileCols, 5));
+		fillButton("worldmap", coord(settings.tileCols+1, 5));
+>>>>>>> parent of d7c2c03... Buggy Zoom
 		fillButton("camera", coord(settings.tileCols+2, 5));
 		fillButton("backpack", coord(settings.tileCols+3, 5));
 		fillButton("inventorycell", coord(0,0), 0, false);
