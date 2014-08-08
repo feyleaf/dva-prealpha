@@ -1,140 +1,209 @@
 32 x 32
 Title: Druid vs Alchemist Test
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 35: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 36: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 37: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 38: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 39: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 40: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 41: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Handling event: growflower	Source: 42: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 27: Iron Golem
+Handling event: growflower	Source: 43: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 44: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 49: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 50: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 51: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 52: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 53: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makeenemy	Source: 54: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 28: Iron Golem
+Handling event: makeenemy	Source: 55: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 29: Iron Golem
+Handling event: makeenemy	Source: 56: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 30: Iron Golem
+Handling event: makeenemy	Source: 57: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 31: Iron Golem
+Handling event: makeenemy	Source: 58: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 32: Iron Golem
+Handling event: makeenemy	Source: 59: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 33: Magic Wand
+Handling event: makeenemy	Source: 60: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: makeenemy	Source: 61: Iron Golem
+Creature
+HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 62: Magic Wand
 Tool
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 38: Iron Golem
+Handling event: makeenemy	Source: 67: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 40: Iron Golem
+Handling event: makeenemy	Source: 69: Iron Golem
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 36: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 37: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 38: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 39: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 40: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 41: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Handling event: growflower	Source: 42: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 43: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Handling event: growflower	Source: 44: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 45: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 49: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 50: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 51: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 52: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 53: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Blue Rose
+Vegetation
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 37: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 38: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Handling event: growflower	Source: 39: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Handling event: growflower	Source: 40: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Handling event: growflower	Source: 41: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Handling event: growflower	Source: 42: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Handling event: growflower	Source: 43: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Handling event: growflower	Source: 44: Blue Rose
 Vegetation
 Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: togglemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 22: Red Rose
+Handling event: growflower	Source: 45: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 23: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 46: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 24: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 47: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 25: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 48: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 26: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 49: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 19: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 50: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 20: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 51: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 21: Red Rose
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 52: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: zoomout	Source: 0: Target Entity: 0: Target Tile: 0: ==================
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 53: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 35: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 36: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Closed with 1 pending/created actions:
+Time in unsigned long format: 1407465821
