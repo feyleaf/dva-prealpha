@@ -47,6 +47,37 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
 	spriteSheet.getTexture().copyToImage().saveToFile("tiles_temp.png");
 }
 
+void RenderManager::saveMapfile(const GameObjectContainerClass& _reg, coord worldCoord, settingStruct set)
+{
+	sf::RenderTexture mapSheet;
+	int wid=set.tileCols*set.tileWid;
+	int hig=set.tileRows*set.tileHig;
+	mapSheet.create(wid,hig);
+	char buffer[64];
+	sprintf_s(buffer, "maps/x%iy%i.png", worldCoord.x, worldCoord.y);
+	for(int i=1; i<int(_reg.regTiles.size()); i++)
+	{
+		if(_reg.regTiles[i] != NULL)
+		{
+			currentSprite.setTexture(tileSheet);
+			currentSprite.setTextureRect(sf::IntRect(_reg.regTiles[i]->origin.x, _reg.regTiles[i]->origin.y, _reg.regTiles[i]->dimensions.x, _reg.regTiles[i]->dimensions.y));
+			currentSprite.setColor(_reg.regTiles[i]->distortionColor);
+
+			currentSprite.setPosition(float(_reg.regTiles[i]->pos.x*set.tileWid), float(_reg.regTiles[i]->pos.y*set.tileHig));
+	
+			mapSheet.draw(currentSprite);
+		}
+	}
+	mapSheet.display();
+	mapSheet.getTexture().copyToImage().saveToFile(std::string(buffer));
+}
+
+bool RenderManager::fileExists(const char* filename)
+{
+    std::ifstream infile(filename);
+    return infile.good();
+}
+
 void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
 {
 	int iconTotalWidth=0;
@@ -155,9 +186,24 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 
 	currentSprite.setPosition(float((place.x*32)), float((place.y*32))+16.0f);
 	
-	win.setView(viewport);
 	win.draw(currentSprite);
-	win.setView(win.getDefaultView());
+}
+
+void RenderManager::DrawQuickMap(sf::RenderWindow& win, coord worldCoord)
+{
+	char buffer[64]="";
+	sprintf_s(buffer, "maps/x%iy%i.png", worldCoord.x, worldCoord.y);
+	if(fileExists(buffer))
+	{
+		sf::Texture xTex;
+		sf::Sprite tempSprite;
+		xTex.loadFromFile(buffer);
+		tempSprite.setTexture(xTex, true);
+		tempSprite.setPosition(float(worldCoord.x*24*32), float(worldCoord.y*18*32));
+		win.setView(viewport);
+		win.draw(tempSprite);
+		win.setView(win.getDefaultView());
+	}
 }
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)

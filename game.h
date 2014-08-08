@@ -16,6 +16,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ENTITYACTION 3
 #define GAMEMODE_ENTITYTARGETING 4
 #define GAMEMODE_MAGICSPELL 5
+#define GAMEMODE_ZOOMOUT 6
 
 #define ACAT_NEUTRAL 0
 #define ACAT_MOVEMENT 1
@@ -80,6 +81,7 @@ public:
 	bool gameLoop();
 	coord getMouseGrid();
 	float gameTime() {return float(startTime)+gameClock.getElapsedTime().asSeconds();}
+	float mapscale;
 
 	void inputHandler();
 	void pollWindowsEvents();

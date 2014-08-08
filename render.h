@@ -23,6 +23,8 @@ class RenderManager
 		RenderManager() {}
 		~RenderManager() {}
 
+		bool fileExists(const char* filename);
+		void saveMapfile(const GameObjectContainerClass& _reg, coord worldCoord, settingStruct set);
 		void init(sf::RenderWindow& win) {viewport = win.getDefaultView();}
 		void createTileSheet(const TemplateRegistryClass& tmp);
 		void createEntitySheet(const TemplateRegistryClass& tmp);
@@ -35,5 +37,6 @@ class RenderManager
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, const GameObjectContainerClass& _reg, const InventoryClass& items, const buttonStruct* cell);
+		void DrawQuickMap(sf::RenderWindow& win, const coord worldCoord);
 };
 #endif //RENDER_H

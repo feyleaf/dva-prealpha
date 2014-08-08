@@ -12,7 +12,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 //helps the constructor by reseting values and loading settings
 void GameClass::initialize()
 {
-	registry.clear(worldCursor);
+	mapscale=1.0f;
 	header.randSeed+=100;
 	isClicking=true;
 	pin=false;
@@ -643,45 +643,9 @@ bool GameClass::isEnemyNeighbor(int entityIndex)
 	return (getEnemyNeighbor(entityIndex)!=0);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 bool GameClass::mapExists(coord map_pos)
 {
 	return !(registry.objMap.find(map_pos) == registry.objMap.end());
-=======
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-void GameClass::zoomOutMinimap(coord map_pos)
-{
-	gamemode=GAMEMODE_ZOOMOUT;
-	if(mapscale<float(1.0f/settings.tileWid))
-	{
-		mapscale=float(1.0f/settings.tileWid);
-		gamemode=GAMEMODE_MINIMAP;
-		return;
-	}
-	mapscale-=(1.0f/settings.tileWid);
-	render.viewport.zoom(1+float(1.0f/16.0f));
-}
-
-void GameClass::zoomIntoMap(coord map_pos)
-{
-	gamemode=GAMEMODE_ZOOMIN;
-	if(mapscale>=1.0f)
-	{
-		mapscale=1.0f;
-		gamemode=GAMEMODE_NEUTRAL;
-		return;
-	}
-	mapscale+=float(1.0f/settings.tileWid);
-	render.viewport.zoom(1-float(1.0f/16.0f));
->>>>>>> parent of d7c2c03... Buggy Zoom
 }
 
 void GameClass::handleMovementPipeline(const actionStruct* act)
@@ -943,6 +907,11 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 
 void GameClass::handleButtonPipeline(const actionStruct* act)
 {
+	if(actionCodeEquals(act->actionTemplateIndex, "togglemap"))
+	{
+		fillSourceAction("zoomout", act->entityIndexSource);
+		return;
+	}
 	if(actionCodeEquals(act->actionTemplateIndex, "infoget"))
 	{
 		if(gamemode==GAMEMODE_INSPECT)
@@ -960,30 +929,23 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	{
 		dumpActionList=true;
 		gamemode=GAMEMODE_NEUTRAL;
-		coord newCursor=coord(worldCursor.x+1, worldCursor.y);
-		registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(newCursor, GameObjectContainerClass()));
-		registry.clear(newCursor);
-		worldCursor=newCursor;
-		initialize();
-		experimentalMapGen("forest");
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+		for(int y=-settings.tileRows/4; y<settings.tileRows/4; y++)
+		{
+			for(int x=-settings.tileCols/4; x<settings.tileCols/4; x++)
+			{
+				worldCursor=coord(x,y);
+				registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(worldCursor, GameObjectContainerClass()));
+				registry.clear(worldCursor);
+				experimentalMapGen("forest");
+				render.saveMapfile(registry.objMap[worldCursor], worldCursor, settings);
+			}
+		}
+		worldCursor=coord(0,0);
 		fillButton("magnifier", coord(settings.tileCols, 5));
 		fillButton("recycle", coord(settings.tileCols+1, 5));
-=======
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-=======
->>>>>>> parent of d7c2c03... Buggy Zoom
-		fillButton("recycle", coord(settings.tileCols, 5));
-		fillButton("worldmap", coord(settings.tileCols+1, 5));
->>>>>>> parent of d7c2c03... Buggy Zoom
 		fillButton("camera", coord(settings.tileCols+2, 5));
 		fillButton("backpack", coord(settings.tileCols+3, 5));
+		fillButton("worldmap", coord(settings.tileCols+4, 5));
 		fillButton("inventorycell", coord(0,0), 0, false);
 		int toolIndex=registry.createEntity(tmp, "magicwand", coord(0,0), gameTime(), worldCursor);
 		registry.createAction(tmp, "randomheld", toolIndex, 0, 0, gameTime(), worldCursor);
@@ -1151,6 +1113,17 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 
 void GameClass::handleGUIPipeline(const actionStruct* act)
 {
+	if(actionCodeEquals(act->actionTemplateIndex, "zoomout"))
+	{
+		if(mapscale>float(1.0f/32.0f))
+		{
+			gamemode=GAMEMODE_ZOOMOUT;
+			mapscale-=float(1.0f/32.0f);
+			fillSourceAction("zoomout", act->entityIndexSource);
+		}
+		//else gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
 	if(actionCodeEquals(act->actionTemplateIndex, "randomheld"))
 	{
 		inv.add(registry.objMap[worldCursor].regEntities[act->entityIndexSource], act->entityIndexSource);
@@ -1700,34 +1673,49 @@ void GameClass::gameRenderer()
 	
 	//draw the tiles that are registered
 	//TODO: make it map-specific
-	if(gamemode==GAMEMODE_NEUTRAL) render.init(app);
-	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
+	render.init(app);
+	render.viewport.zoom(1.0f/mapscale);
+	if(gamemode==GAMEMODE_ZOOMOUT)
 	{
-		if(registry.objMap[worldCursor].regTiles[i] != NULL)
+		for(int y=-settings.tileRows/2; y<=settings.tileRows/2; y++)
 		{
-			if(i==tileHover() && entityHover()==0)
+			for(int x=-settings.tileCols/2; x<=settings.tileCols/2; x++)
 			{
-				render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
+				render.DrawQuickMap(app, coord(x,y));
 			}
-			else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
 		}
 	}
-	for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+	else
 	{
-		if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
+		for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
 		{
-			coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
-			if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
+			if(registry.objMap[worldCursor].regTiles[i] != NULL)
 			{
-				pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
+				if(i==tileHover() && entityHover()==0)
+				{
+					render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, sf::Color::Red);
+				}
+				else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
 			}
-			render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
 		}
-	}
-	for(int i=1; i<int(registry.objMap[worldCursor].regButtons.size()); i++)
-	{
-		if(registry.objMap[worldCursor].regButtons[i] != NULL)
-			render.DrawGui(app, registry.objMap[worldCursor].regButtons[i], registry.objMap[worldCursor].regButtons[i]->pos, i==buttonHover());
+		worldCursor=coord(0,0);
+		for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
+		{
+			if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)
+			{
+				coord pixel=coord(registry.objMap[worldCursor].regEntities[i]->pos.x*32, registry.objMap[worldCursor].regEntities[i]->pos.y*32);
+				if(registry.objMap[worldCursor].regEntities[i]->type==ICAT_CREATURE)
+				{
+					pixel=pixel+(registry.objMap[worldCursor].regCreature[registry.objMap[worldCursor].regEntities[i]->packIndex]->offset);
+				}
+				render.DrawEntity(app, registry.objMap[worldCursor].regEntities[i], pixel, (i==entityHover()));
+			}
+		}
+		for(int i=1; i<int(registry.objMap[worldCursor].regButtons.size()); i++)
+		{
+			if(registry.objMap[worldCursor].regButtons[i] != NULL)
+				render.DrawGui(app, registry.objMap[worldCursor].regButtons[i], registry.objMap[worldCursor].regButtons[i]->pos, i==buttonHover());
+		}
 	}
 	if(gamemode == GAMEMODE_INVENTORY)
 	{
