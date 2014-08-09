@@ -13,6 +13,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 void GameClass::initialize()
 {
 	mapscale=1.0f;
+	registry.clear(worldCursor);
 	header.randSeed+=100;
 	isClicking=true;
 	pin=false;
@@ -929,18 +930,11 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	{
 		dumpActionList=true;
 		gamemode=GAMEMODE_NEUTRAL;
-		for(int y=-settings.tileRows/4; y<settings.tileRows/4; y++)
-		{
-			for(int x=-settings.tileCols/4; x<settings.tileCols/4; x++)
-			{
-				worldCursor=coord(x,y);
-				registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(worldCursor, GameObjectContainerClass()));
-				registry.clear(worldCursor);
-				experimentalMapGen("forest");
-				render.saveMapfile(registry.objMap[worldCursor], worldCursor, settings);
-			}
-		}
-		worldCursor=coord(0,0);
+		worldCursor=worldCursor+coord(1,0);
+		initialize();
+		registry.objMap.insert(std::pair<coord, GameObjectContainerClass>(worldCursor, GameObjectContainerClass()));
+		//registry.clear(worldCursor);
+		experimentalMapGen("forest");
 		fillButton("magnifier", coord(settings.tileCols, 5));
 		fillButton("recycle", coord(settings.tileCols+1, 5));
 		fillButton("camera", coord(settings.tileCols+2, 5));
@@ -1220,6 +1214,23 @@ void GameClass::experimentalMapGen(const char* biome)
 		createDecorationLayer(registry.objMap[worldCursor].regMaps[i]);
 		createEcologyLayer(registry.objMap[worldCursor].regMaps[i]);
 	}
+	//some ideas
+	tempSheet.create(settings.tileCols*settings.tileWid, settings.tileRows*settings.tileHig);
+	tempSheet.clear();
+	sf::Sprite tempSprite;
+	for(int i=1; i<int(registry.objMap[worldCursor].regTiles.size()); i++)
+	{
+		tempSprite.setTexture(render.tileSheet);
+		tempSprite.setTextureRect(sf::IntRect(registry.objMap[worldCursor].regTiles[i]->origin.x, registry.objMap[worldCursor].regTiles[i]->origin.y, registry.objMap[worldCursor].regTiles[i]->dimensions.x, registry.objMap[worldCursor].regTiles[i]->dimensions.y));
+		tempSprite.setColor(registry.objMap[worldCursor].regTiles[i]->distortionColor);
+
+		tempSprite.setPosition(float(registry.objMap[worldCursor].regTiles[i]->pos.x), float(registry.objMap[worldCursor].regTiles[i]->pos.y));
+		tempSprite.setScale(1.0f/float(settings.tileWid), 1.0f/float(settings.tileHig));
+		tempSheet.draw(tempSprite);
+	}
+	registry.objMap[worldCursor].mapSheet = tempSheet.getTexture();
+
+//	registry.objMap[worldCursor].createMapSheet(render.tileSheet, settings);
 	fillPathingRoutes();
 }
 
@@ -1674,16 +1685,10 @@ void GameClass::gameRenderer()
 	//draw the tiles that are registered
 	//TODO: make it map-specific
 	render.init(app);
-	render.viewport.zoom(1.0f/mapscale);
 	if(gamemode==GAMEMODE_ZOOMOUT)
 	{
-		for(int y=-settings.tileRows/2; y<=settings.tileRows/2; y++)
-		{
-			for(int x=-settings.tileCols/2; x<=settings.tileCols/2; x++)
-			{
-				render.DrawQuickMap(app, coord(x,y));
-			}
-		}
+		render.viewport.zoom(1.0f/mapscale);
+		render.DrawQuickMap(app, registry.objMap[worldCursor], coord(0,0), worldCursor);
 	}
 	else
 	{
@@ -1698,7 +1703,6 @@ void GameClass::gameRenderer()
 				else render.DrawTile(app, registry.objMap[worldCursor].regTiles[i], registry.objMap[worldCursor].regTiles[i]->pos, registry.objMap[worldCursor].regTiles[i]->distortionColor);
 			}
 		}
-		worldCursor=coord(0,0);
 		for(int i=1; i<int(registry.objMap[worldCursor].regEntities.size()); i++)
 		{
 			if(registry.objMap[worldCursor].regEntities[i] != NULL && registry.objMap[worldCursor].regEntities[i]->active)

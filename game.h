@@ -72,6 +72,7 @@ protected:
 	AStarClass astar;
 
 	RenderManager render;
+	sf::RenderTexture tempSheet;
 
 
 public:

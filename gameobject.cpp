@@ -100,6 +100,26 @@ void GameObjectContainerClass::fillVegDropList(const TemplateRegistryClass& tmp,
 	}
 }
 
+void GameObjectContainerClass::createMapSheet(sf::Texture texturePack, settingStruct set)
+{
+	sf::RenderTexture tempSheet;
+	tempSheet.create(set.tileCols*set.tileWid, set.tileRows*set.tileHig);
+	tempSheet.clear();
+	sf::Sprite tempSprite;
+	for(int i=1; i<int(regTiles.size()); i++)
+	{
+		tempSprite.setTexture(texturePack);
+		tempSprite.setTextureRect(sf::IntRect(regTiles[i]->origin.x, regTiles[i]->origin.y, regTiles[i]->dimensions.x, regTiles[i]->dimensions.y));
+		tempSprite.setColor(regTiles[i]->distortionColor);
+
+		tempSprite.setPosition(float(regTiles[i]->pos.x), float(regTiles[i]->pos.y));
+		tempSprite.setScale(1.0f/float(set.tileWid), 1.0f/float(set.tileHig));
+		tempSheet.draw(tempSprite);
+	}
+	mapSheet = tempSheet.getTexture();
+	tempSheet.clear();
+}
+
 int GameObjectContainerClass::randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename)
 {
 	int listIndex=getListTemplateIndex(tmp, _codename);

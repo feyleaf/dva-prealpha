@@ -229,6 +229,7 @@ public:
 	std::vector<actionStruct*> actions;
 	std::vector<buttonStruct*> regButtons;
 	std::vector<mapGenStruct*> regMaps;
+	sf::Texture mapSheet;
 
 	std::vector<int> listHandler;
 	void init();
@@ -252,6 +253,9 @@ public:
 
 	void activateEntityButtons(int entityIndex);
 	void deactivateEntityButtons(int entityIndex);
+
+	void createMapSheet(sf::Texture tileTexturePack, settingStruct set);
+	const sf::Texture getMapSheet() {return mapSheet;}
 
 	void fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename);
 
