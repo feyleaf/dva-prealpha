@@ -2,7 +2,7 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 22, 2014
+August 9, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -17,6 +17,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ENTITYTARGETING 4
 #define GAMEMODE_MAGICSPELL 5
 #define GAMEMODE_ZOOMOUT 6
+#define GAMEMODE_MINIMAP 7
 
 #define ACAT_NEUTRAL 0
 #define ACAT_MOVEMENT 1
@@ -27,6 +28,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define ACAT_PLANTS 6
 #define ACAT_GUI 7
 
+#define FRAMESPEED 0.0333f //amount of ticks per second
 
 #define JAN1_2014	1387584000
 struct gameHeader
@@ -51,10 +53,6 @@ protected:
 	InventoryClass inv;
 	sf::Clock frameClock;
 	sf::Clock gameClock;
-	sf::Image entitySheet;
-	sf::Image tileSheet;
-	sf::Image guiSheet;
-	sf::Image screenshot;
 	sf::RenderWindow app;
 	sf::Event gameEvent;
 	sf::Keyboard keys;
@@ -62,10 +60,10 @@ protected:
 	coord mouse;
 	coord finemouse;
 	bool isClicking;
-	bool pin;
 	sf::Font mainfont;
 	sf::Text sidebar;
-	coord worldCursor;
+	coord generatorCursor;
+	coord viewerCursor;
 	bool dumpActionList;
 
 	TerrainClass terrain;
@@ -73,12 +71,14 @@ protected:
 
 	RenderManager render;
 	sf::RenderTexture tempSheet;
+	sf::Image tempImg;
 
 
 public:
 	GameClass();
 	~GameClass();
 	void initialize();
+	void refreshMap(coord map_pos);
 	bool gameLoop();
 	coord getMouseGrid();
 	float gameTime() {return float(startTime)+gameClock.getElapsedTime().asSeconds();}
@@ -94,6 +94,7 @@ public:
 	bool isClickOnGUI();
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
+	void handleMinimapClick(coord _finemouse);
 	void useTool(int entityIndex, int entityTarget, int tileTarget);
 	void useCharm(int entityIndex, int entityTarget, int tileTarget);
 	void plantSeed(int entityIndex, int entityTarget, int tileTarget);
@@ -121,7 +122,7 @@ public:
 	void gameRenderer();
 
 	bool loadSettings();
-	void experimentalMapGen(const char* biome);
+	void experimentalMapGen(coord map_pos, const char* biome);
 	void createBaseMapLayer(const mapGenStruct* map);
 	void createDecorationLayer(const mapGenStruct* map);
 	void createEcologyLayer(const mapGenStruct* map);
@@ -164,6 +165,7 @@ public:
 	int entityHover();
 	int buttonHover();
 	int tileHover();
+	coord minimapHover();
 
 	int getTileIndexAt(coord _pt);
 	bool eraseTileAt(coord _pt);

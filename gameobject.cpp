@@ -14,6 +14,14 @@ GameObjectContainerClass::GameObjectContainerClass()
 	init();
 }
 
+GameObjectContainerClass::~GameObjectContainerClass()
+{
+
+	/*
+	*/
+	//init();
+}
+
 void GameObjectContainerClass::init()
 {
 	regTiles.clear();
@@ -98,26 +106,6 @@ void GameObjectContainerClass::fillVegDropList(const TemplateRegistryClass& tmp,
 			break;
 		}
 	}
-}
-
-void GameObjectContainerClass::createMapSheet(sf::Texture texturePack, settingStruct set)
-{
-	sf::RenderTexture tempSheet;
-	tempSheet.create(set.tileCols*set.tileWid, set.tileRows*set.tileHig);
-	tempSheet.clear();
-	sf::Sprite tempSprite;
-	for(int i=1; i<int(regTiles.size()); i++)
-	{
-		tempSprite.setTexture(texturePack);
-		tempSprite.setTextureRect(sf::IntRect(regTiles[i]->origin.x, regTiles[i]->origin.y, regTiles[i]->dimensions.x, regTiles[i]->dimensions.y));
-		tempSprite.setColor(regTiles[i]->distortionColor);
-
-		tempSprite.setPosition(float(regTiles[i]->pos.x), float(regTiles[i]->pos.y));
-		tempSprite.setScale(1.0f/float(set.tileWid), 1.0f/float(set.tileHig));
-		tempSheet.draw(tempSprite);
-	}
-	mapSheet = tempSheet.getTexture();
-	tempSheet.clear();
 }
 
 int GameObjectContainerClass::randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename)
@@ -308,59 +296,57 @@ void GameObjectContainerClass::handleTypesList(int _catType)
 //wipes all registry items!
 void GameObjectClass::clear(coord worldCursor)
 {
-	/*
-	while(!obj.regTiles.empty())
+	while(!objMap[worldCursor].regTiles.empty())
 	{
-		delete obj.regTiles[0];
-		obj.regTiles.erase(obj.regTiles.begin());
+		delete objMap[worldCursor].regTiles[0];
+		objMap[worldCursor].regTiles.erase(objMap[worldCursor].regTiles.begin());
 	}
-	while(!obj.regCreature.empty())
+	while(!objMap[worldCursor].regCreature.empty())
 	{
-		delete obj.regCreature[0];
-		obj.regCreature.erase(obj.regCreature.begin());
+		delete objMap[worldCursor].regCreature[0];
+		objMap[worldCursor].regCreature.erase(objMap[worldCursor].regCreature.begin());
 	}
-	while(!obj.regDeco.empty())
+	while(!objMap[worldCursor].regDeco.empty())
 	{
-		delete obj.regDeco[0];
-		obj.regDeco.erase(obj.regDeco.begin());
+		delete objMap[worldCursor].regDeco[0];
+		objMap[worldCursor].regDeco.erase(objMap[worldCursor].regDeco.begin());
 	}
-	while(!obj.regIng.empty())
+	while(!objMap[worldCursor].regIng.empty())
 	{
-		delete obj.regIng[0];
-		obj.regIng.erase(obj.regIng.begin());
+		delete objMap[worldCursor].regIng[0];
+		objMap[worldCursor].regIng.erase(objMap[worldCursor].regIng.begin());
 	}
-	while(!obj.regMaps.empty())
+	while(!objMap[worldCursor].regMaps.empty())
 	{
-		delete obj.regMaps[0];
-		obj.regMaps.erase(obj.regMaps.begin());
+		delete objMap[worldCursor].regMaps[0];
+		objMap[worldCursor].regMaps.erase(objMap[worldCursor].regMaps.begin());
 	}
-	while(!obj.regSeed.empty())
+	while(!objMap[worldCursor].regSeed.empty())
 	{
-		delete obj.regSeed[0];
-		obj.regSeed.erase(obj.regSeed.begin());
+		delete objMap[worldCursor].regSeed[0];
+		objMap[worldCursor].regSeed.erase(objMap[worldCursor].regSeed.begin());
 	}
-	while(!obj.regSummon.empty())
+	while(!objMap[worldCursor].regSummon.empty())
 	{
-		delete obj.regSummon[0];
-		obj.regSummon.erase(obj.regSummon.begin());
+		delete objMap[worldCursor].regSummon[0];
+		objMap[worldCursor].regSummon.erase(objMap[worldCursor].regSummon.begin());
 	}
-	while(!obj.regTool.empty())
+	while(!objMap[worldCursor].regTool.empty())
 	{
-		delete obj.regTool[0];
-		obj.regTool.erase(obj.regTool.begin());
+		delete objMap[worldCursor].regTool[0];
+		objMap[worldCursor].regTool.erase(objMap[worldCursor].regTool.begin());
 	}
-	while(!obj.regVeg.empty())
+	while(!objMap[worldCursor].regVeg.empty())
 	{
-		delete obj.regVeg[0];
-		obj.regVeg.erase(obj.regVeg.begin());
+		delete objMap[worldCursor].regVeg[0];
+		objMap[worldCursor].regVeg.erase(objMap[worldCursor].regVeg.begin());
 	}
-	int max=obj.regEntities.size()-1;
-	for(int i=0; i<max; i++)
+	while(!objMap[worldCursor].regEntities.empty())
 	{
-		delete obj.regEntities[max-i];
-		obj.regEntities.erase(obj.regEntities.begin()+(max-i));
+		delete objMap[worldCursor].regEntities[0];
+		objMap[worldCursor].regEntities.erase(objMap[worldCursor].regEntities.begin());
 	}
-	*/
+
 	int ac=objMap[worldCursor].actions.size()-1;
 	for(int i=0; i<ac; i++)
 	{

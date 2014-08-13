@@ -2,14 +2,21 @@
 render.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 17, 2014
+August 10, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
 
 #include "globals.h"
 
-void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
+void RenderManager::initialize(const TemplateRegistryClass& tmp, const settingStruct set)
+{
+	loadGraphicsFiles(set);
+	createTileSheet(tmp, set);
+	createEntitySheet(tmp, set);
+	createGuiSheet(tmp, set);
+}
+void RenderManager::createTileSheet(const TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -44,10 +51,10 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp)
 		}
 	}
 	spriteSheet.display();
-	spriteSheet.getTexture().copyToImage().saveToFile("tiles_temp.png");
+	spriteSheet.getTexture().copyToImage().saveToFile(set.tileSheetFile);
 }
 
-void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
+void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -83,10 +90,10 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp)
 		}
 	}
 	spriteSheet.display();
-	spriteSheet.getTexture().copyToImage().saveToFile("entities_temp.png");
+	spriteSheet.getTexture().copyToImage().saveToFile(set.entitySheetFile);
 }
 
-void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp)
+void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -122,7 +129,7 @@ void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp)
 		}
 	}
 	spriteSheet.display();
-	spriteSheet.getTexture().copyToImage().saveToFile("gui_temp.png");
+	spriteSheet.getTexture().copyToImage().saveToFile(set.guiSheetFile);
 }
 
 void RenderManager::loadGraphicsFiles(settingStruct set)
@@ -131,9 +138,9 @@ void RenderManager::loadGraphicsFiles(settingStruct set)
 	entitySheet.setSmooth(false);
 	tileSheet.setSmooth(false);
 	guiSheet.setSmooth(false);
-	entitySheet.loadFromFile("entities_temp.png");
-	tileSheet.loadFromFile("tiles_temp.png");
-	guiSheet.loadFromFile("gui_temp.png");
+	entitySheet.loadFromFile(set.entitySheetFile);
+	tileSheet.loadFromFile(set.tileSheetFile);
+	guiSheet.loadFromFile(set.guiSheetFile);
 }
 
 sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _hig)
@@ -145,10 +152,17 @@ sf::IntRect RenderManager::rectFromOrigin(unsigned char _origin, int _wid, int _
 
 }
 
-void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, coord place, sf::Color tint, int con, long sd)
+void RenderManager::ColorizeMiniMap(registeredTile* obj, coord place, sf::Color tint)
+{
+	coord o=obj->origin;
+	int frameskip=obj->frame*obj->dimensions.x;
+	obj->minimapColor = tileSheet.copyToImage().getPixel(o.x+frameskip, o.y);
+}
+
+void RenderManager::DrawTile(sf::RenderWindow& win, registeredTile* obj, coord place, sf::Color tint)
 {
 	currentSprite.setTexture(tileSheet);
-	sf::Vector2i o=sf::Vector2i(toVector(obj->origin));
+	coord o=obj->origin;
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
 	currentSprite.setColor(tint);
@@ -158,13 +172,23 @@ void RenderManager::DrawTile(sf::RenderWindow& win, const registeredTile* obj, c
 	win.draw(currentSprite);
 }
 
-void RenderManager::DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass& obj, coord worldCoord, coord centerPos)
+void RenderManager::DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass& obj, coord worldCoord, coord centerPos, bool highlight)
 {
-	currentSprite.setTexture(obj.mapSheet, true);
+	currentSprite.setTexture(obj.mapSheet);
+	currentSprite.setTextureRect(sf::IntRect(0,0,24,18));
 	//if we center on x,y then the rendered position is x+wpx, y+wpy
-	sf::Vector2f outputPos = toVector(worldCoord+centerPos);
+	sf::Vector2f outputPos = toVector(centerPos-worldCoord);
+	outputPos.x*=32*24;
+	outputPos.y*=32*18;
 	currentSprite.setPosition(outputPos);
+	currentSprite.setScale(32.0f, 32.0f);
+	currentSprite.setColor(sf::Color::White);
+	if(highlight)
+		currentSprite.setColor(sf::Color::Red);
+	win.setView(viewport);
 	win.draw(currentSprite);
+	currentSprite.setScale(1.0f, 1.0f);
+	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)
@@ -184,9 +208,7 @@ void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* ob
 	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));
 	
-	win.setView(viewport);
 	win.draw(currentSprite);
-	win.setView(win.getDefaultView());
 }
 
 void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover)

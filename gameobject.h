@@ -28,7 +28,8 @@ struct registeredTile
 	int frame;
 	coord pos;
 	sf::Color distortionColor;
-	registeredTile(int _index, coord _orig, coord _dim, coord _pos) {tileTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; pos=_pos; distortionColor=sf::Color::White;}
+	sf::Color minimapColor;
+	registeredTile(int _index, coord _orig, coord _dim, coord _pos) {tileTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; pos=_pos; distortionColor=sf::Color::White; minimapColor=sf::Color::White;}
 };
 
 struct registeredEntity
@@ -215,7 +216,7 @@ class GameObjectContainerClass
 {
 public:
 	GameObjectContainerClass();
-	~GameObjectContainerClass() {}
+	~GameObjectContainerClass();
 
 	std::vector<registeredTile*> regTiles;
 	std::vector<registeredEntity*> regEntities;
@@ -253,9 +254,6 @@ public:
 
 	void activateEntityButtons(int entityIndex);
 	void deactivateEntityButtons(int entityIndex);
-
-	void createMapSheet(sf::Texture tileTexturePack, settingStruct set);
-	const sf::Texture getMapSheet() {return mapSheet;}
 
 	void fillVegDropList(const TemplateRegistryClass& tmp, int packIndex, const char* _codename);
 
