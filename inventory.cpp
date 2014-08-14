@@ -1,5 +1,121 @@
 #include "globals.h"
 
+InventoryRegistryClass::InventoryRegistryClass()
+{
+	entities.clear();
+	entities.push_back(NULL);
+	creatures.clear();
+	creatures.push_back(NULL);
+	decos.clear();
+	decos.push_back(NULL);
+	ings.clear();
+	ings.push_back(NULL);
+	seeds.clear();
+	seeds.push_back(NULL);
+	summons.clear();
+	summons.push_back(NULL);
+	tools.clear();
+	tools.push_back(NULL);
+	vegs.clear();
+	vegs.push_back(NULL);
+}
+
+InventoryRegistryClass::~InventoryRegistryClass()
+{
+	/*
+	while(!entities.empty())
+	{
+		delete entities[0];
+		entities.erase(entities.begin());
+	}
+	while(!creatures.empty())
+	{
+		delete creatures[0];
+		creatures.erase(creatures.begin());
+	}
+	while(!decos.empty())
+	{
+		delete decos[0];
+		decos.erase(decos.begin());
+	}
+	while(!ings.empty())
+	{
+		delete ings[0];
+		ings.erase(ings.begin());
+	}
+	while(!seeds.empty())
+	{
+		delete seeds[0];
+		seeds.erase(seeds.begin());
+	}
+	while(!summons.empty())
+	{
+		delete summons[0];
+		summons.erase(summons.begin());
+	}
+	while(!tools.empty())
+	{
+		delete tools[0];
+		tools.erase(tools.begin());
+	}
+	while(!vegs.empty())
+	{
+		delete vegs[0];
+		vegs.erase(vegs.begin());
+	}
+	*/
+}
+
+int InventoryRegistryClass::registerFromGameObject(const GameObjectContainerClass& obj, int index)
+{
+	if(obj.regEntities[index] == NULL) return 0;
+	int tempPack=obj.regEntities[index]->packIndex;
+	int realPack=0;
+	switch(obj.regEntities[index]->type)
+	{
+		case ICAT_CREATURE:
+			creatures.push_back(obj.regCreature[tempPack]);
+			realPack=int(creatures.size()-1);
+			break;
+		case ICAT_INGREDIENT:
+			ings.push_back(obj.regIng[tempPack]);
+			realPack=int(ings.size()-1);
+			break;
+		case ICAT_DECORATION:
+			decos.push_back(obj.regDeco[tempPack]);
+			realPack=int(decos.size()-1);
+			break;
+		case ICAT_SEED:
+			seeds.push_back(obj.regSeed[tempPack]);
+			realPack=int(seeds.size()-1);
+			break;
+		case ICAT_SUMMON:
+			summons.push_back(obj.regSummon[tempPack]);
+			realPack=int(summons.size()-1);
+			break;
+		case ICAT_VEGETATION:
+			vegs.push_back(obj.regVeg[tempPack]);
+			realPack=int(vegs.size()-1);
+			break;
+		case ICAT_TOOL:
+			tools.push_back(obj.regTool[tempPack]);
+			realPack=int(tools.size()-1);
+			break;
+		default:
+			break;
+	}
+	entities.push_back(new registeredEntity(obj.regEntities[index]->entityTemplateIndex,
+		obj.regEntities[index]->type,
+		realPack,
+		obj.regEntities[index]->origin,
+		obj.regEntities[index]->dimensions,
+		obj.regEntities[index]->box,
+		obj.regEntities[index]->pos));
+	int realIndex=int(entities.size()-1);
+	entities[realIndex]->packIndex=realPack;
+	return realIndex;
+}
+
 InventoryClass::InventoryClass()
 {
 	tl=coord(24,7);
@@ -45,6 +161,7 @@ bool InventoryClass::swap(int plcA, int plcB)
 	if(plcA<0 || plcA>capacity) return false;
 	if(plcB<0 || plcB>capacity) return false;
 	cellStruct temp;
+
 	temp.tmp_idx = cellList[plcA].tmp_idx;
 	temp.idx_item = cellList[plcA].idx_item;
 	temp.quantity = cellList[plcA].quantity;
@@ -56,7 +173,6 @@ bool InventoryClass::swap(int plcA, int plcB)
 	cellList[plcB].tmp_idx = temp.tmp_idx;
 	cellList[plcB].idx_item = temp.idx_item;
 	cellList[plcB].quantity = temp.quantity;
-
 	return true;
 }
 
@@ -161,19 +277,22 @@ int InventoryClass::getFirstMatch(unsigned char _id)
 }
 
 
-bool InventoryClass::add(registeredEntity* ent, int entIndex, short q)
+bool InventoryClass::add(const GameObjectContainerClass& obj, int entIndex, short q)
 {
 	//adds an item to the inventory
 	//first check to see if the item is stackable, if not, each of q times seeks a different slot
 	//also we skip the match algo if the item is not stackable
+
 	int plc=-1;//seeking fail case is -1
 	bool quantityAdded=true;
 
+	int realIndex = reg.registerFromGameObject(obj, entIndex);
+
 	for(int i=0; i<q; i++)
 	{
-		if(ent->type != ICAT_CREATURE && ent->type != ICAT_SUMMON) //add types that are not stackable
+		if(reg.entities[realIndex]->type != ICAT_CREATURE && reg.entities[realIndex]->type != ICAT_SUMMON) //add types that are not stackable
 		{
-			plc = getFirstMatch(ent->entityTemplateIndex);
+			plc = getFirstMatch(reg.entities[realIndex]->entityTemplateIndex);
 			if(plc == -1) //if no first match is found, then look for the next empty slot
 			{
 				plc = getFirstEmpty();
@@ -193,8 +312,8 @@ bool InventoryClass::add(registeredEntity* ent, int entIndex, short q)
 		}
 		else
 		{
-			cellList[plc].tmp_idx = ent->entityTemplateIndex;
-			cellList[plc].idx_item = entIndex;
+			cellList[plc].tmp_idx = reg.entities[realIndex]->entityTemplateIndex;
+			cellList[plc].idx_item = realIndex;
 			cellList[plc].quantity = 1;
 		}
 		quantityAdded=true;

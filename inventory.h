@@ -10,11 +10,31 @@ struct cellStruct
 
 };
 
+class InventoryRegistryClass
+{
+public:
+	InventoryRegistryClass();
+	~InventoryRegistryClass();
+
+	std::vector<registeredEntity*> entities;
+	std::vector<vegPack*> vegs;
+	std::vector<decoPack*> decos;
+	std::vector<seedPack*> seeds;
+	std::vector<summonPack*> summons;
+	std::vector<toolPack*> tools;
+	std::vector<creaturePack*> creatures;
+	std::vector<ingredientPack*> ings;
+
+	int registerFromGameObject(const GameObjectContainerClass& obj, int entityIndex);
+};
+
 class InventoryClass
 {
 public:
 	InventoryClass();
 	~InventoryClass() {}
+
+	InventoryRegistryClass reg;
 
 	coord tl;
 	coord dimensions;
@@ -33,7 +53,7 @@ public:
 	bool clearSlot(int plc);
 	bool clearAll();
 	bool swap(int plcA, int plcB);
-	bool add(registeredEntity* ent, int entIndex, short q=1);
+	bool add(const GameObjectContainerClass& obj, int entIndex, short q=1);
 	unsigned int drop(int plc);
 	unsigned int getItemAt(int plc);
 	unsigned int getItemAtCursor();

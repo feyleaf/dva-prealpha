@@ -35,7 +35,7 @@ class RenderManager
 		void DrawTile(sf::RenderWindow& win, registeredTile* obj, coord place, sf::Color tint=sf::Color(255,255,255));
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
-		void DrawInventory(sf::RenderWindow& win, const GameObjectContainerClass& _reg, const InventoryClass& items, const buttonStruct* cell);
+		void DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell);
 		void DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass& obj, coord worldCoord, coord centerPos, bool highlight);
 };
 #endif //RENDER_H

@@ -14,7 +14,6 @@ void GameClass::initialize()
 {
 	loadSettings();
 	astar.initBounds(settings);
-//	refreshMap(generatorCursor);
 	gameClock.restart();
 	frameClock.restart();
 	gameConstant=60;
@@ -957,6 +956,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		fillButton("camera", coord(settings.tileCols+1, 5));
 		fillButton("backpack", coord(settings.tileCols+2, 5));
 		fillButton("worldmap", coord(settings.tileCols+3, 5));
+		fillButton("inventorycell", coord(0,0), 0, false);
 		newGame=false;
 		return;
 	}
@@ -1119,7 +1119,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "randomheld"))
 	{
-		inv.add(registry.objMap[viewerCursor].regEntities[act->entityIndexSource], act->entityIndexSource);
+		inv.add(registry.objMap[viewerCursor], act->entityIndexSource);
 		registry.cloneToInventory(act->entityIndexSource, viewerCursor);
 		return;
 	}
@@ -1152,7 +1152,6 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		if(gamemode==GAMEMODE_INSPECT)
 		{
 			sidebar.setString(outputEntity(act->entityIndexTarget));
-			fillSourceAction("convertflower", act->entityIndexTarget);
 			return;
 		}
 		if(gamemode==GAMEMODE_NEUTRAL)
@@ -1161,6 +1160,17 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
 			{
 				fillSourceAction("creatureguion", act->entityIndexTarget);
+				return;
+			}
+			if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->type == ICAT_VEGETATION)
+			{
+				fillSourceAction("convertflower", act->entityIndexTarget);
+				return;
+			}
+			if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->type == ICAT_INGREDIENT)
+			{
+				fillSourceAction("randomheld", act->entityIndexTarget);
+				return;
 			}
 			return;
 		}
@@ -1546,12 +1556,12 @@ void GameClass::handleBoardClick(coord _mouse)
 	{
 		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
 		{
-			if(registry.objMap[viewerCursor].regEntities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_TOOL)
 			{
 				useTool(inv.getItemAtCursor(), entityIndex, 0);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
 			}
-			if(registry.objMap[viewerCursor].regEntities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
 			{
 				useCharm(inv.getItemAtCursor(), entityIndex, 0);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
@@ -1566,19 +1576,19 @@ void GameClass::handleBoardClick(coord _mouse)
 	{
 		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
 		{
-			if(registry.objMap[viewerCursor].regEntities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_TOOL)
 			{
 				useTool(inv.getItemAtCursor(), 0, tileIndex);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
 				return;
 			}
-			if(registry.objMap[viewerCursor].regEntities[inv.getItemAtCursor()]->type==ICAT_SEED)
+			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SEED)
 			{
 				plantSeed(inv.drop(inv.cursor), 0, tileIndex);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
 				return;
 			}
-			if(registry.objMap[viewerCursor].regEntities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
 			{
 				useCharm(inv.getItemAtCursor(), 0, tileIndex);
 				sidebar.setString(outputEntity(inv.getItemAtCursor()));
@@ -1770,7 +1780,7 @@ void GameClass::gameRenderer()
 		render.currentSprite.setPosition(sf::Vector2f(0,0));
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
-		render.DrawInventory(app, registry.objMap[viewerCursor], inv, registry.objMap[viewerCursor].regButtons[5]);
+		render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
 	}
 
 	app.draw(sidebar);

@@ -457,7 +457,6 @@ bool GameObjectClass::createTile(const TemplateRegistryClass& tmp, const char* _
 		}
 	}
 
-	//TODO: color varaince!! :)
 	return ret;
 }
 
