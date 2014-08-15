@@ -89,7 +89,7 @@ protected:
 	//--prerequisite data for rendering at runtime
 	settingStruct settings;
 	sf::Clock frameClock;
-	sf::Font mainfont;
+	//sf::Font mainfont;
 
 	//--data in flux, for rendering communications with the player
 	sf::Text sidebar;

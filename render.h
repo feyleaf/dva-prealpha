@@ -16,7 +16,8 @@ class RenderManager
 		sf::Texture tileSheet;
 		sf::Texture entitySheet;
 		sf::Texture guiSheet;
-		sf::Font font;
+		sf::Font mainfont;
+		sf::Font auxfont;
 		sf::Sprite currentSprite;
 		sf::View viewport;
 		RenderManager() {}

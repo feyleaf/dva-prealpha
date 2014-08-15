@@ -23,8 +23,8 @@ void GameClass::refreshMap(coord map_pos)
 {
 	isClicking=true;
 	mapscale=1.0f;
-	header.randSeed=rand();
-	initRandom(header.randSeed);
+	//header.randSeed=rand();
+	//initRandom(header.randSeed);
 	gamemode=GAMEMODE_NEUTRAL;
 	registry.clear(map_pos);
 }
@@ -42,6 +42,7 @@ GameClass::GameClass()
 	quitGame=false;
 	header.mapIndex=0;
 	header.randSeed=(unsigned int)time(NULL);
+	initRandom(header.randSeed);
 	inv.clearAll();
 	initialize();
 	tmp.parseFile("allreg-testing.txt");
@@ -49,8 +50,8 @@ GameClass::GameClass()
 	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
 	//app.setFramerateLimit(60);
 	render.resetView(app);
-	mainfont.loadFromFile(settings.mainFontFile);
-	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", mainfont, 24);
+	//render.mainfont.loadFromFile(settings.mainFontFile);
+	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", render.mainfont, 24);
 	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
 	registry.createAction(tmp, "generatemap", 0,0,0,0.0f, viewerCursor);
 }
@@ -1213,7 +1214,8 @@ void GameClass::capture()
 
 void GameClass::experimentalMapGen(coord map_pos, const char* biome)
 {
-	header.randSeed=rand();
+	header.mapIndex++;
+	header.randSeed=rand()+header.mapIndex;
 	initRandom(header.randSeed);
 	registry.createMapTerrain(tmp, biome, generatorCursor);
 	int i=registry.objMap[map_pos].regMaps.size()-1;
@@ -1693,7 +1695,8 @@ void GameClass::handleGUIClick(coord _mouse)
 		if(!(_mouse.x<inv.tl.x || _mouse.y<inv.tl.y || _mouse.x>inv.tl.x+inv.dimensions.x || _mouse.y>inv.tl.y+inv.dimensions.y))
 		{
 			inv.select(_mouse);
-			sidebar.setString(outputEntity(inv.getItemAtCursor()));
+			if(inv.reg.entities[inv.getItemAtCursor()] != NULL)
+				sidebar.setString(tmp.container.entityList[inv.reg.entities[inv.getItemAtCursor()]->entityTemplateIndex].name);
 			return;
 		}
 	}

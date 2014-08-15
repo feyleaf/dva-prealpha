@@ -134,7 +134,8 @@ void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp, const setti
 
 void RenderManager::loadGraphicsFiles(settingStruct set)
 {
-	font.loadFromFile(set.mainFontFile);
+	mainfont.loadFromFile(set.mainFontFile);
+	auxfont.loadFromFile(set.auxFontFile);
 	entitySheet.setSmooth(false);
 	tileSheet.setSmooth(false);
 	guiSheet.setSmooth(false);
@@ -229,6 +230,11 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 
 void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell)
 {
+	char out[8];
+	sf::Text quantityOut;
+	quantityOut.setCharacterSize(16);
+	quantityOut.setFont(auxfont);
+	quantityOut.setColor(sf::Color::White);
 	int held=0;
 	currentSprite.setTexture(guiSheet);
 	coord o=cell->origin;
@@ -249,8 +255,9 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, 
 	{
 		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
 		{
+			int index=((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x));
 	
-			held=items.cellList[((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x))].idx_item;
+			held=items.cellList[index].idx_item;
 			if(items.reg.entities[held] != NULL)
 			{
 				o=items.reg.entities[held]->origin;
@@ -259,6 +266,14 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, 
 				currentSprite.setColor(sf::Color::White);
 	
 				win.draw(currentSprite);
+
+				if(items.getQuantityAt(index) > 1)
+				{
+					sprintf_s(out, "%5i", items.getQuantityAt(index));
+					quantityOut.setString(out);
+					quantityOut.setPosition(float((x*32)), float((y*32))+33.0f);
+					win.draw(quantityOut);
+				}
 			}
 		}
 	}
