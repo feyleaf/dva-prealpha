@@ -958,6 +958,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		fillButton("backpack", coord(settings.tileCols+2, 5));
 		fillButton("worldmap", coord(settings.tileCols+3, 5));
 		fillButton("inventorycell", coord(0,0), 0, false);
+		fillButton("ritualgui", coord(5,3), 0, false);
 		newGame=false;
 		return;
 	}
@@ -1155,6 +1156,11 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			sidebar.setString(outputEntity(act->entityIndexTarget));
 			return;
 		}
+		if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->entityTemplateIndex == registry.objMap[viewerCursor].getEntityTemplateIndex(tmp, "ritualstump"))
+		{
+			fillSourceAction("togglecrafting", act->entityIndexTarget);
+			return;
+		}
 		if(gamemode==GAMEMODE_NEUTRAL)
 		{
 			if(act->entityIndexTarget==0) return;
@@ -1180,6 +1186,20 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	{
 		sidebar.setString("");
 		gamemode=GAMEMODE_NEUTRAL;
+		return;
+	}
+	if(actionCodeEquals(act->actionTemplateIndex, "togglecrafting"))
+	{
+		if(gamemode==GAMEMODE_CRAFTING)
+		{
+			sidebar.setString("Crafting OFF");
+			gamemode=GAMEMODE_NEUTRAL;
+		}
+		else
+		{
+			sidebar.setString("Crafting ON");
+			gamemode=GAMEMODE_CRAFTING;
+		}
 		return;
 	}
 }
@@ -1278,6 +1298,7 @@ void GameClass::createDecorationLayer(const mapGenStruct* map)
 {
 	for(int j=0; j<int(map->decoLayer.size()); j++)
 		scatterEntity(map->decoLayer[j]);
+	fillEntity("ritualstump", coord(rand()%settings.tileCols,rand()%settings.tileRows));
 }
 
 void GameClass::createEcologyLayer(const mapGenStruct* map)
@@ -1772,6 +1793,15 @@ void GameClass::gameRenderer()
 				render.DrawGui(app, registry.objMap[viewerCursor].regButtons[i], registry.objMap[viewerCursor].regButtons[i]->pos, i==buttonHover());
 		}
 	}
+	if(gamemode==GAMEMODE_CRAFTING)
+	{
+		registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "togglecrafting")]->active=true;
+	}
+	else {
+		if(registry.objMap[viewerCursor].regButtons.size()>1)
+			registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "togglecrafting")]->active=false;
+	}
+
 	if(gamemode == GAMEMODE_INVENTORY)
 	{
 /*		sf::Image imgdummy;

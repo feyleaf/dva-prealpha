@@ -1,9 +1,25 @@
-﻿Build started 8/14/2014 10:41:58 PM.
+﻿Build started 8/15/2014 10:44:18 PM.
      1>Project "C:\Users\Benjamin\Documents\GitHub\dva-prealpha\dva-prealpha1_2.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D SFML_STATIC /D _MBCS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt game.cpp
+         game.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Benjamin\Documents\GitHub\dva-prealpha\Release\dva-prealpha1_2.exe" /NOLOGO "sfml-main.lib" "sfml-graphics-s.lib" "sfml-window-s.lib" "sfml-system-s.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Benjamin\Documents\GitHub\dva-prealpha\Release\dva-prealpha1_2.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Benjamin\Documents\GitHub\dva-prealpha\Release\dva-prealpha1_2.lib" /MACHINE:X86 /SAFESEH Release\debugrecords.obj
+         Release\game.obj
+         Release\gameobject.obj
+         Release\ic_math.obj
+         Release\ic_pathing.obj
+         Release\interpret.obj
+         Release\inventory.obj
+         Release\main.obj
+         Release\render.obj
+         Release\tempRegistry.obj
+         Release\terrain.obj
+         Generating code
+         Finished generating code
          dva-prealpha1_2.vcxproj -> C:\Users\Benjamin\Documents\GitHub\dva-prealpha\Release\dva-prealpha1_2.exe
      1>Done Building Project "C:\Users\Benjamin\Documents\GitHub\dva-prealpha\dva-prealpha1_2.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:10.07

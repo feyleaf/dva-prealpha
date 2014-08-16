@@ -74,6 +74,7 @@ PROTOCOL:pursuit,4,0,1,0
 PROTOCOL:togglemap,7,0,1,0
 PROTOCOL:zoomout,0,0,1,0
 PROTOCOL:guion,0,0,1,0
+PROTOCOL:togglecrafting,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,0,0,32,32,squirrel.png,1,makecreature,1,1,1,1,2,none
 CREATURE:irongolem,Iron Golem,32,32,0,0,32,32,irongolem.png,1,makeenemy,1,1,1,1,1,none
 INGREDIENT:redpetal,Red Rose Petal,32,32,0,0,32,32,redpetal.png,1,solidblock,none
@@ -92,6 +93,7 @@ SEED:s_heaven,Heaven\'s Mirror Seed,32,32,0,0,32,32,seed_heavens.png,1,solidbloc
 DECORATION:marlborobush,Marlboro Bush,32,32,0,0,32,32,marlborobush.png,1,solidblock,1,0,1,1,none
 DECORATION:boulder,Boulder,32,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
+DECORATION:ritualstump,Ritual Stump,32,32,0,0,32,32,stump.png,1,solidblock,1,0,1,1,none
 DECORATION:magiceffect,Magic Effect,32,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
 DECORATION:claw,Squirrel Claw Effect,32,32,0,0,0,0,squirrelclaw.png,8,solidblock,1,0,1,1,none
 TOOL:magicwand,Magic Wand,32,32,0,0,32,32,wand.png,1,solidblock,10,spelltile
@@ -124,3 +126,4 @@ BUTTON:backpack,Backpack,32,32,0,0,32,32,backpack.png,1,backpack,none
 BUTTON:movebutton,Move Creature,32,32,0,0,32,32,road.png,1,movecreature,none
 BUTTON:inventorycell,Cell,32,32,0,0,32,32,invcell.png,1,selectinventory,none
 BUTTON:worldmap,World Map,32,32,0,0,32,32,worldmap.png,1,togglemap,none
+BUTTON:ritualgui,Ritual GUI,192,192,0,0,192,192,stumpgui.png,1,togglecrafting,none

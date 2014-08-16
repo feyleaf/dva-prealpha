@@ -18,6 +18,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_MAGICSPELL 5
 #define GAMEMODE_ZOOMOUT 6
 #define GAMEMODE_MINIMAP 7
+#define GAMEMODE_CRAFTING 8
 
 #define ACAT_NEUTRAL 0
 #define ACAT_MOVEMENT 1

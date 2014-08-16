@@ -123,6 +123,7 @@ void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp, const setti
 			tempTexture.loadFromFile("images/" + std::string(tmp.container.buttonList[i].spritefile), 
 				sf::IntRect(c*tmp.container.buttonList[i].dimensions.x, 0, tmp.container.buttonList[i].dimensions.x, tmp.container.buttonList[i].dimensions.y));
 			tempSprite.setTexture(tempTexture);
+			tempSprite.setTextureRect(sf::IntRect(c*tmp.container.buttonList[i].dimensions.x, 0, tmp.container.buttonList[i].dimensions.x, tmp.container.buttonList[i].dimensions.y));
 			//tempSprite.setColor(sf::Color(255,255,255));
 			tempSprite.setPosition(float(col), float(row));
 			spriteSheet.draw(tempSprite);			
