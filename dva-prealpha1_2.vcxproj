@@ -77,6 +77,7 @@
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render.cpp" />
+    <ClCompile Include="ritual.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
     <ClCompile Include="terrain.cpp" />
   </ItemGroup>
@@ -89,6 +90,7 @@
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="ritual.h" />
     <ClInclude Include="tempRegistry.h" />
     <ClInclude Include="templates.h" />
     <ClInclude Include="terrain.h" />

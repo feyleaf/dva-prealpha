@@ -229,6 +229,26 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 	if(obj->active) win.draw(currentSprite);
 }
 
+void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual)
+{
+	currentSprite.setTexture(entitySheet);
+	int line=0;
+	for(int i=0; i<int(theRitual.cell.size()); i++)
+	{
+		line=0;
+		for(int j=1; j<=theRitual.cell[i].templateIndex; j++)
+		{
+			line+=tmp.container.entityList[j-1].dimensions.y;
+		}
+		currentSprite.setTextureRect(sf::IntRect(0,line, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.x, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.y));
+		currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(float((theRitual.cell[i].point.x*32)), float((theRitual.cell[i].point.y*32)));
+	
+		win.draw(currentSprite);
+	}
+	
+}
+
 void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell)
 {
 	char out[8];

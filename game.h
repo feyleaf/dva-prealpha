@@ -76,6 +76,7 @@ protected:
 	//--value structures for interaction with the world, handled by player
 	int gamemode;
 	InventoryClass inv;
+	RitualClass ritual;
 	coord mouse;
 	coord finemouse;
 	bool isClicking;

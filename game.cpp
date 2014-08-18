@@ -1507,6 +1507,10 @@ int GameClass::buttonHover()
 		{
 			return i;
 		}
+		if(registry.objMap[viewerCursor].regButtons[i]->active && registry.objMap[viewerCursor].regButtons[i]->box.contains(sf::Vector2i(mouse.x*settings.tileWid, mouse.y*settings.tileHig)))
+		{
+			return i;
+		}
 	}
 	return 0;
 }
@@ -1565,6 +1569,13 @@ bool GameClass::isClickOnGUI()
 		if(!(mouse.x<inv.tl.x || mouse.y<inv.tl.y || mouse.x>inv.tl.x+inv.dimensions.x || mouse.y>inv.tl.y+inv.dimensions.y))
 		{
 			return true;
+		}
+		if(gamemode==GAMEMODE_CRAFTING)
+		{
+			if(!(mouse.x<5 || mouse.y<5 || mouse.x>5+(192/32) || mouse.y>5+(192/32)))
+			{
+				return true;
+			}
 		}
 		return (buttonHover()>0);
 	}
@@ -1711,13 +1722,22 @@ void GameClass::plantSeed(int entityIndex, int entityTarget, int tileTarget)
 
 void GameClass::handleGUIClick(coord _mouse)
 {
-	if(gamemode==GAMEMODE_INVENTORY)
+	if(gamemode==GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
 	{
 		if(!(_mouse.x<inv.tl.x || _mouse.y<inv.tl.y || _mouse.x>inv.tl.x+inv.dimensions.x || _mouse.y>inv.tl.y+inv.dimensions.y))
 		{
 			inv.select(_mouse);
 			if(inv.reg.entities[inv.getItemAtCursor()] != NULL)
+			{
 				sidebar.setString(tmp.container.entityList[inv.reg.entities[inv.getItemAtCursor()]->entityTemplateIndex].name);
+				if(gamemode==GAMEMODE_CRAFTING)
+				{
+					if(ritual.addToRitual(inv.reg.entities[inv.getItemAtCursor()]->entityTemplateIndex))
+					{
+						inv.drop(inv.cursor);
+					}
+				}
+			}
 			return;
 		}
 	}
@@ -1802,7 +1822,7 @@ void GameClass::gameRenderer()
 			registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "togglecrafting")]->active=false;
 	}
 
-	if(gamemode == GAMEMODE_INVENTORY)
+	if(gamemode == GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
 	{
 /*		sf::Image imgdummy;
 		sf::Texture dummy;
@@ -1814,6 +1834,7 @@ void GameClass::gameRenderer()
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
 		render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
+		render.DrawRituals(app, tmp, ritual);
 	}
 
 	app.draw(sidebar);

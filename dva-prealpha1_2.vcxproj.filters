@@ -48,6 +48,9 @@
     <ClCompile Include="ic_pathing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ritual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="templates.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ic_pathing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ritual.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
