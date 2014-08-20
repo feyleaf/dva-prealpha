@@ -39,6 +39,7 @@ struct tileTemplate
 {
 	char cname[32];
 	char name[32];
+	coord origin;
 	coord dimensions;
 	char spritefile[40];
 	unsigned char iconRange;
@@ -51,9 +52,9 @@ struct tileTemplate
 					unsigned char _iconRange,
 					const char* _varcode,
 					unsigned char _variance)
-	{strncpy_s(cname, 32, _cname, 32);  strncpy_s(name, 32, _name, 32); dimensions=_dimensions; strncpy_s(spritefile, 40, _spritefile, 40); iconRange=_iconRange; strncpy_s(var_codename, 32, _varcode, 32); variance=_variance;}
+	{strncpy_s(cname, 32, _cname, 32);  strncpy_s(name, 32, _name, 32); origin=coord(0,0); dimensions=_dimensions; strncpy_s(spritefile, 40, _spritefile, 40); iconRange=_iconRange; strncpy_s(var_codename, 32, _varcode, 32); variance=_variance;}
 	tileTemplate()
-	{strncpy_s(cname, 32, "none", 32);  strcpy_s(name, "Undef"); dimensions=coord(0,0); strncpy_s(spritefile, 40, "tiles-1_2.png", 40); iconRange=0; strcpy_s(var_codename, "undef"); variance=0;}
+	{strncpy_s(cname, 32, "none", 32);  strcpy_s(name, "Undef"); origin=coord(0,0); dimensions=coord(0,0); strncpy_s(spritefile, 40, "tiles-1_2.png", 40); iconRange=0; strcpy_s(var_codename, "undef"); variance=0;}
 };//size 24 bytes
 
 //constructed template rules for entity creation
@@ -67,6 +68,7 @@ struct entityTemplate
 	char cname[40];
 	unsigned char type;
 	char name[40];
+	coord origin;
 	coord dimensions;
 	sf::IntRect box;
 	char spritefile[40];
@@ -80,9 +82,9 @@ struct entityTemplate
 					unsigned char _iconRange,
 					const char* _creation,
 					unsigned char _creationProtocol)
-	{strncpy_s(cname, 40, _cname, 40); type=_type; strncpy_s(name, 40, _name, 40); strncpy_s(spritefile, 40, _spriteFile, 40); iconRange=_iconRange; strncpy_s(creation, 32, _creation, 32); creationProtocol=_creationProtocol;}
+	{strncpy_s(cname, 40, _cname, 40); type=_type; strncpy_s(name, 40, _name, 40); strncpy_s(spritefile, 40, _spriteFile, 40); origin=coord(0,0); iconRange=_iconRange; strncpy_s(creation, 32, _creation, 32); creationProtocol=_creationProtocol;}
 	entityTemplate()
-	{strncpy_s(cname, 40, "undef", 40); type=0; strncpy_s(name, 40, "Undef", 40); strncpy_s(spritefile, 40, "entity-1_2.png", 40); iconRange=0; strcpy_s(creation, "undef"); creationProtocol=0;}
+	{strncpy_s(cname, 40, "undef", 40); type=0; strncpy_s(name, 40, "Undef", 40); strncpy_s(spritefile, 40, "entity-1_2.png", 40); origin=coord(0,0); iconRange=0; strcpy_s(creation, "undef"); creationProtocol=0;}
 };//size 52 bytes
 
 //constructed template rules for varying colors on map tiles
@@ -344,13 +346,13 @@ struct guiButtonTemplate
 {
 	char cname[40];
 	char name[32];				//button will need a name
+	coord origin;
 	coord dimensions;
 	sf::IntRect box;
 	char spritefile[40];
 	unsigned char iconRange;
 	char actionName[32];
 	unsigned char actionID;
-	sf::IntRect placement;
 	guiButtonTemplate(const char* _cname,
 						const char* _name,
 						coord _dim,
@@ -358,19 +360,21 @@ struct guiButtonTemplate
 						const char* _sprite,
 						const char* _actionName,
 						unsigned char _iconRange,
-						unsigned char _action,
-						sf::IntRect _placement)
-	{strncpy_s(cname, 40, _cname, 40); strncpy_s(name, 32, _name, 32); dimensions=_dim; box=_box; actionID=_action; strncpy_s(spritefile, 40, _sprite, 40); strncpy_s(actionName, 40, _actionName, 40); iconRange=_iconRange; placement=_placement;}
+						unsigned char _action)
+	{strncpy_s(cname, 40, _cname, 40); strncpy_s(name, 32, _name, 32); origin=coord(0,0); dimensions=_dim; box=_box; actionID=_action; strncpy_s(spritefile, 40, _sprite, 40); strncpy_s(actionName, 40, _actionName, 40); iconRange=_iconRange;}
 	guiButtonTemplate()
-	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); actionID=0; dimensions=coord(0,0); box=sf::IntRect(0,0,0,0); strncpy_s(spritefile, 40, "gui-1_2.png", 40); strncpy_s(actionName, 32, "none", 32); iconRange=0; actionID=0; placement=sf::IntRect(0,0,0,0);}
+	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); actionID=0; origin=coord(0,0); dimensions=coord(0,0); box=sf::IntRect(0,0,0,0); strncpy_s(spritefile, 40, "gui-1_2.png", 40); strncpy_s(actionName, 32, "none", 32); iconRange=0; actionID=0;}
 };
 
 //template of forms using multiple gui buttons
 struct guiFormsTemplate
 {
 	char cname[40];
-	char name[16];
-	std::vector<guiButtonTemplate> buttonList;
+	char name[32];
+	coord dimensions;
+	std::vector<unsigned int> buttonList; //holds the **game-registered** button index or 0
+	guiFormsTemplate()
+	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); buttonList.clear();}
 };
 
 class TemplateContainerClass
@@ -393,6 +397,7 @@ class TemplateContainerClass
 			terrainList.clear(); terrainList.push_back(terrainPoolTemplate());
 			ecoList.clear(); ecoList.push_back(ecoPoolTemplate());
 			biomeList.clear(); biomeList.push_back(biomeInformationTemplate());
+			formsList.clear(); formsList.push_back(guiFormsTemplate());
 		}
 		~TemplateContainerClass() {}
 

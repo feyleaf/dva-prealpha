@@ -342,6 +342,27 @@ stringList TemplateReaderClass::parseList()
 	return ret;
 }
 
+guiFormsTemplate TemplateReaderClass::parseForms()
+{
+	guiFormsTemplate ret;
+	std::string chunk;
+
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.cname, 40, chunk.c_str(), 40);
+
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.name, 32, chunk.c_str(), 32);
+
+	std::getline(pFile, chunk, ',');
+	ret.dimensions.x=unsigned char(atoi(chunk.c_str()));
+	std::getline(pFile, chunk, ',');
+	ret.dimensions.y=unsigned char(atoi(chunk.c_str()));
+
+	std::getline(pFile, chunk, '\n'); //i'm pretty sure this works with a trailing comma on the list :/
+
+	return ret;
+}
+
 void TemplateReaderClass::skipLine()
 {
 	std::string chunk;

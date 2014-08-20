@@ -23,11 +23,11 @@ class RenderManager
 		RenderManager() {}
 		~RenderManager() {}
 
-		void initialize(const TemplateRegistryClass& tmp, const settingStruct set);
+		void initialize(TemplateRegistryClass& tmp, const settingStruct set);
 		void resetView(sf::RenderWindow& win) {viewport = win.getDefaultView();}
-		void createTileSheet(const TemplateRegistryClass& tmp, const settingStruct set);
-		void createEntitySheet(const TemplateRegistryClass& tmp, const settingStruct set);
-		void createGuiSheet(const TemplateRegistryClass& tmp, const settingStruct set);
+		void createTileSheet(TemplateRegistryClass& tmp, const settingStruct set);
+		void createEntitySheet(TemplateRegistryClass& tmp, const settingStruct set);
+		void createGuiSheet(TemplateRegistryClass& tmp, const settingStruct set);
 
 		void loadGraphicsFiles(settingStruct set);
 		sf::IntRect rectFromOrigin(unsigned char _origin, int _wid, int _hig);
@@ -37,6 +37,7 @@ class RenderManager
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell);
+		void DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form);
 		void DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual);
 		void DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass& obj, coord worldCoord, coord centerPos, bool highlight);
 };

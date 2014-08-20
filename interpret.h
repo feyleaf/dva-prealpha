@@ -63,6 +63,7 @@ public:
 	terrainPoolTemplate parseTerrain();
 	ecoPoolTemplate parseEcology();
 	stringList parseList();
+	guiFormsTemplate parseForms();
 	void skipLine();
 	std::vector<std::string> parseTerrainDeco();
 	std::vector<std::string> parseTerrainShapes();

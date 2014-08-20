@@ -26,6 +26,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "ic_pathing.h"
 #include "inventory.h"
 #include "ritual.h"
+#include "guiform.h"
 #include "render.h"
 #include "game.h"
 

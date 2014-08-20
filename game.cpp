@@ -1834,7 +1834,23 @@ void GameClass::gameRenderer()
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
 		render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
-		render.DrawRituals(app, tmp, ritual);
+		GUIFormClass tempForm;
+		for(int i=0; i<ritual.cell.size(); i++)
+		{
+			if(ritual.cell[i].templateIndex>0)
+			{
+				tempForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, ritual.cell[i].point);
+			}
+		}
+		for(int i=0; i<inv.cellList.size(); i++)
+		{
+			if(inv.cellList[i].tmp_idx>0)
+			{
+				tempForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), coord(i%8+(int(i/8)), int(i/8)));
+				tempForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, coord(i%8+(int(i/8)), int(i/8)));
+			}
+		}
+		render.DrawGUIForm(app, tmp, tempForm);
 	}
 
 	app.draw(sidebar);

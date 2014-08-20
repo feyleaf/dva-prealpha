@@ -71,6 +71,7 @@
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="guiform.cpp" />
     <ClCompile Include="ic_math.cpp" />
     <ClCompile Include="ic_pathing.cpp" />
     <ClCompile Include="interpret.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="guiform.h" />
     <ClInclude Include="ic_pathing.h" />
     <ClInclude Include="interpret.h" />
     <ClInclude Include="ic_math.h" />

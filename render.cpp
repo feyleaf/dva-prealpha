@@ -9,14 +9,14 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 #include "globals.h"
 
-void RenderManager::initialize(const TemplateRegistryClass& tmp, const settingStruct set)
+void RenderManager::initialize(TemplateRegistryClass& tmp, const settingStruct set)
 {
 	loadGraphicsFiles(set);
 	createTileSheet(tmp, set);
 	createEntitySheet(tmp, set);
 	createGuiSheet(tmp, set);
 }
-void RenderManager::createTileSheet(const TemplateRegistryClass& tmp, const settingStruct set)
+void RenderManager::createTileSheet(TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -39,6 +39,7 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp, const sett
 	for(int i=1; i<int(tmp.container.tileList.size()); i++)
 	{
 		row+=tmp.container.tileList[i-1].dimensions.y;
+		tmp.container.tileList[i].origin=coord(0, row);
 		for(int c=0; c<tmp.container.tileList[i].iconRange; c++)
 		{
 			col=c*tmp.container.tileList[i].dimensions.x;
@@ -54,7 +55,7 @@ void RenderManager::createTileSheet(const TemplateRegistryClass& tmp, const sett
 	spriteSheet.getTexture().copyToImage().saveToFile(set.tileSheetFile);
 }
 
-void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp, const settingStruct set)
+void RenderManager::createEntitySheet(TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -78,6 +79,7 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp, const se
 	for(int i=1; i<int(tmp.container.entityList.size()); i++)
 	{
 		row+=tmp.container.entityList[i-1].dimensions.y;
+		tmp.container.entityList[i].origin = coord(0,row);
 		for(int c=0; c<tmp.container.entityList[i].iconRange; c++)
 		{
 			col=c*tmp.container.entityList[i].dimensions.x;
@@ -93,7 +95,7 @@ void RenderManager::createEntitySheet(const TemplateRegistryClass& tmp, const se
 	spriteSheet.getTexture().copyToImage().saveToFile(set.entitySheetFile);
 }
 
-void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp, const settingStruct set)
+void RenderManager::createGuiSheet(TemplateRegistryClass& tmp, const settingStruct set)
 {
 	int iconTotalWidth=0;
 	int rowTotalHeight=0;
@@ -117,6 +119,7 @@ void RenderManager::createGuiSheet(const TemplateRegistryClass& tmp, const setti
 	for(int i=1; i<int(tmp.container.buttonList.size()); i++)
 	{
 		row+=tmp.container.buttonList[i-1].dimensions.y;
+		tmp.container.buttonList[i].origin = coord(0,row);
 		for(int c=0; c<tmp.container.buttonList[i].iconRange; c++)
 		{
 			col=c*tmp.container.buttonList[i].dimensions.x;
@@ -232,21 +235,41 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual)
 {
 	currentSprite.setTexture(entitySheet);
-	int line=0;
 	for(int i=0; i<int(theRitual.cell.size()); i++)
 	{
-		line=0;
-		for(int j=1; j<=theRitual.cell[i].templateIndex; j++)
-		{
-			line+=tmp.container.entityList[j-1].dimensions.y;
-		}
-		currentSprite.setTextureRect(sf::IntRect(0,line, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.x, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.y));
+		currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[theRitual.cell[i].templateIndex].origin.y, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.x, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.y));
 		currentSprite.setColor(sf::Color::White);
-		currentSprite.setPosition(float((theRitual.cell[i].point.x*32)), float((theRitual.cell[i].point.y*32)));
+		currentSprite.setPosition(float((theRitual.cell[i].point.x*32)), float((theRitual.cell[i].point.y*32)+16));
 	
 		win.draw(currentSprite);
 	}
-	
+}
+
+void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form)
+{
+	for(int i=1; i<form.cells.size(); i++)
+	{
+		switch(form.cells[i].renderType)
+		{
+			case RENDER_TILE:
+				currentSprite.setTexture(tileSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.tileList[form.cells[i].templateIndex].origin.y, tmp.container.tileList[form.cells[i].templateIndex].dimensions.x, tmp.container.tileList[form.cells[i].templateIndex].dimensions.y));
+				break;
+			case RENDER_ENTITY:
+				currentSprite.setTexture(entitySheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+				break;
+			case RENDER_BUTTON:
+			default:
+				currentSprite.setTexture(guiSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
+				break;
+		}
+		currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(scalar(32.0f, toVector(form.cells[i].grid)));
+
+		win.draw(currentSprite);
+	}
 }
 
 void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell)
