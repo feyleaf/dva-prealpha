@@ -211,6 +211,10 @@ public:
 	void handleGUIClick(coord _mouse);
 	void handleBoardClick(coord _mouse);
 	void handleMinimapClick(coord _finemouse);
+	GUIFormClass inventoryForm;
+	GUIFormClass sideMenuForm;
+	GUIFormClass ritualForm;
+	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
 
 	//rendering stuff
 	void gameRenderer();

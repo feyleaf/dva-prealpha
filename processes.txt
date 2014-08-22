@@ -1,305 +1,255 @@
 32 x 32
 Title: Druid vs Alchemist Test
 Handling event: generatemap	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 46: Iron Golem
+Handling event: makecreature	Source: 27: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 47: Iron Golem
+Handling event: makecreature	Source: 28: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 48: Iron Golem
+Handling event: makecreature	Source: 29: Squirrel
 Creature
 HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 49: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 50: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 51: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 52: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 53: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 54: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: makeenemy	Source: 55: Iron Golem
-Creature
-HP: 1 / 1Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
+Handling event: growflower	Source: 18: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
+Handling event: growflower	Source: 19: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
+Handling event: growflower	Source: 20: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
+Handling event: growflower	Source: 21: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
+Handling event: growflower	Source: 22: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
+Handling event: growflower	Source: 23: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
+Handling event: growflower	Source: 24: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
+Handling event: growflower	Source: 25: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
+Handling event: growflower	Source: 26: Blue Rose
 Vegetation
 Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Mortlock Fly Trap
-Vegetation
-Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 42: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 18: Blue Rose
 Vegetation
 Growth: 2 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 42: Mortlock Fly Trap
+Handling event: convertflower	Source: 18: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 43: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 30: Blue Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 30: Blue Rose Petal
+Ingredient
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 21: Blue Rose
 Vegetation
 Growth: 2 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 43: Mortlock Fly Trap
+Handling event: convertflower	Source: 21: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 57: Red Rose Petal
+Handling event: selectentity	Source: 0: Target Entity: 31: Red Rose Petal
 Ingredient
 Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 57: Red Rose Petal
+Handling event: randomheld	Source: 31: Red Rose Petal
 Ingredient
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 56: Red Rose Petal
-Ingredient
-Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 56: Red Rose Petal
-Ingredient
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 45: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 22: Blue Rose
 Vegetation
 Growth: 2 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 45: Mortlock Fly Trap
+Handling event: convertflower	Source: 22: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 58: Red Rose Petal
+Handling event: selectentity	Source: 0: Target Entity: 32: Blue Rose Petal
 Ingredient
 Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 58: Red Rose Petal
+Handling event: randomheld	Source: 32: Blue Rose Petal
 Ingredient
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 19: Blue Rose
+Vegetation
+Growth: 2 / 4Target Tile: 0: ==================================================
+Handling event: convertflower	Source: 19: Blue Rose
 Vegetation
 Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Mortlock Fly Trap
-Vegetation
-Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 40: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 59: Blue Rose Petal
+Handling event: selectentity	Source: 0: Target Entity: 33: Red Rose Petal
 Ingredient
 Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 59: Blue Rose Petal
+Handling event: randomheld	Source: 33: Red Rose Petal
 Ingredient
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 39: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 23: Blue Rose
 Vegetation
-Growth: 3 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 39: Mortlock Fly Trap
+Growth: 2 / 4Target Tile: 0: ==================================================
+Handling event: convertflower	Source: 23: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 60: Red Rose Petal
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 34: Red Rose Petal
 Ingredient
 Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 60: Red Rose Petal
+Handling event: randomheld	Source: 34: Red Rose Petal
 Ingredient
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 37: Mortlock Fly Trap
+Handling event: growflower	Source: 18: Blue Rose
 Vegetation
-Growth: 3 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 37: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 61: Blue Rose Petal
-Ingredient
-Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 61: Blue Rose Petal
-Ingredient
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 33: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Blue Rose
 Vegetation
-Growth: 3 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 33: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 62: Red Rose Petal
-Ingredient
-Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 62: Red Rose Petal
-Ingredient
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 36: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Blue Rose
 Vegetation
-Growth: 3 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 36: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 63: Blue Rose Petal
-Ingredient
-Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 63: Blue Rose Petal
-Ingredient
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Blue Rose
 Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
-Vegetation
-Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 35: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Tile: 0: ==================================================
-Handling event: convertflower	Source: 35: Mortlock Fly Trap
-Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 64: Blue Rose Petal
-Ingredient
-Target Tile: 0: ==================================================
-Handling event: randomheld	Source: 64: Blue Rose Petal
-Ingredient
-Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: selectentity	Source: 0: Target Entity: 31: Ritual Stump
+Growth: 2 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 16: Ritual Stump
 Decoration
 Target Tile: 0: ==================================================
-Handling event: togglecrafting	Source: 31: Ritual Stump
+Handling event: togglecrafting	Source: 16: Ritual Stump
 Decoration
 Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 35: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 16: Ritual Stump
+Decoration
+Target Tile: 0: ==================================================
+Handling event: togglecrafting	Source: 16: Ritual Stump
+Decoration
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 19: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 21: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 22: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 23: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 24: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 25: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 26: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: growflower	Source: 18: Blue Rose
+Vegetation
+Growth: 3 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: infoget	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectinventory	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectinventory	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectinventory	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
+Vegetation
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
+Vegetation
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: growflower	Source: 20: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 36: Mortlock Fly Trap
+Handling event: growflower	Source: 21: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 37: Mortlock Fly Trap
+Handling event: growflower	Source: 22: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 38: Mortlock Fly Trap
+Handling event: growflower	Source: 23: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 39: Mortlock Fly Trap
+Handling event: growflower	Source: 24: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 40: Mortlock Fly Trap
+Handling event: growflower	Source: 25: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 41: Mortlock Fly Trap
+Handling event: growflower	Source: 26: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 42: Mortlock Fly Trap
+Handling event: growflower	Source: 18: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 43: Mortlock Fly Trap
+Handling event: growflower	Source: 19: Blue Rose
 Vegetation
 Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 44: Mortlock Fly Trap
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 45: Mortlock Fly Trap
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 30: Marsh Grass
+==================================================
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 33: Mortlock Fly Trap
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
-Handling event: growflower	Source: 34: Mortlock Fly Trap
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: infoget	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: clearsidebar	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 17: Blue Rose
 Vegetation
-Growth: 4 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Growth: 1 / 4Target Tile: 0: ==================================================
+Handling event: convertflower	Source: 17: Blue Rose
+Vegetation
+Growth: 1 / 4Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 35: Red Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: randomheld	Source: 35: Red Rose Petal
+Ingredient
+Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: infoget	Source: 0: Target Entity: 0: Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 35: Red Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 35: Red Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 6: Marsh Grass
+==================================================
+Handling event: selecttile	Source: 0: Target Entity: 0: Target Tile: 30: Marsh Grass
+==================================================
+Handling event: selectentity	Source: 0: Target Entity: 35: Red Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 3: Mahogany Log
+Decoration
+Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 35: Red Rose Petal
+Ingredient
+Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 3: Mahogany Log
+Decoration
+Target Tile: 0: ==================================================
+Handling event: selectentity	Source: 0: Target Entity: 4: Mahogany Log
+Decoration
+Target Tile: 0: ==================================================
 Closed debug file
-Time in unsigned long format: 1408502197
+Time in unsigned long format: 1408677541

@@ -245,9 +245,9 @@ void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryCla
 	}
 }
 
-void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form)
+void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse)
 {
-	for(int i=1; i<form.cells.size(); i++)
+	for(int i=1; i<int(form.cells.size()); i++)
 	{
 		switch(form.cells[i].renderType)
 		{
@@ -265,8 +265,10 @@ void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryCla
 				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
 				break;
 		}
-		currentSprite.setColor(sf::Color::White);
-		currentSprite.setPosition(scalar(32.0f, toVector(form.cells[i].grid)));
+		if(form.cells[i].grid==_mouse)
+			currentSprite.setColor(sf::Color::Yellow);
+		else currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(float(form.cells[i].grid.x)*32, 16+float(form.cells[i].grid.y)*32);
 
 		win.draw(currentSprite);
 	}

@@ -953,13 +953,15 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 			}
 		}
 		generatorCursor=viewerCursor;
-		fillButton("magnifier", coord(settings.tileCols, 5));
-		fillButton("camera", coord(settings.tileCols+1, 5));
-		fillButton("backpack", coord(settings.tileCols+2, 5));
-		fillButton("worldmap", coord(settings.tileCols+3, 5));
-		fillButton("inventorycell", coord(0,0), 0, false);
-		fillButton("ritualgui", coord(5,3), 0, false);
 		newGame=false;
+		ritualForm.clear();
+		inventoryForm.clear();
+		sideMenuForm.clear();
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), coord(settings.tileCols,5));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), coord(settings.tileCols+1,4));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), coord(settings.tileCols+2,5));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), coord(settings.tileCols+1,6));
+		fillGuiForm(sideMenuForm);
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "screenshot"))
@@ -1451,6 +1453,17 @@ void GameClass::fillButton(const char* codename, coord _pos, int linkedEntity, b
 	}
 }
 
+void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
+{
+	for(int i=1; i<int(form.cells.size()); i++)
+	{
+		if(form.cells[i].renderType == RENDER_BUTTON)
+		{
+			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].grid, linked, active);
+		}
+	}
+}
+
 GameClass::~GameClass()
 {
 	//must iterate the collection of map positions, and free the memory
@@ -1807,20 +1820,16 @@ void GameClass::gameRenderer()
 				render.DrawEntity(app, registry.objMap[viewerCursor].regEntities[i], pixel, (i==entityHover()));
 			}
 		}
-		for(int i=1; i<int(registry.objMap[viewerCursor].regButtons.size()); i++)
-		{
-			if(registry.objMap[viewerCursor].regButtons[i] != NULL)
-				render.DrawGui(app, registry.objMap[viewerCursor].regButtons[i], registry.objMap[viewerCursor].regButtons[i]->pos, i==buttonHover());
-		}
+
+//		for(int i=1; i<int(registry.objMap[viewerCursor].regButtons.size()); i++)
+//	//	{
+//			if(registry.objMap[viewerCursor].regButtons[i] != NULL)
+//				render.DrawGui(app, registry.objMap[viewerCursor].regButtons[i], registry.objMap[viewerCursor].regButtons[i]->pos, i==buttonHover());
+//		}
 	}
-	if(gamemode==GAMEMODE_CRAFTING)
-	{
-		registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "togglecrafting")]->active=true;
-	}
-	else {
-		if(registry.objMap[viewerCursor].regButtons.size()>1)
-			registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "togglecrafting")]->active=false;
-	}
+	//fillButton("ritualgui", coord(0,0), 0, (gamemode==GAMEMODE_CRAFTING));
+		ritualForm.clear();
+		inventoryForm.clear();
 
 	if(gamemode == GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
 	{
@@ -1833,26 +1842,30 @@ void GameClass::gameRenderer()
 		render.currentSprite.setPosition(sf::Vector2f(0,0));
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
-		render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
-		GUIFormClass tempForm;
-		for(int i=0; i<ritual.cell.size(); i++)
+		//render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
+		for(int i=0; i<int(ritual.cell.size()); i++)
 		{
 			if(ritual.cell[i].templateIndex>0)
 			{
-				tempForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, ritual.cell[i].point);
+				ritualForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, ritual.cell[i].point);
 			}
 		}
-		for(int i=0; i<inv.cellList.size(); i++)
+		for(int i=0; i<int(inv.cellList.size()); i++)
 		{
+			for(int j=0; j<25; j++)
+				inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), coord(j%5, int(j/5)));
 			if(inv.cellList[i].tmp_idx>0)
 			{
-				tempForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), coord(i%8+(int(i/8)), int(i/8)));
-				tempForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, coord(i%8+(int(i/8)), int(i/8)));
+				inventoryForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, coord(i%5, int(i/5)));
 			}
 		}
-		render.DrawGUIForm(app, tmp, tempForm);
 	}
 
+	fillGuiForm(ritualForm);
+	fillGuiForm(inventoryForm);
+	render.DrawGUIForm(app, tmp, ritualForm, mouse);
+	render.DrawGUIForm(app, tmp, inventoryForm, mouse);
+	render.DrawGUIForm(app, tmp, sideMenuForm, mouse);
 	app.draw(sidebar);
 	app.display();
 }

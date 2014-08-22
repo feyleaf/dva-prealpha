@@ -21,11 +21,11 @@ struct guiCell
 class GUIFormClass
 {
 public:
-	GUIFormClass(){cells.clear(); cells.push_back(guiCell());}
+	GUIFormClass(){cells.clear();}
 	~GUIFormClass(){}
 
 	std::vector<guiCell> cells;
 
 	void addCell(int _type, int _tmp, coord _grid);
-	void clear() {cells.clear();}
+	void clear() {cells.clear(); cells.push_back(guiCell());}
 };
