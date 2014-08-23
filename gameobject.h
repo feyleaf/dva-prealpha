@@ -58,9 +58,9 @@ struct buttonStruct
 	coord dimensions;
 	sf::IntRect box;
 	int frame;
-	coord pos;
-	buttonStruct(bool act, int _linked, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=act; linkedEntityIndex=_linked; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos;}
+	coord pixel;
+	buttonStruct(bool act, int _linked, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pixel)
+	{active=act; linkedEntityIndex=_linked; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pixel=_pixel;}
 };
 
 struct toolPack

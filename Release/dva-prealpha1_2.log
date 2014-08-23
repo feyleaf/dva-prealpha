@@ -1,4 +1,4 @@
-﻿Build started 8/21/2014 11:18:08 PM.
+﻿Build started 8/22/2014 11:43:36 PM.
      1>Project "C:\Users\Benjamin\Documents\GitHub\dva-prealpha\dva-prealpha1_2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D SFML_STATIC /D _MBCS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt game.cpp
@@ -24,4 +24,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:10.97
+Time Elapsed 00:00:09.15

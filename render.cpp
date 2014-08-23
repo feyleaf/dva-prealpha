@@ -245,7 +245,7 @@ void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryCla
 	}
 }
 
-void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse)
+void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse_pixel)
 {
 	for(int i=1; i<int(form.cells.size()); i++)
 	{
@@ -265,10 +265,10 @@ void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryCla
 				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
 				break;
 		}
-		if(form.cells[i].grid==_mouse)
+		if(isCollision(toVector(_mouse_pixel), sf::IntRect(form.cells[i].pixel.x, form.cells[i].pixel.y, 32, 32)))
 			currentSprite.setColor(sf::Color::Yellow);
 		else currentSprite.setColor(sf::Color::White);
-		currentSprite.setPosition(float(form.cells[i].grid.x)*32, 16+float(form.cells[i].grid.y)*32);
+		currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y));
 
 		win.draw(currentSprite);
 	}

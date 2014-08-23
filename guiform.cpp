@@ -6,11 +6,11 @@
 
 #include "globals.h"
 
-void GUIFormClass::addCell(int _type, int _tmp, coord _grid)
+void GUIFormClass::addCell(int _type, int _tmp, coord _pixel)
 {
 	guiCell dummy;
 	dummy.renderType=_type;
 	dummy.templateIndex=_tmp;
-	dummy.grid=_grid;
+	dummy.pixel=_pixel;
 	cells.push_back(dummy);
 }

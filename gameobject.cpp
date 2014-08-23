@@ -597,7 +597,7 @@ int GameObjectClass::createEntity(const TemplateRegistryClass& tmp, const char* 
 	return ret;
 }
 
-bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pos, coord worldCoord, int linkedEntity, bool act)
+bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char* _name, coord _pixel_pos, coord worldCoord, int linkedEntity, bool act)
 {
 	bool ret=false;
 	coord _orig;
@@ -615,13 +615,13 @@ bool GameObjectClass::createButton(const TemplateRegistryClass& tmp, const char*
 		}
 	}
 	if(p==0) return false;
-	bb=tmp.container.buttonList[p].box; bb.left+=(_pos.x*32); bb.top+=(_pos.y*32);
+	bb=tmp.container.buttonList[p].box; bb.left+=(_pixel_pos.x); bb.top+=(_pixel_pos.y);
 
 	for(int i=1; i<int(tmp.container.actionList.size()); i++)
 	{
 		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
 		{
-			objMap[worldCoord].regButtons.push_back(new buttonStruct(act, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pos));
+			objMap[worldCoord].regButtons.push_back(new buttonStruct(act, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, _pixel_pos));
 			return true;
 		}
 	}

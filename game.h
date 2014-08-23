@@ -104,6 +104,7 @@ public:
 	void initialize();
 	bool gameLoop();
 	float gameTime() {return float(startTime)+gameClock.getElapsedTime().asSeconds();}
+	coord gridToPixel(coord _grid) {return coord(_grid.x*settings.tileWid, _grid.y*settings.tileHig);}
 
 	//world logic stuff
 	void gameUpdater(float actSeconds);
@@ -133,7 +134,7 @@ public:
 	//generating a map one registry element at a time
 	void fillTile(const char* codename, coord _pos);
 	void fillRoad(const char* codename, coord start, coord end);
-	void fillButton(const char* codename, coord _pos, int linkedEntity=0, bool act=true);
+	void fillButton(const char* codename, coord _pixel_pos, int linkedEntity=0, bool act=true);
 	void fillEntity(const char* codename, coord _pos);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
 	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);
@@ -214,6 +215,7 @@ public:
 	GUIFormClass inventoryForm;
 	GUIFormClass sideMenuForm;
 	GUIFormClass ritualForm;
+	GUIFormClass creatureCard;
 	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
 
 	//rendering stuff

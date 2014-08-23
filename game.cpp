@@ -839,7 +839,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "movecreature"))
 	{
-		sidebar.setString("targeting!?\n"+outputEntity(act->entityIndexSource));
+		sidebar.setString("");
 		gamemode=GAMEMODE_ENTITYTARGETING;
 		return;
 	}
@@ -891,7 +891,7 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 	{
 		float seconds=float(rand()%7+2);
 		//fillSourceAction("wandercreature", act->entityIndexSource, seconds);
-		fillButton("movebutton", coord(settings.tileCols+1,3), act->entityIndexSource, false);
+		fillButton("movebutton", gridToPixel(coord(settings.tileCols+1,1)), act->entityIndexSource, false);
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "makeenemy"))
@@ -957,10 +957,11 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		ritualForm.clear();
 		inventoryForm.clear();
 		sideMenuForm.clear();
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), coord(settings.tileCols,5));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), coord(settings.tileCols+1,4));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), coord(settings.tileCols+2,5));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), coord(settings.tileCols+1,6));
+		creatureCard.clear();
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), gridToPixel(coord(settings.tileCols,5)));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), gridToPixel(coord(settings.tileCols+1,4)));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), gridToPixel(coord(settings.tileCols+2,5)));
+		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), gridToPixel(coord(settings.tileCols+1,6)));
 		fillGuiForm(sideMenuForm);
 		return;
 	}
@@ -1129,10 +1130,17 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "creatureguion"))
 	{
+		sidebar.setString("");
+		creatureCard.clear();
 		if(gamemode!=GAMEMODE_ENTITYACTION)
 		{
 			gamemode=GAMEMODE_ENTITYACTION;
-			sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
+			creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(settings.tileCols, 1)));
+			creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.tileCols, 1)));
+			creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.tileCols+1, 1)));
+
+			fillGuiForm(creatureCard, act->entityIndexSource, true);
+			//sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
 			registry.objMap[viewerCursor].activateEntityButtons(act->entityIndexSource);
 		}
 		return;
@@ -1140,6 +1148,8 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex,"creatureguioff"))
 	{
 		registry.objMap[viewerCursor].deactivateEntityButtons(act->entityIndexSource);
+		fillGuiForm(creatureCard, act->entityIndexSource, false);
+		creatureCard.clear();
 		gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
@@ -1443,12 +1453,12 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 	}
 }
 
-void GameClass::fillButton(const char* codename, coord _pos, int linkedEntity, bool act)
+void GameClass::fillButton(const char* codename, coord _pixel_pos, int linkedEntity, bool act)
 {
-	if(!registry.createButton(tmp, codename, _pos, viewerCursor, linkedEntity, act))
+	if(!registry.createButton(tmp, codename, _pixel_pos, viewerCursor, linkedEntity, act))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
-		debugFile << "FillGui failed at (" << _pos.x << ", " << _pos.y << "). clone was undefined.\n";
+		debugFile << "FillGui failed at (" << _pixel_pos.x << ", " << _pixel_pos.y << "). clone was undefined.\n";
 		return;
 	}
 }
@@ -1459,7 +1469,7 @@ void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
 	{
 		if(form.cells[i].renderType == RENDER_BUTTON)
 		{
-			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].grid, linked, active);
+			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].pixel, linked, active);
 		}
 	}
 }
@@ -1516,11 +1526,7 @@ int GameClass::buttonHover()
 	//only returns oldest registrered index
 	for(int i=1; i<int(registry.objMap[viewerCursor].regButtons.size()); i++)
 	{
-		if(registry.objMap[viewerCursor].regButtons[i]->active && registry.objMap[viewerCursor].regButtons[i]->pos == mouse)
-		{
-			return i;
-		}
-		if(registry.objMap[viewerCursor].regButtons[i]->active && registry.objMap[viewerCursor].regButtons[i]->box.contains(sf::Vector2i(mouse.x*settings.tileWid, mouse.y*settings.tileHig)))
+		if(registry.objMap[viewerCursor].regButtons[i]->active && registry.objMap[viewerCursor].regButtons[i]->box.contains(sf::Vector2i(finemouse.x, finemouse.y)))
 		{
 			return i;
 		}
@@ -1735,25 +1741,6 @@ void GameClass::plantSeed(int entityIndex, int entityTarget, int tileTarget)
 
 void GameClass::handleGUIClick(coord _mouse)
 {
-	if(gamemode==GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
-	{
-		if(!(_mouse.x<inv.tl.x || _mouse.y<inv.tl.y || _mouse.x>inv.tl.x+inv.dimensions.x || _mouse.y>inv.tl.y+inv.dimensions.y))
-		{
-			inv.select(_mouse);
-			if(inv.reg.entities[inv.getItemAtCursor()] != NULL)
-			{
-				sidebar.setString(tmp.container.entityList[inv.reg.entities[inv.getItemAtCursor()]->entityTemplateIndex].name);
-				if(gamemode==GAMEMODE_CRAFTING)
-				{
-					if(ritual.addToRitual(inv.reg.entities[inv.getItemAtCursor()]->entityTemplateIndex))
-					{
-						inv.drop(inv.cursor);
-					}
-				}
-			}
-			return;
-		}
-	}
 	int index=buttonHover();
 	if(index==0 || !registry.objMap[viewerCursor].regButtons[index]->active) return;
 	if(registry.objMap[viewerCursor].regButtons[index]->actionTemplateIndex>0)
@@ -1830,6 +1817,8 @@ void GameClass::gameRenderer()
 	//fillButton("ritualgui", coord(0,0), 0, (gamemode==GAMEMODE_CRAFTING));
 		ritualForm.clear();
 		inventoryForm.clear();
+	fillGuiForm(ritualForm, 0, gamemode==GAMEMODE_CRAFTING);
+	fillGuiForm(inventoryForm, 0, (gamemode==GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING));
 
 	if(gamemode == GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
 	{
@@ -1847,25 +1836,24 @@ void GameClass::gameRenderer()
 		{
 			if(ritual.cell[i].templateIndex>0)
 			{
-				ritualForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, ritual.cell[i].point);
+				ritualForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, gridToPixel(ritual.cell[i].point));
 			}
 		}
+		for(int j=0; j<25; j++)
+			inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
 		for(int i=0; i<int(inv.cellList.size()); i++)
 		{
-			for(int j=0; j<25; j++)
-				inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), coord(j%5, int(j/5)));
 			if(inv.cellList[i].tmp_idx>0)
 			{
-				inventoryForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, coord(i%5, int(i/5)));
+				inventoryForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
 			}
 		}
 	}
 
-	fillGuiForm(ritualForm);
-	fillGuiForm(inventoryForm);
-	render.DrawGUIForm(app, tmp, ritualForm, mouse);
-	render.DrawGUIForm(app, tmp, inventoryForm, mouse);
-	render.DrawGUIForm(app, tmp, sideMenuForm, mouse);
+	render.DrawGUIForm(app, tmp, ritualForm, finemouse);
+	render.DrawGUIForm(app, tmp, inventoryForm, finemouse);
+	render.DrawGUIForm(app, tmp, sideMenuForm, finemouse);
+	render.DrawGUIForm(app, tmp, creatureCard, finemouse);
 	app.draw(sidebar);
 	app.display();
 }

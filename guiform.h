@@ -11,10 +11,10 @@
 struct guiCell
 {
 	int renderType;
-	coord grid;
+	coord pixel;
 	int templateIndex;
 
-	guiCell() {renderType=0; grid=coord(0,0); templateIndex=0;}
+	guiCell() {renderType=0; pixel=coord(0,0); templateIndex=0;}
 
 };
 
@@ -26,6 +26,6 @@ public:
 
 	std::vector<guiCell> cells;
 
-	void addCell(int _type, int _tmp, coord _grid);
+	void addCell(int _type, int _tmp, coord _pixel);
 	void clear() {cells.clear(); cells.push_back(guiCell());}
 };
