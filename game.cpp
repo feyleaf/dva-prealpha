@@ -2,7 +2,7 @@
 game.cpp
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-August 9, 2014
+August 23, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -21,11 +21,11 @@ void GameClass::initialize()
 
 void GameClass::refreshMap(coord map_pos)
 {
-	isClicking=true;
+	player.isClicking=true;
 	mapscale=1.0f;
 	//header.randSeed=rand();
 	//initRandom(header.randSeed);
-	gamemode=GAMEMODE_NEUTRAL;
+	player.gamemode=GAMEMODE_NEUTRAL;
 	registry.clear(map_pos);
 }
 
@@ -39,11 +39,11 @@ GameClass::GameClass()
 	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
 	debugFile.open("processes.txt");
 	newGame=true;
-	quitGame=false;
+	player.quitGame=false;
 	header.mapIndex=0;
 	header.randSeed=(unsigned int)time(NULL);
 	initRandom(header.randSeed);
-	inv.clearAll();
+	player.inv.clearAll();
 	initialize();
 	tmp.parseFile("allreg-testing.txt");
 	render.initialize(tmp, settings);
@@ -59,7 +59,7 @@ GameClass::GameClass()
 //runs an update each frame (~1/30 second)
 bool GameClass::gameLoop()
 {
-	while(!quitGame)
+	while(!player.quitGame)
 	{
 		inputHandler();
 
@@ -90,7 +90,7 @@ void GameClass::pollWindowsEvents()
 	{	
 		if((gameEvent.type == sf::Event::Closed) || (gameEvent.type == sf::Event::KeyPressed && gameEvent.key.code == sf::Keyboard::Escape))
 		{
-			quitGame=true;
+			player.quitGame=true;
 		}
 	}
 }
@@ -102,25 +102,25 @@ void GameClass::pollKeys()
 void GameClass::pollMouseClicks()
 {
 	//mouse handling routine
-	getMouseGrid();
-	if(!theMouse.isButtonPressed(sf::Mouse::Button::Left)) isClicking=false;
-	if(theMouse.isButtonPressed(sf::Mouse::Button::Left) && !isClicking)
+	player.getMouseGrid(app, settings);
+	if(!player.theMouse.isButtonPressed(sf::Mouse::Button::Left)) player.isClicking=false;
+	if(player.theMouse.isButtonPressed(sf::Mouse::Button::Left) && !player.isClicking)
 	{
-		if(gamemode==GAMEMODE_MINIMAP)
+		if(player.gamemode==GAMEMODE_MINIMAP)
 		{
 			//minimap stuff
-			isClicking=true;
-			handleMinimapClick(finemouse);
+			player.isClicking=true;
+			handleMinimapClick();
 			return;
 		}
-		isClicking=true;
-		if(isClickOnGUI())
+		player.isClicking=true;
+		if(player.isClickOnGUI(registry.objMap[viewerCursor], settings))
 		{
-			handleGUIClick(mouse); //creates actions based on the button that was clicked
+			handleGUIClick(); //creates actions based on the button that was clicked
 		}
-		else if(isClickOnBoard())
+		else if(player.isClickOnBoard(settings))
 		{
-			handleBoardClick(mouse); //creates actions based on the point that was clicked
+			handleBoardClick(); //creates actions based on the point that was clicked
 		}
 	}
 }
@@ -662,7 +662,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 {
 	if(actionCodeEquals(act->actionTemplateIndex, "selecttile"))
 	{
-		if(gamemode==GAMEMODE_ENTITYTARGETING)
+		if(player.gamemode==GAMEMODE_ENTITYTARGETING)
 		{
 			int regEnt=registry.objMap[viewerCursor].getButtonLinkedEntity(tmp, "movecreature");
 			if(tileTarget(act))
@@ -675,7 +675,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
 	{
-		if(gamemode==GAMEMODE_ENTITYTARGETING)
+		if(player.gamemode==GAMEMODE_ENTITYTARGETING)
 		{
 			int regEnt=registry.objMap[viewerCursor].getButtonLinkedEntity(tmp, "movecreature");
 			fillEntityTargetAction("establishtarget", regEnt, act->entityIndexTarget, 0.5f);
@@ -840,7 +840,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "movecreature"))
 	{
 		sidebar.setString("");
-		gamemode=GAMEMODE_ENTITYTARGETING;
+		player.gamemode=GAMEMODE_ENTITYTARGETING;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "canceltarget"))
@@ -924,21 +924,21 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "infoget"))
 	{
-		if(gamemode==GAMEMODE_INSPECT)
+		if(player.gamemode==GAMEMODE_INSPECT)
 		{
 			fillSourceAction("clearsidebar", 0, 0.125f);
 		}
 		else
 		{
 			sidebar.setString("Click an Entity\nto Inspect...");
-			gamemode=GAMEMODE_INSPECT;
+			player.gamemode=GAMEMODE_INSPECT;
 		}
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "generatemap"))
 	{
 		dumpActionList=true;
-		gamemode=GAMEMODE_NEUTRAL;
+		player.gamemode=GAMEMODE_NEUTRAL;
 		for(int y=-1; y<=1; y++)
 		{
 			for(int x=-1; x<=1; x++)
@@ -954,15 +954,15 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		}
 		generatorCursor=viewerCursor;
 		newGame=false;
-		ritualForm.clear();
-		inventoryForm.clear();
-		sideMenuForm.clear();
-		creatureCard.clear();
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), gridToPixel(coord(settings.tileCols,5)));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), gridToPixel(coord(settings.tileCols+1,4)));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), gridToPixel(coord(settings.tileCols+2,5)));
-		sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), gridToPixel(coord(settings.tileCols+1,6)));
-		fillGuiForm(sideMenuForm);
+		player.ritualForm.clear();
+		player.inventoryForm.clear();
+		player.sideMenuForm.clear();
+		player.creatureCard.clear();
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), gridToPixel(coord(settings.tileCols,5)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), gridToPixel(coord(settings.tileCols+1,4)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), gridToPixel(coord(settings.tileCols+2,5)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), gridToPixel(coord(settings.tileCols+1,6)));
+		fillGuiForm(player.sideMenuForm);
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "screenshot"))
@@ -973,13 +973,13 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex,"backpack"))
 	{
-		if(gamemode!=GAMEMODE_INVENTORY) gamemode=GAMEMODE_INVENTORY;
-		else gamemode=GAMEMODE_NEUTRAL;
+		if(player.gamemode!=GAMEMODE_INVENTORY) player.gamemode=GAMEMODE_INVENTORY;
+		else player.gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex,"selectinventory"))
 	{
-		if(gamemode==GAMEMODE_INVENTORY) inv.select(mouse);
+		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.mouse);
 		return;
 	}
 }
@@ -1046,7 +1046,7 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "destroytool"))
 	{
 		//erase a tool from existence
-		inv.clearSlot(inv.cursor);
+		player.inv.clearSlot(player.inv.cursor);
 		registry.objMap[viewerCursor].eraseEntity(act->entityIndexSource);
 
 		return;
@@ -1115,31 +1115,31 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	{
 		if(mapscale<float(16.0f))
 		{
-			gamemode=GAMEMODE_ZOOMOUT;
+			player.gamemode=GAMEMODE_ZOOMOUT;
 			mapscale*=(32.0f/31.0f);
 			fillSourceAction("zoomout", act->entityIndexSource);
 		}
-		else gamemode=GAMEMODE_MINIMAP;
+		else player.gamemode=GAMEMODE_MINIMAP;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "randomheld"))
 	{
-		inv.add(registry.objMap[viewerCursor], act->entityIndexSource);
+		player.inv.add(registry.objMap[viewerCursor], act->entityIndexSource);
 		registry.cloneToInventory(act->entityIndexSource, viewerCursor);
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "creatureguion"))
 	{
 		sidebar.setString("");
-		creatureCard.clear();
-		if(gamemode!=GAMEMODE_ENTITYACTION)
+		player.creatureCard.clear();
+		if(player.gamemode!=GAMEMODE_ENTITYACTION)
 		{
-			gamemode=GAMEMODE_ENTITYACTION;
-			creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(settings.tileCols, 1)));
-			creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.tileCols, 1)));
-			creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.tileCols+1, 1)));
+			player.gamemode=GAMEMODE_ENTITYACTION;
+			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(settings.tileCols, 1)));
+			player.creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.tileCols, 1)));
+			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.tileCols+1, 1)));
 
-			fillGuiForm(creatureCard, act->entityIndexSource, true);
+			fillGuiForm(player.creatureCard, act->entityIndexSource, true);
 			//sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
 			registry.objMap[viewerCursor].activateEntityButtons(act->entityIndexSource);
 		}
@@ -1148,14 +1148,14 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex,"creatureguioff"))
 	{
 		registry.objMap[viewerCursor].deactivateEntityButtons(act->entityIndexSource);
-		fillGuiForm(creatureCard, act->entityIndexSource, false);
-		creatureCard.clear();
-		gamemode=GAMEMODE_NEUTRAL;
+		fillGuiForm(player.creatureCard, act->entityIndexSource, false);
+		player.creatureCard.clear();
+		player.gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "selecttile"))
 	{
-		if(gamemode==GAMEMODE_INSPECT)
+		if(player.gamemode==GAMEMODE_INSPECT)
 		{
 			sidebar.setString(outputTile(act->tileIndexTarget));
 			return;
@@ -1163,7 +1163,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "selectentity"))
 	{
-		if(gamemode==GAMEMODE_INSPECT)
+		if(player.gamemode==GAMEMODE_INSPECT)
 		{
 			sidebar.setString(outputEntity(act->entityIndexTarget));
 			return;
@@ -1173,7 +1173,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			fillSourceAction("togglecrafting", act->entityIndexTarget);
 			return;
 		}
-		if(gamemode==GAMEMODE_NEUTRAL)
+		if(player.gamemode==GAMEMODE_NEUTRAL)
 		{
 			if(act->entityIndexTarget==0) return;
 			if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
@@ -1197,20 +1197,20 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "clearsidebar"))
 	{
 		sidebar.setString("");
-		gamemode=GAMEMODE_NEUTRAL;
+		player.gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "togglecrafting"))
 	{
-		if(gamemode==GAMEMODE_CRAFTING)
+		if(player.gamemode==GAMEMODE_CRAFTING)
 		{
 			sidebar.setString("Crafting OFF");
-			gamemode=GAMEMODE_NEUTRAL;
+			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		else
 		{
 			sidebar.setString("Crafting ON");
-			gamemode=GAMEMODE_CRAFTING;
+			player.gamemode=GAMEMODE_CRAFTING;
 		}
 		return;
 	}
@@ -1499,54 +1499,6 @@ int GameClass::numberOfEntities()
 	return int(registry.objMap[viewerCursor].regEntities.size());
 }
 
-int GameClass::entityHover()
-{
-	//only returns newest registrered index
-	for(int i=numberOfEntities()-1; i>0; i--)
-	{
-		if(registry.objMap[viewerCursor].regEntities[i]->active && registry.objMap[viewerCursor].regEntities[i]->box.contains(finemouse.x, finemouse.y))
-		{
-			return i;
-		}
-	}
-	return 0;
-}
-
-coord GameClass::minimapHover()
-{
-	//finemouse has to be along a map position
-	//viewerCursor is at mapcenter
-	coord minimapgrid=coord(finemouse.x/(settings.tileCols*2), (finemouse.y+16)/(settings.tileRows*2));
-	return minimapgrid-coord(10,9)+viewerCursor;
-
-}
-
-int GameClass::buttonHover()
-{
-	//only returns oldest registrered index
-	for(int i=1; i<int(registry.objMap[viewerCursor].regButtons.size()); i++)
-	{
-		if(registry.objMap[viewerCursor].regButtons[i]->active && registry.objMap[viewerCursor].regButtons[i]->box.contains(sf::Vector2i(finemouse.x, finemouse.y)))
-		{
-			return i;
-		}
-	}
-	return 0;
-}
-
-int GameClass::tileHover()
-{
-	//if(entityHover()>0) return 0; //maybe??
-	for(int i=numberOfTiles()-1; i>0; i--)
-	{
-		if(registry.objMap[viewerCursor].regTiles[i]->pos == mouse)
-		{
-			return i;
-		}
-	}
-	return 0;
-}
-
 int GameClass::getTileIndexAt(coord pos)
 {
 	//if(entityHover()>0) return 0; //maybe??
@@ -1560,64 +1512,23 @@ int GameClass::getTileIndexAt(coord pos)
 	return 0;
 }
 
-//returns the grid coordinates of the mouse pointer
-coord GameClass::getMouseGrid()
+void GameClass::handleBoardClick()
 {
-	if(app.getSize().x>0 && app.getSize().y>0)
-	{
-		//STANDARD LAYOUT (480x320, fully flexible)
-		finemouse.x=(((theMouse.getPosition(app).x)*settings.winWid)/(app.getSize().x));
-		finemouse.y=(((theMouse.getPosition(app).y)*settings.winHig)/(app.getSize().y));
-
-		//align with grid
-		mouse.x=finemouse.x/settings.tileWid;
-		mouse.y=(finemouse.y-16)/settings.tileHig;
-	}
-	return mouse;
-}
-
-bool GameClass::isClickOnBoard()
-{
-	return (!(mouse.x<0 || mouse.y<0 || mouse.x>settings.tileCols || mouse.y>settings.tileRows));
-}
-
-bool GameClass::isClickOnGUI()
-{
-	if(!(finemouse.x<0 || finemouse.y<0 || finemouse.x>settings.winWid || finemouse.y>settings.winHig))
-	{
-		if(!(mouse.x<inv.tl.x || mouse.y<inv.tl.y || mouse.x>inv.tl.x+inv.dimensions.x || mouse.y>inv.tl.y+inv.dimensions.y))
-		{
-			return true;
-		}
-		if(gamemode==GAMEMODE_CRAFTING)
-		{
-			if(!(mouse.x<5 || mouse.y<5 || mouse.x>5+(192/32) || mouse.y>5+(192/32)))
-			{
-				return true;
-			}
-		}
-		return (buttonHover()>0);
-	}
-	return false;
-}
-
-void GameClass::handleBoardClick(coord _mouse)
-{
-	int entityIndex=entityHover();
-	int tileIndex=tileHover();
+	int entityIndex=player.entityHover(registry.objMap[viewerCursor]);
+	int tileIndex=player.tileHover(registry.objMap[viewerCursor]);
 	if(entityIndex>0)
 	{
-		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
+		if(player.inv.getItemAtCursor()>0 && player.gamemode==GAMEMODE_INVENTORY)
 		{
-			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_TOOL)
 			{
-				useTool(inv.getItemAtCursor(), entityIndex, 0);
-				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				useTool(player.inv.getItemAtCursor(), entityIndex, 0);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 			}
-			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SUMMON)
 			{
-				useCharm(inv.getItemAtCursor(), entityIndex, 0);
-				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				useCharm(player.inv.getItemAtCursor(), entityIndex, 0);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 			}
 		}
 		else
@@ -1627,24 +1538,24 @@ void GameClass::handleBoardClick(coord _mouse)
 	}
 	else if(tileIndex>0)
 	{
-		if(inv.getItemAtCursor()>0 && gamemode==GAMEMODE_INVENTORY)
+		if(player.inv.getItemAtCursor()>0 && player.gamemode==GAMEMODE_INVENTORY)
 		{
-			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_TOOL)
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_TOOL)
 			{
-				useTool(inv.getItemAtCursor(), 0, tileIndex);
-				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				useTool(player.inv.getItemAtCursor(), 0, tileIndex);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 				return;
 			}
-			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SEED)
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SEED)
 			{
-				plantSeed(inv.drop(inv.cursor), 0, tileIndex);
-				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				plantSeed(player.inv.drop(player.inv.cursor), 0, tileIndex);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 				return;
 			}
-			if(inv.reg.entities[inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SUMMON)
 			{
-				useCharm(inv.getItemAtCursor(), 0, tileIndex);
-				sidebar.setString(outputEntity(inv.getItemAtCursor()));
+				useCharm(player.inv.getItemAtCursor(), 0, tileIndex);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 				return;
 			}
 		}
@@ -1655,16 +1566,16 @@ void GameClass::handleBoardClick(coord _mouse)
 	}
 }
 
-void GameClass::handleMinimapClick(coord _finemouse)
+void GameClass::handleMinimapClick()
 {
-	coord mapgrid=minimapHover();
+	coord mapgrid=player.minimapHover(viewerCursor, settings);
 	if(mapExists(mapgrid))
 	{
 		//refreshMap(viewerCursor);
 		viewerCursor=mapgrid;
 		generatorCursor=mapgrid;
 		dumpActionList=true;
-		gamemode=GAMEMODE_NEUTRAL;
+		player.gamemode=GAMEMODE_NEUTRAL;
 		mapscale=1.0f;
 		render.resetView(app);
 		render.viewport.zoom(mapscale);
@@ -1739,9 +1650,9 @@ void GameClass::plantSeed(int entityIndex, int entityTarget, int tileTarget)
 	}
 }
 
-void GameClass::handleGUIClick(coord _mouse)
+void GameClass::handleGUIClick()
 {
-	int index=buttonHover();
+	int index=player.buttonHover(registry.objMap[viewerCursor]);
 	if(index==0 || !registry.objMap[viewerCursor].regButtons[index]->active) return;
 	if(registry.objMap[viewerCursor].regButtons[index]->actionTemplateIndex>0)
 	{
@@ -1765,7 +1676,7 @@ void GameClass::gameRenderer()
 	//draw the tiles that are registered
 	//TODO: make it map-specific
 	render.resetView(app);
-	if(gamemode==GAMEMODE_ZOOMOUT || gamemode==GAMEMODE_MINIMAP)
+	if(player.gamemode==GAMEMODE_ZOOMOUT || player.gamemode==GAMEMODE_MINIMAP)
 	{
 		render.viewport.zoom(mapscale);
 		for(int y=-settings.tileRows/2; y<=settings.tileRows/2; y++)
@@ -1776,7 +1687,7 @@ void GameClass::gameRenderer()
 				{
 					//coord mapCenter = coord((3+(settings.tileCols/2))*settings.tileWid, (1+(settings.tileRows/2))*settings.tileHig);
 					//coord mapHover = mapCenter+coord((x*settings.tileCols*2),(y*settings.tileRows*2));
-					bool here = (coord(x,y) == minimapHover());
+					bool here = (coord(x,y) == player.minimapHover(viewerCursor, settings));
 					render.DrawQuickMap(app, registry.objMap[coord(x,y)], viewerCursor, coord(x,y), here);//isCollision(toVector(finemouse), sf::IntRect(mapHover.x, mapHover.y, settings.tileCols*2, settings.tileRows*2)));
 				}
 			}
@@ -1788,7 +1699,7 @@ void GameClass::gameRenderer()
 		{
 			if(registry.objMap[viewerCursor].regTiles[i] != NULL)
 			{
-				if(i==tileHover() && entityHover()==0)
+				if(i==player.tileHover(registry.objMap[viewerCursor]) && player.entityHover(registry.objMap[viewerCursor])==0)
 				{
 					render.DrawTile(app, registry.objMap[viewerCursor].regTiles[i], registry.objMap[viewerCursor].regTiles[i]->pos, sf::Color::Red);
 				}
@@ -1804,7 +1715,7 @@ void GameClass::gameRenderer()
 				{
 					pixel=pixel+(registry.objMap[viewerCursor].regCreature[registry.objMap[viewerCursor].regEntities[i]->packIndex]->offset);
 				}
-				render.DrawEntity(app, registry.objMap[viewerCursor].regEntities[i], pixel, (i==entityHover()));
+				render.DrawEntity(app, registry.objMap[viewerCursor].regEntities[i], pixel, (i==player.entityHover(registry.objMap[viewerCursor])));
 			}
 		}
 
@@ -1815,12 +1726,12 @@ void GameClass::gameRenderer()
 //		}
 	}
 	//fillButton("ritualgui", coord(0,0), 0, (gamemode==GAMEMODE_CRAFTING));
-		ritualForm.clear();
-		inventoryForm.clear();
-	fillGuiForm(ritualForm, 0, gamemode==GAMEMODE_CRAFTING);
-	fillGuiForm(inventoryForm, 0, (gamemode==GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING));
+		player.ritualForm.clear();
+		player.inventoryForm.clear();
+	fillGuiForm(player.ritualForm, 0, player.gamemode==GAMEMODE_CRAFTING);
+	fillGuiForm(player.inventoryForm, 0, (player.gamemode==GAMEMODE_INVENTORY || player.gamemode==GAMEMODE_CRAFTING));
 
-	if(gamemode == GAMEMODE_INVENTORY || gamemode==GAMEMODE_CRAFTING)
+	if(player.gamemode == GAMEMODE_INVENTORY || player.gamemode==GAMEMODE_CRAFTING)
 	{
 /*		sf::Image imgdummy;
 		sf::Texture dummy;
@@ -1832,28 +1743,28 @@ void GameClass::gameRenderer()
 		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
 		app.draw(render.currentSprite);*/
 		//render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
-		for(int i=0; i<int(ritual.cell.size()); i++)
+		for(int i=0; i<int(player.ritual.cell.size()); i++)
 		{
-			if(ritual.cell[i].templateIndex>0)
+			if(player.ritual.cell[i].templateIndex>0)
 			{
-				ritualForm.addCell(RENDER_ENTITY, ritual.cell[i].templateIndex, gridToPixel(ritual.cell[i].point));
+				player.ritualForm.addCell(RENDER_ENTITY, player.ritual.cell[i].templateIndex, gridToPixel(player.ritual.cell[i].point));
 			}
 		}
 		for(int j=0; j<25; j++)
-			inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
-		for(int i=0; i<int(inv.cellList.size()); i++)
+			player.inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
+		for(int i=0; i<int(player.inv.cellList.size()); i++)
 		{
-			if(inv.cellList[i].tmp_idx>0)
+			if(player.inv.cellList[i].tmp_idx>0)
 			{
-				inventoryForm.addCell(RENDER_ENTITY, inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
+				player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
 			}
 		}
 	}
 
-	render.DrawGUIForm(app, tmp, ritualForm, finemouse);
-	render.DrawGUIForm(app, tmp, inventoryForm, finemouse);
-	render.DrawGUIForm(app, tmp, sideMenuForm, finemouse);
-	render.DrawGUIForm(app, tmp, creatureCard, finemouse);
+	render.DrawGUIForm(app, tmp, player.ritualForm, player.finemouse);
+	render.DrawGUIForm(app, tmp, player.inventoryForm, player.finemouse);
+	render.DrawGUIForm(app, tmp, player.sideMenuForm, player.finemouse);
+	render.DrawGUIForm(app, tmp, player.creatureCard, player.finemouse);
 	app.draw(sidebar);
 	app.display();
 }

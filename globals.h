@@ -27,6 +27,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "inventory.h"
 #include "ritual.h"
 #include "guiform.h"
+#include "player.h"
 #include "render.h"
 #include "game.h"
 

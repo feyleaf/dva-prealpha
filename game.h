@@ -2,7 +2,7 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-August 9, 2014
+August 23, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -41,6 +41,7 @@ struct gameHeader
 class GameClass
 {
 protected:
+	PlayerEngine player;
 	//world logic stuff
 	//--prerequisite data for game at runtime
 	bool newGame;
@@ -66,20 +67,6 @@ protected:
 	GameObjectClass registry;
 
 ////////////////////////
-	//player interface stuff
-	//--prerequisite data for player at runtime
-	sf::Event gameEvent;
-	sf::Keyboard keys;
-	sf::Mouse theMouse;
-	bool quitGame;
-
-	//--value structures for interaction with the world, handled by player
-	int gamemode;
-	InventoryClass inv;
-	RitualClass ritual;
-	coord mouse;
-	coord finemouse;
-	bool isClicking;
 
 	//rendering stuff
 	//--class for managing render engine
@@ -87,6 +74,7 @@ protected:
 
 	//--object for creating the window, vital to game :)
 	sf::RenderWindow app;
+	sf::Event gameEvent;
 
 	//--prerequisite data for rendering at runtime
 	settingStruct settings;
@@ -107,6 +95,7 @@ public:
 	coord gridToPixel(coord _grid) {return coord(_grid.x*settings.tileWid, _grid.y*settings.tileHig);}
 
 	//world logic stuff
+	void inputHandler();
 	void gameUpdater(float actSeconds);
 
 	//routines for simplifying actions
@@ -123,6 +112,14 @@ public:
 	bool validateEntity(int entityIndex);
 	bool isCreature(int entityIndex);
 
+	//interface with the game via windows buttons, keys and clicks
+	void pollKeys();
+	void pollMouseClicks();
+	void pollWindowsEvents();
+	void handleGUIClick();
+	void handleBoardClick();
+	void handleMinimapClick();
+
 	//dealing with a single map's generation
 	void refreshMap(coord map_pos);
 	bool mapExists(coord map_pos);
@@ -132,6 +129,7 @@ public:
 	void createEcologyLayer(const mapGenStruct* map);
 
 	//generating a map one registry element at a time
+	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
 	void fillTile(const char* codename, coord _pos);
 	void fillRoad(const char* codename, coord start, coord end);
 	void fillButton(const char* codename, coord _pixel_pos, int linkedEntity=0, bool act=true);
@@ -190,33 +188,6 @@ public:
 	bool eraseTileAt(coord _pt);
 	int numberOfTiles();
 	int numberOfEntities();
-
-	//player interface stuff
-	void inputHandler();
-
-	//mouse as a selection device
-	coord getMouseGrid();
-	int entityHover();
-	int buttonHover();
-	int tileHover();
-	coord minimapHover();
-
-	//interface with the game via windows buttons, keys and clicks
-	void pollWindowsEvents();
-	void pollKeys();
-	void pollMouseClicks();
-
-	//logic tree for processing each click
-	bool isClickOnBoard();
-	bool isClickOnGUI();
-	void handleGUIClick(coord _mouse);
-	void handleBoardClick(coord _mouse);
-	void handleMinimapClick(coord _finemouse);
-	GUIFormClass inventoryForm;
-	GUIFormClass sideMenuForm;
-	GUIFormClass ritualForm;
-	GUIFormClass creatureCard;
-	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
 
 	//rendering stuff
 	void gameRenderer();

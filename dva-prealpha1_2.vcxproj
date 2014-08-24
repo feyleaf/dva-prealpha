@@ -77,6 +77,7 @@
     <ClCompile Include="interpret.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="ritual.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="interpret.h" />
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="inventory.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="ritual.h" />
     <ClInclude Include="tempRegistry.h" />
