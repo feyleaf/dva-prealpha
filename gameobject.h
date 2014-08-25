@@ -239,6 +239,10 @@ public:
 
 	int numberOfTilesOnGrid(coord _grid);
 	int numberOfEntitiesOnGrid(coord _grid);
+	int tileIndexOnGrid(coord _grid);
+	int entityIndexOnGrid(coord _grid);
+	int entityIndexAtPoint(coord _pixel);
+	int buttonIndexAtPoint(coord _pixel);
 
 	int getEntityTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);
 	int getActionTemplateIndex(const TemplateRegistryClass& tmp, const char* _codename);

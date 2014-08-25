@@ -2,7 +2,7 @@
 templates.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-July 17, 2014
+August 24, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
 */
@@ -12,19 +12,15 @@ Author: Benjamin C. Watt (@feyleafgames)
 
 struct settingStruct
 {
-	int tileWid;
-	int tileHig;
-	int tileRows;
-	int tileCols;
-	int winWid;
-	int winHig;
+	coord tileDimensions;
+	coord mapGridDimensions;
+	coord screenDimensions;
 
-	int hotbarSize;
-	int invWid;
-	int invHig;
 	char verTitle[40];
 	char verTx[40];
 	char saveFile[40];
+	char templateDataFile[40];
+	char debugFile[40];
 	char mainFontFile[40];
 	char auxFontFile[40];
 	char tileSheetFile[40];
@@ -312,17 +308,6 @@ struct biomeInformationTemplate
 	}
 };
 
-//item template
-struct itemTemplate
-{
-	unsigned int registeredEntityIndex;	//0 if empty, must hold the game-registered id
-											//meaning create the entity first then the item
-											//or create it empty
-	bool bStackable;	//stack quantity is 999
-	bool bStorable;
-	bool bRituals;
-};
-
 //constructed template of update processes
 struct actionTemplate
 {
@@ -380,6 +365,7 @@ struct guiFormsTemplate
 class TemplateContainerClass
 {
 	public:
+		//all vectors begin with a default entry at record 0, so no list is empty and all indexes are positive
 		TemplateContainerClass() {
 			varianceList.clear(); varianceList.push_back(colorVarianceTemplate());
 			tileList.clear(); tileList.push_back(tileTemplate());
@@ -414,7 +400,6 @@ class TemplateContainerClass
 		std::vector<terrainPoolTemplate> terrainList;
 		std::vector<ecoPoolTemplate> ecoList;
 		std::vector<biomeInformationTemplate> biomeList;
-		std::vector<itemTemplate> itemList;
 		std::vector<actionTemplate> actionList;
 		std::vector<guiButtonTemplate> buttonList;
 		std::vector<guiFormsTemplate> formsList;

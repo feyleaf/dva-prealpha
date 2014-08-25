@@ -127,14 +127,15 @@ InventoryClass::InventoryClass()
 
 int InventoryClass::select(coord click)
 {
-	coord _pt=click-tl;
+	coord _pt=click;
 	if(_pt.x<0 || _pt.y<0 || _pt.x>dimensions.x || _pt.y>dimensions.y)
 	{
 		return cursor;
 	}
 	else
 	{
-		cursor=_pt.x+(_pt.y*dimensions.x);
+		cursor=(_pt.x+(_pt.y*dimensions.x))+1;
+		if(cursor>capacity) cursor=capacity;
 		return cursor;
 	}
 }

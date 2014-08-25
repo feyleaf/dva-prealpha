@@ -63,6 +63,42 @@ int GameObjectContainerClass::numberOfTilesOnGrid(coord _grid)
 	return ret;
 }
 
+int GameObjectContainerClass::tileIndexOnGrid(coord _grid)
+{
+	for(int i=int(regTiles.size()-1); i>0; i--)
+	{
+		if(regTiles[i]->pos == _grid) return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::entityIndexOnGrid(coord _grid)
+{
+	for(int i=int(regEntities.size()-1); i>0; i--)
+	{
+		if(regEntities[i]->pos == _grid) return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::entityIndexAtPoint(coord _pixel)
+{
+	for(int i=int(regEntities.size()-1); i>0; i--)
+	{
+		if(regEntities[i]->box.contains(_pixel.x, _pixel.y)) return i;
+	}
+	return 0;
+}
+
+int GameObjectContainerClass::buttonIndexAtPoint(coord _pixel)
+{
+	for(int i=int(regButtons.size()-1); i>0; i--)
+	{
+		if(regButtons[i]->box.contains(_pixel.x, _pixel.y) && regButtons[i]->active) return i;
+	}
+	return 0;
+}
+
 int GameObjectContainerClass::numberOfEntitiesOnGrid(coord _grid)
 {
 	int ret=0;

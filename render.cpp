@@ -274,53 +274,47 @@ void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryCla
 	}
 }
 
-void RenderManager::DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell)
+void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form)
 {
+	int highlight=0;
+	int held=0;
 	char out[8];
 	sf::Text quantityOut;
 	quantityOut.setCharacterSize(16);
 	quantityOut.setFont(auxfont);
 	quantityOut.setColor(sf::Color::White);
-	int held=0;
-	currentSprite.setTexture(guiSheet);
-	coord o=cell->origin;
-	currentSprite.setTextureRect(sf::IntRect(o.x, o.y, cell->dimensions.x, cell->dimensions.y));
-	for(int y=items.tl.y; y<items.tl.y+items.dimensions.y; y++)
+	for(int i=1; i<int(form.cells.size()); i++)
 	{
-		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
+		switch(form.cells[i].renderType)
 		{
-			currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
-			if(items.cursor==((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x))) currentSprite.setColor(sf::Color::Green);
-			else currentSprite.setColor(sf::Color::White);
-	
-			win.draw(currentSprite);
+			case RENDER_TILE:
+				currentSprite.setTexture(tileSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.tileList[form.cells[i].templateIndex].origin.y, tmp.container.tileList[form.cells[i].templateIndex].dimensions.x, tmp.container.tileList[form.cells[i].templateIndex].dimensions.y));
+				break;
+			case RENDER_ENTITY:
+				held++;
+				currentSprite.setTexture(entitySheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+				break;
+			case RENDER_BUTTON:
+				highlight++;
+			default:
+				currentSprite.setTexture(guiSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
+				break;
 		}
-	}
-	currentSprite.setTexture(entitySheet);
-	for(int y=items.tl.y; y<items.tl.y+items.dimensions.y; y++)
-	{
-		for(int x=items.tl.x; x<items.tl.x+items.dimensions.x; x++)
-		{
-			int index=((x-items.tl.x)+((y-items.tl.y)*items.dimensions.x));
-	
-			held=items.cellList[index].idx_item;
-			if(items.reg.entities[held] != NULL)
-			{
-				o=items.reg.entities[held]->origin;
-				currentSprite.setTextureRect(sf::IntRect(o.x, o.y, 32, 32));
-				currentSprite.setPosition(float((x*32)), float((y*32))+16.0f);
-				currentSprite.setColor(sf::Color::White);
-	
-				win.draw(currentSprite);
+		if(items.cursor==highlight)
+			currentSprite.setColor(sf::Color::Green);
+		else currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y)+16);
 
-				if(items.getQuantityAt(index) > 1)
-				{
-					sprintf_s(out, "%5i", items.getQuantityAt(index));
-					quantityOut.setString(out);
-					quantityOut.setPosition(float((x*32)), float((y*32))+33.0f);
-					win.draw(quantityOut);
-				}
-			}
+		win.draw(currentSprite);
+		if(items.getQuantityAt(held) > 1 && form.cells[i].renderType==RENDER_ENTITY)
+		{
+			sprintf_s(out, "%5i", items.getQuantityAt(held));
+			quantityOut.setString(out);
+			quantityOut.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y)+31);
+			win.draw(quantityOut);
 		}
 	}
 }

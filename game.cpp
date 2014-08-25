@@ -21,7 +21,6 @@ void GameClass::initialize()
 
 void GameClass::refreshMap(coord map_pos)
 {
-	player.isClicking=true;
 	mapscale=1.0f;
 	//header.randSeed=rand();
 	//initRandom(header.randSeed);
@@ -37,7 +36,6 @@ GameClass::GameClass()
 	generatorCursor=coord(0,0);
 	viewerCursor=coord(0,0);
 	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
-	debugFile.open("processes.txt");
 	newGame=true;
 	player.quitGame=false;
 	header.mapIndex=0;
@@ -45,14 +43,18 @@ GameClass::GameClass()
 	initRandom(header.randSeed);
 	player.inv.clearAll();
 	initialize();
-	tmp.parseFile("allreg-testing.txt");
+	debugFile.open(settings.debugFile);
+	tmp.parseFile(settings.templateDataFile);
 	render.initialize(tmp, settings);
-	app.create(sf::VideoMode(settings.winWid, settings.winHig, 32), settings.verTitle);
+	app.create(sf::VideoMode(settings.screenDimensions.x, settings.screenDimensions.y, 32), settings.verTitle);
 	//app.setFramerateLimit(60);
 	render.resetView(app);
+	player.initTileGrid(settings);
+	player.initWindowSize(app);
+	player.refreshClicks();
 	//render.mainfont.loadFromFile(settings.mainFontFile);
-	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", render.mainfont, 24);
-	sidebar.setPosition(float(settings.tileCols*settings.tileWid)+10.0f, 10.0f);
+	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", render.mainfont, 20);
+	sidebar.setPosition(float(settings.mapGridDimensions.x*settings.tileDimensions.x)+10.0f, 10.0f);
 	registry.createAction(tmp, "generatemap", 0,0,0,0.0f, viewerCursor);
 }
 
@@ -101,22 +103,20 @@ void GameClass::pollKeys()
 
 void GameClass::pollMouseClicks()
 {
-	//mouse handling routine
-	player.getMouseGrid(app, settings);
-	if(!player.theMouse.isButtonPressed(sf::Mouse::Button::Left)) player.isClicking=false;
-	if(player.theMouse.isButtonPressed(sf::Mouse::Button::Left) && !player.isClicking)
+	if(player.gaveClick())
 	{
+		//mouse handling routine
+		//player.getMouseGrid(app);
+		//if(!player.gaveClick(app)) return;
 		if(player.gamemode==GAMEMODE_MINIMAP)
 		{
 			//minimap stuff
-			player.isClicking=true;
 			handleMinimapClick();
 			return;
 		}
-		player.isClicking=true;
-		if(player.isClickOnGUI(registry.objMap[viewerCursor], settings))
+		if(player.isClickOnGUI(registry.objMap[viewerCursor]))
 		{
-			handleGUIClick(); //creates actions based on the button that was clicked
+			handleGUIClick(player.inventoryForm); //creates actions based on the button that was clicked
 		}
 		else if(player.isClickOnBoard(settings))
 		{
@@ -129,6 +129,15 @@ bool GameClass::actionCodeEquals(int index, const char* _code)
 {
 	if(index==0 || index>int(tmp.container.actionList.size()) || _code==NULL || tmp.container.actionList[index].cname==NULL) return false;
 	return (strcmp(tmp.container.actionList[index].cname, _code)==0);
+}
+
+coord GameClass::minimapHover(coord map_pos)
+{
+	//finemouse has to be along a map position
+	//viewerCursor is at mapcenter
+	coord minimapgrid=coord(player.deliverRealClick(app).x/(settings.mapGridDimensions.x*2), (player.deliverRealClick(app).y+16)/(settings.mapGridDimensions.y*2));
+	return minimapgrid-coord(10,9)+map_pos;
+
 }
 
 //performs update tasks each frame
@@ -252,7 +261,7 @@ bool GameClass::validateAction(const actionStruct* act)
 
 bool GameClass::validateTilePosition(coord pos)
 {
-	if(pos.x>settings.tileCols || pos.y>settings.tileRows || pos.x<0 || pos.y<0) return false;
+	if(pos.x>settings.mapGridDimensions.x || pos.y>settings.mapGridDimensions.y || pos.x<0 || pos.y<0) return false;
 	if(registry.objMap[viewerCursor].numberOfTilesOnGrid(pos)<1) return false;
 	return true;
 }
@@ -583,7 +592,7 @@ bool GameClass::moveToAlign(int entityIndex)
 
 	//basing this solely on the velocity and the offset. we assume everything is valid with the data,
 	//and that the velocity has been set to a direction that it needs to go
-	if(abs(off.x+vel.x)>=settings.tileWid) //if we reached the target on the x axis:
+	if(abs(off.x+vel.x)>=settings.tileDimensions.x) //if we reached the target on the x axis:
 	{
 		//heading east, increment the position
 		if(vel.x>0)
@@ -598,7 +607,7 @@ bool GameClass::moveToAlign(int entityIndex)
 			return true;
 		}
 	}
-	if(abs(off.y+vel.y)>=settings.tileHig) //if we reached the target on the y axis:
+	if(abs(off.y+vel.y)>=settings.tileDimensions.y) //if we reached the target on the y axis:
 	{
 		//heading south, increment the position
 		if(vel.y>0)
@@ -665,6 +674,18 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 		if(player.gamemode==GAMEMODE_ENTITYTARGETING)
 		{
 			int regEnt=registry.objMap[viewerCursor].getButtonLinkedEntity(tmp, "movecreature");
+
+			//if there is an entity on the tile, we select that entity as a target instead
+			//quick fix for a movement glitch i found
+			coord grid = registry.objMap[viewerCursor].regTiles[act->tileIndexTarget]->pos;
+			if(registry.objMap[viewerCursor].entityIndexOnGrid(grid)>0)
+			{
+				fillEntityTargetAction("establishtarget", regEnt, registry.objMap[viewerCursor].entityIndexOnGrid(grid), 0.5f);
+				fillSourceAction("creatureguioff", regEnt);
+				return;
+			}
+
+			//otherwise move to the tile
 			if(tileTarget(act))
 			{
 				fillTileTargetAction("establishtarget", regEnt, act->tileIndexTarget, 0.5f);
@@ -686,18 +707,14 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "establishtarget"))
 	{
 		stopActionCategory(act->entityIndexSource, ACAT_COMBAT);
-		char buffer[64]="";
 		if(tileTarget(act))
 		{
-			sprintf_s(buffer, "(%i, %i)", registry.objMap[viewerCursor].regTiles[act->tileIndexTarget]->pos.x, registry.objMap[viewerCursor].regTiles[act->tileIndexTarget]->pos.y);
 			fillTileTargetAction("movestep", act->entityIndexSource, act->tileIndexTarget, 0.567f);
 		}
 		else
 		{
-			sprintf_s(buffer, "(%i, %i)", registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->pos.x, registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->pos.y);
 			fillEntityTargetAction("movestep", act->entityIndexSource, act->entityIndexTarget, 0.567f);
 		}
-		sidebar.setString("Target moving to:\n" + std::string(buffer));
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "movestep"))
@@ -708,7 +725,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 		{
 			int enemy=getEnemyNeighbor(act->entityIndexSource);
 			fillSourceAction("canceltarget", act->entityIndexSource);
-			fillEntityTargetAction("engagecombat", act->entityIndexSource, enemy, 0.125f);
+			fillEntityTargetAction("engagecombat", act->entityIndexSource, enemy, 0.325f);
 			return;
 		}
 		coord tTarget;
@@ -878,7 +895,6 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 		stopActionCategory(act->entityIndexTarget, ACAT_MOVEMENT);
 		char buffer[64]="";
 		sprintf_s(buffer, "(%i, %i)", registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->pos.x, registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->pos.y);
-		sidebar.setString("Combat Engaged:\n" + std::string(buffer));
 		fillEntityTargetAction("attack", act->entityIndexSource, act->entityIndexTarget, 0.5f);
 		return;
 	}
@@ -891,7 +907,7 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 	{
 		float seconds=float(rand()%7+2);
 		//fillSourceAction("wandercreature", act->entityIndexSource, seconds);
-		fillButton("movebutton", gridToPixel(coord(settings.tileCols+1,1)), act->entityIndexSource, false);
+		fillButton("movebutton", gridToPixel(coord(settings.mapGridDimensions.x+1,1)), act->entityIndexSource, false);
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex, "makeenemy"))
@@ -958,10 +974,10 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		player.inventoryForm.clear();
 		player.sideMenuForm.clear();
 		player.creatureCard.clear();
-		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), gridToPixel(coord(settings.tileCols,5)));
-		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), gridToPixel(coord(settings.tileCols+1,4)));
-		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), gridToPixel(coord(settings.tileCols+2,5)));
-		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), gridToPixel(coord(settings.tileCols+1,6)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "magnifier"), gridToPixel(coord(settings.mapGridDimensions.x,5)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "backpack"), gridToPixel(coord(settings.mapGridDimensions.x+1,4)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "worldmap"), gridToPixel(coord(settings.mapGridDimensions.x+2,5)));
+		player.sideMenuForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "camera"), gridToPixel(coord(settings.mapGridDimensions.x+1,6)));
 		fillGuiForm(player.sideMenuForm);
 		return;
 	}
@@ -973,13 +989,32 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(actionCodeEquals(act->actionTemplateIndex,"backpack"))
 	{
-		if(player.gamemode!=GAMEMODE_INVENTORY) player.gamemode=GAMEMODE_INVENTORY;
-		else player.gamemode=GAMEMODE_NEUTRAL;
+		if(player.gamemode!=GAMEMODE_INVENTORY)
+		{
+			player.inventoryForm.clear();
+			for(int j=0; j<25; j++)
+				player.inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
+			for(int i=0; i<int(player.inv.cellList.size()); i++)
+			{
+				if(player.inv.cellList[i].tmp_idx>0)
+				{
+					player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
+				}
+			}
+			fillGuiForm(player.inventoryForm);
+			player.inventoryForm.activate();
+			player.gamemode=GAMEMODE_INVENTORY;
+		}
+		else
+		{
+			player.inventoryForm.clear();
+			player.gamemode=GAMEMODE_NEUTRAL;
+		}
 		return;
 	}
 	if(actionCodeEquals(act->actionTemplateIndex,"selectinventory"))
 	{
-		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.mouse);
+		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.deliverGridClick(app));
 		return;
 	}
 }
@@ -1085,10 +1120,10 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 					if(ff.y>0) ff=ff+coord(0,-1);
 					break;
 				case 1://east
-					if(ff.x<settings.tileCols) ff=ff+coord(1,0);
+					if(ff.x<settings.mapGridDimensions.x) ff=ff+coord(1,0);
 					break;
 				case 2://south
-					if(ff.y<settings.tileRows) ff=ff+coord(0,1);
+					if(ff.y<settings.mapGridDimensions.y) ff=ff+coord(0,1);
 					break;
 				default://west
 					if(ff.x>0) ff=ff+coord(-1,0);
@@ -1097,7 +1132,6 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 			if(terrain.getTerrainAt(ff)==0)
 			{
 				fillTileTargetAction("movestep", act->entityIndexSource, getTileIndexAt(ff), 0.567f);
-//				registry.createAction(tmp, "movestep", act->entityIndexSource, 0, getTileIndexAt(ff), gameTime(), viewerCursor);
 			}
 		}
 		//fillSourceAction("wandercreature", act->entityIndexSource, seconds);
@@ -1135,12 +1169,11 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		if(player.gamemode!=GAMEMODE_ENTITYACTION)
 		{
 			player.gamemode=GAMEMODE_ENTITYACTION;
-			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(settings.tileCols, 1)));
-			player.creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.tileCols, 1)));
-			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.tileCols+1, 1)));
+			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(settings.mapGridDimensions.x, 1)));
+			player.creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.mapGridDimensions.x, 1)));
+			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.mapGridDimensions.x+1, 1)));
 
 			fillGuiForm(player.creatureCard, act->entityIndexSource, true);
-			//sidebar.setString("SELECTED:\n" + outputEntity(act->entityIndexSource));
 			registry.objMap[viewerCursor].activateEntityButtons(act->entityIndexSource);
 		}
 		return;
@@ -1204,7 +1237,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	{
 		if(player.gamemode==GAMEMODE_CRAFTING)
 		{
-			sidebar.setString("Crafting OFF");
+			sidebar.setString("");
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		else
@@ -1221,11 +1254,6 @@ void GameClass::processAction(actionStruct* act)
 {
 	if(!validateAction(act)) return;
 
-	debugFile << "Handling event: " << tmp.container.actionList[act->actionTemplateIndex].cname << "\t";
-	debugFile << "Source: " << act->entityIndexSource << ": " << outputEntity(act->entityIndexSource).toAnsiString();
-	debugFile << "Target Entity: " << act->entityIndexTarget << ": " << outputEntity(act->entityIndexTarget).toAnsiString();
-	debugFile << "Target Tile: " << act->tileIndexTarget << ": " << outputTile(act->tileIndexTarget).toAnsiString();
-	debugFile << "==================================================\n";
 	handleMovementPipeline(act);
 	handleCombatPipeline(act);
 	handleCreationPipeline(act);
@@ -1259,33 +1287,25 @@ void GameClass::experimentalMapGen(coord map_pos, const char* biome)
 		createEcologyLayer(registry.objMap[map_pos].regMaps[i]);
 	}
 	//some ideas
-	tempImg.create(settings.tileCols, settings.tileRows, sf::Color::White);
+	tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y, sf::Color::White);
 	for(int i=1; i<int(registry.objMap[map_pos].regTiles.size()); i++)
 	{
 		if(registry.objMap[map_pos].regTiles[i] != NULL)
 		{
 			coord pos=registry.objMap[map_pos].regTiles[i]->pos;
-			//render.ColorizeMiniMap(registry.objMap[map_pos].regTiles[i], pos);
 			tempImg.setPixel(pos.x, pos.y, registry.objMap[map_pos].regTiles[i]->distortionColor);
 		}
 	}
-	//	tempSprite.setScale(1.0f/float(settings.tileWid), 1.0f/float(settings.tileHig));
-	//	tempSprite.setPosition(float(registry.objMap[map_pos].regTiles[i]->pos.x), (settings.tileRows-1)-float(registry.objMap[map_pos].regTiles[i]->pos.y));
-	//	tempSheet.draw(tempSprite);
-	//}
-	//tempSheet.display();
 	registry.objMap[map_pos].mapSheet.loadFromImage(tempImg);
-	//tempSheet.setActive(false);
-//	registry.objMap[map_pos].createMapSheet(render.tileSheet, settings);
 	fillPathingRoutes();
 }
 
 void GameClass::fillPathingRoutes()
 {
 	//establish pathing rules
-	for(int y=0; y<settings.tileRows; y++)
+	for(int y=0; y<settings.mapGridDimensions.y; y++)
 	{
-		for(int x=0; x<settings.tileCols; x++)
+		for(int x=0; x<settings.mapGridDimensions.x; x++)
 		{
 			if(registry.objMap[generatorCursor].numberOfEntitiesOnGrid(coord(x,y))>0)
 			{
@@ -1298,11 +1318,11 @@ void GameClass::fillPathingRoutes()
 
 void GameClass::createBaseMapLayer(const mapGenStruct* map)
 {
-	fillShape("box", tmp.container.tileList[map->baseTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+	fillShape("box", tmp.container.tileList[map->baseTiles].cname, coord(0,0), coord(settings.mapGridDimensions.x, settings.mapGridDimensions.y));
 	for(int j=1; j<int(map->shapeLayer.size()); j++)
 	{
-		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
-		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.tileCols, settings.tileRows));
+		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.mapGridDimensions.x, settings.mapGridDimensions.y));
+		fillShape(map->shapeLayer[j]->shapeName, tmp.container.tileList[map->shapeLayer[j]->terrainTiles].cname, coord(0,0), coord(settings.mapGridDimensions.x, settings.mapGridDimensions.y));
 	}
 }
 
@@ -1310,7 +1330,7 @@ void GameClass::createDecorationLayer(const mapGenStruct* map)
 {
 	for(int j=0; j<int(map->decoLayer.size()); j++)
 		scatterEntity(map->decoLayer[j]);
-	fillEntity("ritualstump", coord(rand()%settings.tileCols,rand()%settings.tileRows));
+	fillEntity("ritualstump", coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
 }
 
 void GameClass::createEcologyLayer(const mapGenStruct* map)
@@ -1514,8 +1534,8 @@ int GameClass::getTileIndexAt(coord pos)
 
 void GameClass::handleBoardClick()
 {
-	int entityIndex=player.entityHover(registry.objMap[viewerCursor]);
-	int tileIndex=player.tileHover(registry.objMap[viewerCursor]);
+	int entityIndex=registry.objMap[viewerCursor].entityIndexAtPoint(player.deliverRealClick(app));
+	int tileIndex=registry.objMap[viewerCursor].tileIndexOnGrid(player.deliverGridClick(app));
 	if(entityIndex>0)
 	{
 		if(player.inv.getItemAtCursor()>0 && player.gamemode==GAMEMODE_INVENTORY)
@@ -1568,7 +1588,7 @@ void GameClass::handleBoardClick()
 
 void GameClass::handleMinimapClick()
 {
-	coord mapgrid=player.minimapHover(viewerCursor, settings);
+	coord mapgrid=minimapHover(viewerCursor);
 	if(mapExists(mapgrid))
 	{
 		//refreshMap(viewerCursor);
@@ -1650,9 +1670,9 @@ void GameClass::plantSeed(int entityIndex, int entityTarget, int tileTarget)
 	}
 }
 
-void GameClass::handleGUIClick()
+void GameClass::handleGUIClick(GUIFormClass& form)
 {
-	int index=player.buttonHover(registry.objMap[viewerCursor]);
+	int index=registry.objMap[viewerCursor].buttonIndexAtPoint(player.deliverRealClick(app));
 	if(index==0 || !registry.objMap[viewerCursor].regButtons[index]->active) return;
 	if(registry.objMap[viewerCursor].regButtons[index]->actionTemplateIndex>0)
 	{
@@ -1679,16 +1699,16 @@ void GameClass::gameRenderer()
 	if(player.gamemode==GAMEMODE_ZOOMOUT || player.gamemode==GAMEMODE_MINIMAP)
 	{
 		render.viewport.zoom(mapscale);
-		for(int y=-settings.tileRows/2; y<=settings.tileRows/2; y++)
+		for(int y=-settings.mapGridDimensions.y/2; y<=settings.mapGridDimensions.y/2; y++)
 		{
-			for(int x=-settings.tileCols/2; x<=settings.tileCols/2; x++)
+			for(int x=-settings.mapGridDimensions.x/2; x<=settings.mapGridDimensions.x/2; x++)
 			{
 				if(mapExists(coord(x,y)))
 				{
-					//coord mapCenter = coord((3+(settings.tileCols/2))*settings.tileWid, (1+(settings.tileRows/2))*settings.tileHig);
-					//coord mapHover = mapCenter+coord((x*settings.tileCols*2),(y*settings.tileRows*2));
-					bool here = (coord(x,y) == player.minimapHover(viewerCursor, settings));
-					render.DrawQuickMap(app, registry.objMap[coord(x,y)], viewerCursor, coord(x,y), here);//isCollision(toVector(finemouse), sf::IntRect(mapHover.x, mapHover.y, settings.tileCols*2, settings.tileRows*2)));
+					//coord mapCenter = coord((3+(settings.mapGridDimensions.x/2))*settings.tileDimensions.x, (1+(settings.mapGridDimensions.y/2))*settings.tileDimensions.y);
+					//coord mapHover = mapCenter+coord((x*settings.mapGridDimensions.x*2),(y*settings.mapGridDimensions.y*2));
+					bool here = (coord(x,y) == minimapHover(viewerCursor));
+					render.DrawQuickMap(app, registry.objMap[coord(x,y)], viewerCursor, coord(x,y), here);//isCollision(toVector(finemouse), sf::IntRect(mapHover.x, mapHover.y, settings.mapGridDimensions.x*2, settings.mapGridDimensions.y*2)));
 				}
 			}
 		}
@@ -1699,7 +1719,8 @@ void GameClass::gameRenderer()
 		{
 			if(registry.objMap[viewerCursor].regTiles[i] != NULL)
 			{
-				if(i==player.tileHover(registry.objMap[viewerCursor]) && player.entityHover(registry.objMap[viewerCursor])==0)
+				if(i==registry.objMap[viewerCursor].tileIndexOnGrid(player.deliverGridClick(app))
+					&& registry.objMap[viewerCursor].entityIndexAtPoint(player.deliverRealClick(app))==0)
 				{
 					render.DrawTile(app, registry.objMap[viewerCursor].regTiles[i], registry.objMap[viewerCursor].regTiles[i]->pos, sf::Color::Red);
 				}
@@ -1715,56 +1736,16 @@ void GameClass::gameRenderer()
 				{
 					pixel=pixel+(registry.objMap[viewerCursor].regCreature[registry.objMap[viewerCursor].regEntities[i]->packIndex]->offset);
 				}
-				render.DrawEntity(app, registry.objMap[viewerCursor].regEntities[i], pixel, (i==player.entityHover(registry.objMap[viewerCursor])));
+				render.DrawEntity(app, registry.objMap[viewerCursor].regEntities[i], pixel, (i==registry.objMap[viewerCursor].entityIndexAtPoint(player.deliverRealClick(app))));
 			}
 		}
 
-//		for(int i=1; i<int(registry.objMap[viewerCursor].regButtons.size()); i++)
-//	//	{
-//			if(registry.objMap[viewerCursor].regButtons[i] != NULL)
-//				render.DrawGui(app, registry.objMap[viewerCursor].regButtons[i], registry.objMap[viewerCursor].regButtons[i]->pos, i==buttonHover());
-//		}
-	}
-	//fillButton("ritualgui", coord(0,0), 0, (gamemode==GAMEMODE_CRAFTING));
-		player.ritualForm.clear();
-		player.inventoryForm.clear();
-	fillGuiForm(player.ritualForm, 0, player.gamemode==GAMEMODE_CRAFTING);
-	fillGuiForm(player.inventoryForm, 0, (player.gamemode==GAMEMODE_INVENTORY || player.gamemode==GAMEMODE_CRAFTING));
-
-	if(player.gamemode == GAMEMODE_INVENTORY || player.gamemode==GAMEMODE_CRAFTING)
-	{
-/*		sf::Image imgdummy;
-		sf::Texture dummy;
-		imgdummy.create(settings.winWid, settings.winHig, sf::Color(80, 80, 80, 188));
-		dummy.loadFromImage(imgdummy);
-		dummy.update(imgdummy);
-		render.currentSprite.setTexture(dummy);
-		render.currentSprite.setPosition(sf::Vector2f(0,0));
-		render.currentSprite.setTextureRect(sf::IntRect(0,0,settings.winWid, settings.winHig));
-		app.draw(render.currentSprite);*/
-		//render.DrawInventory(app, inv, registry.objMap[viewerCursor].regButtons[registry.objMap[viewerCursor].getButtonForAction(tmp, "selectinventory")]);
-		for(int i=0; i<int(player.ritual.cell.size()); i++)
-		{
-			if(player.ritual.cell[i].templateIndex>0)
-			{
-				player.ritualForm.addCell(RENDER_ENTITY, player.ritual.cell[i].templateIndex, gridToPixel(player.ritual.cell[i].point));
-			}
-		}
-		for(int j=0; j<25; j++)
-			player.inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
-		for(int i=0; i<int(player.inv.cellList.size()); i++)
-		{
-			if(player.inv.cellList[i].tmp_idx>0)
-			{
-				player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
-			}
-		}
 	}
 
-	render.DrawGUIForm(app, tmp, player.ritualForm, player.finemouse);
-	render.DrawGUIForm(app, tmp, player.inventoryForm, player.finemouse);
-	render.DrawGUIForm(app, tmp, player.sideMenuForm, player.finemouse);
-	render.DrawGUIForm(app, tmp, player.creatureCard, player.finemouse);
+	render.DrawGUIForm(app, tmp, player.ritualForm, player.deliverRealClick(app));
+	render.DrawInventory(app, tmp, player.inv, player.inventoryForm);
+	render.DrawGUIForm(app, tmp, player.sideMenuForm, player.deliverRealClick(app));
+	render.DrawGUIForm(app, tmp, player.creatureCard, player.deliverRealClick(app));
 	app.draw(sidebar);
 	app.display();
 }
@@ -1820,15 +1801,13 @@ bool GameClass::loadSettings()
 {
 	std::string buf;
 	std::ifstream fin("settings.cfg", std::ios::in|std::ios::beg);
-	fin >> settings.tileWid;
-	fin >> settings.tileHig;
-	fin >> settings.tileRows;
-	fin >> settings.tileCols;
-	fin >> settings.winWid;
-	fin >> settings.winHig;
-	fin >> settings.hotbarSize;
-	fin >> settings.invWid;
-	fin >> settings.invHig;
+	if(fin.bad()) return false;
+	fin >> settings.tileDimensions.x;
+	fin >> settings.tileDimensions.y;
+	fin >> settings.mapGridDimensions.x;
+	fin >> settings.mapGridDimensions.y;
+	fin >> settings.screenDimensions.x;
+	fin >> settings.screenDimensions.y;
 	fin.get();
 	std::getline(fin, buf);
 	strncpy_s(settings.verTitle,buf.c_str(), 40);
@@ -1836,6 +1815,10 @@ bool GameClass::loadSettings()
 	strncpy_s(settings.verTx,buf.c_str(), 40);
 	std::getline(fin, buf);
 	strncpy_s(settings.saveFile,buf.c_str(), 40);
+	std::getline(fin, buf);
+	strncpy_s(settings.templateDataFile,buf.c_str(), 40);
+	std::getline(fin, buf);
+	strncpy_s(settings.debugFile,buf.c_str(), 40);
 	std::getline(fin, buf);
 	strncpy_s(settings.mainFontFile,buf.c_str(), 40);
 	std::getline(fin, buf);
@@ -1847,7 +1830,5 @@ bool GameClass::loadSettings()
 	std::getline(fin, buf);
 	strncpy_s(settings.guiSheetFile,buf.c_str(), 40);
 	fin.close();
-	debugFile << settings.tileWid << " x " << settings.tileHig << "\n";
-	debugFile << "Title: " << settings.verTitle << "\n";
 	return true;
 }

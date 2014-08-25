@@ -29,7 +29,7 @@ void AStarClass::reset(pathNode& _check)
 }
 void AStarClass::initBounds(const settingStruct& set)
 {
-	bounds=coord(set.tileCols, set.tileRows);
+	bounds=set.mapGridDimensions;
 }
 void AStarClass::initialize(const coord& _start, const coord& _target)
 {

@@ -92,7 +92,7 @@ public:
 	void initialize();
 	bool gameLoop();
 	float gameTime() {return float(startTime)+gameClock.getElapsedTime().asSeconds();}
-	coord gridToPixel(coord _grid) {return coord(_grid.x*settings.tileWid, _grid.y*settings.tileHig);}
+	coord gridToPixel(coord _grid) {return coord(_grid.x*settings.tileDimensions.x, _grid.y*settings.tileDimensions.y);}
 
 	//world logic stuff
 	void inputHandler();
@@ -116,7 +116,7 @@ public:
 	void pollKeys();
 	void pollMouseClicks();
 	void pollWindowsEvents();
-	void handleGUIClick();
+	void handleGUIClick(GUIFormClass& form);
 	void handleBoardClick();
 	void handleMinimapClick();
 
@@ -167,6 +167,7 @@ public:
 	bool entityTarget(const actionStruct* act);
 	bool tileTarget(const actionStruct* act);
 	bool fullTargets(const actionStruct* act);
+	coord minimapHover(coord map_pos);
 
 	//handling groups of processes one action at a time
 	void handleMovementPipeline(const actionStruct* act);
