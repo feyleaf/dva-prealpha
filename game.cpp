@@ -101,27 +101,142 @@ void GameClass::pollKeys()
 {
 }
 
+int GameClass::translateClickLayer(coord _pixel)
+{
+	//input is the pixel of the current screen being clicked on by the player engine
+	//(pass player.deliverRealClick(app)
+	//returns a predefined code for the map layer to handle
+
+	//start at the very top layer, which at the moment is only used for minimap
+	if(player.gamemode==GAMEMODE_MINIMAP) return CLICKLAYER_TOP;
+
+	//then test button click AND BUTTON ACTIVE STATE
+	if(registry.objMap[viewerCursor].buttonIndexAtPoint(_pixel)>0)
+	{
+		int plc=registry.objMap[viewerCursor].buttonIndexAtPoint(_pixel);
+		if(registry.objMap[viewerCursor].regButtons[plc]->active && registry.objMap[viewerCursor].regButtons[plc]->actionTemplateIndex>0)
+			return CLICKLAYER_BUTTON;
+	}
+	else if(player.inventoryForm.getBox().contains(_pixel.x, _pixel.y) && player.inventoryForm.active)
+	{
+		//click on the inventory GUI but not on a button
+		return CLICKLAYER_GUIFORM;
+	}
+	else if(player.ritualForm.getBox().contains(_pixel.x, _pixel.y) && player.ritualForm.active)
+	{
+		//click on the ritual GUI but not on a button
+		return CLICKLAYER_GUIFORM;
+	}
+	else if(player.sideMenuForm.getBox().contains(_pixel.x, _pixel.y) && player.sideMenuForm.active)
+	{
+		//click on the side menu GUI but not on a button
+		return CLICKLAYER_GUIFORM;
+	}
+	else if(player.creatureCard.getBox().contains(_pixel.x, _pixel.y) && player.creatureCard.active)
+	{
+		//click on the creature card GUI but not on a button
+		return CLICKLAYER_GUIFORM;
+	}
+	else if(registry.objMap[viewerCursor].entityIndexAtPoint(_pixel)>0)
+	{
+		int plc=registry.objMap[viewerCursor].entityIndexAtPoint(_pixel);
+		if(registry.objMap[viewerCursor].regEntities[plc]->active && registry.objMap[viewerCursor].regEntities[plc]->plane==0)
+		{
+			switch(registry.objMap[viewerCursor].regEntities[plc]->type)
+			{
+				case ICAT_CREATURE: return CLICKLAYER_CREATURES;
+				case ICAT_DECORATION: return CLICKLAYER_DECORATIONS;
+				case ICAT_VEGETATION: return CLICKLAYER_CREATURES;
+				case ICAT_SEED: return CLICKLAYER_DECORATIONS;
+				case ICAT_INGREDIENT: return CLICKLAYER_DECORATIONS;
+				case ICAT_TOOL: return CLICKLAYER_DECORATIONS;
+				case ICAT_SUMMON: return CLICKLAYER_DECORATIONS;
+				default: break;
+			}	
+		}
+	}
+	else if(registry.objMap[viewerCursor].tileIndexOnGrid(coord(_pixel.x/settings.tileDimensions.x, _pixel.y/settings.tileDimensions.y))>0)
+	{
+		//click a tile
+		return CLICKLAYER_TILE;
+	}
+
+
+	return CLICKLAYER_ZERO;
+
+}
+
 void GameClass::pollMouseClicks()
 {
 	if(player.gaveClick())
 	{
 		//mouse handling routine
-		//player.getMouseGrid(app);
-		//if(!player.gaveClick(app)) return;
-		if(player.gamemode==GAMEMODE_MINIMAP)
-		{
-			//minimap stuff
+		coord actionPoint = player.deliverRealClick(app);
+		handleClick(translateClickLayer(actionPoint), actionPoint);		
+	}
+}
+
+void GameClass::handleClick(int clickLayer, coord _pixel)
+{
+	int plc=0;
+	switch(clickLayer)
+	{
+		case CLICKLAYER_CREATURES:
+			plc=registry.objMap[viewerCursor].entityIndexAtPoint(player.deliverRealClick(app));
+			fillEntityTargetAction("selectentity", 0, plc, 0.125f);
+			break;
+		case CLICKLAYER_DECORATIONS:
+			plc=registry.objMap[viewerCursor].entityIndexAtPoint(player.deliverRealClick(app));
+			fillEntityTargetAction("selectentity", 0, plc, 0.125f);
+			break;
+		case CLICKLAYER_BUTTON:
+			plc=registry.objMap[viewerCursor].buttonIndexAtPoint(player.deliverRealClick(app));
+			if(registry.objMap[viewerCursor].regButtons[plc]->actionTemplateIndex>0)
+			{
+				for(int i=1; i<int(tmp.container.actionList.size()); i++)
+				{
+					if(registry.objMap[viewerCursor].regButtons[plc]->actionTemplateIndex == i)
+					{
+						registry.createAction(tmp, tmp.container.actionList[i].cname, registry.objMap[viewerCursor].regButtons[plc]->linkedEntityIndex, 0, 0,gameTime(), viewerCursor);
+						return;
+					}
+				}
+			}
+			break;
+		case CLICKLAYER_TILE:
+			plc=registry.objMap[viewerCursor].tileIndexOnGrid(player.deliverGridClick(app));
+			if(player.inv.getItemAtCursor()>0 && player.gamemode==GAMEMODE_INVENTORY)
+			{
+				if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_TOOL)
+				{
+					useTool(player.inv.getItemAtCursor(), 0, plc);
+					return;
+				}
+				if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SEED)
+				{
+						plantSeed(player.inv.drop(player.inv.cursor), 0, plc);
+						return;
+				}
+				if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_INGREDIENT)
+				{
+					player.inv.drop(player.inv.cursor);
+					return;
+				}
+				if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SUMMON)
+				{
+					useCharm(player.inv.getItemAtCursor(), 0, plc);
+					sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
+					return;
+				}
+			}
+			else
+			{
+				fillTileTargetAction("selecttile", 0, plc, 0.125f);
+			}
+			break;
+		case CLICKLAYER_TOP:
 			handleMinimapClick();
-			return;
-		}
-		if(player.isClickOnGUI(registry.objMap[viewerCursor]))
-		{
-			handleGUIClick(player.inventoryForm); //creates actions based on the button that was clicked
-		}
-		else if(player.isClickOnBoard(settings))
-		{
-			handleBoardClick(); //creates actions based on the point that was clicked
-		}
+			break;
 	}
 }
 
@@ -1489,7 +1604,7 @@ void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
 	{
 		if(form.cells[i].renderType == RENDER_BUTTON)
 		{
-			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].pixel, linked, active);
+			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].pixel+form.tl, linked, active);
 		}
 	}
 }

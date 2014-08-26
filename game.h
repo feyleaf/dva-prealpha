@@ -29,6 +29,14 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define ACAT_PLANTS 6
 #define ACAT_GUI 7
 
+#define CLICKLAYER_ZERO 0
+#define CLICKLAYER_TILE 1
+#define CLICKLAYER_DECORATIONS 2
+#define CLICKLAYER_CREATURES 3
+#define CLICKLAYER_GUIFORM 4
+#define CLICKLAYER_BUTTON 5
+#define CLICKLAYER_TOP 6
+
 #define FRAMESPEED 0.0333f //amount of ticks per second
 
 #define JAN1_2014	1387584000
@@ -116,6 +124,8 @@ public:
 	void pollKeys();
 	void pollMouseClicks();
 	void pollWindowsEvents();
+	int translateClickLayer(coord _pixel);
+	void handleClick(int clickLayer, coord _pixel);
 	void handleGUIClick(GUIFormClass& form);
 	void handleBoardClick();
 	void handleMinimapClick();
