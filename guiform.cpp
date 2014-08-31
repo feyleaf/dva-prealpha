@@ -12,5 +12,6 @@ void GUIFormClass::addCell(int _type, int _tmp, coord _pixel)
 	dummy.renderType=_type;
 	dummy.templateIndex=_tmp;
 	dummy.pixel=_pixel;
+	dummy.buttonIndex = 0;
 	cells.push_back(dummy);
 }

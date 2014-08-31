@@ -13,8 +13,9 @@ struct guiCell
 	int renderType;
 	coord pixel;
 	int templateIndex;
+	int buttonIndex;
 
-	guiCell() {renderType=0; pixel=coord(0,0); templateIndex=0;}
+	guiCell() {renderType=0; pixel=coord(0,0); templateIndex=0; buttonIndex=0;}
 
 };
 

@@ -1122,6 +1122,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		}
 		else
 		{
+			eraseGuiForm(player.inventoryForm);
 			player.inventoryForm.clear();
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
@@ -1288,7 +1289,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			player.creatureCard.addCell(RENDER_ENTITY, registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->entityTemplateIndex, gridToPixel(coord(settings.mapGridDimensions.x, 1)));
 			player.creatureCard.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "movebutton"), gridToPixel(coord(settings.mapGridDimensions.x+1, 1)));
 
-			fillGuiForm(player.creatureCard, act->entityIndexSource, true);
+			//fillGuiForm(player.creatureCard, act->entityIndexSource, true);
 			registry.objMap[viewerCursor].activateEntityButtons(act->entityIndexSource);
 		}
 		return;
@@ -1296,7 +1297,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex,"creatureguioff"))
 	{
 		registry.objMap[viewerCursor].deactivateEntityButtons(act->entityIndexSource);
-		fillGuiForm(player.creatureCard, act->entityIndexSource, false);
+		eraseGuiForm(player.creatureCard);
 		player.creatureCard.clear();
 		player.gamemode=GAMEMODE_NEUTRAL;
 		return;
@@ -1353,11 +1354,15 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		if(player.gamemode==GAMEMODE_CRAFTING)
 		{
 			sidebar.setString("");
+			eraseGuiForm(player.ritualForm);
+			player.ritualForm.clear();
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		else
 		{
 			sidebar.setString("Crafting ON");
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "ritualgui"), coord(90,60));
+			fillGuiForm(player.ritualForm);
 			player.gamemode=GAMEMODE_CRAFTING;
 		}
 		return;
@@ -1588,14 +1593,15 @@ void GameClass::fillEntity(const char* codename, coord _pos)
 	}
 }
 
-void GameClass::fillButton(const char* codename, coord _pixel_pos, int linkedEntity, bool act)
+int GameClass::fillButton(const char* codename, coord _pixel_pos, int linkedEntity, bool act)
 {
 	if(!registry.createButton(tmp, codename, _pixel_pos, viewerCursor, linkedEntity, act))
 	{
 		//if there's nothing matching to clone, we must skip this step and inform the debug log
 		debugFile << "FillGui failed at (" << _pixel_pos.x << ", " << _pixel_pos.y << "). clone was undefined.\n";
-		return;
+		return 0;
 	}
+	return int(registry.objMap[viewerCursor].regButtons.size())-1;
 }
 
 void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
@@ -1604,9 +1610,28 @@ void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
 	{
 		if(form.cells[i].renderType == RENDER_BUTTON)
 		{
-			fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].pixel+form.tl, linked, active);
+			if(form.cells[i].buttonIndex > 0)
+			{
+				registry.objMap[viewerCursor].regButtons[form.cells[i].buttonIndex]->active=true;
+			}
+			else
+			{
+				form.cells[i].buttonIndex = fillButton(tmp.container.buttonList[form.cells[i].templateIndex].cname, form.cells[i].pixel+form.tl, linked, active);
+			}
 		}
 	}
+}
+
+void GameClass::eraseGuiForm(GUIFormClass& form)
+{
+	for(int i=1; i<int(form.cells.size()); i++)
+	{
+		if(form.cells[i].renderType == RENDER_BUTTON && form.cells[i].buttonIndex > 0)
+		{
+			registry.objMap[viewerCursor].regButtons[form.cells[i].buttonIndex]->active=false;
+		}
+	}
+
 }
 
 GameClass::~GameClass()

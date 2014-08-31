@@ -134,7 +134,7 @@ int InventoryClass::select(coord click)
 	}
 	else
 	{
-		cursor=(_pt.x+(_pt.y*dimensions.x))+1;
+		cursor=(_pt.x+(_pt.y*dimensions.x));
 		if(cursor>capacity) cursor=capacity;
 		return cursor;
 	}

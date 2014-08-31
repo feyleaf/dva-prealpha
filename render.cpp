@@ -276,8 +276,10 @@ void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryCla
 
 void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form)
 {
-	int highlight=0;
-	int held=0;
+	if(!form.active) return;
+	int highlight=-1;
+	int held=-1;
+	bool skipDraw=false;
 	char out[8];
 	sf::Text quantityOut;
 	quantityOut.setCharacterSize(16);
@@ -293,8 +295,13 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 				break;
 			case RENDER_ENTITY:
 				held++;
-				currentSprite.setTexture(entitySheet);
-				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+				skipDraw=true;
+				if(items.getQuantityAt(held) > 0)
+				{
+					skipDraw=false;
+					currentSprite.setTexture(entitySheet);
+					currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+				}
 				break;
 			case RENDER_BUTTON:
 				highlight++;
@@ -308,12 +315,16 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 		else currentSprite.setColor(sf::Color::White);
 		currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y)+16);
 
-		win.draw(currentSprite);
-		if(items.getQuantityAt(held) > 1 && form.cells[i].renderType==RENDER_ENTITY)
+		if(!skipDraw) win.draw(currentSprite);
+		skipDraw=false;
+	}
+	for(int j=0; j<items.capacity; j++)
+	{
+		if(items.getQuantityAt(j) > 1)
 		{
-			sprintf_s(out, "%5i", items.getQuantityAt(held));
+			sprintf_s(out, "%5i", items.getQuantityAt(j));
 			quantityOut.setString(out);
-			quantityOut.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y)+31);
+			quantityOut.setPosition(float(j%5)*32.0f, float((int(j/5))*32.0f)+31.0f);
 			win.draw(quantityOut);
 		}
 	}
