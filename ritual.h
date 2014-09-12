@@ -19,12 +19,15 @@ public:
 	RitualClass();
 	~RitualClass();
 	int slots;
+	int resultslot;
 	std::vector<ritualCell> cell;
 	coord placeToPoint(int p);
 	bool addToRitual(int templateIndex);
-	void addSlotToInventory(int p, InventoryClass& _inv);
+	void addSlotToInventory(int p, const TemplateRegistryClass& tmp, InventoryClass& _inv);
 	int templateFromSlot(int p);
-	bool isThisRitual();
+	bool isThisRitual(RecipeManager& _recipes);
+	int findRitual(RecipeManager& _recipes);
+	void clear() {cell.clear(); slots=4; resultslot=3;}
 	//more stuff later! :)
 };
 

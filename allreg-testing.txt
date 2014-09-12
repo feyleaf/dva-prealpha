@@ -74,6 +74,9 @@ PROTOCOL:pursuit,4,0,1,0
 PROTOCOL:togglemap,7,0,1,0
 PROTOCOL:zoomout,0,0,1,0
 PROTOCOL:guion,0,0,1,0
+PROTOCOL:addritualitem,0,0,1,0
+PROTOCOL:trycrafting,0,0,1,0
+PROTOCOL:craftrecipe,0,0,1,0
 PROTOCOL:togglecrafting,0,0,1,0
 PROTOCOL:toggleinventory,0,0,1,0
 PROTOCOL:creaturecard,0,0,1,0
@@ -129,8 +132,8 @@ BUTTON:movebutton,Move Creature,32,32,0,0,32,32,road.png,1,movecreature,none
 BUTTON:inventorycell,Cell,32,32,0,0,32,32,invcell.png,1,selectinventory,none
 BUTTON:worldmap,World Map,32,32,0,0,32,32,worldmap.png,1,togglemap,none
 BUTTON:ritualgui,Ritual GUI,192,128,0,0,192,128,stumpgui.png,1,togglecrafting,none
-BUTTON:openritualcell,Ritual Cell,32,32,0,0,32,32,ritualcell-open.png,1,togglecrafting,none
-BUTTON:resultritualcell,Result Ritual Cell,32,32,0,0,32,32,ritualcell-result.png,1,togglecrafting,none
+BUTTON:openritualcell,Ritual Cell,32,32,0,0,32,32,ritualcell-open.png,1,solidblock,none
+BUTTON:resultritualcell,Result Ritual Cell,32,32,0,0,32,32,ritualcell-result.png,1,trycrafting,none
 FORM:ritualform,Ritual Form,6,6
 FORM:inventoryform,Inventory Form,5,5
 FORM:actionselectionform,Action Selection,3,3

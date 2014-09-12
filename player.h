@@ -26,6 +26,9 @@ public:
 	int gamemode;
 	InventoryClass inv;
 	RitualClass ritual;
+	RecipeManager recipes;
+
+	void initRecipes(TemplateRegistryClass& tmp);
 		//player interface stuff
 
 	//mouse as a selection device

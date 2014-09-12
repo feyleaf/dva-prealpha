@@ -140,6 +140,7 @@ public:
 
 	//generating a map one registry element at a time
 	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
+	void fillInventory();
 	void eraseGuiForm(GUIFormClass& form);
 	void fillTile(const char* codename, coord _pos);
 	void fillRoad(const char* codename, coord start, coord end);

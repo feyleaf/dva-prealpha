@@ -92,6 +92,7 @@ int InventoryRegistryClass::registerFromGameObject(const GameObjectContainerClas
 		case ICAT_SUMMON:
 			summons.push_back(obj.regSummon[tempPack]);
 			realPack=int(summons.size()-1);
+			summons[realPack]->usageProtocol=obj.regSummon[tempPack]->usageProtocol;
 			break;
 		case ICAT_VEGETATION:
 			vegs.push_back(obj.regVeg[tempPack]);
@@ -114,6 +115,119 @@ int InventoryRegistryClass::registerFromGameObject(const GameObjectContainerClas
 	int realIndex=int(entities.size()-1);
 	entities[realIndex]->packIndex=realPack;
 	return realIndex;
+}
+
+int InventoryRegistryClass::registerFromTemplate(const TemplateRegistryClass& tmp, int index)
+{
+	int pack=0;
+	int type = tmp.container.entityList[index].type;
+	switch(type)
+	{
+		case ICAT_CREATURE:
+			//we must create a new template pack for each registered entity
+			for(int i=1; i<int(tmp.container.creaturePackList.size()); i++)
+			{
+				if(tmp.container.creaturePackList[i].entityID==index)
+				{
+					creatures.push_back(new creaturePack(tmp.container.creaturePackList[i]));
+					pack=int(creatures.size()-1);
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_INGREDIENT:
+			for(int i=1; i<int(tmp.container.ingredientPackList.size()); i++)
+			{
+				if(tmp.container.ingredientPackList[i].entityID==index)
+				{
+					ings.push_back(new ingredientPack(tmp.container.ingredientPackList[i]));
+					pack=int(ings.size()-1);
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_DECORATION:
+			for(int i=1; i<int(tmp.container.decoPackList.size()); i++)
+			{
+				if(tmp.container.decoPackList[i].entityID==index)
+				{
+					decos.push_back(new decoPack(tmp.container.decoPackList[i]));
+					pack=int(decos.size()-1);
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_SEED:
+			for(int i=1; i<int(tmp.container.seedPackList.size()); i++)
+			{
+				if(tmp.container.seedPackList[i].entityID==index)
+				{
+					seeds.push_back(new seedPack(tmp.container.seedPackList[i]));
+					pack=int(seeds.size()-1);
+					int vegSummon=1;
+					for(int j=1; j<int(tmp.container.entityList.size()); j++)
+					{
+						if(strcmp(tmp.container.entityList[j].cname, tmp.container.seedPackList[i].plantSummon) == 0)
+							vegSummon=j;
+					}
+					seeds[pack]->vegetationContained = vegSummon;
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_SUMMON:
+			for(int i=1; i<int(tmp.container.summonPackList.size()); i++)
+			{
+				if(tmp.container.summonPackList[i].entityID==index)
+				{
+					summons.push_back(new summonPack(tmp.container.summonPackList[i]));
+					pack=int(summons.size()-1);
+					summons[pack]->creatureContained = 0;
+					summons[pack]->usageProtocol = unsigned char(tmp.container.getProtocolTemplate(tmp.container.summonPackList[i].usageProtocol));
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_VEGETATION:
+			for(int i=1; i<int(tmp.container.vegPackList.size()); i++)
+			{
+				if(tmp.container.vegPackList[i].entityID==index)
+				{
+					vegs.push_back(new vegPack(0, tmp.container.vegPackList[i]));
+					pack=int(vegs.size()-1);
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		case ICAT_TOOL:
+			for(int i=1; i<int(tmp.container.toolPackList.size()); i++)
+			{
+				if(tmp.container.toolPackList[i].entityID==index)
+				{
+					tools.push_back(new toolPack(tmp.container.toolPackList[i]));
+					pack=int(tools.size()-1);
+					entities.push_back(new registeredEntity(index,type,pack, tmp.container.entityList[index].origin, tmp.container.entityList[index].dimensions,
+						tmp.container.entityList[index].box,coord(0,0)));
+					return int(entities.size()-1);
+				}
+			}
+			break;
+		default:
+			break;
+	}
+	return 0;
 }
 
 InventoryClass::InventoryClass()
@@ -288,6 +402,52 @@ bool InventoryClass::add(const GameObjectContainerClass& obj, int entIndex, shor
 	bool quantityAdded=true;
 
 	int realIndex = reg.registerFromGameObject(obj, entIndex);
+
+	for(int i=0; i<q; i++)
+	{
+		if(reg.entities[realIndex]->type != ICAT_CREATURE && reg.entities[realIndex]->type != ICAT_SUMMON) //add types that are not stackable
+		{
+			plc = getFirstMatch(reg.entities[realIndex]->entityTemplateIndex);
+			if(plc == -1) //if no first match is found, then look for the next empty slot
+			{
+				plc = getFirstEmpty();
+				quantityAdded=false;
+			}
+		}
+		else
+		{
+			plc = getFirstEmpty();
+			quantityAdded=false;
+		}
+		//if there is no match and no free slot, we fail the addition
+		if(plc == -1) return false;
+		if(quantityAdded)
+		{
+			cellList[plc].quantity+=1;
+		}
+		else
+		{
+			cellList[plc].tmp_idx = reg.entities[realIndex]->entityTemplateIndex;
+			cellList[plc].idx_item = realIndex;
+			cellList[plc].quantity = 1;
+		}
+		quantityAdded=true;
+	}
+
+	//if it's made it this far, there is no failure and we return success
+	return true;
+}
+
+bool InventoryClass::add(const TemplateRegistryClass& tmp, int tmpIndex, short q)
+{
+	//adds an item to the inventory
+	//first check to see if the item is stackable, if not, each of q times seeks a different slot
+	//also we skip the match algo if the item is not stackable
+
+	int plc=-1;//seeking fail case is -1
+	bool quantityAdded=true;
+
+	int realIndex = reg.registerFromTemplate(tmp, tmpIndex);
 
 	for(int i=0; i<q; i++)
 	{

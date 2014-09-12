@@ -26,6 +26,7 @@ public:
 	std::vector<ingredientPack*> ings;
 
 	int registerFromGameObject(const GameObjectContainerClass& obj, int entityIndex);
+	int registerFromTemplate(const TemplateRegistryClass& tmp, int entityIndex);
 };
 
 class InventoryClass
@@ -54,6 +55,7 @@ public:
 	bool clearAll();
 	bool swap(int plcA, int plcB);
 	bool add(const GameObjectContainerClass& obj, int entIndex, short q=1);
+	bool add(const TemplateRegistryClass& tmp, int tmpIndex, short q=1);
 	unsigned int drop(int plc);
 	unsigned int getItemAt(int plc);
 	unsigned int getItemAtCursor();

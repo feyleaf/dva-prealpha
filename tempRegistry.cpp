@@ -1,5 +1,23 @@
 #include "globals.h"
 
+int TemplateContainerClass::getEntityTemplate(const char* name) const
+{
+	for(int i=1; i<int(entityList.size()); i++)
+	{
+		if(strcmp(entityList[i].cname, name) == 0) return i;
+	}
+	return 0;
+}
+
+int TemplateContainerClass::getProtocolTemplate(const char* name) const
+{
+	for(int i=1; i<int(actionList.size()); i++)
+	{
+		if(strcmp(actionList[i].cname, name) == 0) return i;
+	}
+	return 0;
+}
+
 TemplateRegistryClass::TemplateRegistryClass()
 {
 }

@@ -1,6 +1,19 @@
 #include "globals.h"
 
+void PlayerEngine::initRecipes(TemplateRegistryClass& tmp)
+{
+	//3 red petals = red summon charm
+	recipes.addRecipe(tmp.container.getEntityTemplate("redcharm"),
+		tmp.container.getEntityTemplate("redpetal"),
+		tmp.container.getEntityTemplate("redpetal"),
+		tmp.container.getEntityTemplate("redpetal"));
+	//3 blue petals = blue summon charm
+	recipes.addRecipe(tmp.container.getEntityTemplate("bluecharm"),
+		tmp.container.getEntityTemplate("bluepetal"),
+		tmp.container.getEntityTemplate("bluepetal"),
+		tmp.container.getEntityTemplate("bluepetal"));
 
+}
 //returns the grid coordinates of the mouse pointer
 coord PlayerEngine::getMouseGrid(const sf::RenderWindow& win)
 {

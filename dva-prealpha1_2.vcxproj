@@ -68,7 +68,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="actions.cpp" />
     <ClCompile Include="debugrecords.cpp" />
+    <ClCompile Include="ether.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="guiform.cpp" />
@@ -78,12 +80,15 @@
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="recipe.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="ritual.cpp" />
     <ClCompile Include="tempRegistry.cpp" />
     <ClCompile Include="terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actions.h" />
+    <ClInclude Include="ether.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
@@ -93,6 +98,7 @@
     <ClInclude Include="ic_math.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="recipe.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="ritual.h" />
     <ClInclude Include="tempRegistry.h" />

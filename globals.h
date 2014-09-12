@@ -21,6 +21,8 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "templates.h"
 #include "interpret.h"
 #include "tempRegistry.h"
+#include "ether.h"
+#include "recipe.h"
 #include "gameobject.h"
 #include "terrain.h"
 #include "ic_pathing.h"

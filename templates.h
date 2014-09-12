@@ -404,6 +404,9 @@ class TemplateContainerClass
 		std::vector<guiButtonTemplate> buttonList;
 		std::vector<guiFormsTemplate> formsList;
 		std::vector<stringList> valuesList;
+
+		int getEntityTemplate(const char* name) const;
+		int getProtocolTemplate(const char* name) const;
 };
 
 #endif//TEMPLATES_H

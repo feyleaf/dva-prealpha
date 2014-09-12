@@ -52,6 +52,7 @@ GameClass::GameClass()
 	player.initTileGrid(settings);
 	player.initWindowSize(app);
 	player.refreshClicks();
+	player.initRecipes(tmp);
 	//render.mainfont.loadFromFile(settings.mainFontFile);
 	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", render.mainfont, 20);
 	sidebar.setPosition(float(settings.mapGridDimensions.x*settings.tileDimensions.x)+10.0f, 10.0f);
@@ -1106,18 +1107,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	{
 		if(player.gamemode!=GAMEMODE_INVENTORY)
 		{
-			player.inventoryForm.clear();
-			for(int j=0; j<25; j++)
-				player.inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
-			for(int i=0; i<int(player.inv.cellList.size()); i++)
-			{
-				if(player.inv.cellList[i].tmp_idx>0)
-				{
-					player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
-				}
-			}
-			fillGuiForm(player.inventoryForm);
-			player.inventoryForm.activate();
+			fillInventory();
 			player.gamemode=GAMEMODE_INVENTORY;
 		}
 		else
@@ -1131,8 +1121,38 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex,"selectinventory"))
 	{
 		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.deliverGridClick(app));
+		else if(player.gamemode==GAMEMODE_CRAFTING)
+		{
+			player.inv.select(player.deliverGridClick(app));
+			if(player.inv.getItemAtCursor()>0 && int(player.ritual.cell.size())<(player.ritual.slots-1))
+			{
+				player.ritual.addToRitual(player.inv.reg.entities[player.inv.drop(player.inv.cursor)]->entityTemplateIndex);
+				fillSourceAction("addritualitem", 0);
+			}
+		}
 		return;
 	}
+	if(actionCodeEquals(act->actionTemplateIndex,"addritualitem"))
+	{
+		if(player.gamemode!=GAMEMODE_CRAFTING) return;
+		int y=80;
+		for(int i=0; i<player.ritual.slots-1; i++)
+		{
+			if(i==1) y=75;
+			int x=((192/3)*i)+10;
+			if(player.ritual.templateFromSlot(i)>0)
+			{
+				if(player.ritual.isThisRitual(player.recipes))
+				{
+					player.ritual.addToRitual(player.ritual.findRitual(player.recipes));
+					player.ritualForm.addCell(RENDER_ENTITY, player.ritual.findRitual(player.recipes), coord(190+x, y+64));
+				}
+				player.ritualForm.addCell(RENDER_ENTITY, player.ritual.templateFromSlot(i), coord(190+x, y));
+			}
+		}
+		return;
+	}
+
 }
 
 void GameClass::handleItemsPipeline(const actionStruct* act)
@@ -1140,8 +1160,8 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 	if(actionCodeEquals(act->actionTemplateIndex, "usecharm"))
 	{
 		if(!hasSource(act)) return;
-		int summonPack = registry.objMap[viewerCursor].regEntities[act->entityIndexSource]->packIndex;
-		int held = registry.objMap[viewerCursor].regSummon[summonPack]->creatureContained;
+		int summonPack = player.inv.reg.entities[act->entityIndexSource]->packIndex;
+		int held = player.inv.reg.summons[summonPack]->creatureContained;
 		if(entityTarget(act))
 		{
 			if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->type==ICAT_CREATURE)
@@ -1152,7 +1172,7 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 				registry.objMap[viewerCursor].regCreature[creature]->offset=coord(0,0);
 				registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->active=false;
 			}		
-			if(held==0) registry.objMap[viewerCursor].regSummon[summonPack]->creatureContained=act->entityIndexTarget;
+			if(held==0) player.inv.reg.summons[summonPack]->creatureContained=act->entityIndexTarget;
 			return;
 		}
 		else if(tileTarget(act))
@@ -1175,7 +1195,7 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 					registry.objMap[viewerCursor].regEntities[held]->box.left+=(registry.objMap[viewerCursor].regEntities[held]->pos.x*32);
 					registry.objMap[viewerCursor].regEntities[held]->box.top+=(registry.objMap[viewerCursor].regEntities[held]->pos.y*32);
 				}
-				registry.objMap[viewerCursor].regSummon[summonPack]->creatureContained=0;
+				player.inv.reg.summons[summonPack]->creatureContained=0;
 			}
 			return;
 		}
@@ -1317,6 +1337,14 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			sidebar.setString(outputEntity(act->entityIndexTarget));
 			return;
 		}
+		if(player.gamemode==GAMEMODE_INVENTORY)
+		{
+			if(player.inv.reg.entities[player.inv.getItemAtCursor()]->type==ICAT_SUMMON)
+			{
+				useCharm(player.inv.getItemAtCursor(), act->entityIndexTarget, 0);
+				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
+			}
+		}
 		if(registry.objMap[viewerCursor].regEntities[act->entityIndexTarget]->entityTemplateIndex == registry.objMap[viewerCursor].getEntityTemplateIndex(tmp, "ritualstump"))
 		{
 			fillSourceAction("togglecrafting", act->entityIndexTarget);
@@ -1349,19 +1377,56 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		player.gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
+	if(actionCodeEquals(act->actionTemplateIndex, "trycrafting"))
+	{
+		if(!player.ritual.isThisRitual(player.recipes)) return;
+		if(player.gamemode==GAMEMODE_CRAFTING)
+		{
+			eraseGuiForm(player.ritualForm);
+			eraseGuiForm(player.inventoryForm);
+			for(int i=0; i<int(player.ritual.cell.size()); i++)
+			{
+				if(i == player.ritual.resultslot)
+					player.ritual.addSlotToInventory(i, tmp, player.inv);
+			}
+			player.ritual.clear();
+			player.ritualForm.clear();
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "ritualgui"), coord(190,60));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+10, 80));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+(192/2)-16, 75));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+192-10-32, 80));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "resultritualcell"), coord(190+(192/2)-16, 120));
+			fillInventory();
+			fillGuiForm(player.ritualForm);
+		}
+		return;
+	}
 	if(actionCodeEquals(act->actionTemplateIndex, "togglecrafting"))
 	{
 		if(player.gamemode==GAMEMODE_CRAFTING)
 		{
 			sidebar.setString("");
 			eraseGuiForm(player.ritualForm);
+			eraseGuiForm(player.inventoryForm);
+			player.inventoryForm.clear();
 			player.ritualForm.clear();
+			for(int i=0; i<int(player.ritual.cell.size()); i++)
+			{
+				if(i != player.ritual.resultslot)
+					player.ritual.addSlotToInventory(i, tmp, player.inv);
+			}
+			player.ritual.clear();
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		else
 		{
 			sidebar.setString("Crafting ON");
-			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "ritualgui"), coord(90,60));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "ritualgui"), coord(190,60));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+10, 80));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+(192/2)-16, 75));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "openritualcell"), coord(190+192-10-32, 80));
+			player.ritualForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "resultritualcell"), coord(190+(192/2)-16, 120));
+			fillInventory();
 			fillGuiForm(player.ritualForm);
 			player.gamemode=GAMEMODE_CRAFTING;
 		}
@@ -1604,6 +1669,22 @@ int GameClass::fillButton(const char* codename, coord _pixel_pos, int linkedEnti
 	return int(registry.objMap[viewerCursor].regButtons.size())-1;
 }
 
+void GameClass::fillInventory()
+{
+	player.inventoryForm.clear();
+	for(int j=0; j<25; j++)
+		player.inventoryForm.addCell(RENDER_BUTTON, registry.objMap[viewerCursor].getGuiTemplateIndex(tmp, "inventorycell"), gridToPixel(coord(j%5, int(j/5))));
+	for(int i=0; i<int(player.inv.cellList.size()); i++)
+	{
+		if(player.inv.cellList[i].tmp_idx>0)
+		{
+			player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
+		}
+	}
+	fillGuiForm(player.inventoryForm);
+	player.inventoryForm.activate();
+}
+
 void GameClass::fillGuiForm(GUIFormClass& form, int linked, bool active)
 {
 	for(int i=1; i<int(form.cells.size()); i++)
@@ -1766,29 +1847,27 @@ void GameClass::useTool(int entityIndex, int entityTarget, int tileTarget)
 	}
 }
 
-void GameClass::useCharm(int entityIndex, int entityTarget, int tileTarget)
+void GameClass::useCharm(int invIndex, int entityTarget, int tileTarget)
 {
-	if(entityIndex==0) return;
+	if(invIndex==0) return;
 	if(entityTarget==0 && tileTarget==0) return;
+	int summonPack=player.inv.reg.entities[invIndex]->packIndex;
+	int held=player.inv.reg.summons[summonPack]->creatureContained;
 	if(entityTarget>0)
 	{
 		//work on a tile (summon contained entity)
-		int summonPack=registry.objMap[viewerCursor].regEntities[entityIndex]->packIndex;
-		int held=registry.objMap[viewerCursor].regSummon[summonPack]->creatureContained;
-		int protocol=registry.objMap[viewerCursor].regSummon[summonPack]->usageProtocol;
+		int protocol=player.inv.reg.summons[summonPack]->usageProtocol;
 		bool isCreature = (registry.objMap[viewerCursor].regEntities[entityTarget]->type==ICAT_CREATURE);
 		if(held==0 && isCreature) //if the charm is empty, we'll capture the creature
-			registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, entityTarget, 0, gameTime(), viewerCursor);
+			registry.createAction(tmp, tmp.container.actionList[protocol].cname, invIndex, entityTarget, 0, gameTime(), viewerCursor);
 		return;
 	}
-	if(tileTarget>0)
+	if(tileTarget>0 && held>0)
 	{
 		//work on a tile (summon contained entity)
-		int summonPack=registry.objMap[viewerCursor].regEntities[entityIndex]->packIndex;
-		int held=registry.objMap[viewerCursor].regSummon[summonPack]->creatureContained;
-		int protocol=registry.objMap[viewerCursor].regSummon[summonPack]->usageProtocol;
+		int protocol=player.inv.reg.summons[summonPack]->usageProtocol;
 		if(held==0) return; //if the charm is empty, we have nothing to summon
-		registry.createAction(tmp, tmp.container.actionList[protocol].cname, entityIndex, 0, tileTarget, gameTime(), viewerCursor);
+		registry.createAction(tmp, tmp.container.actionList[protocol].cname, invIndex, 0, tileTarget, gameTime(), viewerCursor);
 		return;
 	}
 }
