@@ -66,6 +66,7 @@ struct entityTemplate
 	char name[40];
 	coord origin;
 	coord dimensions;
+	coord cog;
 	sf::IntRect box;
 	char spritefile[40];
 	unsigned char iconRange;
@@ -190,6 +191,7 @@ struct creaturePackTemplate
 struct decoPackTemplate
 {
 	int entityID;
+	bool isTree;
 	unsigned int maxHP;
 	unsigned char mapBonus; //will link to another list, unused for now
 	unsigned char defense;
@@ -200,9 +202,9 @@ struct decoPackTemplate
 					unsigned char _mapBonus,
 					unsigned char _defense,
 					unsigned char _element)
-	{entityID=_id; maxHP=_maxHP; mapBonus=_mapBonus; defense=_defense; element=_element; lootList.clear();}
+	{entityID=_id; isTree=false; maxHP=_maxHP; mapBonus=_mapBonus; defense=_defense; element=_element; lootList.clear();}
 	decoPackTemplate()
-	{entityID=0; maxHP=0; mapBonus=0; defense=0; element=0; lootList.clear();}
+	{entityID=0; isTree=false; maxHP=0; mapBonus=0; defense=0; element=0; lootList.clear();}
 };
 
 //constructed template of rules for summon charm generation
@@ -348,7 +350,7 @@ struct guiButtonTemplate
 						unsigned char _action)
 	{strncpy_s(cname, 40, _cname, 40); strncpy_s(name, 32, _name, 32); origin=coord(0,0); dimensions=_dim; box=_box; actionID=_action; strncpy_s(spritefile, 40, _sprite, 40); strncpy_s(actionName, 40, _actionName, 40); iconRange=_iconRange;}
 	guiButtonTemplate()
-	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); actionID=0; origin=coord(0,0); dimensions=coord(0,0); box=sf::IntRect(0,0,0,0); strncpy_s(spritefile, 40, "gui-1_2.png", 40); strncpy_s(actionName, 32, "none", 32); iconRange=0; actionID=0;}
+	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); actionID=0; origin=coord(0,0); dimensions=coord(0,0); box=sf::IntRect(0,0,32,32); strncpy_s(spritefile, 40, "gui-1_2.png", 40); strncpy_s(actionName, 32, "none", 32); iconRange=0; actionID=0;}
 };
 
 //template of forms using multiple gui buttons

@@ -14,37 +14,36 @@ coord RitualClass::placeToPoint(int p)
 	if(p==3) return coord(7,5);
 	return coord(0,0);
 }
-bool RitualClass::addToRitual(int templateIndex)
+bool RitualClass::addToRitual(int entityIndex)
 {
-	if(templateIndex<1) return false;
-	if(slots>int(cell.size()))
+	if(entityIndex<1) return false;
+	if(cursor<slots)
 	{
-		ritualCell dummy;
-		dummy.point=placeToPoint(cell.size());
-		dummy.templateIndex=templateIndex;
-		cell.push_back(dummy);
+		cell[cursor].point=placeToPoint(cursor);
+		cell[cursor].entityIndex=entityIndex;
+		cursor++;
 		return true;
 	}
 	return false;
 }
 
-void RitualClass::addSlotToInventory(int plc, const TemplateRegistryClass& tmp, InventoryClass& _inv)
+void RitualClass::addSlotToInventory(int plc, const EtherRegistryClass& _eth, InventoryClass& _inv)
 {
-	_inv.add(tmp, cell[plc].templateIndex);
+	_inv.add(_eth, cell[plc].entityIndex);
 }
 
-bool RitualClass::isThisRitual(RecipeManager& _recipes)
+bool RitualClass::isThisRitual(const EtherRegistryClass& _eth, RecipeManager& _recipes)
 {
-	return (findRitual(_recipes)>0);
+	return (findRitual(_eth, _recipes)>0);
 }
 
-int RitualClass::findRitual(RecipeManager& _recipes)
+int RitualClass::findRitual(const EtherRegistryClass& _eth, RecipeManager& _recipes)
 {
 	int a, b, c;
-	if(cell.size()<1) return 0;
-	else if(cell.size()<2) {a=cell[0].templateIndex; b=0; c=0;}
-	else if(cell.size()<3) {a=cell[0].templateIndex; b=cell[1].templateIndex; c=0;}
-	else {a=cell[0].templateIndex; b=cell[1].templateIndex; c=cell[2].templateIndex;}
+	if(cursor<1) return 0;
+	a=templateFromSlot(_eth, 0);
+	b=templateFromSlot(_eth, 1);
+	c=templateFromSlot(_eth, 2);
 	recipeStruct t;
 
 	for(int i=0; i<int(_recipes.cookbook.size()); i++)
@@ -66,19 +65,19 @@ int RitualClass::findRitual(RecipeManager& _recipes)
 	return 0;
 }
 
-int RitualClass::templateFromSlot(int p)
+int RitualClass::templateFromSlot(const EtherRegistryClass& _eth, int p)
 {
-	if(p>=0 && p<=slots && p<int(cell.size()))
-		return cell[p].templateIndex;
+	if(p<slots && cell[p].entityIndex>0 && _eth.regEntities[cell[p].entityIndex] != NULL)
+		return _eth.regEntities[cell[p].entityIndex]->entityTemplateIndex;
 	else return 0;
 }
 
 RitualClass::RitualClass()
 {
-	cell.clear();
-	slots=4;
+	clear();
 }
 
 RitualClass::~RitualClass()
 {
+	//cell.clear();
 }

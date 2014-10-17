@@ -8,6 +8,8 @@ protected:
 	coord mouse;
 	coord finemouse;
 public:
+	PlayerEngine();
+	~PlayerEngine(){}
 
 	void initWindowSize(const sf::RenderWindow& win) {renderWindowSize = coord(win.getSize().x, win.getSize().y);}
 	void initTileGrid(const settingStruct& set) {gridSize = set.tileDimensions; gridOffset=coord(0,-set.tileDimensions.y/2); boardSize=set.screenDimensions;}
@@ -45,7 +47,6 @@ public:
 
 	//logic tree for processing each click
 	bool isClickOnBoard(settingStruct& set);
-	bool isClickOnGUI(GameObjectContainerClass& map);
 	GUIFormClass inventoryForm;
 	GUIFormClass sideMenuForm;
 	GUIFormClass ritualForm;

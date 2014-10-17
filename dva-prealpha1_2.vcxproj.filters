@@ -66,6 +66,9 @@
     <ClCompile Include="actions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="biome.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="templates.h">
@@ -119,6 +122,9 @@
     <ClInclude Include="actions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="biome.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg">
@@ -130,6 +136,12 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="processes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="front.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="back.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

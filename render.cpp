@@ -84,8 +84,9 @@ void RenderManager::createEntitySheet(TemplateRegistryClass& tmp, const settingS
 		{
 			col=c*tmp.container.entityList[i].dimensions.x;
 			tempTexture.loadFromFile("images/" + std::string(tmp.container.entityList[i].spritefile), 
-				sf::IntRect(c*tmp.container.entityList[i].dimensions.x, 0, tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
+				sf::IntRect(col, 0, tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
 			tempSprite.setTexture(tempTexture);
+			tempSprite.setTextureRect(sf::IntRect(0, 0, tmp.container.entityList[i].dimensions.x, tmp.container.entityList[i].dimensions.y));
 			//tempSprite.setColor(sf::Color(255,255,255));
 			tempSprite.setPosition(float(col), float(row));
 			spriteSheet.draw(tempSprite);			
@@ -196,21 +197,29 @@ void RenderManager::DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass
 	win.setView(win.getDefaultView());
 }
 
-void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight)
+void RenderManager::DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight, bool ghost)
 {
 	if(obj==NULL || obj->plane>0) return;
 	currentSprite.setTexture(entitySheet);
 	coord o=obj->origin;
 	int frameskip=obj->frame*obj->dimensions.x;
 	currentSprite.setTextureRect(sf::IntRect(o.x+frameskip, o.y, obj->dimensions.x, obj->dimensions.y));
-	if(highlight)
+	currentSprite.setColor(sf::Color::White);
+	if(highlight || ghost)
 	{
-		if(obj->isEnemy)
-			currentSprite.setColor(sf::Color::Cyan);
-		else
-			currentSprite.setColor(sf::Color::Magenta);
+		if(highlight)
+		{
+			if(obj->isEnemy)
+				currentSprite.setColor(sf::Color::Cyan);
+			else
+				currentSprite.setColor(sf::Color::Magenta);
+		}
+		if(ghost)
+		{
+			sf::Color ghostColor = sf::Color(currentSprite.getColor().r, currentSprite.getColor().g, currentSprite.getColor().b, 80);
+			currentSprite.setColor(ghostColor);
+		}
 	}
-	else currentSprite.setColor(sf::Color::White);
 	currentSprite.setPosition(float((worldpixel.x)), float((worldpixel.y)));
 	
 	win.draw(currentSprite);
@@ -229,7 +238,8 @@ void RenderManager::DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coor
 		currentSprite.setColor(sf::Color::White);
 
 	
-	if(obj->active) win.draw(currentSprite);
+	if(obj->active) 
+		win.draw(currentSprite);
 }
 
 void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual)
@@ -237,7 +247,7 @@ void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryCla
 	currentSprite.setTexture(entitySheet);
 	for(int i=0; i<int(theRitual.cell.size()); i++)
 	{
-		currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[theRitual.cell[i].templateIndex].origin.y, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.x, tmp.container.entityList[theRitual.cell[i].templateIndex].dimensions.y));
+		currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[theRitual.cell[i].entityIndex].origin.y, tmp.container.entityList[theRitual.cell[i].entityIndex].dimensions.x, tmp.container.entityList[theRitual.cell[i].entityIndex].dimensions.y));
 		currentSprite.setColor(sf::Color::White);
 		currentSprite.setPosition(float((theRitual.cell[i].point.x*32)), float((theRitual.cell[i].point.y*32)+16));
 	
@@ -326,6 +336,20 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 			quantityOut.setString(out);
 			quantityOut.setPosition(float(j%5)*32.0f, float((int(j/5))*32.0f)+31.0f);
 			win.draw(quantityOut);
+		}
+	}
+}
+
+void RenderManager::DrawStrings(sf::RenderWindow& win, GameObjectContainerClass& obj, const EtherRegistryClass& eth)
+{
+	for(int i=1; i<int(obj.strings.size()); i++)
+	{
+		if(eth.regText[obj.strings[i]] != NULL && eth.regText[obj.strings[i]]->active)
+		{
+			//eth.regText[obj.strings[i]]->msg.setCharacterSize(30);
+			//eth.regText[obj.strings[i]]->msg.setFont(auxfont);
+			eth.regText[obj.strings[i]]->msg.setColor(eth.regText[obj.strings[i]]->color);
+			win.draw(eth.regText[obj.strings[i]]->msg);
 		}
 	}
 }

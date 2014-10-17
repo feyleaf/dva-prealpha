@@ -20,20 +20,21 @@ the registered object save/load
 #define ICAT_NULLENTITY 3
 #define ICAT_SEED 4
 #define ICAT_DECORATION 5
-#define ICAT_CREATURE 6
-#define ICAT_INGREDIENT 7
-#define ICAT_SUMMON 8
-#define ICAT_TOOL 9
-#define ICAT_VEGETATION 10
-#define ICAT_TERRAIN 11
-#define ICAT_ECOLOGY 12
-#define ICAT_REGION 13
-#define ICAT_BIOME 14
-#define ICAT_PROTOCOL 15
-#define ICAT_ACTION 16
-#define ICAT_BUTTON 17
-#define ICAT_FORM 18
-#define ICAT_STRINGLIST 19
+#define ICAT_DECORATION2 6
+#define ICAT_CREATURE 7
+#define ICAT_INGREDIENT 8
+#define ICAT_SUMMON 9
+#define ICAT_TOOL 10
+#define ICAT_VEGETATION 11
+#define ICAT_TERRAIN 12
+#define ICAT_ECOLOGY 13
+#define ICAT_REGION 14
+#define ICAT_BIOME 15
+#define ICAT_PROTOCOL 16
+#define ICAT_ACTION 17
+#define ICAT_BUTTON 18
+#define ICAT_FORM 19
+#define ICAT_STRINGLIST 20
 
 class TemplateReaderClass
 {
@@ -65,8 +66,6 @@ public:
 	stringList parseList();
 	guiFormsTemplate parseForms();
 	void skipLine();
-	std::vector<std::string> parseTerrainDeco();
-	std::vector<std::string> parseTerrainShapes();
 	biomeInformationTemplate parseBiome();
 	guiButtonTemplate parseButton();
 };

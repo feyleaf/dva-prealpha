@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="actions.cpp" />
+    <ClCompile Include="biome.cpp" />
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="ether.cpp" />
     <ClCompile Include="game.cpp" />
@@ -88,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actions.h" />
+    <ClInclude Include="biome.h" />
     <ClInclude Include="ether.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
@@ -110,7 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="allreg-testing.txt" />
+    <Text Include="back.txt" />
     <Text Include="processes.txt" />
+    <Text Include="front.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

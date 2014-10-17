@@ -34,12 +34,13 @@ class RenderManager
 		void write(sf::RenderWindow& win, coord pos, unsigned int size, const char* message, sf::Color _color = sf::Color::White);
 		void ColorizeMiniMap(registeredTile* obj, coord place, sf::Color tint=sf::Color(255,255,255));
 		void DrawTile(sf::RenderWindow& win, registeredTile* obj, coord place, sf::Color tint=sf::Color(255,255,255));
-		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight);
+		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight, bool ghost);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form);
 //		void DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell);
 		void DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse_pixel);
 		void DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual);
 		void DrawQuickMap(sf::RenderWindow& win, GameObjectContainerClass& obj, coord worldCoord, coord centerPos, bool highlight);
+		void DrawStrings(sf::RenderWindow& win, GameObjectContainerClass& obj, const EtherRegistryClass& eth);
 };
 #endif //RENDER_H

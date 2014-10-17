@@ -11,6 +11,7 @@ int TemplateReaderClass::selectCategory()
 	if(str=="BIOME") ret = ICAT_BIOME;
 	if(str=="CREATURE") ret = ICAT_CREATURE;
 	if(str=="DECORATION") ret = ICAT_DECORATION;
+	if(str=="ARBOR") ret = ICAT_DECORATION2;
 	if(str=="ECOLOGY") ret = ICAT_ECOLOGY;
 	if(str=="INGREDIENT") ret = ICAT_INGREDIENT;
 	if(str=="ENTITY") ret = ICAT_NULLENTITY;
@@ -94,6 +95,10 @@ entityTemplate TemplateReaderClass::parseEntity(unsigned char category)
 	ret.dimensions.x = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
 	ret.dimensions.y = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.cog.x = atoi(chunk.c_str());
+	std::getline(pFile, chunk, ',');
+	ret.cog.y = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
 	ret.box.left = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');

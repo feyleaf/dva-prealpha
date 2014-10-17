@@ -18,6 +18,12 @@ search algorithm or tree structure to optimize the searching of values (yet).
 #ifndef ETHER_H
 #define ETHER_H
 
+#define MAPMODE_NEUTRAL 0
+#define MAPMODE_SANCTUARY 1
+#define MAPMODE_BATTLE 2
+#define MAPMODE_THREATEN 3
+
+
 struct registeredTile
 {
 	int tileTemplateIndex;
@@ -39,12 +45,13 @@ struct registeredEntity
 	int packIndex;
 	coord origin;
 	coord dimensions;
+	coord cog;
 	sf::IntRect box;
 	int frame;
 	coord pos;
 	int plane; //0 for the world plane, 1 for inventory, 2 for registered entities inside of other entities (ie loot or summon)
-	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, sf::IntRect _box, coord _pos)
-	{active=true; type=_type; isEnemy=false; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; frame=0; box=_box; pos=_pos; plane=0;}
+	registeredEntity(int _index, unsigned char _type, int _pack, coord _orig, coord _dim, coord _cog, sf::IntRect& _box, coord _pos)
+	{active=true; type=_type; isEnemy=false; entityTemplateIndex=_index; packIndex=_pack; origin=_orig; dimensions=_dim; cog=_cog; frame=0; box=_box; pos=_pos; plane=0;}
 };
 
 struct buttonStruct
@@ -152,17 +159,18 @@ struct creaturePack
 struct decoPack
 {
 	bool active;
+	bool isTree;
 	int maxHP;
 	int currentHP;
 	int defense;
 	int element;
 	std::vector<int> lootList;
 	decoPack()
-	{active=false; maxHP=0; currentHP=0; defense=0; element=0; lootList.clear();}
+	{active=false; isTree=false; maxHP=0; currentHP=0; defense=0; element=0; lootList.clear();}
 	decoPack(int _max, int _hp, int _def, int _elem)
-	{active=true; maxHP=_max; currentHP=_hp; defense=_def; element=_elem; lootList.clear();}
+	{active=true; isTree=false; maxHP=_max; currentHP=_hp; defense=_def; element=_elem; lootList.clear();}
 	decoPack(const decoPackTemplate& src)
-	{active=true; maxHP=src.maxHP; currentHP=src.maxHP; defense=src.defense; element=src.element; lootList.clear();}
+	{active=true; isTree=src.isTree; maxHP=src.maxHP; currentHP=src.maxHP; defense=src.defense; element=src.element; lootList.clear();}
 };
 
 struct mapShapeStruct
@@ -190,14 +198,25 @@ struct mapGenStruct
 	bool displaying;
 	coord worldCoords;
 	int baseTiles;
+	char showName[40];
 	std::vector<mapShapeStruct*> shapeLayer;
 	std::vector<mapSpreadStruct*> decoLayer;
 	std::vector<mapSpreadStruct*> vegLayer;
 	std::vector<mapSpreadStruct*> creatureLayer;
 	mapGenStruct() {active=true; mapMode=MAPMODE_NEUTRAL; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
-		decoLayer.clear(); decoLayer.push_back(NULL); vegLayer.clear(); vegLayer.push_back(NULL); creatureLayer.clear(); creatureLayer.push_back(NULL);}
+		decoLayer.clear(); decoLayer.push_back(NULL); vegLayer.clear(); vegLayer.push_back(NULL); creatureLayer.clear(); creatureLayer.push_back(NULL); strcpy_s(showName, "");}
 };
 
+struct textStruct
+{
+	bool active;
+	int alphamax;
+	int alphacur;
+	sf::Color color;
+	sf::Text msg;
+	textStruct() {active=false; alphamax=255; alphacur=255; color=sf::Color::White; msg.setCharacterSize(30); msg.setString("");}
+	textStruct(const textStruct& src) {msg.setFont(*src.msg.getFont()); active=true; alphamax=src.alphamax; alphacur=src.alphacur; color=src.msg.getColor(); msg.setColor(color); msg.setCharacterSize(30); msg.setString(src.msg.getString());}
+};
 
 class EtherRegistryClass
 {
@@ -216,11 +235,13 @@ public:
 	std::vector<ingredientPack*> regIng;
 	std::vector<buttonStruct*> regButtons;
 	std::vector<mapGenStruct*> regMaps;
+	std::vector<textStruct*> regText;
 
 	int createTile(const TemplateRegistryClass& tmp, const char* _codename);
 	int createEntity(const TemplateRegistryClass& tmp, const char* _codename);
 	int createButton(const TemplateRegistryClass& tmp, const char* _codename, int linkedEntity=0);
 	int createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);
+	int createString(const char* string, sf::Color& _color, sf::Font& _font, int _alphamax);
 
 	int randomTileFromList(const TemplateRegistryClass& tmp, const char* _codename);
 	int randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename);

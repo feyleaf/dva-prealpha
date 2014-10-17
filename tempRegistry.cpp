@@ -66,6 +66,17 @@ void TemplateRegistryClass::parseFile(const char* filename)
 				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
 				else container.decoPackList.push_back(parser.parseDecoration(index));
 				break;
+			case ICAT_DECORATION2:
+				container.entityList.push_back(parser.parseEntity(ICAT_DECORATION));
+				index=container.entityList.size()-1;
+				if(!linkEntityProtocol(index)) container.entityList.erase(container.entityList.begin()+index);
+				else
+				{
+					decoPackTemplate dp = parser.parseDecoration(index);
+					dp.isTree=true;
+					container.decoPackList.push_back(dp);
+				}
+				break;
 			case ICAT_CREATURE:
 				container.entityList.push_back(parser.parseEntity(ICAT_CREATURE));
 				index=container.entityList.size()-1;

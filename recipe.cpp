@@ -13,7 +13,6 @@ RecipeManager::RecipeManager()
 
 RecipeManager::~RecipeManager()
 {
-	cookbook.clear();
 }
 
 void RecipeManager::addRecipe(int result, int a, int b, int c)

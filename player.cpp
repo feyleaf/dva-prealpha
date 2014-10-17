@@ -1,5 +1,11 @@
 #include "globals.h"
 
+PlayerEngine::PlayerEngine()
+{
+	ritual.clear();
+	inv.clearAll();
+}
+
 void PlayerEngine::initRecipes(TemplateRegistryClass& tmp)
 {
 	//3 red petals = red summon charm
@@ -58,13 +64,3 @@ bool PlayerEngine::isClickOnBoard(settingStruct& set)
 {
 	return isCollision(toVector(mouse), sf::IntRect(0, 0, set.mapGridDimensions.x, set.mapGridDimensions.y));
 }
-
-bool PlayerEngine::isClickOnGUI(GameObjectContainerClass& map)
-{
-	if(!(finemouse.x<0 || finemouse.y<0 || finemouse.x>renderWindowSize.x || finemouse.y>renderWindowSize.y))
-	{
-		return (map.buttonIndexAtPoint(finemouse)>0);
-	}
-	return false;
-}
-
