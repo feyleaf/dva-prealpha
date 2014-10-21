@@ -29,10 +29,12 @@ void GameObjectContainerClass::init()
 	buttons.clear();	buttons.push_back(0);
 	strings.clear();	strings.push_back(0);
 	mapgenerator=0;
-	mapMode = MAPMODE_NEUTRAL;
+	mapMode = MAPMODE_FRESH;
 	walked=false;
 	generated=false;
 	biomeIndex=0;
+	sf::Image g; g.create(90, 90, sf::Color(80, 80, 80, 49));
+	mapSheet.loadFromImage(g, sf::IntRect(0,0,24,18));
 }
 
 int GameObjectContainerClass::tileIndexOnGrid(EtherRegistryClass& _ether, coord _grid)

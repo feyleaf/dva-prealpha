@@ -729,9 +729,13 @@ bool GameClass::mapComplete(coord map_pos)
 void GameClass::capture()
 {
 	sf::Image shot(app.capture());
+	sf::Texture shrink;
+	shrink.create(settings.mapGridDimensions.x*settings.tileDimensions.x, settings.mapGridDimensions.y*settings.tileDimensions.y);
+	shrink.loadFromImage(shot, sf::IntRect(0,0,shrink.getSize().x,shrink.getSize().y));
+	sf::Image screen=shrink.copyToImage();
 	char buffer[65];
 	sprintf_s(buffer, 65, "screenshots/%i.png", int(gameTime()));
-	shot.saveToFile(buffer);
+	screen.saveToFile(buffer);
 	sidebar.setString(sf::String("Saved screen to:\n"+sf::String(buffer))+"\n");
 }
 
@@ -878,9 +882,12 @@ void GameClass::experimentalWorldGen(coord map_pos)
 	{
 		for(int x=-1; x<=1; x++)
 		{
-			generatorCursor=map_pos+coord(x,y);
-			biomeGeneration(generatorCursor);
-			experimentalMapGen(generatorCursor, biomes[registry.objMap[generatorCursor].biomeIndex].name);
+			if(abs(x)!=abs(y) || coord(x,y)==coord(0,0))
+			{
+				generatorCursor=map_pos+coord(x,y);
+				biomeGeneration(generatorCursor);
+				experimentalMapGen(generatorCursor, biomes[registry.objMap[generatorCursor].biomeIndex].name);
+			}
 		}
 	}
 
@@ -888,6 +895,7 @@ void GameClass::experimentalWorldGen(coord map_pos)
 
 void GameClass::experimentalMapGen(coord map_pos, const char* biome)
 {
+	bool hostile=false;
 	if(!registry.objMap[map_pos].generated)
 	{
 		header.mapIndex++;
@@ -900,23 +908,39 @@ void GameClass::experimentalMapGen(coord map_pos, const char* biome)
 		if(registry.objMap[map_pos].mapgenerator == 0) return;
 		generateMapName(map_pos);
 		createBaseMapLayer(ether.regMaps[registry.objMap[map_pos].mapgenerator]);
-		createDecorationLayer(ether.regMaps[registry.objMap[map_pos].mapgenerator]);
+		hostile=createDecorationLayer(ether.regMaps[registry.objMap[map_pos].mapgenerator]);
 		createEcologyLayer(ether.regMaps[registry.objMap[map_pos].mapgenerator]);
 		registry.objMap[map_pos].mapMode=ether.regMaps[registry.objMap[map_pos].mapgenerator]->mapMode;
 		registry.objMap[map_pos].generated=true;
 	}
 
 	//some ideas
-	tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y, sf::Color::White);
-	for(int i=1; i<int(registry.objMap[map_pos].tiles.size()); i++)
+	//tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y, sf::Color::White);
+	if(getMapMode(map_pos)==MAPMODE_FRESH)
 	{
-		if(registry.objMap[map_pos].tiles[i] > 0)
+		tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y);// = registry.objMap[map_pos].mapSheet.copyToImage();
+		for(int i=1; i<int(registry.objMap[map_pos].tiles.size()); i++)
 		{
-			coord pos=ether.regTiles[registry.objMap[map_pos].tiles[i]]->pos;
-			tempImg.setPixel(pos.x, pos.y, ether.regTiles[registry.objMap[map_pos].tiles[i]]->distortionColor);
+			if(registry.objMap[map_pos].tiles[i] > 0)
+			{
+				coord pos=ether.regTiles[registry.objMap[map_pos].tiles[i]]->pos;
+				tempImg.setPixel(pos.x, pos.y, sf::Color(
+					ether.regTiles[registry.objMap[map_pos].tiles[i]]->distortionColor.g,
+					ether.regTiles[registry.objMap[map_pos].tiles[i]]->distortionColor.g,
+					ether.regTiles[registry.objMap[map_pos].tiles[i]]->distortionColor.g,
+					90));
+			}
+		}
+		registry.objMap[map_pos].mapSheet.loadFromImage(tempImg);
+		if(hostile)
+		{
+			setMapMode(map_pos, MAPMODE_THREATEN);
+		}
+		else
+		{
+			setMapMode(map_pos, MAPMODE_SANCTUARY);
 		}
 	}
-	registry.objMap[map_pos].mapSheet.loadFromImage(tempImg);
 	fillPathingRoutes();
 }
 
@@ -946,11 +970,24 @@ void GameClass::createBaseMapLayer(const mapGenStruct* map)
 	}
 }
 
-void GameClass::createDecorationLayer(const mapGenStruct* map)
+bool GameClass::createDecorationLayer(const mapGenStruct* map)
 {
 	for(int j=0; j<int(map->decoLayer.size()); j++)
 		scatterEntity(map->decoLayer[j]);
-	addEntity("ritualstump", generatorCursor, coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
+	if(map->mapMode==MAPMODE_FRESH)
+	{
+		bool hostile=(rand()%3==0);
+		if(hostile)
+		{
+			addEntity("spawnhole", generatorCursor, coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
+		}
+		else
+		{
+			addEntity("ritualstump", generatorCursor, coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
+		}
+		return hostile;
+	}
+	return (map->mapMode==MAPMODE_THREATEN);
 }
 
 void GameClass::createEcologyLayer(const mapGenStruct* map)
@@ -1174,7 +1211,9 @@ void GameClass::handleMinimapClick()
 		render.viewport.zoom(mapscale);
 		actions.fillSourceAction(tmp, "generatemap", 0, gameTime());
 		//refreshMap(mapgrid);
+
 	}
+
 }
 
 void GameClass::handleGUIClick(GUIFormClass& form)
@@ -1279,6 +1318,24 @@ void GameClass::gameRenderer()
 					render.DrawEntity(app, ether.regEntities[reg], pixel, (reg==registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app))), true);
 				}
 			}
+		}
+		if(registry.objMap[viewerCursor].mapMode==MAPMODE_FRESH)
+		{
+			sf::Image tempImg;
+			tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y, sf::Color(80,80,80,99));
+			sf::Image screenCap = app.capture();
+			for(int y=0; y<settings.mapGridDimensions.y; y++)
+			{
+				for(int x=0; x<settings.mapGridDimensions.x; x++)
+				{
+					tempImg.setPixel(x,y,screenCap.getPixel((x*settings.tileDimensions.x)+18, (y*settings.tileDimensions.y)+19));
+					if(x==0 || y==0 || x==settings.mapGridDimensions.x-1 || y==settings.mapGridDimensions.y-1)
+					{
+						tempImg.setPixel(x,y,sf::Color(180, 180, 90, 80));
+					}
+				}
+			}
+			registry.objMap[viewerCursor].mapSheet.loadFromImage(tempImg);
 		}
 
 	}
@@ -1877,6 +1934,26 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	if(matchAction(act, "togglemap"))
 	{
 		actions.fillSourceAction(tmp, "zoomout", act->entityIndexSource, gameTime());
+		sf::Image tempImg;
+		tempImg.create(settings.mapGridDimensions.x, settings.mapGridDimensions.y, sf::Color(80,80,80,99));
+		sf::Image screenCap = app.capture();
+		for(int y=0; y<settings.mapGridDimensions.y; y++)
+		{
+			for(int x=0; x<settings.mapGridDimensions.x; x++)
+			{
+				tempImg.setPixel(x,y,screenCap.getPixel((x*settings.tileDimensions.x)+18, (y*settings.tileDimensions.y)+19));
+				if(x==0 || y==0 || x==settings.mapGridDimensions.x-1 || y==settings.mapGridDimensions.y-1)
+				{
+					if(getMapMode(viewerCursor)==MAPMODE_FRESH)
+						tempImg.setPixel(x,y,sf::Color(90, 90, 190, 80));
+					else if(getMapMode(viewerCursor)==MAPMODE_SANCTUARY)
+						tempImg.setPixel(x,y,sf::Color(180, 180, 90, 80));
+					else if(getMapMode(viewerCursor)==MAPMODE_THREATEN)
+						tempImg.setPixel(x,y,sf::Color(180, 60, 60, 99));
+				}
+			}
+		}
+		registry.objMap[viewerCursor].mapSheet.loadFromImage(tempImg);
 		return;
 	}
 	if(matchAction(act, "infoget"))
@@ -1906,6 +1983,8 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		refreshMap(generatorCursor);
 		experimentalWorldGen(viewerCursor);
 		addText(getMapName(viewerCursor), viewerCursor, coord(160,200), sf::Color::Green);
+		if(getMapMode(viewerCursor)==MAPMODE_SANCTUARY) addText("PEACEFUL", viewerCursor, coord(90,500), sf::Color::Blue);
+		if(getMapMode(viewerCursor)==MAPMODE_THREATEN) addText("DEFEND THE LAND!", viewerCursor, coord(90,500), sf::Color::Red);
 		generatorCursor=viewerCursor;
 		newGame=false;
 		player.ritualForm.clear();

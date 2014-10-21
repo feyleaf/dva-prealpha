@@ -104,6 +104,7 @@ DECORATION:marlborobush,Marlboro Bush,32,32,16,32,0,0,32,32,marlborobush.png,1,s
 DECORATION:boulder,Boulder,32,32,16,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,16,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
 DECORATION:ritualstump,Ritual Stump,32,32,16,32,0,0,32,32,stump.png,1,solidblock,200,2,1,1,none
+DECORATION:spawnhole,Spawn Hole,32,32,16,32,0,0,32,32,spawnhole.png,1,solidblock,200,2,1,1,none
 DECORATION:magiceffect,Magic Effect,32,32,16,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
 DECORATION:claw,Squirrel Claw Effect,32,32,16,32,0,0,0,0,squirrelclaw.png,8,solidblock,1,0,1,1,none
 ARBOR:greentree,Green Tree,96,96,48,96,0,0,32,32,greentree.png,1,solidblock,50,0,1,1,none

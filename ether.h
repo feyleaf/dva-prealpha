@@ -18,10 +18,11 @@ search algorithm or tree structure to optimize the searching of values (yet).
 #ifndef ETHER_H
 #define ETHER_H
 
-#define MAPMODE_NEUTRAL 0
+#define MAPMODE_FRESH 0
 #define MAPMODE_SANCTUARY 1
 #define MAPMODE_BATTLE 2
 #define MAPMODE_THREATEN 3
+#define MAPMODE_OVERTAKEN 4
 
 
 struct registeredTile
@@ -203,7 +204,7 @@ struct mapGenStruct
 	std::vector<mapSpreadStruct*> decoLayer;
 	std::vector<mapSpreadStruct*> vegLayer;
 	std::vector<mapSpreadStruct*> creatureLayer;
-	mapGenStruct() {active=true; mapMode=MAPMODE_NEUTRAL; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
+	mapGenStruct() {active=true; mapMode=MAPMODE_FRESH; displaying=false; worldCoords=coord(0,0); baseTiles=0; shapeLayer.clear(); shapeLayer.push_back(NULL);
 		decoLayer.clear(); decoLayer.push_back(NULL); vegLayer.clear(); vegLayer.push_back(NULL); creatureLayer.clear(); creatureLayer.push_back(NULL); strcpy_s(showName, "");}
 };
 

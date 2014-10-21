@@ -155,7 +155,7 @@ public:
 	char* getMapName(coord map_pos);
 	void experimentalMapGen(coord map_pos, const char* biome);
 	void createBaseMapLayer(const mapGenStruct* map);
-	void createDecorationLayer(const mapGenStruct* map);
+	bool createDecorationLayer(const mapGenStruct* map);
 	void createEcologyLayer(const mapGenStruct* map);
 
 	//generating a map one registry element at a time
