@@ -624,6 +624,18 @@ int GameClass::getEnemyNeighbor(int entityIndex)
 	return 0;
 }
 
+int GameClass::getEnemyCount(coord map_pos)
+{
+	int ret=0;
+	for(int i=1; i<int(registry.objMap[map_pos].entities.size()); i++)
+	{
+		if(ether.regEntities[registry.objMap[map_pos].entities[i]]->isEnemy)
+		{
+			ret++;
+		}
+	}
+	return ret;
+}
 int GameClass::getFriendlyNeighbor(int entityIndex)
 {
 	coord pos=ether.regEntities[entityIndex]->pos;
@@ -1443,14 +1455,14 @@ bool GameClass::addTile(const char* _name, coord map_pos, coord grid_pos)
 	return true;
 }
 
-int GameClass::addEntity(const char* _name, coord map_pos, coord _pixel)
+int GameClass::addEntity(const char* _name, coord map_pos, coord _pos)
 {
 	int reg=ether.createEntity(tmp, _name);
 	if(reg==0) return reg;
 	registry.objMap[map_pos].entities.push_back(reg);
-	ether.regEntities[reg]->pos=_pixel;
-	ether.regEntities[reg]->box.left+=(_pixel.x*32);
-	ether.regEntities[reg]->box.top+=(_pixel.y*32);
+	ether.regEntities[reg]->pos=_pos;
+	ether.regEntities[reg]->box.left+=(_pos.x*32);
+	ether.regEntities[reg]->box.top+=(_pos.y*32);
 	if(ether.regEntities[reg]->type==ICAT_VEGETATION)
 	{
 		ether.regVeg[ether.regEntities[reg]->packIndex]->bornTime=gameTime();
@@ -1905,6 +1917,40 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 		float seconds=float(rand()%7+2)+5;
 		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime()+seconds);
 		addButton("movebutton", viewerCursor, gridToPixel(coord(settings.mapGridDimensions.x+1,1)), act->entityIndexSource);
+		return;
+	}
+	if(matchAction(act, "makespawner"))
+	{
+		ether.regEntities[act->entityIndexSource]->isEnemy=true;
+		addText("<-HERE", viewerCursor, gridToPixel(ether.regEntities[act->entityIndexSource]->pos), sf::Color::Red);
+		actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime()+1.0f);
+		return;
+	}
+	if(matchAction(act, "spawnenemy"))
+	{
+		float seconds=4.0f;
+		int dir=rand()%4;
+		coord ff=ether.regEntities[act->entityIndexSource]->pos;
+		switch(dir)
+		{
+			case 0://north
+				if(ff.y>0) ff=ff+coord(0,-1);
+				break;
+			case 1://east
+				if(ff.x<settings.mapGridDimensions.x) ff=ff+coord(1,0);
+				break;
+			case 2://south
+				if(ff.y<settings.mapGridDimensions.y) ff=ff+coord(0,1);
+				break;
+			default://west
+				if(ff.x>0) ff=ff+coord(-1,0);
+				break;
+		}
+
+		//addText("spawn", viewerCursor, gridToPixel(ether.regEntities[act->entityIndexSource]->pos), sf::Color::Red);
+		addEntity("irongolem", viewerCursor, ff);
+		if(getEnemyCount(viewerCursor)<6)
+			actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime()+seconds);
 		return;
 	}
 	if(matchAction(act, "makeenemy"))

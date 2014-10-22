@@ -59,6 +59,8 @@ PROTOCOL:movewest,1,10,1,0
 PROTOCOL:arrivetarget,1,0,1,0
 PROTOCOL:makecreature,0,0,1,0
 PROTOCOL:makeenemy,0,0,1,0
+PROTOCOL:makespawner,0,0,1,0
+PROTOCOL:spawnenemy,0,0,1,0
 PROTOCOL:wandercreature,4,0,1,0
 PROTOCOL:effects,0,0,1,0
 PROTOCOL:spelltile,0,0,1,0
@@ -104,14 +106,14 @@ DECORATION:marlborobush,Marlboro Bush,32,32,16,32,0,0,32,32,marlborobush.png,1,s
 DECORATION:boulder,Boulder,32,32,16,32,0,0,32,32,boulder.png,1,solidblock,1,0,1,1,none
 DECORATION:mahoganylog,Mahogany Log,32,32,16,32,0,0,32,32,mahoganylog.png,1,solidblock,1,0,1,1,none
 DECORATION:ritualstump,Ritual Stump,32,32,16,32,0,0,32,32,stump.png,1,solidblock,200,2,1,1,none
-DECORATION:spawnhole,Spawn Hole,32,32,16,32,0,0,32,32,spawnhole.png,1,solidblock,200,2,1,1,none
+DECORATION:spawnhole,Spawn Hole,32,32,16,32,0,0,32,32,spawnhole.png,1,makespawner,200,2,1,1,none
 DECORATION:magiceffect,Magic Effect,32,32,16,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
 DECORATION:claw,Squirrel Claw Effect,32,32,16,32,0,0,0,0,squirrelclaw.png,8,solidblock,1,0,1,1,none
 ARBOR:greentree,Green Tree,96,96,48,96,0,0,32,32,greentree.png,1,solidblock,50,0,1,1,none
 ARBOR:pinetree,Pine Tree,96,96,48,96,0,0,32,32,pinetree.png,1,solidblock,50,0,1,1,none
 TOOL:magicwand,Magic Wand,32,32,16,32,0,0,32,32,wand.png,1,solidblock,10,spelltile
 LIST:forestplants,redrose,flytrap,bluerose,END,
-LIST:forestcreatures,squirrel,irongolem,END,
+LIST:forestcreatures,squirrel,END,
 LIST:foresttiles,greengrass,emeraldgrass,marshgrass,END,
 LIST:forestworn,sand,dirt,clay,END,
 LIST:forestaccent,customgrass,greengrass,END,
@@ -125,14 +127,14 @@ LIST:marshaccent,water,customgrass,greengrass,END,
 LIST:marshdeco,greentree,END,
 LIST:marshshapes,circle,smallcircle,smallcircle,END,
 LIST:taigaplants,redrose,END,
-LIST:taigacreatures,irongolem,END,
+LIST:taigacreatures,squirrel,END,
 LIST:taigatiles,snow,END,
 LIST:taigaworn,ice,clay,dirt,darkergrass,END,
 LIST:taigaaccent,water,ice,darkergrass,END,
 LIST:taigadeco,pinetree,mahoganylog,END,
 LIST:taigashapes,circle,parabola,parabola,circle,END,
 LIST:beachplants,hibiscus,heavenmirror,END,
-LIST:beachcreatures,squirrel,END,
+LIST:beachcreatures,END,
 LIST:beachtiles,water,greengrass,emeraldgrass,marble,END,
 LIST:beachworn,sand,bluebrick,woodplank,obsidian,sand,clay,END,
 LIST:beachaccent,END,

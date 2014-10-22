@@ -449,6 +449,7 @@ int EtherRegistryClass::randomEntityFromList(const TemplateRegistryClass& tmp, c
 	if(listIndex<1 || listIndex>int(tmp.container.valuesList.size())) return 0;
 	if(tmp.container.valuesList[listIndex].list.empty()) return 0;
 	int numberOfItems = int(tmp.container.valuesList[listIndex].list.size())-1;
+	if(numberOfItems<1) return 0;
 	int selection = rand()%numberOfItems + 1;
 	for(int i=1; i<int(tmp.container.entityList.size()); i++)
 	{

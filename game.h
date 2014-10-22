@@ -189,6 +189,7 @@ public:
 	coord getLatestTargetPosition(int entityIndex);
 	int getEnemyNeighbor(int entityIndex);
 	bool isEnemyNeighbor(int entityIndex);
+	int getEnemyCount(coord map_pos);
 	int getFriendlyNeighbor(int entityIndex);
 	bool isFriendlyNeighbor(int entityIndex);
 	int getClosestFriendlyRange(int entityIndex, float agroRange);
