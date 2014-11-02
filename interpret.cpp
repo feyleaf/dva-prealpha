@@ -233,7 +233,7 @@ actionTemplate TemplateReaderClass::parseAction()
 	std::getline(pFile, chunk, ',');
 	ret.category = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
-	ret.coolDownTicks = int(atoi(chunk.c_str())*0.20f); //read as frame updates, output as float seconds
+	ret.coolDownTicks = int(atoi(chunk.c_str())); //read as frame updates, output as float seconds
 	std::getline(pFile, chunk, ',');
 	ret.priority = atoi(chunk.c_str());
 	std::getline(pFile, chunk, '\n');

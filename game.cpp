@@ -35,7 +35,7 @@ GameClass::GameClass()
 	dumpActionList=false;
 	generatorCursor=coord(0,0);
 	viewerCursor=coord(0,0);
-	startTime=int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
+	startTime=0;//int(unsigned long(time(NULL))-unsigned long(JAN1_2014));
 	newGame=true;
 	player.quitGame=false;
 	header.mapIndex=0;
@@ -198,11 +198,11 @@ void GameClass::handleClick(int clickLayer, coord _pixel)
 	{
 		case CLICKLAYER_CREATURES:
 			plc=registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app));
-			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime()+0.125f);
+			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime());
 			break;
 		case CLICKLAYER_DECORATIONS:
 			plc=registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app));
-			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime()+0.125f);
+			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime());
 			break;
 		case CLICKLAYER_BUTTON:
 			plc=getButtonIndexAtPoint(viewerCursor, player.deliverRealClick(app));
@@ -245,7 +245,7 @@ void GameClass::handleClick(int clickLayer, coord _pixel)
 //				}
 //			}
 //			else
-			actions.fillTileTargetAction(tmp, "selecttile", 0, plc, gameTime()+0.125f);
+			actions.fillTileTargetAction(tmp, "selecttile", 0, plc, gameTime());
 			break;
 		case CLICKLAYER_TOP:
 			handleMinimapClick();
@@ -347,7 +347,9 @@ void GameClass::commitSmartPathing(int entityIndex, coord pos, const actionStruc
 {
 	coord tTarget=smartPathing(entityIndex, pos);
 	if(!commitMovement(entityIndex, tTarget, act))
-		actions.fillSourceAction(tmp, "canceltarget", entityIndex, gameTime());
+	{
+		actions.fillSourceAction(tmp, "idle", entityIndex, gameTime());
+	}
 	return;
 
 }
@@ -650,7 +652,10 @@ int GameClass::getFriendlyNeighbor(int entityIndex)
 			{
 				if(calcDist(toVector(pos), toVector(ether.regEntities[registry.objMap[viewerCursor].entities[i]]->pos))<1.4f)
 				{
-					return registry.objMap[viewerCursor].entities[i];
+						if(ether.regEntities[registry.objMap[viewerCursor].entities[i]]->entityTemplateIndex != getEntityTemplateIndex("magiceffect"))
+						{
+							return registry.objMap[viewerCursor].entities[i];
+						}
 				}
 			}
 		}
@@ -668,7 +673,7 @@ int GameClass::getClosestFriendlyRange(int entityIndex, float agroRange)
 	{
 		if(ether.regEntities[registry.objMap[viewerCursor].entities[i]] != NULL && ether.regEntities[registry.objMap[viewerCursor].entities[i]]->active)
 		{
-			if(!ether.regEntities[registry.objMap[viewerCursor].entities[i]]->isEnemy && 
+			if(!ether.regEntities[registry.objMap[viewerCursor].entities[i]]->isEnemy &&
 				(ether.regEntities[registry.objMap[viewerCursor].entities[i]]->type==ICAT_CREATURE ||
 				ether.regEntities[registry.objMap[viewerCursor].entities[i]]->type==ICAT_DECORATION)
 				)
@@ -678,8 +683,11 @@ int GameClass::getClosestFriendlyRange(int entityIndex, float agroRange)
 				{
 					if(testDistance<lowestDistance)
 					{
-						ret=registry.objMap[viewerCursor].entities[i];
-						lowestDistance=testDistance;
+						if(ether.regEntities[registry.objMap[viewerCursor].entities[i]]->entityTemplateIndex != getEntityTemplateIndex("magiceffect"))
+						{
+							ret=registry.objMap[viewerCursor].entities[i];
+							lowestDistance=testDistance;
+						}
 					}
 				}
 			}
@@ -687,7 +695,6 @@ int GameClass::getClosestFriendlyRange(int entityIndex, float agroRange)
 	}
 	if(ret==0)
 	{
-		//we'll seek out the ritual stump (or trees, later) anywhere on the map
 		for(int i=1; i<numberOfEntities(); i++)
 		{
 			if(ether.regEntities[registry.objMap[viewerCursor].entities[i]] != NULL && ether.regEntities[registry.objMap[viewerCursor].entities[i]]->active)
@@ -944,14 +951,14 @@ void GameClass::experimentalMapGen(coord map_pos, const char* biome)
 			}
 		}
 		registry.objMap[map_pos].mapSheet.loadFromImage(tempImg);
-		if(hostile)
-		{
+		//if(hostile)
+		//{
 			setMapMode(map_pos, MAPMODE_THREATEN);
-		}
-		else
-		{
-			setMapMode(map_pos, MAPMODE_SANCTUARY);
-		}
+		//}
+		//else
+		//{
+		//	setMapMode(map_pos, MAPMODE_SANCTUARY);
+		//}
 	}
 	fillPathingRoutes();
 }
@@ -988,15 +995,13 @@ bool GameClass::createDecorationLayer(const mapGenStruct* map)
 		scatterEntity(map->decoLayer[j]);
 	if(map->mapMode==MAPMODE_FRESH)
 	{
-		bool hostile=(rand()%3==0);
+		//testing make it all hostile
+		bool hostile=true;//(rand()%3==0);
 		if(hostile)
 		{
-			addEntity("spawnhole", generatorCursor, coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
+			addEntity("spawnhole", generatorCursor, coord((rand()%(settings.mapGridDimensions.x-2))+1,(rand()%(settings.mapGridDimensions.y-2))+1));
 		}
-		else
-		{
-			addEntity("ritualstump", generatorCursor, coord(rand()%settings.mapGridDimensions.x,rand()%settings.mapGridDimensions.y));
-		}
+		addEntity("ritualstump", generatorCursor, coord((rand()%(settings.mapGridDimensions.x-2))+1,(rand()%(settings.mapGridDimensions.y-2))+1));
 		return hostile;
 	}
 	return (map->mapMode==MAPMODE_THREATEN);
@@ -1101,7 +1106,8 @@ void GameClass::scatterEntity(const mapSpreadStruct* spread)
 	{
 		for(int x=spread->tl.x; x<spread->br.x; x++)
 		{
-			if(rand()%100<spread->density &&
+			if(registry.objMap[generatorCursor].entityIndexOnGrid(ether, coord(x,y), 1)<1 &&
+				rand()%100<spread->density &&
 				ether.regTiles[registry.objMap[generatorCursor].tileIndexOnGrid(ether, coord(x,y))]->tileTemplateIndex != getTileTemplateIndex("water"))
 			{
 				addEntity(tmp.container.entityList[spread->entityTemplateIndex].cname, generatorCursor, coord(x,y));
@@ -1201,6 +1207,19 @@ int GameClass::numberOfTiles()
 int GameClass::numberOfEntities()
 {
 	return int(registry.objMap[viewerCursor].entities.size());
+}
+
+void GameClass::removeEntity(int etherIndex, coord map_pos)
+{
+	for(int i=0; i<8; i++)
+		actions.stopActionCategory(etherIndex, i);
+	registry.objMap[map_pos].eraseEntity(etherIndex);
+	fillPathingRoutes();
+}
+
+void GameClass::deleteEtherEntity(int etherIndex, coord map_pos)
+{
+	removeEntity(etherIndex, map_pos);
 }
 
 int GameClass::getTileIndexAt(coord pos)
@@ -1313,24 +1332,45 @@ void GameClass::gameRenderer()
 		}
 
 		//reversed drawing pass to render a 'ghost' of the entities in case they are behind another entity, like a tree
-		for(int y=settings.mapGridDimensions.y; y>=0; y--)
+		for(int y=settings.mapGridDimensions.y-1; y>=0; y--)
 		{
-			for(int x=settings.mapGridDimensions.x; x>=0; x--)
+			for(int x=settings.mapGridDimensions.x-1; x>=0; x--)
 			{
-				
-				int reg=registry.objMap[viewerCursor].entityIndexOnGrid(ether, coord(x,y), 0);
-				if(reg>0 && ether.regEntities[reg] != NULL && ether.regEntities[reg]->active && isEntityOnMap(reg))
+				int low=0;
+				int reg=0;
+				do
 				{
-					coord pixel=gridToPixel(ether.regEntities[reg]->pos);
-					pixel=pixel - ether.regEntities[reg]->cog + coord(settings.tileDimensions.x/2, settings.tileDimensions.y);
-					if(ether.regEntities[reg]->type==ICAT_CREATURE)
+					reg=registry.objMap[viewerCursor].entityIndexOnGrid(ether, coord(x,y), low);
+					low=reg;
+					if(reg>0 && ether.regEntities[reg] != NULL && ether.regEntities[reg]->active && isEntityOnMap(reg))
 					{
-						pixel=pixel+(ether.regCreature[ether.regEntities[reg]->packIndex]->offset);
+						coord pixel=gridToPixel(ether.regEntities[reg]->pos);
+						pixel=pixel - ether.regEntities[reg]->cog + coord(settings.tileDimensions.x/2, settings.tileDimensions.y);
+						if(ether.regEntities[reg]->type==ICAT_CREATURE)
+						{
+							pixel=pixel+(ether.regCreature[ether.regEntities[reg]->packIndex]->offset);
+						}
+						render.DrawEntity(app, ether.regEntities[reg], pixel, (reg==registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app))), true);
 					}
-					render.DrawEntity(app, ether.regEntities[reg], pixel, (reg==registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app))), true);
-				}
+				} while(reg>0);
 			}
 		}
+		//then the special effects
+		for(int i=1; i<numberOfEntities(); i++)
+		{
+			int reg=registry.objMap[viewerCursor].entities[i];
+			coord pixel=gridToPixel(ether.regEntities[reg]->pos);
+			pixel=pixel - ether.regEntities[reg]->cog + coord(settings.tileDimensions.x/2, settings.tileDimensions.y);
+			if(ether.regEntities[reg]->type==ICAT_CREATURE)
+			{
+				pixel=pixel+(ether.regCreature[ether.regEntities[reg]->packIndex]->offset);
+			}
+			if(ether.regEntities[reg]->entityTemplateIndex==getEntityTemplateIndex("magiceffect"))
+				render.DrawEntity(app, ether.regEntities[reg], pixel, (reg==registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app))), false);
+			if(ether.regEntities[reg]->entityTemplateIndex==getEntityTemplateIndex("claw"))
+				render.DrawEntity(app, ether.regEntities[reg], pixel, (reg==registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app))), false);
+		}
+
 		if(registry.objMap[viewerCursor].mapMode==MAPMODE_FRESH)
 		{
 			sf::Image tempImg;
@@ -1656,8 +1696,13 @@ void GameClass::processActionList(int maxlength, float actSeconds)
 				}
 			}
 			if(currentEntity==0) workingOnMap=true;
+			if(player.gamemode==GAMEMODE_ZOOMOUT && !matchAction(actions.actionQueue[i], "zoomout")) workingOnMap=false;
 			if(actions.actionQueue[i]->timeToActivate<=actSeconds && workingOnMap)
 			{
+				if(actions.actionQueue[i]->entityIndexSource>0)
+					debugFile << tmp.container.entityList[ether.regEntities[actions.actionQueue[i]->entityIndexSource]->entityTemplateIndex].cname
+					<< actions.actionQueue[i]->entityIndexSource << " - "
+					<< tmp.container.actionList[actions.actionQueue[i]->actionTemplateIndex].cname << "\n";
 				processAction(actions.actionQueue[i]);
 			}
 		}
@@ -1717,13 +1762,14 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 	{
 		sidebar.setString("establishing Target");
 		actions.stopActionCategory(act->entityIndexSource, ACAT_COMBAT);
+		actions.stopActionCategory(act->entityIndexSource, ACAT_PEACEFULAI);
 		if(actions.tileTarget(ether, act))
 		{
-			actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, act->tileIndexTarget, gameTime()+0.567f);
+			actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, act->tileIndexTarget, gameTime());
 		}
 		else
 		{
-			actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime()+0.567f);
+			actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime());
 		}
 		return;
 	}
@@ -1757,7 +1803,8 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 		{
 			if(isReachedEntityTarget(act->entityIndexSource, act->entityIndexTarget))
 			{
-				actions.fillSourceAction(tmp, "canceltarget", act->entityIndexSource, gameTime());
+				//actions.fillSourceAction(tmp, "canceltarget", act->entityIndexSource, gameTime());
+				actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
 				return;
 			}
 			commitSmartPathing(act->entityIndexSource, ether.regEntities[act->entityIndexTarget]->pos, act);
@@ -1818,6 +1865,12 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 		gridAlignEntity(act->entityIndexSource, ether.regEntities[act->entityIndexSource]->pos);
 		return;
 	}
+	if(matchAction(act, "endattack"))
+	{
+		//erase an effect from existence
+		deleteEtherEntity(act->entityIndexSource, viewerCursor);
+		return;
+	}
 }
 
 void GameClass::handleCombatPipeline(const actionStruct* act)
@@ -1830,20 +1883,17 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 		sidebar.setString("Hit!");
 		int regSlash = addEntity("claw", viewerCursor, ether.regEntities[act->entityIndexTarget]->pos);
 		actions.fillEntityTargetAction(tmp, "damage", act->entityIndexSource, act->entityIndexTarget, gameTime());
-		actions.fillEntityTargetAction(tmp, "endattack", regSlash, act->entityIndexTarget, gameTime()+1.5f);
-		actions.fillEntityTargetAction(tmp, "engagecombat", act->entityIndexSource, act->entityIndexTarget, gameTime()+1.85f);
-		return;
-	}
-	if(matchAction(act, "endattack"))
-	{
-		//erase an effect from existence
-		registry.objMap[viewerCursor].eraseEntity(act->entityIndexSource);
-
 		return;
 	}
 	if(matchAction(act, "damage"))
 	{
-		if(ether.regEntities[act->entityIndexTarget]==NULL || ether.regEntities[act->entityIndexSource]==NULL) return;
+		if(act->entityIndexSource==0 || act->entityIndexTarget==0 || !isEntityOnMap(act->entityIndexTarget)) return;
+		if(ether.regEntities[act->entityIndexSource]==NULL) return;
+		if(ether.regEntities[act->entityIndexTarget]==NULL)
+		{
+			actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
+			return;
+		}
 		char buf[24]="";
 		int offenseValue=0;
 		int defenseValue=0;
@@ -1867,16 +1917,15 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 		if(ether.regEntities[act->entityIndexTarget]->type == ICAT_CREATURE)
 		{
 			//attack back if hit for the first time
-			if(ether.regEntities[act->entityIndexTarget]->isEnemy)
-			{
-				actions.fillEntityTargetAction(tmp, "establishtarget", act->entityIndexTarget, act->entityIndexSource, gameTime()+0.567f);
-			}
+//			if(ether.regEntities[act->entityIndexTarget]->isEnemy)
+//			{
+//				actions.fillEntityTargetAction(tmp, "establishtarget", act->entityIndexTarget, act->entityIndexSource, gameTime()+0.567f);
+//			}
 			ether.regCreature[ether.regEntities[act->entityIndexTarget]->packIndex]->currentHP-=dmg;
 			if(ether.regCreature[ether.regEntities[act->entityIndexTarget]->packIndex]->currentHP<1)
 			{
-				registry.objMap[viewerCursor].eraseEntity(act->entityIndexTarget);
-				if(ether.regEntities[act->entityIndexSource]->isEnemy)
-					actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime()+5.0f);
+				removeEntity(act->entityIndexTarget, viewerCursor);
+				actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
 			}
 		}
 		else if(ether.regEntities[act->entityIndexTarget]->type == ICAT_DECORATION)
@@ -1884,11 +1933,11 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 			ether.regDeco[ether.regEntities[act->entityIndexTarget]->packIndex]->currentHP-=dmg;
 			if(ether.regDeco[ether.regEntities[act->entityIndexTarget]->packIndex]->currentHP<1)
 			{
-				registry.objMap[viewerCursor].eraseEntity(act->entityIndexTarget);
-				if(ether.regEntities[act->entityIndexSource]->isEnemy)
-					actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime()+5.0f);
+				removeEntity(act->entityIndexTarget, viewerCursor);
+				actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
 			}
 		}
+		actions.fillEntityTargetAction(tmp, "engagecombat", act->entityIndexSource, act->entityIndexTarget, gameTime());
 
 		return;
 	}
@@ -1896,15 +1945,18 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 	{
 		if(ether.regEntities[act->entityIndexSource] == NULL) return;
 		if(!ether.regEntities[act->entityIndexSource]->active || !isEntityOnMap(act->entityIndexSource)) return;
-		if(ether.regEntities[act->entityIndexTarget] == NULL) return;
-		if(!ether.regEntities[act->entityIndexTarget]->active || !isEntityOnMap(act->entityIndexTarget)) return;
+		if(ether.regEntities[act->entityIndexTarget] == NULL || !ether.regEntities[act->entityIndexTarget]->active || !isEntityOnMap(act->entityIndexTarget))
+		{
+			actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
+			return;
+		}
 		sidebar.setString("Attacking!");
 
 		actions.stopActionCategory(act->entityIndexSource, ACAT_MOVEMENT);
 		actions.stopActionCategory(act->entityIndexTarget, ACAT_MOVEMENT);
 		actions.stopActionCategory(act->entityIndexSource, ACAT_PEACEFULAI);
 		actions.stopActionCategory(act->entityIndexTarget, ACAT_PEACEFULAI);
-		actions.fillEntityTargetAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, gameTime()+0.5f);
+		actions.fillEntityTargetAction(tmp, "attack", act->entityIndexSource, act->entityIndexTarget, gameTime());
 		return;
 	}
 }
@@ -1914,8 +1966,7 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 	if(!actions.hasSource(ether, act)) return;
 	if(matchAction(act, "makecreature"))
 	{
-		float seconds=float(rand()%7+2)+5;
-		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime()+seconds);
+		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime());
 		addButton("movebutton", viewerCursor, gridToPixel(coord(settings.mapGridDimensions.x+1,1)), act->entityIndexSource);
 		return;
 	}
@@ -1923,12 +1974,11 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 	{
 		ether.regEntities[act->entityIndexSource]->isEnemy=true;
 		addText("<-HERE", viewerCursor, gridToPixel(ether.regEntities[act->entityIndexSource]->pos), sf::Color::Red);
-		actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime()+1.0f);
+		actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime());
 		return;
 	}
 	if(matchAction(act, "spawnenemy"))
 	{
-		float seconds=4.0f;
 		int dir=rand()%4;
 		coord ff=ether.regEntities[act->entityIndexSource]->pos;
 		switch(dir)
@@ -1948,16 +1998,16 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 		}
 
 		//addText("spawn", viewerCursor, gridToPixel(ether.regEntities[act->entityIndexSource]->pos), sf::Color::Red);
-		addEntity("irongolem", viewerCursor, ff);
+		addEntity("tinspider", viewerCursor, ff);
 		if(getEnemyCount(viewerCursor)<6)
-			actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime()+seconds);
+			actions.fillSourceAction(tmp, "spawnenemy", act->entityIndexSource, gameTime());
 		return;
 	}
 	if(matchAction(act, "makeenemy"))
 	{
 		ether.regEntities[act->entityIndexSource]->isEnemy=true;
 		//the enemy looks for the closest friendly, if it is on the map
-		actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime()+5.0f);
+		actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime());
 		return;
 	}
 	if(matchAction(act, "growflower"))
@@ -1971,6 +2021,13 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 		//update the frame as long as it's still less than the max growth stages
 		actions.processMagic(tmp, ether, act->entityIndexSource, gameTime());
 
+		return;
+	}
+	if(matchAction(act, "swipeeffect"))
+	{
+		//update the frame as long as it's still less than the max growth stages
+		actions.processAttack(tmp, ether, act->entityIndexSource, gameTime());
+		debugFile << "Frame: " << ether.regEntities[act->entityIndexSource]->frame << "\n";
 		return;
 	}
 }
@@ -2006,7 +2063,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	{
 		if(player.gamemode==GAMEMODE_INSPECT)
 		{
-			actions.fillSourceAction(tmp, "clearsidebar", 0, gameTime()+0.125f);
+			actions.fillSourceAction(tmp, "clearsidebar", 0, gameTime());
 		}
 		else
 		{
@@ -2071,7 +2128,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		else if(player.gamemode==GAMEMODE_CRAFTING)
 		{
 			player.inv.select(player.deliverGridClick(app));
-			if(player.inv.getItemAtCursor()>0 && player.ritual.cursor<(player.ritual.resultslot))
+			if(player.inv.getItemAtCursor()>=0 && player.ritual.cursor<(player.ritual.resultslot))
 			{
 				player.ritual.addToRitual(player.inv.drop(player.inv.cursor));
 				actions.fillSourceAction(tmp, "addritualitem", 0, gameTime());
@@ -2118,7 +2175,9 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 			{
 				if(held==0)
 				{
-					registry.objMap[viewerCursor].eraseEntity(act->entityIndexTarget);
+					int regMagic = addEntity("magiceffect", viewerCursor, ether.regEntities[act->entityIndexTarget]->pos);
+					actions.fillSourceAction(tmp, "effects", regMagic, gameTime());
+					removeEntity(act->entityIndexTarget, viewerCursor);
 					ether.regSummon[summonPack]->creatureContained=act->entityIndexTarget;
 				}
 			}
@@ -2128,19 +2187,20 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 		{
 			if(held>0)
 			{
-				registry.objMap[viewerCursor].entities.push_back(held);
 				int regMagic = addEntity("magiceffect", viewerCursor, ether.regTiles[act->tileIndexTarget]->pos);
-				actions.fillSourceAction(tmp, "effects", regMagic, gameTime()+0.5f);
+				actions.fillSourceAction(tmp, "effects", regMagic, gameTime());
 				if(ether.regEntities[held]->type==ICAT_CREATURE)
 				{
+					registry.objMap[viewerCursor].entities.push_back(held);
 					int creature=ether.regEntities[held]->packIndex;
 					ether.regCreature[creature]->offset=coord(0,0);
 					ether.regEntities[held]->plane=0;
 					ether.regEntities[held]->pos=ether.regTiles[act->tileIndexTarget]->pos;
 					ether.regEntities[held]->active=true;
-					actions.stopActionCategory(held, ACAT_MOVEMENT);
-					actions.stopActionCategory(held, ACAT_PEACEFULAI);
-					actions.stopActionCategory(held, ACAT_COMBAT);
+					//actions.stopActionCategory(held, ACAT_MOVEMENT);
+					//actions.stopActionCategory(held, ACAT_PEACEFULAI);
+					//actions.stopActionCategory(held, ACAT_COMBAT);
+					actions.fillSourceAction(tmp, tmp.container.entityList[ether.regEntities[held]->entityTemplateIndex].creation, held, gameTime());
 
 					ether.regEntities[held]->box = tmp.container.entityList[ether.regEntities[held]->entityTemplateIndex].box;
 					ether.regEntities[held]->box.left+=(ether.regEntities[held]->pos.x*32);
@@ -2154,7 +2214,7 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 	if(matchAction(act, "spelltile"))
 	{
 		int regMagic = addEntity("magiceffect", viewerCursor, ether.regTiles[act->tileIndexTarget]->pos);
-		actions.fillSourceAction(tmp, "effects", regMagic, gameTime()+0.5f);
+		actions.fillSourceAction(tmp, "effects", regMagic, gameTime());
 		return;
 	}
 	if(matchAction(act, "plantflower"))
@@ -2169,14 +2229,14 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 	{
 		//erase a tool from existence
 		player.inv.clearSlot(player.inv.cursor);
-		registry.objMap[viewerCursor].eraseEntity(act->entityIndexSource);
+		removeEntity(act->entityIndexSource, viewerCursor);
 
 		return;
 	}
 	if(matchAction(act, "vanishentity"))
 	{
 		//erase an entity from the map
-		registry.objMap[viewerCursor].eraseEntity(act->entityIndexSource);
+		removeEntity(act->entityIndexSource, viewerCursor);
 
 		return;
 	}
@@ -2189,13 +2249,26 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 
 void GameClass::handleAIPipeline(const actionStruct* act)
 {
+	if(matchAction(act, "idle"))
+	{
+		fillPathingRoutes();
+		if(ether.regEntities[act->entityIndexSource]->isEnemy)
+		{
+			actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime());
+		}
+		else
+		{
+			actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime());
+		}
+		return;
+	}
 	if(matchAction(act, "pursuit"))
 	{
 		if(actions.entityTarget(ether, act))
 		{
 			if(ether.regEntities[act->entityIndexTarget]->active)
 			{
-				actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime()+0.567f);
+				actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime());
 				actions.fillEntityTargetAction(tmp, "pursuit", act->entityIndexSource, act->entityIndexTarget, gameTime());
 			}
 		}
@@ -2204,43 +2277,51 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 	if(matchAction(act, "agro"))
 	{
 		//for enemies to target and attack their closest friendly/decoration
-		if(isFriendlyRange(act->entityIndexSource, 6.0f))
+		if(isFriendlyRange(act->entityIndexSource, 16.0f))
 		{
-			int friendly=getClosestFriendlyRange(act->entityIndexSource, 6.0f);
+			int friendly=getClosestFriendlyRange(act->entityIndexSource, 16.0f);
 			actions.fillEntityTargetAction(tmp, "establishtarget", act->entityIndexSource, friendly, gameTime());
 			return;
 		}
-		actions.fillSourceAction(tmp, "agro", act->entityIndexSource, gameTime()+5.0f);
+		actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
 		return;
 	}
 	if(matchAction(act, "wandercreature"))
 	{
-		float seconds=float(rand()%7+2)+5;
+		if(isEnemyNeighbor(act->entityIndexSource))
+		{
+			int targ = getEnemyNeighbor(act->entityIndexSource);
+			actions.fillEntityTargetAction(tmp, "engagecombat", act->entityIndexSource, targ, gameTime());
+			return;
+		}
 		if(!(actions.isPerformingAction(tmp, act->entityIndexSource, "movestep")))
 		{
-			int dir=rand()%4;
 			coord ff=ether.regEntities[act->entityIndexSource]->pos;
-			switch(dir)
+			if(rand()%60==0)
 			{
-				case 0://north
-					if(ff.y>0) ff=ff+coord(0,-1);
-					break;
-				case 1://east
-					if(ff.x<settings.mapGridDimensions.x) ff=ff+coord(1,0);
-					break;
-				case 2://south
-					if(ff.y<settings.mapGridDimensions.y) ff=ff+coord(0,1);
-					break;
-				default://west
-					if(ff.x>0) ff=ff+coord(-1,0);
-					break;
+				int dir=rand()%4;
+				switch(dir)
+				{
+					case 0://north
+						if(ff.y>0) ff=ff+coord(0,-1);
+						break;
+					case 1://east
+						if(ff.x<settings.mapGridDimensions.x) ff=ff+coord(1,0);
+						break;
+					case 2://south
+						if(ff.y<settings.mapGridDimensions.y) ff=ff+coord(0,1);
+						break;
+					default://west
+						if(ff.x>0) ff=ff+coord(-1,0);
+						break;
+				}
 			}
 			if(terrain.getTerrainAt(ff)==0)
 			{
-				actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, getTileIndexAt(ff), gameTime()+seconds);
+				actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, getTileIndexAt(ff), gameTime());
 			}
 		}
-		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime()+seconds);
+		actions.fillSourceAction(tmp, "idle", act->entityIndexSource, gameTime());
 		return;
 	}
 }
@@ -2268,7 +2349,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 	if(matchAction(act, "randomheld"))
 	{
 		player.inv.add(ether, act->entityIndexSource);
-		registry.objMap[viewerCursor].eraseEntity(act->entityIndexSource);
+		removeEntity(act->entityIndexSource, viewerCursor);
 		return;
 	}
 	if(matchAction(act, "creatureguion"))
@@ -2452,7 +2533,7 @@ void GameClass::establishTargetTile(int tileIndex)
 		establishTargetEntity(registry.objMap[viewerCursor].entityIndexOnGrid(ether, grid, 0));
 		return;
 	}
-	actions.fillTileTargetAction(tmp, "establishtarget", regEnt, tileIndex, gameTime()+0.5f);
+	actions.fillTileTargetAction(tmp, "establishtarget", regEnt, tileIndex, gameTime());
 	actions.fillSourceAction(tmp, "creatureguioff", regEnt, gameTime());
 	return;
 }
@@ -2460,7 +2541,7 @@ void GameClass::establishTargetTile(int tileIndex)
 void GameClass::establishTargetEntity(int entityIndex)
 {
 	int regEnt=getButtonLinkedEntity("movecreature");
-	actions.fillEntityTargetAction(tmp, "establishtarget", regEnt, entityIndex, gameTime()+0.5f);
+	actions.fillEntityTargetAction(tmp, "establishtarget", regEnt, entityIndex, gameTime());
 	actions.fillSourceAction(tmp, "creatureguioff", regEnt, gameTime());
 	return;
 }
@@ -2475,15 +2556,15 @@ void GameClass::moveInDirection(const actionStruct* act, coord dir, const char* 
 		if(!moveToAlign(act->entityIndexSource))
 		{
 			if(actions.entityTarget(ether, act))
-				actions.fillEntityTargetAction(tmp, protocol, act->entityIndexSource, act->entityIndexTarget, gameTime()+0.567f);
+				actions.fillEntityTargetAction(tmp, protocol, act->entityIndexSource, act->entityIndexTarget, gameTime());
 			else
-				actions.fillTileTargetAction(tmp, protocol, act->entityIndexSource, act->tileIndexTarget, gameTime()+0.567f);
+				actions.fillTileTargetAction(tmp, protocol, act->entityIndexSource, act->tileIndexTarget, gameTime());
 		}
 		else
 		{
 			if(actions.entityTarget(ether, act))
-				actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime()+0.567f);
+				actions.fillEntityTargetAction(tmp, "movestep", act->entityIndexSource, act->entityIndexTarget, gameTime());
 			else
-				actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, act->tileIndexTarget, gameTime()+0.567f);
+				actions.fillTileTargetAction(tmp, "movestep", act->entityIndexSource, act->tileIndexTarget, gameTime());
 		}
 }

@@ -50,33 +50,35 @@ PROTOCOL:movecreature,1,0,1,0
 PROTOCOL:creatureguion,7,0,1,0
 PROTOCOL:creatureguioff,7,0,1,0
 PROTOCOL:establishtarget,1,0,1,0
-PROTOCOL:canceltarget,1,0,1,0
-PROTOCOL:movestep,1,10,1,0
-PROTOCOL:movenorth,1,10,1,0
-PROTOCOL:movesouth,1,10,1,0
-PROTOCOL:moveeast,1,10,1,0
-PROTOCOL:movewest,1,10,1,0
+PROTOCOL:canceltarget,1,20,1,0
+PROTOCOL:movestep,1,0,1,0
+PROTOCOL:movenorth,1,0,1,0
+PROTOCOL:movesouth,1,0,1,0
+PROTOCOL:moveeast,1,0,1,0
+PROTOCOL:movewest,1,0,1,0
 PROTOCOL:arrivetarget,1,0,1,0
 PROTOCOL:makecreature,0,0,1,0
 PROTOCOL:makeenemy,0,0,1,0
-PROTOCOL:makespawner,0,0,1,0
-PROTOCOL:spawnenemy,0,0,1,0
-PROTOCOL:wandercreature,4,0,1,0
-PROTOCOL:effects,0,0,1,0
+PROTOCOL:makespawner,0,100,1,0
+PROTOCOL:spawnenemy,0,330,1,0
+PROTOCOL:wandercreature,4,30,1,0
+PROTOCOL:effects,0,5,1,0
+PROTOCOL:swipeeffect,0,5,1,0
 PROTOCOL:spelltile,0,0,1,0
 PROTOCOL:wand,3,0,1,0
 PROTOCOL:destroytool,3,0,1,0
 PROTOCOL:plantflower,3,0,1,0
 PROTOCOL:usecharm,3,0,1,0
-PROTOCOL:engagecombat,2,0,1,0
-PROTOCOL:attack,2,0,1,0
-PROTOCOL:endattack,2,0,1,0
+PROTOCOL:engagecombat,2,10,1,0
+PROTOCOL:attack,2,12,1,0
+PROTOCOL:endattack,0,7,1,0
 PROTOCOL:combatdeath,2,0,1,0
 PROTOCOL:combatwin,2,0,1,0
 PROTOCOL:pursuit,4,0,1,0
-PROTOCOL:agro,4,0,1,0
+PROTOCOL:idle,0,20,1,0
+PROTOCOL:agro,4,20,1,0
 PROTOCOL:togglemap,7,0,1,0
-PROTOCOL:zoomout,0,0,1,0
+PROTOCOL:zoomout,7,0,1,0
 PROTOCOL:guion,0,0,1,0
 PROTOCOL:addritualitem,0,0,1,0
 PROTOCOL:trycrafting,0,0,1,0
@@ -85,10 +87,15 @@ PROTOCOL:togglecrafting,0,0,1,0
 PROTOCOL:toggleinventory,0,0,1,0
 PROTOCOL:creaturecard,0,0,1,0
 PROTOCOL:vanishentity,0,0,1,0
-PROTOCOL:damage,0,0,1,0
+PROTOCOL:damage,0,12,6,0
 PROTOCOL:fadetext,0,0,1,0
 CREATURE:squirrel,Squirrel,32,32,16,32,0,0,32,32,squirrel.png,1,makecreature,30,3,5,1,2,none
+CREATURE:wolf,Wolf,32,32,16,32,0,0,32,32,wolf.png,1,makecreature,45,5,6,1,3,none
+CREATURE:dryad,Dryad,32,32,16,32,0,0,32,32,dryad.png,1,makecreature,45,3,8,1,1,none
 CREATURE:irongolem,Iron Golem,32,32,16,32,0,0,32,32,irongolem.png,1,makeenemy,45,3,6,1,1,none
+CREATURE:tinspider,Tin Spider,32,32,16,32,0,0,32,32,tinspider.png,1,makeenemy,20,3,6,1,1,none
+CREATURE:coppercrab,Copper Crab,32,32,16,32,0,0,32,32,coppercrab.png,1,makeenemy,22,4,1,1,1,none
+CREATURE:geargolem,Gear Golem,32,32,16,32,0,0,32,32,geargolem.png,1,makeenemy,45,1,1,1,1,none
 INGREDIENT:redpetal,Red Rose Petal,32,32,16,32,0,0,32,32,redpetal.png,1,solidblock,none
 INGREDIENT:bluepetal,Blue Rose Petal,32,32,16,32,0,0,32,32,bluepetal.png,1,solidblock,none
 VEGETATION:redrose,Red Rose,32,32,16,32,0,0,32,32,redrose.png,4,growflower,22,4,50,basicloot
@@ -108,12 +115,12 @@ DECORATION:mahoganylog,Mahogany Log,32,32,16,32,0,0,32,32,mahoganylog.png,1,soli
 DECORATION:ritualstump,Ritual Stump,32,32,16,32,0,0,32,32,stump.png,1,solidblock,200,2,1,1,none
 DECORATION:spawnhole,Spawn Hole,32,32,16,32,0,0,32,32,spawnhole.png,1,makespawner,200,2,1,1,none
 DECORATION:magiceffect,Magic Effect,32,32,16,32,0,0,0,0,magiceffect.png,8,effects,1,0,1,1,none
-DECORATION:claw,Squirrel Claw Effect,32,32,16,32,0,0,0,0,squirrelclaw.png,8,solidblock,1,0,1,1,none
+DECORATION:claw,Squirrel Claw Effect,32,32,16,32,0,0,0,0,squirrelclaw.png,8,swipeeffect,1,0,1,1,none
 ARBOR:greentree,Green Tree,96,96,48,96,0,0,32,32,greentree.png,1,solidblock,50,0,1,1,none
 ARBOR:pinetree,Pine Tree,96,96,48,96,0,0,32,32,pinetree.png,1,solidblock,50,0,1,1,none
 TOOL:magicwand,Magic Wand,32,32,16,32,0,0,32,32,wand.png,1,solidblock,10,spelltile
 LIST:forestplants,redrose,flytrap,bluerose,END,
-LIST:forestcreatures,squirrel,END,
+LIST:forestcreatures,squirrel,dryad,wolf,END,
 LIST:foresttiles,greengrass,emeraldgrass,marshgrass,END,
 LIST:forestworn,sand,dirt,clay,END,
 LIST:forestaccent,customgrass,greengrass,END,
@@ -127,7 +134,7 @@ LIST:marshaccent,water,customgrass,greengrass,END,
 LIST:marshdeco,greentree,END,
 LIST:marshshapes,circle,smallcircle,smallcircle,END,
 LIST:taigaplants,redrose,END,
-LIST:taigacreatures,squirrel,END,
+LIST:taigacreatures,wolf,END,
 LIST:taigatiles,snow,END,
 LIST:taigaworn,ice,clay,dirt,darkergrass,END,
 LIST:taigaaccent,water,ice,darkergrass,END,

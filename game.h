@@ -28,7 +28,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define CLICKLAYER_BUTTON 5
 #define CLICKLAYER_TOP 6
 
-#define FRAMESPEED 0.0333f //amount of ticks per second
+#define FRAMESPEED 0.0125f //amount of ticks per second
 
 #define JAN1_2014	1387584000
 struct gameHeader
@@ -206,6 +206,8 @@ public:
 	//misc data pertaining to the current map's elements
 	int getTileIndexAt(coord _pt);
 	bool eraseTileAt(coord _pt);
+	void removeEntity(int etherIndex, coord map_pos);
+	void deleteEtherEntity(int etherIndex, coord map_pos);
 	int numberOfTiles();
 	int numberOfEntities();
 

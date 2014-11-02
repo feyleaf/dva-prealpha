@@ -76,12 +76,25 @@ void ActionManager::processGrowth(TemplateRegistryClass& tmp, EtherRegistryClass
 void ActionManager::processMagic(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time)
 {
 	if(etherIndex==0) return;
-	float duration=0.5f;
 	if(_eth.regEntities[etherIndex]->frame < 8)
 	{
 		_eth.regEntities[etherIndex]->frame += 1;
-		fillSourceAction(tmp, "effects", etherIndex, time+duration);
+		fillSourceAction(tmp, "effects", etherIndex, time);
 	}
+	else
+		fillSourceAction(tmp, "vanishentity", etherIndex, time);
+}
+
+void ActionManager::processAttack(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time)
+{
+	if(etherIndex==0) return;
+	if(_eth.regEntities[etherIndex]->frame <= 8)
+	{
+		_eth.regEntities[etherIndex]->frame += 1;
+		fillSourceAction(tmp, "swipeeffect", etherIndex, time);
+	}
+	else
+		fillSourceAction(tmp, "vanishentity", etherIndex, time);
 }
 
 int ActionManager::processFlowerConversion(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time)
@@ -91,7 +104,7 @@ int ActionManager::processFlowerConversion(TemplateRegistryClass& tmp, EtherRegi
 	int drops=_eth.regVeg[veg]->dropList;
 	coord psx=_eth.regEntities[etherIndex]->pos;
 	int pick=_eth.randomEntityFromList(tmp, tmp.container.valuesList[drops].cname);
-	fillSourceAction(tmp, "vanishentity", etherIndex, time+0.5f);
+	fillSourceAction(tmp, "vanishentity", etherIndex, time);
 	int drop=_eth.createEntity(tmp, tmp.container.entityList[pick].cname);
 	_eth.regEntities[drop]->pos=psx;
 	_eth.regEntities[drop]->box.left+=(psx.x*32);
@@ -118,6 +131,34 @@ bool ActionManager::isPerformingAction(TemplateRegistryClass& tmp, int entityInd
 		{
 			if(actionQueue[i]->active)
 				ret=true;
+		}
+	}
+	return ret;
+}
+
+bool ActionManager::isTargetOfAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName)
+{
+	bool ret=false;
+	for(int i=1; i<int(actionQueue.size()); i++)
+	{
+		if(actionCodeEquals(tmp, actionQueue[i]->actionTemplateIndex, actionName) && actionQueue[i]->entityIndexTarget==entityIndex)
+		{
+			if(actionQueue[i]->active)
+				ret=true;
+		}
+	}
+	return ret;
+}
+
+int ActionManager::getSourceOfTargetAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName)
+{
+	int ret=0;
+	for(int i=1; i<int(actionQueue.size()); i++)
+	{
+		if(actionCodeEquals(tmp, actionQueue[i]->actionTemplateIndex, actionName) && actionQueue[i]->entityIndexTarget==entityIndex)
+		{
+			if(actionQueue[i]->active)
+				ret=actionQueue[i]->entityIndexSource;
 		}
 	}
 	return ret;
@@ -173,9 +214,9 @@ void ActionManager::useTool(TemplateRegistryClass& tmp, EtherRegistryClass& _eth
 		_eth.regTool[toolPack]->usesLeft-=1;
 		if(_eth.regTool[toolPack]->usesLeft<1)
 		{
-			fillSourceAction(tmp, "destroytool", etherIndex, time+0.5f);
+			fillSourceAction(tmp, "destroytool", etherIndex, time);
 		}
-		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time+0.5f);
+		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time);
 		return;
 	}
 }
@@ -192,7 +233,7 @@ void ActionManager::useCharm(TemplateRegistryClass& tmp, EtherRegistryClass& _et
 		int protocol=_eth.regSummon[summonPack]->usageProtocol;
 		bool isCreature = (_eth.regEntities[entTarget]->type==ICAT_CREATURE);
 		if(held==0 && isCreature) //if the charm is empty, we'll capture the creature
-			fillEntityTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, entTarget, time+0.5f);
+			fillEntityTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, entTarget, time);
 		return;
 	}
 	if(tileTarget>0 && held>0)
@@ -200,7 +241,7 @@ void ActionManager::useCharm(TemplateRegistryClass& tmp, EtherRegistryClass& _et
 		//work on a tile (summon contained entity)
 		int protocol=_eth.regSummon[summonPack]->usageProtocol;
 		if(held==0) return; //if the charm is empty, we have nothing to summon
-		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time+0.5f);
+		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time);
 		return;
 	}
 }
@@ -217,7 +258,7 @@ void ActionManager::plantSeed(TemplateRegistryClass& tmp, EtherRegistryClass& _e
 		//work on a tile
 		int seedPack=_eth.regEntities[etherIndex]->packIndex;
 		int protocol=_eth.regSeed[seedPack]->usageProtocol;
-		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time+0.5f);
+		fillTileTargetAction(tmp, tmp.container.actionList[protocol].cname, etherIndex, tileTarget, time);
 		return;
 	}
 }
@@ -237,7 +278,7 @@ bool ActionManager::createAction(const TemplateRegistryClass& tmp, const char* _
 			act.entityIndexSource=entitySrc;
 			act.entityIndexTarget=entityTrg;
 			act.tileIndexTarget=tileTrg;
-			act.timeToActivate=time+float((tmp.container.actionList[i].coolDownTicks)*0.2f);
+			act.timeToActivate=time+(float((tmp.container.actionList[i].coolDownTicks))*0.01f);
 			act.category=tmp.container.actionList[i].category;
 			//we can recycle inactive actions at this point
 			//SIGNIFICANT decrease in vector size :)

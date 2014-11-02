@@ -38,6 +38,7 @@ public:
 	void plantSeed(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, int entTarget, int tileTarget, float time);
 	void processGrowth(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time);
 	void processMagic(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time);
+	void processAttack(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time);
 	int processFlowerConversion(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time);
 
 	//routines for filtering and handling actions and action queues
@@ -49,6 +50,8 @@ public:
 	void stopActionCategory(int entityIndex, int category);
 	int getActionIndex(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
 	bool isPerformingAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
+	bool isTargetOfAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
+	int getSourceOfTargetAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
 
 	//handlers for processing and filtering actions within an action queue
 	bool hasSource(EtherRegistryClass& _eth, const actionStruct* act);
