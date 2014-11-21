@@ -24,6 +24,10 @@ search algorithm or tree structure to optimize the searching of values (yet).
 #define MAPMODE_THREATEN 3
 #define MAPMODE_OVERTAKEN 4
 
+#define PRINT_FADEUP 1
+#define PRINT_PANIN 2
+#define PRINT_FADESTILL 3
+
 
 struct registeredTile
 {
@@ -58,6 +62,7 @@ struct registeredEntity
 struct buttonStruct
 {
 	bool active;
+	bool hidden;
 	int linkedEntityIndex;
 	int actionTemplateIndex;
 	coord origin;
@@ -66,7 +71,7 @@ struct buttonStruct
 	int frame;
 	coord pixel;
 	buttonStruct(bool act, int _linked, int _index, coord _orig, coord _dim, sf::IntRect _box, coord _pixel)
-	{active=act; linkedEntityIndex=_linked; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pixel=_pixel;}
+	{active=act; hidden=false; linkedEntityIndex=_linked; actionTemplateIndex=_index; origin=_orig; dimensions=_dim; frame=0; box=_box; pixel=_pixel;}
 };
 
 struct toolPack
@@ -211,12 +216,14 @@ struct mapGenStruct
 struct textStruct
 {
 	bool active;
+	int printType;
 	int alphamax;
 	int alphacur;
 	sf::Color color;
 	sf::Text msg;
-	textStruct() {active=false; alphamax=255; alphacur=255; color=sf::Color::White; msg.setCharacterSize(30); msg.setString("");}
-	textStruct(const textStruct& src) {msg.setFont(*src.msg.getFont()); active=true; alphamax=src.alphamax; alphacur=src.alphacur; color=src.msg.getColor(); msg.setColor(color); msg.setCharacterSize(30); msg.setString(src.msg.getString());}
+	textStruct() {active=false; printType=0; alphamax=255; alphacur=255; color=sf::Color::White; msg.setCharacterSize(30); msg.setString("");}
+	textStruct(const textStruct& src) {msg.setFont(*src.msg.getFont()); active=true; printType=src.printType; alphamax=src.alphamax; alphacur=src.alphacur; color=src.msg.getColor(); msg.setColor(color); msg.setCharacterSize(30); msg.setString(src.msg.getString());}
+	void setFontSize(unsigned int sz) {msg.setCharacterSize(sz);}
 };
 
 class EtherRegistryClass
@@ -242,7 +249,7 @@ public:
 	int createEntity(const TemplateRegistryClass& tmp, const char* _codename);
 	int createButton(const TemplateRegistryClass& tmp, const char* _codename, int linkedEntity=0);
 	int createMapTerrain(const TemplateRegistryClass& tmp, const char* _biomeName);
-	int createString(const char* string, sf::Color& _color, sf::Font& _font, int _alphamax);
+	int createString(const char* string, sf::Color& _color, sf::Font& _font, int pType, int _alphamax);
 
 	int randomTileFromList(const TemplateRegistryClass& tmp, const char* _codename);
 	int randomEntityFromList(const TemplateRegistryClass& tmp, const char* _codename);

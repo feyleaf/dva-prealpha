@@ -3,53 +3,10 @@
 InventoryRegistryClass::InventoryRegistryClass()
 {
 	items.clear();
-	items.push_back(0);
 }
 
 InventoryRegistryClass::~InventoryRegistryClass()
 {
-	/*
-	while(!entities.empty())
-	{
-		delete entities[0];
-		entities.erase(entities.begin());
-	}
-	while(!creatures.empty())
-	{
-		delete creatures[0];
-		creatures.erase(creatures.begin());
-	}
-	while(!decos.empty())
-	{
-		delete decos[0];
-		decos.erase(decos.begin());
-	}
-	while(!ings.empty())
-	{
-		delete ings[0];
-		ings.erase(ings.begin());
-	}
-	while(!seeds.empty())
-	{
-		delete seeds[0];
-		seeds.erase(seeds.begin());
-	}
-	while(!summons.empty())
-	{
-		delete summons[0];
-		summons.erase(summons.begin());
-	}
-	while(!tools.empty())
-	{
-		delete tools[0];
-		tools.erase(tools.begin());
-	}
-	while(!vegs.empty())
-	{
-		delete vegs[0];
-		vegs.erase(vegs.begin());
-	}
-	*/
 }
 
 int InventoryRegistryClass::registerFromEtherIndex(const EtherRegistryClass& _eth, int index)
@@ -62,8 +19,6 @@ int InventoryRegistryClass::registerFromEtherIndex(const EtherRegistryClass& _et
 
 InventoryClass::InventoryClass()
 {
-	reg.items.clear();
-	reg.items.push_back(0);
 	tl=coord(24,7);
 	dimensions=coord(5,5);
 	capacity=dimensions.x*dimensions.y;
@@ -89,8 +44,8 @@ int InventoryClass::select(coord click)
 bool InventoryClass::clearSlot(int plc)
 {
 	cellList[plc].tmp_idx=0;
-	cellList[plc].idx_item=0;
-	cellList[plc].quantity=0;
+	while(!cellList[plc].l.items.empty())
+		cellList[plc].l.items.pop_back();
 	return true;
 }
 
@@ -111,16 +66,19 @@ bool InventoryClass::swap(int plcA, int plcB)
 	cellStruct temp;
 
 	temp.tmp_idx = cellList[plcA].tmp_idx;
-	temp.idx_item = cellList[plcA].idx_item;
-	temp.quantity = cellList[plcA].quantity;
+	for(int i=0; i<int(cellList[plcA].l.items.size()); i++)
+		temp.l.items.push_back(cellList[plcA].l.items[i]);
 
+	cellList[plcA].l.items.clear();
 	cellList[plcA].tmp_idx = cellList[plcB].tmp_idx;
-	cellList[plcA].idx_item = cellList[plcB].idx_item;
-	cellList[plcA].quantity = cellList[plcB].quantity;
+	for(int i=0; i<int(cellList[plcB].l.items.size()); i++)
+		cellList[plcA].l.items.push_back(cellList[plcB].l.items[i]);
 
+	cellList[plcB].l.items.clear();
 	cellList[plcB].tmp_idx = temp.tmp_idx;
-	cellList[plcB].idx_item = temp.idx_item;
-	cellList[plcB].quantity = temp.quantity;
+	for(int i=0; i<int(temp.l.items.size()); i++)
+		cellList[plcB].l.items.push_back(temp.l.items[i]);
+
 	return true;
 }
 
@@ -129,7 +87,7 @@ bool InventoryClass::isAllSlotsFilled()
 {
 	for(int i=0; i<capacity; i++)
 	{
-		if(cellList[i].quantity==0) return false;
+		if(cellList[i].l.items.empty()) return false;
 	}
 	return true;
 }
@@ -138,38 +96,33 @@ bool InventoryClass::isInventoryEmpty()
 {
 	for(int i=0; i<capacity; i++)
 	{
-		if(cellList[i].quantity>0) return false;
+		if(!cellList[i].l.items.empty()) return false;
 	}
 	return true;
 }
 
 bool InventoryClass::isSlotEmpty()
 {
-	return (cellList[cursor].quantity==0);
+	return (cellList[cursor].l.items.empty());
 }
 
 unsigned int InventoryClass::drop(int plc)
 {
-	if(cellList[plc].quantity==0)
-	{
-		cellList[plc].tmp_idx=0;
-		cellList[plc].idx_item=0;
-		return 0;
-	}
-	if(cellList[plc].quantity==1)
-	{
-		unsigned int temp=cellList[plc].idx_item;
-		cellList[plc].idx_item=0;
-		cellList[plc].quantity=0;
-		return temp;
-	}
-	cellList[plc].quantity-=1;
-	return cellList[plc].idx_item;
+	//if(cellList[plc].l.items.empty())
+	//{
+	//	cellList[plc].tmp_idx=0;
+	//	return 0;
+	//}
+	unsigned int ret=cellList[plc].l.items[cellList[plc].l.items.size()-1];
+	cellList[plc].l.items.pop_back();
+	if(cellList[plc].l.items.empty()) cellList[plc].tmp_idx=0;
+	return ret;
 }
 
 unsigned int InventoryClass::getItemAt(int plc)
 {
-	return cellList[plc].idx_item;
+	if(cellList[plc].l.items.empty()) return 0;
+	return cellList[plc].l.items[cellList[plc].l.items.size()-1];
 }
 
 unsigned int InventoryClass::getItemAtCursor()
@@ -179,8 +132,7 @@ unsigned int InventoryClass::getItemAtCursor()
 
 short InventoryClass::getQuantityAt(int plc)
 {
-	if(plc>capacity || plc<0) return 0;
-	return cellList[plc].quantity;
+	return short(cellList[plc].l.items.size());
 }
 
 short InventoryClass::getQuantityAtCursor()
@@ -193,7 +145,7 @@ int InventoryClass::getFirstEmpty()
 	int ret=-1;
 	for(int i=0; i<capacity; i++)
 	{
-		if(cellList[i].quantity == 0)
+		if(cellList[i].l.items.empty())
 		{
 			ret=i;
 			return ret;
@@ -212,7 +164,7 @@ int InventoryClass::getFirstMatch(unsigned char _id)
 		{		
 			if(cellList[i].tmp_idx == int(_id))
 			{
-				if(cellList[i].quantity<999)
+				if(getQuantityAt(i)<999)
 				{
 					ret=i;
 					return ret;
@@ -225,7 +177,7 @@ int InventoryClass::getFirstMatch(unsigned char _id)
 }
 
 
-bool InventoryClass::add(const EtherRegistryClass& _eth, int entIndex, short q)
+bool InventoryClass::addFromIndex(const EtherRegistryClass& _eth, int entIndex)
 {
 	//adds an item to the inventory
 	//first check to see if the item is stackable, if not, each of q times seeks a different slot
@@ -234,39 +186,45 @@ bool InventoryClass::add(const EtherRegistryClass& _eth, int entIndex, short q)
 	int plc=-1;//seeking fail case is -1
 	bool quantityAdded=true;
 
-	reg.registerFromEtherIndex(_eth, entIndex);
-
-	for(int i=0; i<q; i++)
+	if(entIndex==0) return false;
+	if(_eth.regEntities[entIndex]->type != ICAT_SUMMON) //add types that are not stackable
 	{
-		if(_eth.regEntities[entIndex]->type != ICAT_SUMMON) //add types that are not stackable
-		{
-			plc = getFirstMatch(_eth.regEntities[entIndex]->entityTemplateIndex);
-			if(plc == -1) //if no first match is found, then look for the next empty slot
-			{
-				plc = getFirstEmpty();
-				quantityAdded=false;
-			}
-		}
-		else
+		plc = getFirstMatch(_eth.regEntities[entIndex]->entityTemplateIndex);
+		if(plc == -1) //if no first match is found, then look for the next empty slot
 		{
 			plc = getFirstEmpty();
+			cellList[plc].tmp_idx = _eth.regEntities[entIndex]->entityTemplateIndex;
 			quantityAdded=false;
 		}
-		//if there is no match and no free slot, we fail the addition
-		if(plc == -1) return false;
-		if(quantityAdded)
-		{
-			cellList[plc].quantity+=1;
-		}
-		else
-		{
-			cellList[plc].tmp_idx = _eth.regEntities[entIndex]->entityTemplateIndex;
-			cellList[plc].idx_item = entIndex;
-			cellList[plc].quantity = 1;
-		}
-		quantityAdded=true;
 	}
+	else
+	{
+		plc = getFirstEmpty();
+		cellList[plc].tmp_idx = _eth.regEntities[entIndex]->entityTemplateIndex;
+		quantityAdded=false;
+	}
+	//if there is no match and no free slot, we fail the addition
+	if(plc<0) return false;
+	cellList[plc].tmp_idx = _eth.regEntities[entIndex]->entityTemplateIndex;
+	cellList[plc].l.items.push_back(entIndex);
+	quantityAdded=true;
 
 	//if it's made it this far, there is no failure and we return success
 	return true;
+}
+
+bool InventoryClass::addEntityFromTemplate(const TemplateRegistryClass& _tmp, EtherRegistryClass& _eth, const char* _name)
+{
+	int newItem=_eth.createEntity(_tmp, _name);
+	return addFromIndex(_eth, newItem);
+}
+bool InventoryClass::addSummonFromTemplate(const TemplateRegistryClass& _tmp, EtherRegistryClass& _eth, const char* _summon, const char* _contained)
+{
+	int newItem=_eth.createEntity(_tmp, _summon);
+	if(_eth.regEntities[newItem]->type != ICAT_SUMMON) return false;
+	int held=_eth.createEntity(_tmp, _contained);
+	int summonPack = _eth.regEntities[newItem]->packIndex;
+	_eth.regSummon[summonPack]->creatureContained=held;
+
+	return addFromIndex(_eth, newItem);
 }

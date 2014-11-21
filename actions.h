@@ -14,12 +14,17 @@ struct actionStruct
 {
 	bool active;
 	bool queued;
+	bool cooling;
 	int actionTemplateIndex;
 	int entityIndexSource;
 	int entityIndexTarget;
 	int tileIndexTarget;
+	int guiIndexTarget;
 	int priority;
-	float timeToActivate;
+	float initTime;
+	float delayTime;
+	float cooldownTime;
+	float timePoint;
 	int category;
 };
 
@@ -43,11 +48,12 @@ public:
 
 	//routines for filtering and handling actions and action queues
 	bool validateAction(EtherRegistryClass& _eth, const actionStruct* act);
+	bool createButtonAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int guiTarget, float time);
 	bool createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time);
+	void wipeEntityFromActionList(int entityIndex);
+
 
 	//handlers for the action queue on a single map
-	void stopAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
-	void stopActionCategory(int entityIndex, int category);
 	int getActionIndex(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
 	bool isPerformingAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
 	bool isTargetOfAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName);
@@ -62,8 +68,10 @@ public:
 
 	//creation of new actions on a single map's action queue
 	void fillSourceAction(TemplateRegistryClass& tmp, const char* actionname, int entityIndex, float time);
+	void fillGUITargetAction(TemplateRegistryClass& tmp, const char* actionname, int sourceIndex, int buttonTarget, float time);
 	void fillEntityTargetAction(TemplateRegistryClass& tmp, const char* actionname, int sourceIndex, int entityTarget, float time);
 	void fillTileTargetAction(TemplateRegistryClass& tmp, const char* actionname, int sourceIndex, int tileTarget, float time);
+	bool fillExitAction(const TemplateRegistryClass& tmp, const char* _name, const actionStruct* _act);
 	bool actionCodeEquals(TemplateRegistryClass& tmp, int index, const char* _code);
 
 };

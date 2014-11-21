@@ -18,6 +18,11 @@ void PlayerEngine::initRecipes(TemplateRegistryClass& tmp)
 		tmp.container.getEntityTemplate("bluepetal"),
 		tmp.container.getEntityTemplate("bluepetal"),
 		tmp.container.getEntityTemplate("bluepetal"));
+	//2 locknic heads and 1 yellow petal = ritual stump
+	recipes.addRecipe(tmp.container.getEntityTemplate("ritualstump"),
+		tmp.container.getEntityTemplate("flytraphead"),
+		tmp.container.getEntityTemplate("flytraphead"),
+		tmp.container.getEntityTemplate("yellowpetal"));
 
 }
 //returns the grid coordinates of the mouse pointer

@@ -304,10 +304,11 @@ int EtherRegistryClass::createButton(const TemplateRegistryClass& tmp, const cha
 	return int(regButtons.size()-1);
 }
 
-int EtherRegistryClass::createString(const char* string, sf::Color& _color, sf::Font& _font, int _alphamax)
+int EtherRegistryClass::createString(const char* string, sf::Color& _color, sf::Font& _font, int pType, int _alphamax)
 {
 	textStruct makeText;
 	makeText.active=true;
+	makeText.printType=pType;
 	makeText.msg.setFont(_font);
 	if(string==NULL) 	makeText.msg.setString("");
 	else makeText.msg.setString(sf::String(std::string(string)));

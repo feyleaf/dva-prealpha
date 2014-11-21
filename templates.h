@@ -315,17 +315,19 @@ struct actionTemplate
 {
 	char cname[40];
 	unsigned char category;	//divide actions to movement, combat, healing, item use, etc.
-	int coolDownTicks;			//number of ticks * 0.20f
+	int delayTicks;
+	int coolDownTicks;			//number of ticks * 0.02f
 	unsigned char priority; //greater number is more ugrent
 	unsigned char restrictions;	//another linked vector that will be needed, no value now
 	actionTemplate(const char* _cname,
 				unsigned char _category,
+				int _delay,
 				int _coolDown,
 				unsigned char _priority,
 				unsigned char _restrictions)
-	{strncpy_s(cname, 40, _cname, 40); category=_category; coolDownTicks=_coolDown; priority=_priority; restrictions=_restrictions;}
+	{strncpy_s(cname, 40, _cname, 40); category=_category; delayTicks=_delay; coolDownTicks=_coolDown; priority=_priority; restrictions=_restrictions;}
 	actionTemplate()
-	{strcpy_s(cname, "undef"); category=0; coolDownTicks=0; priority=0; restrictions=0;}
+	{strcpy_s(cname, "undef"); category=0; delayTicks=0; coolDownTicks=0; priority=0; restrictions=0;}
 };
 
 //constructed template of buttons

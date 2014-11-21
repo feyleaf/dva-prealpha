@@ -1,15 +1,6 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-struct cellStruct
-{
-	unsigned int tmp_idx; //template index
-	unsigned int idx_item; //ether registry index
-	unsigned int quantity; //how many are held
-	cellStruct() {tmp_idx=0; idx_item=0; quantity=0;}
-
-};
-
 class InventoryRegistryClass
 {
 public:
@@ -21,13 +12,19 @@ public:
 	int registerFromEtherIndex(const EtherRegistryClass& _eth, int entityIndex);
 };
 
+struct cellStruct
+{
+	unsigned int tmp_idx; //template index
+	InventoryRegistryClass l; //ether registry index
+	cellStruct() {tmp_idx=0; l.items.clear();}
+
+};
+
 class InventoryClass
 {
 public:
 	InventoryClass();
 	~InventoryClass() {}
-
-	InventoryRegistryClass reg;
 
 	coord tl;
 	coord dimensions;
@@ -46,7 +43,9 @@ public:
 	bool clearSlot(int plc);
 	bool clearAll();
 	bool swap(int plcA, int plcB);
-	bool add(const EtherRegistryClass& _eth, int entIndex, short q=1);
+	bool addFromIndex(const EtherRegistryClass& _eth, int entIndex);
+	bool addEntityFromTemplate(const TemplateRegistryClass& _tmp, EtherRegistryClass& _eth, const char* _name);
+	bool addSummonFromTemplate(const TemplateRegistryClass& _tmp, EtherRegistryClass& _eth, const char* _summon, const char* _contained);
 	unsigned int drop(int plc);
 	unsigned int getItemAt(int plc);
 	unsigned int getItemAtCursor();

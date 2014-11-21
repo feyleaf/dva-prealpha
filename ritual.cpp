@@ -29,7 +29,8 @@ bool RitualClass::addToRitual(int entityIndex)
 
 void RitualClass::addSlotToInventory(int plc, const EtherRegistryClass& _eth, InventoryClass& _inv)
 {
-	_inv.add(_eth, cell[plc].entityIndex);
+	//if(cell[plc].entityIndex<1) return;
+	_inv.addFromIndex(_eth, cell[plc].entityIndex);
 }
 
 bool RitualClass::isThisRitual(const EtherRegistryClass& _eth, RecipeManager& _recipes)

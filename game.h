@@ -2,9 +2,12 @@
 game.h
 ============================================
 Druid vs. Alchemist: Pre-Alpha v0.1.2
-September 12, 2014
+November 15, 2014
 Author: Benjamin C. Watt (@feyleafgames)
 ============================================
+"invisiblegui" action for keeping data but not allowing click-blocking
+"reverseritualstep" action for undoing a ritual step
+"closeritual" action and button to close the ritual
 */
 
 #ifndef GAME_H
@@ -19,6 +22,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ZOOMOUT 6
 #define GAMEMODE_MINIMAP 7
 #define GAMEMODE_CRAFTING 8
+#define GAMEMODE_PAUSED 9
 
 #define CLICKLAYER_ZERO 0
 #define CLICKLAYER_TILE 1
@@ -44,6 +48,8 @@ protected:
 	//world logic stuff
 	//--prerequisite data for game at runtime
 	bool newGame;
+	bool isPaused;
+	bool pauseInit;
 	int startTime;
 	sf::Clock gameClock;
 	int gameConstant;
@@ -108,11 +114,13 @@ public:
 	int getBiomeTemplateIndex(const char* _codename);
 
 	bool matchAction(const actionStruct* _act, const char* _name);
+	bool matchPausableAction(const actionStruct* _act, const char* _name);
 	//world logic stuff
 	void inputHandler();
 	void gameUpdater(float actSeconds);
 
 	void processActionList(int maxlength, float actSeconds);
+	void eraseText();
 	void processTextList(float actSeconds);
 
 	void processAction(actionStruct* act);
@@ -161,14 +169,17 @@ public:
 	//generating a map one registry element at a time
 	void fillGuiForm(GUIFormClass& form, int linked = 0, bool active = true);
 	void fillInventory();
+	void fillTrophy(const char* trophylistname);
 	void eraseGuiForm(GUIFormClass& form);
 	bool addTile(const char* _name, coord map_pos, coord grid_pos);
-	int addEntity(const char* _name, coord map_pos, coord grid_pos);
+	int addEntity(const char* _name, coord map_pos, coord grid_pos, float time);
 	int addButton(const char* _name, coord map_pos, coord _pixel, int linked = 0);
-	int addText(const char* _string, coord map_pos, coord _pixel, sf::Color _color);
+	int addText(const char* _string, coord map_pos, coord _pixel, sf::Color _color, int pType);
 	void activateButton(int reg);
 	void activateEntityButton(int entityReg);
 	void deactivateEntityButton(int entityReg);
+	void activateFormButtons(GUIFormClass& form);
+	void deactivateFormButtons(GUIFormClass& form);
 	void fillRoad(const char* codename, coord start, coord end);
 	void fillShape(const char* shapename, const char* codename, coord _tl, coord _br);
 	bool processConic(coord _pt, float a, float b, float c, float d, float e, float f);
@@ -186,7 +197,6 @@ public:
 	bool isOffsetCongruent(int entityIndex);
 	void forceOffsetCorrection(int entityIndex, coord direction);
 	void gridAlignEntity(int entityIndex, coord pos);
-	coord getLatestTargetPosition(int entityIndex);
 	int getEnemyNeighbor(int entityIndex);
 	bool isEnemyNeighbor(int entityIndex);
 	int getEnemyCount(coord map_pos);
@@ -207,6 +217,7 @@ public:
 	int getTileIndexAt(coord _pt);
 	bool eraseTileAt(coord _pt);
 	void removeEntity(int etherIndex, coord map_pos);
+	void removeButton(int buttonIndex, coord map_pos);
 	void deleteEtherEntity(int etherIndex, coord map_pos);
 	int numberOfTiles();
 	int numberOfEntities();

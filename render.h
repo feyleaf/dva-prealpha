@@ -18,6 +18,8 @@ class RenderManager
 		sf::Texture guiSheet;
 		sf::Font mainfont;
 		sf::Font auxfont;
+		sf::Font header1;
+		sf::Font header2;
 		sf::Sprite currentSprite;
 		sf::View viewport;
 		RenderManager() {}
@@ -37,6 +39,7 @@ class RenderManager
 		void DrawEntity(sf::RenderWindow& win, const registeredEntity* obj, coord worldpixel, bool highlight, bool ghost);
 		void DrawGui(sf::RenderWindow& win, const buttonStruct* obj, coord place, bool hover=false);
 		void DrawInventory(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form);
+		void DrawRewards(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form);
 //		void DrawInventory(sf::RenderWindow& win, InventoryClass& items, const buttonStruct* cell);
 		void DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse_pixel);
 		void DrawRituals(sf::RenderWindow& win, const TemplateRegistryClass& tmp, RitualClass& theRitual);

@@ -27,6 +27,7 @@ public:
 	//--value structures for interaction with the world, handled by player
 	int gamemode;
 	InventoryClass inv;
+	InventoryClass trophy;
 	RitualClass ritual;
 	RecipeManager recipes;
 
@@ -48,6 +49,7 @@ public:
 	//logic tree for processing each click
 	bool isClickOnBoard(settingStruct& set);
 	GUIFormClass inventoryForm;
+	GUIFormClass trophyForm;
 	GUIFormClass sideMenuForm;
 	GUIFormClass ritualForm;
 	GUIFormClass creatureCard;

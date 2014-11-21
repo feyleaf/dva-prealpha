@@ -42,7 +42,7 @@ int GameObjectContainerClass::tileIndexOnGrid(EtherRegistryClass& _ether, coord 
 	int ret=0;
 	for(int i=1; i<int(tiles.size()); i++)
 	{
-		if(_ether.regTiles[tiles[i]] != NULL && _ether.regTiles[tiles[i]]->pos==_grid)
+		if(_ether.regTiles[tiles[i]]->pos==_grid)
 			ret=tiles[i];
 	}
 	return ret;
@@ -75,8 +75,9 @@ int GameObjectContainerClass::buttonIndexAtPoint(EtherRegistryClass& _ether, coo
 	int ret=0;
 	for(int i=1; i<int(buttons.size()); i++)
 	{
-		if(_ether.regButtons[buttons[i]]->box.contains(sf::Vector2i(_pixel.x, _pixel.y)))
-			ret=buttons[i];
+		if(_ether.regButtons[buttons[i]]->box.contains(sf::Vector2i(_pixel.x, _pixel.y))
+			&& _ether.regButtons[buttons[i]]->active)
+			return buttons[i];
 	}
 	return ret;
 }
@@ -115,7 +116,22 @@ void GameObjectContainerClass::eraseEntity(int entityIndex)
 {
 	for(int i=1; i<int(entities.size()); i++)
 	{
-		if(entities[i]==entityIndex) entities.erase(entities.begin()+i);
+		if(entities[i]==entityIndex)
+		{
+			entities.erase(entities.begin()+i);
+			i--;
+		}
+	}
+}
+void GameObjectContainerClass::eraseButton(int buttonIndex)
+{
+	for(int i=1; i<int(buttons.size()); i++)
+	{
+		if(buttons[i]==buttonIndex)
+		{
+			buttons.erase(buttons.begin()+i);
+			i--;
+		}
 	}
 }
 //wipes all registry items!

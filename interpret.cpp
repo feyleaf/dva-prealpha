@@ -233,6 +233,8 @@ actionTemplate TemplateReaderClass::parseAction()
 	std::getline(pFile, chunk, ',');
 	ret.category = atoi(chunk.c_str());
 	std::getline(pFile, chunk, ',');
+	ret.delayTicks = int(atoi(chunk.c_str())); //read as frame updates, output as float seconds
+	std::getline(pFile, chunk, ',');
 	ret.coolDownTicks = int(atoi(chunk.c_str())); //read as frame updates, output as float seconds
 	std::getline(pFile, chunk, ',');
 	ret.priority = atoi(chunk.c_str());
@@ -270,8 +272,8 @@ guiButtonTemplate TemplateReaderClass::parseButton()
 	std::getline(pFile, chunk, ',');					//this reads to comma because we are going to
 														//parse more directly afterward
 	strncpy_s(ret.actionName, 32, chunk.c_str(), 32);
-	std::getline(pFile, chunk, '\n');					//this reads to comma because we are going to
-														//parse more directly afterward
+	std::getline(pFile, chunk, '\n');					//reading a blank?
+														
 	return ret;
 }
 

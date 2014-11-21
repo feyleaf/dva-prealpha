@@ -38,6 +38,7 @@ public:
 	void releaseButtonList();
 
 	void eraseEntity(int entityIndex);
+	void eraseButton(int buttonIndex);
 
 	int tileIndexOnGrid(EtherRegistryClass& _ether, coord _grid);
 	int entityIndexOnGrid(EtherRegistryClass& _ether, coord _grid, int lower);

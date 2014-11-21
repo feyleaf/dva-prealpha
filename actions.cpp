@@ -16,33 +16,8 @@ ActionManager::~ActionManager()
 }
 bool ActionManager::actionCodeEquals(TemplateRegistryClass& tmp, int index, const char* _code)
 {
-	if(index==0 || index>int(tmp.container.actionList.size()) || _code==NULL || tmp.container.actionList[index].cname==NULL) return false;
+	if(index<=0 || index>int(tmp.container.actionList.size()) || _code==NULL || tmp.container.actionList[index].cname==NULL) return false;
 	return (strcmp(tmp.container.actionList[index].cname, _code)==0);
-}
-
-void ActionManager::stopAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName)
-{
-	int index=0;
-	while(isPerformingAction(tmp, entityIndex, actionName))
-	{
-		index=getActionIndex(tmp, entityIndex, actionName);
-		if(index>0)
-		{
-			actionQueue[index]->active=false;
-		}
-	}
-}
-
-void ActionManager::stopActionCategory(int entityIndex, int category)
-{
-	for(int i=1; i<int(actionQueue.size()); i++)
-	{
-		if(actionQueue[i]->category==category && actionQueue[i]->entityIndexSource==entityIndex)
-		{
-			if(actionQueue[i]->active)
-				actionQueue[i]->active=false;
-		}
-	}
 }
 
 int ActionManager::getActionIndex(TemplateRegistryClass& tmp, int entityIndex, const char* actionName)
@@ -88,7 +63,7 @@ void ActionManager::processMagic(TemplateRegistryClass& tmp, EtherRegistryClass&
 void ActionManager::processAttack(TemplateRegistryClass& tmp, EtherRegistryClass& _eth, int etherIndex, float time)
 {
 	if(etherIndex==0) return;
-	if(_eth.regEntities[etherIndex]->frame <= 8)
+	if(_eth.regEntities[etherIndex]->frame < 8)
 	{
 		_eth.regEntities[etherIndex]->frame += 1;
 		fillSourceAction(tmp, "swipeeffect", etherIndex, time);
@@ -122,6 +97,22 @@ bool ActionManager::validateAction(EtherRegistryClass& _eth, const actionStruct*
 	return true;
 }
 
+void ActionManager::wipeEntityFromActionList(int entityIndex)
+{
+	for(int i=1; i<int(actionQueue.size()); i++)
+	{
+		if(actionQueue[i]->entityIndexSource==entityIndex)
+		{
+			actionQueue[i]->entityIndexSource=0;
+			actionQueue[i]->active=false;
+		}
+		if(actionQueue[i]->entityIndexTarget==entityIndex)
+		{
+			actionQueue[i]->entityIndexTarget=0;
+			actionQueue[i]->active=false;
+		}
+	}
+}
 bool ActionManager::isPerformingAction(TemplateRegistryClass& tmp, int entityIndex, const char* actionName)
 {
 	bool ret=false;
@@ -129,7 +120,7 @@ bool ActionManager::isPerformingAction(TemplateRegistryClass& tmp, int entityInd
 	{
 		if(actionCodeEquals(tmp, actionQueue[i]->actionTemplateIndex, actionName) && actionQueue[i]->entityIndexSource==entityIndex)
 		{
-			if(actionQueue[i]->active)
+			if(actionQueue[i]->active && (actionQueue[i]->queued || actionQueue[i]->cooling))
 				ret=true;
 		}
 	}
@@ -167,6 +158,11 @@ int ActionManager::getSourceOfTargetAction(TemplateRegistryClass& tmp, int entit
 void ActionManager::fillSourceAction(TemplateRegistryClass& tmp, const char* actionname, int entityIndex, float time)
 {
 	createAction(tmp, actionname, entityIndex, 0, 0, time);
+}
+
+void ActionManager::fillGUITargetAction(TemplateRegistryClass& tmp, const char* actionname, int sourceIndex, int buttonIndex, float time)
+{
+	createButtonAction(tmp, actionname, sourceIndex, buttonIndex, time);
 }
 
 void ActionManager::fillEntityTargetAction(TemplateRegistryClass& tmp, const char* actionname, int entityIndex, int entityTarget, float time)
@@ -263,6 +259,15 @@ void ActionManager::plantSeed(TemplateRegistryClass& tmp, EtherRegistryClass& _e
 	}
 }
 
+bool ActionManager::fillExitAction(const TemplateRegistryClass& tmp, const char* _name, const actionStruct* _act)
+{
+	return createAction(tmp, _name,
+		_act->entityIndexSource,
+		_act->entityIndexTarget,
+		_act->tileIndexTarget,
+		_act->cooldownTime);
+}
+
 bool ActionManager::createAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int entityTrg, int tileTrg, float time)
 {
 	//first search the action template registry
@@ -274,12 +279,18 @@ bool ActionManager::createAction(const TemplateRegistryClass& tmp, const char* _
 			act.active=true;
 			act.actionTemplateIndex=i;
 			act.priority=1;
-			act.queued=true;
 			act.entityIndexSource=entitySrc;
 			act.entityIndexTarget=entityTrg;
 			act.tileIndexTarget=tileTrg;
-			act.timeToActivate=time+(float((tmp.container.actionList[i].coolDownTicks))*0.01f);
+			act.initTime=time;
+			act.timePoint=time;
+			act.delayTime=time+(float((tmp.container.actionList[i].delayTicks))*FRAMESPEED);
+			act.cooldownTime=act.delayTime+(float((tmp.container.actionList[i].coolDownTicks))*FRAMESPEED);
+			act.queued=false;
+			act.cooling=false;
 			act.category=tmp.container.actionList[i].category;
+			act.guiIndexTarget=0; //leaving this at 0 for now
+			
 			//we can recycle inactive actions at this point
 			//SIGNIFICANT decrease in vector size :)
 			for(int i=1; i<int(actionQueue.size()); i++)
@@ -291,7 +302,49 @@ bool ActionManager::createAction(const TemplateRegistryClass& tmp, const char* _
 					return true;
 				}
 			}
-			//create a new action is all the rest of the actions are active
+			//create a new action if all the rest of the actions are active
+			actionQueue.push_back(new actionStruct(act));
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ActionManager::createButtonAction(const TemplateRegistryClass& tmp, const char* _name, int entitySrc, int buttonIndex, float time)
+{
+	//first search the action template registry
+	for(int i=1; i<int(tmp.container.actionList.size()); i++)
+	{
+		if(strcmp(tmp.container.actionList[i].cname, _name)==0)
+		{
+			actionStruct act;
+			act.active=true;
+			act.actionTemplateIndex=i;
+			act.priority=1;
+			act.entityIndexSource=entitySrc;
+			act.entityIndexTarget=0;
+			act.tileIndexTarget=0;
+			act.initTime=time;
+			act.timePoint=time;
+			act.delayTime=time+(float((tmp.container.actionList[i].delayTicks))*FRAMESPEED);
+			act.cooldownTime=act.delayTime+(float((tmp.container.actionList[i].coolDownTicks))*FRAMESPEED);
+			act.queued=false;
+			act.cooling=false;
+			act.category=tmp.container.actionList[i].category;
+			act.guiIndexTarget=buttonIndex;
+			
+			//we can recycle inactive actions at this point
+			//SIGNIFICANT decrease in vector size :)
+			for(int i=1; i<int(actionQueue.size()); i++)
+			{
+				if(!actionQueue[i]->active)
+				{
+					delete actionQueue[i]; //deallocate old memory
+					actionQueue[i] = new actionStruct(act);	//allocate new memory
+					return true;
+				}
+			}
+			//create a new action if all the rest of the actions are active
 			actionQueue.push_back(new actionStruct(act));
 			return true;
 		}

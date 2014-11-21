@@ -141,6 +141,8 @@ void RenderManager::loadGraphicsFiles(settingStruct set)
 {
 	mainfont.loadFromFile(set.mainFontFile);
 	auxfont.loadFromFile(set.auxFontFile);
+	header1.loadFromFile(set.auxFontFile);
+	header2.loadFromFile(set.auxFontFile);
 	entitySheet.setSmooth(false);
 	tileSheet.setSmooth(false);
 	guiSheet.setSmooth(false);
@@ -257,30 +259,42 @@ void RenderManager::DrawRituals(sf::RenderWindow& win, const TemplateRegistryCla
 
 void RenderManager::DrawGUIForm(sf::RenderWindow& win, const TemplateRegistryClass& tmp, GUIFormClass& form, coord _mouse_pixel)
 {
-	for(int i=1; i<int(form.cells.size()); i++)
+	if(form.back.templateIndex>0)
 	{
-		switch(form.cells[i].renderType)
-		{
-			case RENDER_TILE:
-				currentSprite.setTexture(tileSheet);
-				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.tileList[form.cells[i].templateIndex].origin.y, tmp.container.tileList[form.cells[i].templateIndex].dimensions.x, tmp.container.tileList[form.cells[i].templateIndex].dimensions.y));
-				break;
-			case RENDER_ENTITY:
-				currentSprite.setTexture(entitySheet);
-				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
-				break;
-			case RENDER_BUTTON:
-			default:
-				currentSprite.setTexture(guiSheet);
-				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
-				break;
-		}
-		if(isCollision(toVector(_mouse_pixel), sf::IntRect(form.cells[i].pixel.x, form.cells[i].pixel.y, 32, 32)))
-			currentSprite.setColor(sf::Color::Yellow);
-		else currentSprite.setColor(sf::Color::White);
-		currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y));
+		currentSprite.setTexture(guiSheet);
+		currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.back.templateIndex].origin.y, tmp.container.buttonList[form.back.templateIndex].dimensions.x, tmp.container.buttonList[form.back.templateIndex].dimensions.y));
+		currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(float(form.back.pixel.x), float(form.back.pixel.y));
 
 		win.draw(currentSprite);
+	}
+	for(int i=1; i<int(form.cells.size()); i++)
+	{
+		if(!form.cells[i].hidden)
+		{
+			switch(form.cells[i].renderType)
+			{
+				case RENDER_TILE:
+					currentSprite.setTexture(tileSheet);
+					currentSprite.setTextureRect(sf::IntRect(0,tmp.container.tileList[form.cells[i].templateIndex].origin.y, tmp.container.tileList[form.cells[i].templateIndex].dimensions.x, tmp.container.tileList[form.cells[i].templateIndex].dimensions.y));
+					break;
+				case RENDER_ENTITY:
+					currentSprite.setTexture(entitySheet);
+					currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+					break;
+				case RENDER_BUTTON:
+				default:
+					currentSprite.setTexture(guiSheet);
+					currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
+					break;
+			}
+			if(isCollision(toVector(_mouse_pixel), sf::IntRect(form.cells[i].pixel.x, form.cells[i].pixel.y, 32, 32)))
+				currentSprite.setColor(sf::Color::Yellow);
+			else currentSprite.setColor(sf::Color::White);
+			currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y));
+
+			win.draw(currentSprite);
+		}
 	}
 }
 
@@ -295,6 +309,10 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 	quantityOut.setCharacterSize(16);
 	quantityOut.setFont(auxfont);
 	quantityOut.setColor(sf::Color::White);
+	sf::Text guiText;
+	guiText.setCharacterSize(24);
+	guiText.setFont(mainfont);
+	guiText.setColor(sf::Color::White);
 	for(int i=1; i<int(form.cells.size()); i++)
 	{
 		switch(form.cells[i].renderType)
@@ -338,6 +356,87 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 			win.draw(quantityOut);
 		}
 	}
+	for(int j=0; j<int(form.words.size()); j++)
+	{
+		guiText.setString(form.words[j].msg);
+		guiText.setPosition(float(form.words[j].pixel.x), float(form.words[j].pixel.y));
+		win.draw(guiText);
+	}
+}
+
+void RenderManager::DrawRewards(sf::RenderWindow& win, const TemplateRegistryClass& tmp, InventoryClass& items, GUIFormClass& form)
+{
+	if(!form.active) return;
+	int highlight=-1;
+	int held=-1;
+	bool skipDraw=false;
+	char out[8];
+	sf::Text quantityOut;
+	quantityOut.setCharacterSize(16);
+	quantityOut.setFont(auxfont);
+	quantityOut.setColor(sf::Color::White);
+	sf::Text guiText;
+	guiText.setCharacterSize(24);
+	guiText.setFont(mainfont);
+	guiText.setColor(sf::Color::White);
+	if(form.back.templateIndex>0)
+	{
+		currentSprite.setTexture(guiSheet);
+		currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.back.templateIndex].origin.y, tmp.container.buttonList[form.back.templateIndex].dimensions.x, tmp.container.buttonList[form.back.templateIndex].dimensions.y));
+		currentSprite.setColor(sf::Color::White);
+		currentSprite.setPosition(float(form.back.pixel.x), float(form.back.pixel.y));
+
+		win.draw(currentSprite);
+	}
+	for(int i=1; i<int(form.cells.size()); i++)
+	{
+		currentSprite.setColor(sf::Color::White);
+		switch(form.cells[i].renderType)
+		{
+			case RENDER_TILE:
+				currentSprite.setTexture(tileSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.tileList[form.cells[i].templateIndex].origin.y, tmp.container.tileList[form.cells[i].templateIndex].dimensions.x, tmp.container.tileList[form.cells[i].templateIndex].dimensions.y));
+				break;
+			case RENDER_ENTITY:
+				held++;
+				skipDraw=true;
+				if(items.getQuantityAt(held) > 0)
+				{
+					skipDraw=false;
+					currentSprite.setTexture(entitySheet);
+					currentSprite.setTextureRect(sf::IntRect(0,tmp.container.entityList[form.cells[i].templateIndex].origin.y, tmp.container.entityList[form.cells[i].templateIndex].dimensions.x, tmp.container.entityList[form.cells[i].templateIndex].dimensions.y));
+				}
+				break;
+			case RENDER_BUTTON:
+				currentSprite.setColor(sf::Color::Green);
+				highlight++;
+			default:
+				currentSprite.setTexture(guiSheet);
+				currentSprite.setTextureRect(sf::IntRect(0,tmp.container.buttonList[form.cells[i].templateIndex].origin.y, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.x, tmp.container.buttonList[form.cells[i].templateIndex].dimensions.y));
+				break;
+		}
+		currentSprite.setPosition(float(form.cells[i].pixel.x), float(form.cells[i].pixel.y)+16);
+
+		if(!skipDraw) win.draw(currentSprite);
+		skipDraw=false;
+	}
+	for(int j=0; j<items.capacity; j++)
+	{
+		if(items.getQuantityAt(j) > 1)
+		{
+			sprintf_s(out, "x%i", items.getQuantityAt(j));
+			quantityOut.setString(out);
+			quantityOut.setPosition(float(form.cells[j+1].pixel.x)+22.0f, float(form.cells[j+1].pixel.y)+30.0f);
+			win.draw(quantityOut);
+		}
+	}
+	for(int j=0; j<int(form.words.size()); j++)
+	{
+		guiText.setString(form.words[j].msg);
+		guiText.setPosition(float(form.words[j].pixel.x), float(form.words[j].pixel.y));
+		win.draw(guiText);
+	}
+
 }
 
 void RenderManager::DrawStrings(sf::RenderWindow& win, GameObjectContainerClass& obj, const EtherRegistryClass& eth)
@@ -346,8 +445,12 @@ void RenderManager::DrawStrings(sf::RenderWindow& win, GameObjectContainerClass&
 	{
 		if(eth.regText[obj.strings[i]] != NULL && eth.regText[obj.strings[i]]->active)
 		{
-			//eth.regText[obj.strings[i]]->msg.setCharacterSize(30);
-			//eth.regText[obj.strings[i]]->msg.setFont(auxfont);
+			if(eth.regText[obj.strings[i]]->printType==PRINT_PANIN ||
+				eth.regText[obj.strings[i]]->printType==PRINT_FADESTILL)
+			{
+				eth.regText[obj.strings[i]]->msg.setCharacterSize(90);
+				eth.regText[obj.strings[i]]->msg.setFont(mainfont);
+			}
 			eth.regText[obj.strings[i]]->msg.setColor(eth.regText[obj.strings[i]]->color);
 			win.draw(eth.regText[obj.strings[i]]->msg);
 		}
