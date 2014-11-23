@@ -57,6 +57,9 @@ void TemplateRegistryClass::parseFile(const char* filename)
 			case ICAT_BUTTON:
 				container.buttonList.push_back(parser.parseButton());
 				break;
+			case ICAT_RECIPE:
+				container.recipeList.push_back(parser.parseRecipe());
+				break;
 			case ICAT_FORM:
 				container.formsList.push_back(parser.parseForms());
 				break;

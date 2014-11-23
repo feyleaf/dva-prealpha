@@ -192,12 +192,12 @@ void GameClass::handleClick(int clickLayer, coord _pixel)
 	switch(clickLayer)
 	{
 		case CLICKLAYER_CREATURES:
-			if(player.gamemode==GAMEMODE_PAUSED) return;
+			if(isPaused) return;
 			plc=registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app));
 			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime());
 			break;
 		case CLICKLAYER_DECORATIONS:
-			if(player.gamemode==GAMEMODE_PAUSED) return;
+			if(isPaused) return;
 			plc=registry.objMap[viewerCursor].entityIndexAtPoint(ether, player.deliverRealClick(app));
 			actions.fillEntityTargetAction(tmp, "selectentity", 0, plc, gameTime());
 			break;
@@ -1089,6 +1089,7 @@ void GameClass::fillTrophy(const char* trophylistname)
 	player.trophyForm.clear();
 	player.trophyForm.back.templateIndex=getGuiTemplateIndex("trophygui");
 	player.trophyForm.back.pixel=coord(350-16, 196);
+	player.trophyForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("collect"), gridToPixel(coord(5, 0))+coord(350, 196));
 	for(int j=0; j<4; j++)
 		player.trophyForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("inventorycell"), gridToPixel(coord(0, j))+coord(350, 196));
 	for(int i=0; i<int(player.trophy.cellList.size()); i++)
@@ -1099,7 +1100,6 @@ void GameClass::fillTrophy(const char* trophylistname)
 			player.trophyForm.addWords(tmp.container.entityList[player.trophy.cellList[i].tmp_idx].name, 0, gridToPixel(coord(0, i))+coord(390, 212));
 		}
 	}
-	player.trophyForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("collect"), gridToPixel(coord(5, -1))+coord(350, 196));
 	fillGuiForm(player.trophyForm);
 	player.trophyForm.activate();
 }
@@ -1698,7 +1698,7 @@ void GameClass::processActionList(int maxlength, float actSeconds)
 						sidebar.setString("Select a Map");
 						workingOnMap=false;
 					}
-					if(!workingOnMap || (player.gamemode==GAMEMODE_PAUSED && actions.actionQueue[i]->category!=ACAT_GUI))
+					if(!workingOnMap || (isPaused && actions.actionQueue[i]->category!=ACAT_GUI))
 					{
 						actions.actionQueue[i]->queued=false;
 						actions.actionQueue[i]->cooling=false;
@@ -1795,7 +1795,7 @@ bool GameClass::matchPausableAction(const actionStruct* _act, const char* _name)
 void GameClass::handleMovementPipeline(const actionStruct* act)
 {
 	if(!actions.hasSource(ether, act)) return;
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
 	if(matchAction(act, "establishtarget"))
 	{
 		if(actions.noTarget(ether, act)) return;
@@ -1887,7 +1887,7 @@ void GameClass::handleMovementPipeline(const actionStruct* act)
 void GameClass::handleCombatPipeline(const actionStruct* act)
 {
 	if(!actions.entityTarget(ether, act) || !isEntityOnMap(act->entityIndexSource) || !actions.hasSource(ether, act) || (act->entityIndexSource == act->entityIndexTarget)) return;
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
 	if(matchAction(act, "engagecombat"))
 	{
 		if(ether.regEntities[act->entityIndexSource] == NULL) return;
@@ -1988,7 +1988,7 @@ void GameClass::handleCombatPipeline(const actionStruct* act)
 void GameClass::handleCreationPipeline(const actionStruct* act)
 {
 	if(!actions.hasSource(ether, act)) return;
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
 	if(matchAction(act, "makecreature"))
 	{
 		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime());
@@ -2173,10 +2173,10 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 			viewerCursor=coord(0,0);
 			newGame=false;
 			//int helper=ether.createEntity(tmp, "wolf");
-			//int charm=ether.createEntity(tmp, "redcharm");
+			//int charm=ether.createEntity(tmp, "ambercharm");
 			//int summoncore=ether.regEntities[charm]->packIndex;
 			//ether.regSummon[summoncore]->creatureContained=helper;
-			//player.inv.add(ether, charm);
+			player.inv.addEntityFromTemplate(tmp, ether, "ambercharm");
 		}
 		refreshMap(generatorCursor);
 		experimentalWorldGen(viewerCursor);
@@ -2200,7 +2200,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(matchAction(act, "pausegame"))
 	{
-		player.gamemode=GAMEMODE_PAUSED;
+		isPaused=true;
 		eraseGuiForm(player.sideMenuForm);
 		player.sideMenuForm.clear();
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("magnifier"), gridToPixel(coord(settings.mapGridDimensions.x,5)));
@@ -2213,7 +2213,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(matchAction(act, "unpausegame"))
 	{
-		player.gamemode=GAMEMODE_NEUTRAL;
+		isPaused=false;
 		eraseGuiForm(player.sideMenuForm);
 		player.sideMenuForm.clear();
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("magnifier"), gridToPixel(coord(settings.mapGridDimensions.x,5)));
@@ -2367,7 +2367,42 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 
 void GameClass::handleItemsPipeline(const actionStruct* act)
 {
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
+	if(matchAction(act, "putindeer"))
+	{
+		if(!actions.hasSource(ether, act)) return;
+		int summonPack = ether.regEntities[act->entityIndexSource]->packIndex;
+		if(actions.tileTarget(ether, act))
+		{
+			int held = addEntity("deer", viewerCursor, ether.regTiles[act->tileIndexTarget]->pos, gameTime());
+			ether.regSummon[summonPack]->creatureContained=held;
+			if(held>0)
+			{
+				actions.fillSourceAction(tmp, "destroytool", act->entityIndexSource, act->cooldownTime);
+				int regMagic = addEntity("magiceffect", viewerCursor, ether.regTiles[act->tileIndexTarget]->pos, act->cooldownTime);
+				//actions.fillSourceAction(tmp, "effects", regMagic, act->cooldownTime);
+				if(ether.regEntities[held]->type==ICAT_CREATURE)
+				{
+					registry.objMap[viewerCursor].entities.push_back(held);
+					int creature=ether.regEntities[held]->packIndex;
+					ether.regCreature[creature]->offset=coord(0,0);
+					ether.regEntities[held]->plane=0;
+					ether.regEntities[held]->pos=ether.regTiles[act->tileIndexTarget]->pos;
+					ether.regEntities[held]->active=true;
+					//actions.stopActionCategory(held, ACAT_MOVEMENT);
+					//actions.stopActionCategory(held, ACAT_PEACEFULAI);
+					//actions.stopActionCategory(held, ACAT_COMBAT);
+					actions.fillSourceAction(tmp, tmp.container.entityList[ether.regEntities[held]->entityTemplateIndex].creation, held, gameTime());
+
+					ether.regEntities[held]->box = tmp.container.entityList[ether.regEntities[held]->entityTemplateIndex].box;
+					ether.regEntities[held]->box.left+=(ether.regEntities[held]->pos.x*32);
+					ether.regEntities[held]->box.top+=(ether.regEntities[held]->pos.y*32);
+				}
+				ether.regSummon[summonPack]->creatureContained=0;
+			}
+			return;
+		}
+	}
 	if(matchAction(act, "usecharm"))
 	{
 		if(!actions.hasSource(ether, act)) return;
@@ -2454,7 +2489,7 @@ void GameClass::handleItemsPipeline(const actionStruct* act)
 
 void GameClass::handleAIPipeline(const actionStruct* act)
 {
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
 	if(matchAction(act, "idle"))
 	{
 		fillPathingRoutes();
@@ -2530,7 +2565,7 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 
 void GameClass::handleGUIPipeline(const actionStruct* act)
 {
-	if(player.gamemode==GAMEMODE_PAUSED) return;
+	if(isPaused) return;
 	if(matchAction(act, "zoomout"))
 	{
 		if(mapscale<float(16.0f))
@@ -2593,11 +2628,13 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		}
 		if(player.gamemode==GAMEMODE_INVENTORY)
 		{
-			if(ether.regEntities[player.inv.getItemAtCursor()]==NULL) return;
-			if(ether.regEntities[player.inv.getItemAtCursor()]->type==ICAT_SUMMON
+			int item=player.inv.getItemAtCursor();
+			if(ether.regEntities[item]==NULL) return;
+			if(ether.regEntities[item]->type==ICAT_SUMMON
 				&& getMapMode(viewerCursor) != MAPMODE_OVERTAKEN)
 			{
-				actions.useCharm(tmp, ether, player.inv.getItemAtCursor(), 0, act->tileIndexTarget, act->cooldownTime);
+				actions.fillTileTargetAction(tmp, tmp.container.actionList[ether.regSummon[ether.regEntities[item]->packIndex]->usageProtocol].cname, item, act->tileIndexTarget, act->cooldownTime);
+				//actions.useCharm(tmp, ether, player.inv.getItemAtCursor(), 0, act->tileIndexTarget, act->cooldownTime);
 				sidebar.setString(outputEntity(player.inv.getItemAtCursor()));
 				return;
 			}
@@ -2738,7 +2775,7 @@ void GameClass::processAction(actionStruct* act)
 {
 	if(!actions.validateAction(ether, act)) return;
 
-	if(player.gamemode!=GAMEMODE_PAUSED)
+	if(!isPaused)
 		act->cooling=true;
 	handleMovementPipeline(act);
 	handleCombatPipeline(act);

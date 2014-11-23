@@ -366,6 +366,16 @@ struct guiFormsTemplate
 	{strncpy_s(cname, 40, "undef", 40); strncpy_s(name, 32, "Undefined", 32); buttonList.clear();}
 };
 
+struct recipeTemplate
+{
+	char result[40];
+	char one[40];
+	char two[40];
+	char three[40];
+	recipeTemplate()
+	{strcpy_s(result, "undef"); strcpy_s(one, "undef"); strcpy_s(two, "undef"); strcpy_s(three, "undef");}
+};
+
 class TemplateContainerClass
 {
 	public:
@@ -388,6 +398,7 @@ class TemplateContainerClass
 			ecoList.clear(); ecoList.push_back(ecoPoolTemplate());
 			biomeList.clear(); biomeList.push_back(biomeInformationTemplate());
 			formsList.clear(); formsList.push_back(guiFormsTemplate());
+			recipeList.clear(); recipeList.push_back(recipeTemplate());
 		}
 		~TemplateContainerClass() {}
 
@@ -407,6 +418,7 @@ class TemplateContainerClass
 		std::vector<actionTemplate> actionList;
 		std::vector<guiButtonTemplate> buttonList;
 		std::vector<guiFormsTemplate> formsList;
+		std::vector<recipeTemplate> recipeList;
 		std::vector<stringList> valuesList;
 
 		int getEntityTemplate(const char* name) const;

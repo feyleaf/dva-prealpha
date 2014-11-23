@@ -8,22 +8,13 @@ PlayerEngine::PlayerEngine()
 
 void PlayerEngine::initRecipes(TemplateRegistryClass& tmp)
 {
-	//3 red petals = red summon charm
-	recipes.addRecipe(tmp.container.getEntityTemplate("redcharm"),
-		tmp.container.getEntityTemplate("redpetal"),
-		tmp.container.getEntityTemplate("redpetal"),
-		tmp.container.getEntityTemplate("redpetal"));
-	//3 blue petals = blue summon charm
-	recipes.addRecipe(tmp.container.getEntityTemplate("bluecharm"),
-		tmp.container.getEntityTemplate("bluepetal"),
-		tmp.container.getEntityTemplate("bluepetal"),
-		tmp.container.getEntityTemplate("bluepetal"));
-	//2 locknic heads and 1 yellow petal = ritual stump
-	recipes.addRecipe(tmp.container.getEntityTemplate("ritualstump"),
-		tmp.container.getEntityTemplate("flytraphead"),
-		tmp.container.getEntityTemplate("flytraphead"),
-		tmp.container.getEntityTemplate("yellowpetal"));
-
+	for(int i=1; i<int(tmp.container.recipeList.size()); i++)
+	{
+		recipes.addRecipe(tmp.container.getEntityTemplate(tmp.container.recipeList[i].result),
+			tmp.container.getEntityTemplate(tmp.container.recipeList[i].one),
+			tmp.container.getEntityTemplate(tmp.container.recipeList[i].two),
+			tmp.container.getEntityTemplate(tmp.container.recipeList[i].three));
+	}
 }
 //returns the grid coordinates of the mouse pointer
 coord PlayerEngine::getMouseGrid(const sf::RenderWindow& win)

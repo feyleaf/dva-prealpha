@@ -26,6 +26,7 @@ int TemplateReaderClass::selectCategory()
 	if(str=="BUTTON") ret = ICAT_BUTTON;
 	if(str=="FORM") ret = ICAT_FORM;
 	if(str=="PROTOCOL") ret = ICAT_PROTOCOL;
+	if(str=="RECIPE") ret = ICAT_RECIPE;
 	if(str=="LIST") ret = ICAT_STRINGLIST;
 	if(str=="COMMENT") std::getline(pFile, str, '\n');
 
@@ -241,6 +242,21 @@ actionTemplate TemplateReaderClass::parseAction()
 	std::getline(pFile, chunk, '\n');
 	ret.restrictions = atoi(chunk.c_str());	
 
+	return ret;
+}
+
+recipeTemplate TemplateReaderClass::parseRecipe()
+{
+	recipeTemplate ret;
+	std::string chunk;
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.result, 40, chunk.c_str(), 40);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.one, 40, chunk.c_str(), 40);
+	std::getline(pFile, chunk, ',');
+	strncpy_s(ret.two, 40, chunk.c_str(), 40);
+	std::getline(pFile, chunk, '\n');
+	strncpy_s(ret.three, 40, chunk.c_str(), 40);
 	return ret;
 }
 

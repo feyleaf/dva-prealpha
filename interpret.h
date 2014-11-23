@@ -35,6 +35,7 @@ the registered object save/load
 #define ICAT_BUTTON 18
 #define ICAT_FORM 19
 #define ICAT_STRINGLIST 20
+#define ICAT_RECIPE 21
 
 class TemplateReaderClass
 {
@@ -68,6 +69,7 @@ public:
 	void skipLine();
 	biomeInformationTemplate parseBiome();
 	guiButtonTemplate parseButton();
+	recipeTemplate parseRecipe();
 };
 
 
