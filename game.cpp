@@ -56,10 +56,8 @@ GameClass::GameClass()
 	player.refreshClicks();
 	player.initRecipes(tmp);
 	//render.mainfont.loadFromFile(settings.mainFontFile);
-	sidebar = sf::Text("Sidebar Line 1\nLine 2\nLine 3\nLine 4\nLast Line", render.mainfont, 20);
-	sidebar.setPosition(float(settings.mapGridDimensions.x*settings.tileDimensions.x)+10.0f, 10.0f);
 	biomes.clear(); biomes.push_back(BiomeClass());
-	actions.fillSourceAction(tmp, "generatemap", 0, gameTime());
+	actions.fillSourceAction(tmp, "startgame", 0, gameTime());
 }
 
 //runs an update each frame (~1/30 second)
@@ -1989,6 +1987,15 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 {
 	if(!actions.hasSource(ether, act)) return;
 	if(isPaused) return;
+	if(matchAction(act, "overlaytitle"))
+	{
+		player.gamemode=GAMEMODE_TITLESCREEN;
+		eraseGuiForm(player.sideMenuForm);
+		player.sideMenuForm.clear();
+		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(0,0));
+		fillGuiForm(player.sideMenuForm);
+		return;
+	}
 	if(matchAction(act, "makecreature"))
 	{
 		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime());
@@ -2064,6 +2071,16 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 
 void GameClass::handleButtonPipeline(const actionStruct* act)
 {
+	if(matchAction(act, "startgame"))
+	{
+		player.gamemode=GAMEMODE_TITLESCREEN;
+		eraseGuiForm(player.sideMenuForm);
+		player.sideMenuForm.clear();
+		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("title"), coord(0,0));
+		fillGuiForm(player.sideMenuForm);
+//		actions.fillSourceAction(tmp, "generatemap", 0, gameTime());
+		return;
+	}
 	if(matchAction(act, "selecttile"))
 	{
 		if(player.gamemode==GAMEMODE_ENTITYTARGETING)
@@ -2155,6 +2172,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		eraseGuiForm(player.trophyForm);
 		player.trophyForm.clear();
 		player.gamemode=GAMEMODE_NEUTRAL;
+		fillGuiForm(player.trophyForm);
 		return;
 	}
 	if(matchAction(act, "losemap"))
@@ -2172,11 +2190,6 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 			generatorCursor=coord(0,0);
 			viewerCursor=coord(0,0);
 			newGame=false;
-			//int helper=ether.createEntity(tmp, "wolf");
-			//int charm=ether.createEntity(tmp, "ambercharm");
-			//int summoncore=ether.regEntities[charm]->packIndex;
-			//ether.regSummon[summoncore]->creatureContained=helper;
-			player.inv.addEntityFromTemplate(tmp, ether, "ambercharm");
 		}
 		refreshMap(generatorCursor);
 		experimentalWorldGen(viewerCursor);
@@ -2188,14 +2201,19 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		newGame=false;
 		player.ritualForm.clear();
 		player.inventoryForm.clear();
-		player.sideMenuForm.clear();
 		player.creatureCard.clear();
+		eraseGuiForm(player.sideMenuForm);
+		eraseGuiForm(player.inventoryForm);
+		eraseGuiForm(player.ritualForm);
+		player.sideMenuForm.clear();
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("magnifier"), gridToPixel(coord(settings.mapGridDimensions.x,5)));
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("backpack"), gridToPixel(coord(settings.mapGridDimensions.x+1,4)));
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("pausebutton"), gridToPixel(coord(settings.mapGridDimensions.x+1,5)));
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("worldmap"), gridToPixel(coord(settings.mapGridDimensions.x+2,5)));
 		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("camera"), gridToPixel(coord(settings.mapGridDimensions.x+1,6)));
 		fillGuiForm(player.sideMenuForm);
+		fillGuiForm(player.inventoryForm);
+		fillGuiForm(player.ritualForm);
 		return;
 	}
 	if(matchAction(act, "pausegame"))
@@ -2230,11 +2248,6 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		capture();
 		return;
 	}
-	if(matchAction(act, "infoget"))
-	{
-		sidebar.setString("Clicked...");
-		return;
-	}
 	if(matchAction(act, "backpack"))
 	{
 		int y=act->guiIndexTarget;
@@ -2243,14 +2256,16 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		sidebar.setString("Open Backpack\n"+std::string(buf));
 		if(player.gamemode!=GAMEMODE_INVENTORY)
 		{
+			eraseGuiForm(player.inventoryForm);
+			player.inventoryForm.clear();
 			fillInventory();
-			//fillTrophy("basictrophy");
 			player.gamemode=GAMEMODE_INVENTORY;
 		}
 		else
 		{
 			eraseGuiForm(player.inventoryForm);
 			player.inventoryForm.clear();
+			fillGuiForm(player.inventoryForm);
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		return;
@@ -2361,6 +2376,32 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		//	player.ritualForm.activate();
 		//}
 		return;
+	}
+	if(matchAction(act, "removetitle"))
+	{
+		sidebar = sf::Text("Welcome to the\nPre-Alpha\nof\nDruid vs. Alchemist\nby @feyleafgames", render.mainfont, 20);
+		sidebar.setPosition(float(settings.mapGridDimensions.x*settings.tileDimensions.x)+10.0f, 10.0f);
+		player.gamemode=GAMEMODE_NEUTRAL;
+		player.sideMenuForm.clear();
+		eraseGuiForm(player.sideMenuForm);
+		fillGuiForm(player.sideMenuForm);
+		actions.fillSourceAction(tmp, "generatemap", 0, gameTime());
+		return;
+	}
+	if(matchAction(act, "infoget"))
+	{
+		if(player.gamemode==GAMEMODE_INSPECT)
+		{
+			sidebar.setString("");
+			player.gamemode=GAMEMODE_NEUTRAL;
+			return;
+		}
+		else if(player.gamemode==GAMEMODE_NEUTRAL)
+		{
+			player.gamemode=GAMEMODE_INSPECT;
+			sidebar.setString("Select an entity\nor tile to inspect...");
+			return;
+		}
 	}
 
 }
@@ -2616,6 +2657,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		deactivateEntityButton(act->entityIndexSource);
 		eraseGuiForm(player.creatureCard);
 		player.creatureCard.clear();
+		fillGuiForm(player.creatureCard);
 		player.gamemode=GAMEMODE_NEUTRAL;
 		return;
 	}
@@ -2712,8 +2754,9 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 		if(!player.ritual.isThisRitual(ether, player.recipes)) return;
 		if(player.gamemode==GAMEMODE_CRAFTING)
 		{
+			eraseGuiForm(player.inventoryForm);
+			fillInventory();
 			//eraseGuiForm(player.ritualForm);
-			//eraseGuiForm(player.inventoryForm);
 			if(player.ritual.isThisRitual(ether, player.recipes))
 			{
 				int result=ether.createEntity(tmp, tmp.container.entityList[player.ritual.findRitual(ether, player.recipes)].cname);
@@ -2721,6 +2764,7 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 				player.ritual.addSlotToInventory(player.ritual.resultslot, ether, player.inv);
 
 				player.ritual.clear();
+				eraseGuiForm(player.ritualForm);
 				player.ritualForm.clear();
 				player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(190,60));
 				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+10, 80));
@@ -2728,7 +2772,6 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+192-10-32, 80));
 				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), coord(190+(192/2)-16, 120));
 
-				fillInventory();
 				fillGuiForm(player.ritualForm);
 			}
 		}
@@ -2748,14 +2791,18 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 				if(i != player.ritual.resultslot)
 					player.ritual.addSlotToInventory(i, ether, player.inv);
 			}
+			fillGuiForm(player.inventoryForm);
+			fillGuiForm(player.ritualForm);
 			player.ritual.clear();
 			player.gamemode=GAMEMODE_NEUTRAL;
 		}
 		else
 		{
 			player.ritual.clear();
+			player.inventoryForm.clear();
 			player.ritualForm.clear();
 			eraseGuiForm(player.ritualForm);
+			eraseGuiForm(player.inventoryForm);
 			sidebar.setString("Crafting ON");
 			player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(190,60));
 			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+10, 80));

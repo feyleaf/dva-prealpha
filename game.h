@@ -22,6 +22,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #define GAMEMODE_ZOOMOUT 6
 #define GAMEMODE_MINIMAP 7
 #define GAMEMODE_CRAFTING 8
+#define GAMEMODE_TITLESCREEN 9
 
 #define CLICKLAYER_ZERO 0
 #define CLICKLAYER_TILE 1

@@ -35,7 +35,7 @@ TILE:darkergrass,Dark Grass 2,32,32,marshgrass.png,1,dirt
 PROTOCOL:solidblock,0,1,1,1,0
 PROTOCOL:generatemap,0,1,1,1,0
 PROTOCOL:growflower,4,100,1,1,0
-PROTOCOL:guibutton,0,1,1,0
+PROTOCOL:guibutton,0,0,1,1,0
 PROTOCOL:infoget,7,0,1,1,0
 PROTOCOL:clearsidebar,0,0,1,1,0
 PROTOCOL:convertflower,3,0,1,1,0
@@ -96,6 +96,9 @@ PROTOCOL:fadetext,0,0,1,1,0
 PROTOCOL:getrewards,0,0,1,1,0
 PROTOCOL:pausegame,7,0,10,1,0
 PROTOCOL:unpausegame,7,0,10,1,0
+PROTOCOL:overlaytitle,7,0,1,1,0
+PROTOCOL:removetitle,7,0,1,1,0
+PROTOCOL:startgame,0,0,1,1,0
 CREATURE:squirrel,Squirrel,32,32,16,32,0,0,32,32,squirrel.png,1,makecreature,300,3,5,1,2,none
 CREATURE:wolf,Wolf,32,32,16,32,0,0,32,32,wolf.png,1,makecreature,45,5,6,1,3,none
 CREATURE:dryad,Dryad,32,32,16,32,0,0,32,32,dryad.png,1,makecreature,45,3,8,1,1,none
@@ -176,8 +179,8 @@ BIOME:marsh,Marsh Biome,marshterrain,marshecology
 BIOME:beach,Beach Biome,beachterrain,beachecology
 BIOME:beachforest,Beach Forest Biome,forestterrain,beachecology
 BIOME:taiga,Taiga Biome,taigaterrain,taigaecology
-BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
 BUTTON:recycle,Recycle Map,32,32,0,0,32,32,recycle.png,1,generatemap,none
+BUTTON:magnifier,Magnifying Glass,32,32,0,0,32,32,magnifier.png,1,infoget,none
 BUTTON:camera,Screenshot,32,32,0,0,32,32,camera.png,1,screenshot,none
 BUTTON:backpack,Backpack,32,32,0,0,32,32,backpack.png,1,backpack,none
 BUTTON:movebutton,Move Creature,32,32,0,0,32,32,road.png,1,movecreature,none
@@ -191,6 +194,7 @@ BUTTON:openritualcell,Ritual Cell,32,32,0,0,32,32,ritualcell-open.png,1,reverser
 BUTTON:resultritualcell,Result Ritual Cell,32,32,0,0,32,32,ritualcell-result.png,1,trycrafting,none
 BUTTON:pausebutton,Pause,32,32,0,0,32,32,pause.png,1,pausegame,none
 BUTTON:playbutton,Unpause,32,32,0,0,32,32,unpause.png,1,unpausegame,none
+BUTTON:title,Title Splash,1024,576,0,0,1024,576,titlescreen.png,1,removetitle,none
 RECIPE:redcharm,redpetal,redpetal,redpetal
 RECIPE:ritualstump,flytraphead,yellowpetal,flytraphead
 RECIPE:bluecharm,bluepetal,bluepetal,bluepetal
