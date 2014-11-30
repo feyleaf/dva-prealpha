@@ -352,14 +352,18 @@ void RenderManager::DrawInventory(sf::RenderWindow& win, const TemplateRegistryC
 		{
 			sprintf_s(out, "%5i", items.getQuantityAt(j));
 			quantityOut.setString(out);
-			quantityOut.setPosition(float(j%5)*32.0f, float((int(j/5))*32.0f)+31.0f);
+			sf::Vector2f defaultpos(float(j%5)*32.0f, float((int(j/5))*32.0f)+31.0f);
+			sf::Vector2f offset(toVector(coord(24*32, 12*32)));
+			quantityOut.setPosition(defaultpos+offset);
 			win.draw(quantityOut);
 		}
 	}
 	for(int j=0; j<int(form.words.size()); j++)
 	{
 		guiText.setString(form.words[j].msg);
-		guiText.setPosition(float(form.words[j].pixel.x), float(form.words[j].pixel.y));
+		sf::Vector2f defaultpos(float(form.words[j].pixel.x), float(form.words[j].pixel.y));
+		sf::Vector2f offset(toVector(coord(24*32, 12*32)));
+		guiText.setPosition(defaultpos+offset);
 		win.draw(guiText);
 	}
 }

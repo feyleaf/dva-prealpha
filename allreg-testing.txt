@@ -195,6 +195,7 @@ BUTTON:resultritualcell,Result Ritual Cell,32,32,0,0,32,32,ritualcell-result.png
 BUTTON:pausebutton,Pause,32,32,0,0,32,32,pause.png,1,pausegame,none
 BUTTON:playbutton,Unpause,32,32,0,0,32,32,unpause.png,1,unpausegame,none
 BUTTON:title,Title Splash,1024,576,0,0,1024,576,titlescreen.png,1,removetitle,none
+BUTTON:cancelcraft,Cancel Crafting,32,32,0,0,32,32,cancel.png,1,togglecrafting,none
 RECIPE:redcharm,redpetal,redpetal,redpetal
 RECIPE:ritualstump,flytraphead,yellowpetal,flytraphead
 RECIPE:bluecharm,bluepetal,bluepetal,bluepetal

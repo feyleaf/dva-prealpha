@@ -1062,15 +1062,15 @@ void GameClass::fillInventory()
 {
 	player.inventoryForm.clear();
 	for(int j=0; j<25; j++)
-		player.inventoryForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("inventorycell"), gridToPixel(coord(j%5, int(j/5))));
+		player.inventoryForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("inventorycell"), gridToPixel(coord(settings.mapGridDimensions.x, 12)+coord(j%5, int(j/5))));
 	for(int i=0; i<int(player.inv.cellList.size()); i++)
 	{
 		if(player.inv.cellList[i].tmp_idx>0)
 		{
-			player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(i%5, int(i/5))));
+			player.inventoryForm.addCell(RENDER_ENTITY, player.inv.cellList[i].tmp_idx, gridToPixel(coord(settings.mapGridDimensions.x, 12)+coord(i%5, int(i/5))));
 		}
 	}
-	player.inventoryForm.addWords("Inventory Backpack", 0, coord(15, 175));
+	player.inventoryForm.addWords("Inventory Backpack", 0, gridToPixel(coord(settings.mapGridDimensions.x, 12))+coord(15, 175));
 	fillGuiForm(player.inventoryForm);
 	player.inventoryForm.activate();
 }
@@ -1987,15 +1987,6 @@ void GameClass::handleCreationPipeline(const actionStruct* act)
 {
 	if(!actions.hasSource(ether, act)) return;
 	if(isPaused) return;
-	if(matchAction(act, "overlaytitle"))
-	{
-		player.gamemode=GAMEMODE_TITLESCREEN;
-		eraseGuiForm(player.sideMenuForm);
-		player.sideMenuForm.clear();
-		player.sideMenuForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(0,0));
-		fillGuiForm(player.sideMenuForm);
-		return;
-	}
 	if(matchAction(act, "makecreature"))
 	{
 		actions.fillSourceAction(tmp, "wandercreature", act->entityIndexSource, gameTime());
@@ -2254,7 +2245,23 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 		char buf[10];
 		sprintf_s(buf, "%i", y);
 		sidebar.setString("Open Backpack\n"+std::string(buf));
-		if(player.gamemode!=GAMEMODE_INVENTORY)
+		if(player.gamemode==GAMEMODE_CRAFTING)
+		{
+			eraseGuiForm(player.ritualForm);
+			player.ritualForm.clear();
+			for(int i=0; i<int(player.ritual.slots); i++)
+			{
+				if(i != player.ritual.resultslot)
+					player.ritual.addSlotToInventory(i, ether, player.inv);
+			}
+			fillGuiForm(player.ritualForm);
+			player.ritual.clear();
+			eraseGuiForm(player.inventoryForm);
+			player.inventoryForm.clear();
+			fillInventory();
+			player.gamemode=GAMEMODE_INVENTORY;
+		}
+		else if(player.gamemode!=GAMEMODE_INVENTORY)
 		{
 			eraseGuiForm(player.inventoryForm);
 			player.inventoryForm.clear();
@@ -2272,10 +2279,10 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(matchAction(act, "selectinventory"))
 	{
-		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.deliverGridClick(app));
+		if(player.gamemode==GAMEMODE_INVENTORY) player.inv.select(player.deliverGridClick(app)-coord(settings.mapGridDimensions.x, 12));
 		else if(player.gamemode==GAMEMODE_CRAFTING)
 		{
-			player.inv.select(player.deliverGridClick(app));
+			player.inv.select(player.deliverGridClick(app)-coord(settings.mapGridDimensions.x, 12));
 			if(player.inv.getItemAtCursor()>0 && player.ritual.cursor<(player.ritual.resultslot))
 			{
 				player.ritual.addToRitual(player.inv.drop(player.inv.cursor));
@@ -2286,22 +2293,23 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 	}
 	if(matchAction(act, "addritualitem"))
 	{
+		coord topleft=gridToPixel(coord(settings.mapGridDimensions.x, 8));
 		if(player.gamemode!=GAMEMODE_CRAFTING) return;
-		int y=80;
+		int y=0;
 		for(int i=0; i<player.ritual.slots-1; i++)
 		{
-			if(i==1) y=75;
-			int x=((192/3)*i)+10;
+			if(i==1) y=16; else y=32;
+			int x=((202/3)*i)+10;
 			if(player.ritual.templateFromSlot(ether, i)>0)
 			{
-				player.ritualForm.addCell(RENDER_ENTITY, player.ritual.templateFromSlot(ether, i), coord(190+x, y));
+				player.ritualForm.addCell(RENDER_ENTITY, player.ritual.templateFromSlot(ether, i), topleft+coord(x, y));
 			}
 		}
 		if(player.ritual.isThisRitual(ether, player.recipes))
 		{
 			sidebar.setString("New Item Craftable");
 			player.ritual.addToRitual(player.ritual.findRitual(ether, player.recipes));
-			player.ritualForm.addCell(RENDER_ENTITY, player.ritual.findRitual(ether, player.recipes), coord(190+((192/3)*1)+10, y+50));
+			player.ritualForm.addCell(RENDER_ENTITY, player.ritual.findRitual(ether, player.recipes), topleft+coord((192/2)-16, 64));
 			fillGuiForm(player.ritualForm);
 			player.ritualForm.activate();
 		}
@@ -2319,7 +2327,7 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 			if(player.ritualForm.cells[i].buttonIndex==act->guiIndexTarget)
 			{
 				int j=i-1;
-				int y=80;
+				int y=96;
 				int p=0;
 //				if(j<0) return;
 				RitualClass tempRitual;
@@ -2340,25 +2348,27 @@ void GameClass::handleButtonPipeline(const actionStruct* act)
 				}
 				eraseGuiForm(player.ritualForm);
 				player.ritualForm.clear();
-				player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(190,60));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+10, 80));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+(192/2)-16, 75));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+192-10-32, 80));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), coord(190+(192/2)-16, 120));
+				coord topleft=gridToPixel(coord(settings.mapGridDimensions.x, 8));
+				player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), topleft);
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(10, 32));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord((192/2)-16, 16));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(192-42, 32));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), topleft+coord((192/2)-16, 64));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("cancelcraft"), topleft+coord(192-32, 0));
 				for(int r=0; r<player.ritual.slots-1; r++)
 				{
-					if(r==1) y=75;
-					int x=((192/3)*r)+10;
+					if(r==1) y=16; else y=32;
+					int x=((202/3)*r)+10;
 					if(player.ritual.templateFromSlot(ether, r)>0)
 					{
-						player.ritualForm.addCell(RENDER_ENTITY, player.ritual.templateFromSlot(ether, r), coord(190+x, y));
+						player.ritualForm.addCell(RENDER_ENTITY, player.ritual.templateFromSlot(ether, r), topleft+coord(x, y));
 					}
 				}
 				if(player.ritual.isThisRitual(ether, player.recipes))
 				{
 					sidebar.setString("New Item Craftable");
 					player.ritual.addToRitual(player.ritual.findRitual(ether, player.recipes));
-					player.ritualForm.addCell(RENDER_ENTITY, player.ritual.findRitual(ether, player.recipes), coord(190+((192/3)*1)+10, y+50));
+					player.ritualForm.addCell(RENDER_ENTITY, player.ritual.findRitual(ether, player.recipes), topleft+coord((192/2)-16, 64));
 					fillGuiForm(player.ritualForm);
 					player.ritualForm.activate();
 				}
@@ -2533,6 +2543,7 @@ void GameClass::handleAIPipeline(const actionStruct* act)
 	if(isPaused) return;
 	if(matchAction(act, "idle"))
 	{
+		if(act->entityIndexSource==0) return;
 		fillPathingRoutes();
 		if(ether.regEntities[act->entityIndexSource]->isEnemy)
 		{
@@ -2766,13 +2777,16 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 				player.ritual.clear();
 				eraseGuiForm(player.ritualForm);
 				player.ritualForm.clear();
-				player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(190,60));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+10, 80));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+(192/2)-16, 75));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+192-10-32, 80));
-				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), coord(190+(192/2)-16, 120));
+				coord topleft=gridToPixel(coord(settings.mapGridDimensions.x, 8));
+				player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), topleft);
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(10, 32));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord((192/2)-16, 16));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(192-42, 32));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), topleft+coord((192/2)-16, 64));
+				player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("cancelcraft"), topleft+coord(192-32, 0));
 
 				fillGuiForm(player.ritualForm);
+				fillInventory();
 			}
 		}
 		return;
@@ -2804,11 +2818,13 @@ void GameClass::handleGUIPipeline(const actionStruct* act)
 			eraseGuiForm(player.ritualForm);
 			eraseGuiForm(player.inventoryForm);
 			sidebar.setString("Crafting ON");
-			player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), coord(190,60));
-			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+10, 80));
-			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+(192/2)-16, 75));
-			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), coord(190+192-10-32, 80));
-			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), coord(190+(192/2)-16, 120));
+			coord topleft=gridToPixel(coord(settings.mapGridDimensions.x, 8));
+			player.ritualForm.setBackground(RENDER_BUTTON, getGuiTemplateIndex("ritualgui"), topleft);
+			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(10, 32));
+			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord((192/2)-16, 16));
+			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("openritualcell"), topleft+coord(192-42, 32));
+			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("resultritualcell"), topleft+coord((192/2)-16, 64));
+			player.ritualForm.addCell(RENDER_BUTTON, getGuiTemplateIndex("cancelcraft"), topleft+coord(192-32, 0));
 			fillInventory();
 			fillGuiForm(player.ritualForm);
 			player.gamemode=GAMEMODE_CRAFTING;

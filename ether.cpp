@@ -291,17 +291,44 @@ int EtherRegistryClass::createButton(const TemplateRegistryClass& tmp, const cha
 	}
 	if(p==0) return 0;
 	bb=tmp.container.buttonList[p].box;
-
-	for(int i=1; i<int(tmp.container.actionList.size()); i++)
+	//----recycling old buttons---------
+	//check to see if there are inactive buttons in the ether registry, if so we will
+	//overwrite them first. default to pushing to the ether only if needed
+	int slotnumber=0;
+	for(int i=1; i<int(regButtons.size()); i++)
 	{
-		if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
+		if(!regButtons[i]->active)
 		{
-			regButtons.push_back(new buttonStruct(false, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
-			return int(regButtons.size()-1);
+			slotnumber=i;
+			break;
 		}
 	}
-	regButtons.push_back(new buttonStruct(false, linkedEntity, 0, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
-	return int(regButtons.size()-1);
+	if(slotnumber>0)
+	{
+		for(int i=1; i<int(tmp.container.actionList.size()); i++)
+		{
+			if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
+			{
+				regButtons[slotnumber]=(new buttonStruct(false, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
+				return slotnumber;
+			}
+		}
+		regButtons[slotnumber]=(new buttonStruct(false, linkedEntity, 0, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
+		return slotnumber;
+	}
+	else
+	{
+		for(int i=1; i<int(tmp.container.actionList.size()); i++)
+		{
+			if(strcmp(tmp.container.actionList[i].cname, tmp.container.buttonList[p].actionName)==0)
+			{
+				regButtons.push_back(new buttonStruct(false, linkedEntity, i, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
+				return int(regButtons.size()-1);
+			}
+		}
+		regButtons.push_back(new buttonStruct(false, linkedEntity, 0, _orig, tmp.container.buttonList[p].dimensions, bb, coord(0,0)));
+		return int(regButtons.size()-1);
+	}
 }
 
 int EtherRegistryClass::createString(const char* string, sf::Color& _color, sf::Font& _font, int pType, int _alphamax)
