@@ -69,6 +69,9 @@
     <ClCompile Include="biome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gamefile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="templates.h">
@@ -125,6 +128,9 @@
     <ClInclude Include="biome.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gamefile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg">
@@ -142,6 +148,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="back.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="saves\testingsav.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

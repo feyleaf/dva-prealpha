@@ -44,6 +44,7 @@ struct gameHeader
 class GameClass
 {
 protected:
+	GameFileClass gameFile;
 	PlayerEngine player;
 	//world logic stuff
 	//--prerequisite data for game at runtime

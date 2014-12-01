@@ -22,6 +22,7 @@ public:
 
 	sf::Texture mapSheet;
 
+	unsigned long randseed;
 	int mapgenerator;
 	int mapMode;
 	int biomeIndex;

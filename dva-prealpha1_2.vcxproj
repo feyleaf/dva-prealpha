@@ -73,6 +73,7 @@
     <ClCompile Include="debugrecords.cpp" />
     <ClCompile Include="ether.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gamefile.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="guiform.cpp" />
     <ClCompile Include="ic_math.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="biome.h" />
     <ClInclude Include="ether.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gamefile.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="guiform.h" />
@@ -115,6 +117,7 @@
     <Text Include="back.txt" />
     <Text Include="processes.txt" />
     <Text Include="front.txt" />
+    <Text Include="saves\testingsav.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

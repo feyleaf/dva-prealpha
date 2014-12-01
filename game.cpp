@@ -76,6 +76,7 @@ bool GameClass::gameLoop()
 			gameRenderer();
 		}
 	}
+	gameFile.saveGameState("testingsav");
 
 	return true;
 }

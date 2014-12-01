@@ -32,6 +32,7 @@ Author: Benjamin C. Watt (@feyleafgames)
 #include "ritual.h"
 #include "guiform.h"
 #include "player.h"
+#include "gamefile.h"
 #include "render.h"
 #include "game.h"
 
